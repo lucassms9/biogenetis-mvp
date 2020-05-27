@@ -41,11 +41,12 @@ class ExamesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Pacientes', [
-            'foreignKey' => 'paciente_id',
-        ]);
         $this->belongsTo('Amostras', [
             'foreignKey' => 'amostra_id',
+        ]); 
+
+        $this->belongsTo('Users', [
+            'foreignKey' => 'created_by',
         ]);
     }
 
@@ -82,8 +83,6 @@ class ExamesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['paciente_id'], 'Pacientes'));
-        $rules->add($rules->existsIn(['amostra_id'], 'Amostras'));
 
         return $rules;
     }

@@ -17,6 +17,91 @@ class AmostrasController extends AppController
     {
         parent::initialize();
         $this->loadComponent('Paginator');
+        $this->loadModel('Exames');
+    }
+
+
+
+    public function sendData()
+    {
+        if ($this->request->is('post')) {
+
+            for ($i = 0; $i < $this->request->data['totalFiles']; $i++) {
+                 $amostra = [
+                    'amostra_id' => $this->request->data['amostraid'.$i.'_'],
+                    'uf' => $this->request->data['uf'.$i],
+                    'sexo' => $this->request->data['sexo'.$i],
+                    'idade' => $this->request->data['idade'.$i],
+                ];
+
+                $amostra_save = $this->Amostras->newEntity();
+                $amostra_save = $this->Amostras->patchEntity($amostra_save,[
+                    'code_amostra' => $amostra['amostra_id'],
+                    'uf' => $amostra['uf'],
+                    'idade' => $amostra['idade'],
+                    'sexo' => $amostra['sexo'],
+                ]);
+                $amostra_save = $this->Amostras->save($amostra_save);
+
+                // FAZ COMUNICAO COM O SERVICO DE IA
+                // SALVA O RETORNO EM RESULTADO
+
+                $exame_find = $this->Exames->find('all',[
+                    'conditions' => ['amostra_id' => $amostra['amostra_id']]
+                ])->first();
+
+                $exame_find->resultado = 'Em Análise';
+                $this->Exames->save($exame_find);
+                
+            }
+            if($this->request->data['totalFiles'] == 1){
+                return $this->redirect(['constroller' => 'relatorio', 'action' => 'index']);
+            }else{
+                return $this->redirect(['action' => 'index']);
+            }
+              
+        }
+    }
+
+    public function import()
+    {
+         if ($this->request->is('post')) {
+
+            try {   
+                
+                if(!empty($this->request->data['file'])){
+                    $file = $this->request->data['file'];
+
+                    if($file['size'] > 0){
+
+                        move_uploaded_file($file['tmp_name'], AMOSTRAS . $file['name']);
+
+                        $amostra_id = explode('.', $file['name']);
+                        $exame = [
+                            'amostra_id' => $amostra_id[0],
+                            'file_name' => $file['name'],
+                            'created_by' => $this->Auth->user('id'),
+                        ];
+
+                        $exame_save = $this->Exames->newEntity();
+                        $exame_save = $this->Exames->patchEntity($exame_save, $exame);
+                        $exame_save = $this->Exames->save($exame_save);
+
+                        if($exame_save){
+                            echo json_encode($exame_save);
+                            exit;
+                        }else{
+                            throw new Exception("Error Processing Request", 1);
+                        }
+
+                    }
+                      
+                }
+
+             } catch (Exception $e) {
+                  $this->Flash->error(__('Tivemos algum problema ao enviar os Exames'));
+            }
+         }
     }
 
     /**

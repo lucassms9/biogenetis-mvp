@@ -18,7 +18,7 @@
         <legend><?= __('Add Amostra') ?></legend>
         <?php
             echo $this->Form->control('code_amostra');
-            echo $this->Form->control('cep');
+            echo $this->Form->control('uf');
             echo $this->Form->control('idade');
             echo $this->Form->control('sexo');
         ?>

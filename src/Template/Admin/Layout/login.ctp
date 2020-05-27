@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -43,8 +43,11 @@ $cakeDescription = 'Login - Biogenetics';
              <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center mb-5">
-                            <a href="index.html" class="logo"><img src="<?= $this->Url->build('/', true);?>assets/images/logo-light.png" height="24" alt="logo"></a>
-                            <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5>
+                            <!-- <a href="index.html" class="logo"><img src="<?= $this->Url->build('/', true);?>assets/images/logo-light.png" height="24" alt="logo"></a> -->
+                            <div style="font-size: 20pt;
+    font-weight: bold;
+    color: #fff;">LOGO</div>
+                            <!-- <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5> -->
                         </div>
                     </div>
                 </div>

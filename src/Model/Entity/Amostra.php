@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string|null $code_amostra
- * @property string|null $cep
+ * @property string|null $uf
  * @property int|null $idade
  * @property string|null $sexo
  *
@@ -27,9 +27,11 @@ class Amostra extends Entity
      */
     protected $_accessible = [
         'code_amostra' => true,
-        'cep' => true,
+        'uf' => true,
         'idade' => true,
         'sexo' => true,
         'exames' => true,
+        'created' => true,
+        'modified' => true,
     ];
 }

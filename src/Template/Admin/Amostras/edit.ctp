@@ -35,7 +35,7 @@
 
                         <?php
                             echo $this->Form->control('code_amostra',['class' => 'form-control']);
-                            echo $this->Form->control('cep',['class' => 'form-control']);
+                            echo $this->Form->control('uf',['class' => 'form-control']);
                             echo $this->Form->control('idade',['class' => 'form-control']);
                             echo $this->Form->control('sexo',['class' => 'form-control']);
                         ?>

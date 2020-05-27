@@ -1,10 +1,3 @@
-
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Amostra $amostra
- */
-?>
 <!-- Page-Title -->
 <div class="page-title-box">
 <div class="container-fluid">

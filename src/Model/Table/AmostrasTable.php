@@ -34,8 +34,9 @@ class AmostrasTable extends Table
 
         $this->setTable('amostras');
         $this->setDisplayField('id');
-        $this->setPrimaryKey('id');
-
+        $this->setPrimaryKey('code_amostra');
+        $this->addBehavior('Timestamp');
+        
         $this->hasMany('Exames', [
             'foreignKey' => 'amostra_id',
         ]);
@@ -59,9 +60,14 @@ class AmostrasTable extends Table
             ->allowEmptyString('code_amostra');
 
         $validator
-            ->scalar('cep')
-            ->maxLength('cep', 255)
-            ->allowEmptyString('cep');
+            ->scalar('uf')
+            ->maxLength('uf', 255)
+            ->allowEmptyString('uf');
+
+        $validator
+            ->scalar('file_name')
+            ->maxLength('file_name', 255)
+            ->allowEmptyString('file_name', null, 'create');
 
         $validator
             ->integer('idade')

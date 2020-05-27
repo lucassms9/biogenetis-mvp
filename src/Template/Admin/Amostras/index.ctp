@@ -35,7 +35,7 @@
                                     <tr>
                                         <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('code_amostra') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('cep') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('uf') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('idade') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -46,7 +46,7 @@
                                         <tr>
                                             <td><?= $this->Number->format($amostra->id) ?></td>
                                             <td><?= h($amostra->code_amostra) ?></td>
-                                            <td><?= h($amostra->cep) ?></td>
+                                            <td><?= h($amostra->uf) ?></td>
                                             <td><?= $this->Number->format($amostra->idade) ?></td>
                                             <td><?= h($amostra->sexo) ?></td>
                                             <td class="actions">

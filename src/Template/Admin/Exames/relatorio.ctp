@@ -29,13 +29,17 @@
                         <?= $this->Form->create(null) ?>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <label for="example-date-input" class="col-form-label">Date Início</label>
-                                <input class="form-control" name="data_init" value="<?=@$this->request->data['data_init']?>" type="date" value="2019-08-19" id="example-date-input">
+                             <div class="col-md-4">
+                                <label for="example-date-input" class="col-form-label">Amostra ID</label>
+                                <input class="form-control" name="amostra_id" value="<?=@$this->request->data['amostra_id']?>">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <label for="example-date-input" class="col-form-label">Date Início</label>
+                                <input class="form-control" name="data_init" value="<?=@$this->request->data['data_init']?>" type="date">
+                            </div>
+                            <div class="col-md-4">
                                 <label for="example-date-input" class="col-form-label">Date Fim</label>
-                               <input class="form-control" type="date" name="data_fim" value="<?=@$this->request->data['data_fim']?>" id="example-date-input">
+                               <input class="form-control" type="date" name="data_fim" value="<?=@$this->request->data['data_fim']?>">
                             </div>
                         </div>
 

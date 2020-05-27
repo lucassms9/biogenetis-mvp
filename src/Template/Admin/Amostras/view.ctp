@@ -23,8 +23,8 @@
             <td><?= h($amostra->code_amostra) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cep') ?></th>
-            <td><?= h($amostra->cep) ?></td>
+            <th scope="row"><?= __('UF') ?></th>
+            <td><?= h($amostra->uf) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Sexo') ?></th>

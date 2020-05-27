@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body p-4">
             <div class="p-2">
-                <h5 class="mb-5 text-center">Faça o Login</h5>
+                <h5 class="mb-5 text-center">Fazer Login</h5>
                     <?= $this->Form->create($user, ['class' => ['form-horizontal']]) ?>
                     <div class="row">
                         <div class="col-md-12">

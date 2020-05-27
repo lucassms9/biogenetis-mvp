@@ -54,7 +54,72 @@ class ExamesController extends AppController
     }
 
     public function relatorio()
-    {
+    {   
+
+         if ($this->request->is('post')) {
+          
+            $settings = [];
+
+             if (!empty($this->request->data['data_init'])){
+                    $data_de = $this->request->data['data_init'];
+                    $settings['cast(Exames.created as date) >='] = $data_de;
+             }
+
+            if (!empty($this->request->data['data_fim'])){
+                    $data_ate = $this->request->data['data_fim'];
+                    $settings['cast(Exames.created as date) >='] = $data_ate;
+             }
+
+            if (!empty($this->request->data['amostra_id'])){
+                 $settings['Exames.amostra_id'] = $this->request->data['amostra_id'];
+            }
+
+            $exames = $this->Exames->find('all', [
+                    'conditions' => $settings ,
+                    'contain' => ['Amostras','Users.Clientes']])->toList();
+
+            $html = '<table border="1">';
+            $html .= '<tr>';
+            $html .= '<td>Data</td>';
+            $html .= '<td>ID Amostra</td>';
+            $html .= '<td>Técnico</td>';
+            $html .= '<td>UF</td>';
+            $html .= '<td>Idade</td>';
+            $html .= '<td>Sexo</td>';
+            $html .= '<td>Cliente</td>';
+            $html .= '<td>Resultado</td>';
+            $html .= '</tr>';
+
+            foreach ($exames as $key => $exame) {
+
+                $html .= '<tr>';
+                $html .= '<td>' . date_format($exame['created'], 'd-m-Y') . '</td>';
+                $html .= '<td>' . $exame['amostra_id'] . '</td>';
+                $html .= '<td>' . $exame['user']['nome_completo'] . '</td>';
+                $html .= '<td>' . $exame['amostra']['uf'] . '</td>';
+                $html .= '<td>' . $exame['amostra']['idade'] . '</td>';
+                $html .= '<td>' . $exame['amostra']['sexo'] . '</td>';
+                $html .= '<td>' . $exame['user']['cliente']['nome'] . '</td>';
+                $html .= '<td>' . $exame['resultado'] . '</td>';
+                $html .= '</tr>'; 
+
+            } 
+            
+            $html .= '</table>'; 
+           
+            $arquivo = 'relatorios_amostras_'.date('Y-m-d-H-i-s'); 
+
+            header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+            header("Content-Disposition: attachment; filename=$arquivo.xls");  //File name extension was wrong
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private",false); 
+            
+            echo utf8_decode($html);
+            exit; 
+            
+
+         }
 
     }
 

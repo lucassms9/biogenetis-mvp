@@ -40,7 +40,7 @@
                                     <tr>
                                         <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('code_amostra') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('cep') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('uf') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('idade') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('Resultado') ?></th>
@@ -51,7 +51,7 @@
                                         <td><?= $this->Number->format($exame->id) ?></td>
                                         <td><?= h($exame->paciente->nome) ?></td>
                                         <td><?= h($exame->amostra->code_amostra) ?></td>
-                                        <td><?= h($exame->amostra->cep) ?></td>
+                                        <td><?= h($exame->amostra->uf) ?></td>
                                         <td><?= $this->Number->format($exame->amostra->idade) ?></td>
                                         <td><?= h($exame->resultado) ?></td>
 

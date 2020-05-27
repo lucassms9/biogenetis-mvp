@@ -29,7 +29,6 @@ class Exame extends Entity
      * @var array
      */
     protected $_accessible = [
-        'paciente_id' => true,
         'amostra_id' => true,
         'created_by' => true,
         'created' => true,
@@ -37,5 +36,6 @@ class Exame extends Entity
         'resultado' => true,
         'paciente' => true,
         'amostra' => true,
+        'file_name' => true,
     ];
 }

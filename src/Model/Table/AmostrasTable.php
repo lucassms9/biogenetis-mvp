@@ -37,7 +37,7 @@ class AmostrasTable extends Table
         $this->setPrimaryKey('code_amostra');
         $this->addBehavior('Timestamp');
         
-        $this->hasMany('Exames', [
+        $this->hasOne('Exames', [
             'foreignKey' => 'amostra_id',
         ]);
     }

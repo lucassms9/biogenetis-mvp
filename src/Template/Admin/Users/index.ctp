@@ -1,12 +1,3 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
- */
-?>
-
-
-
 <!-- Page-Title -->
 <div class="page-title-box">
 <div class="container-fluid">
@@ -31,7 +22,7 @@
 <div class="page-content-wrapper">
     <div class="container-fluid">
          <div class="row">
-            <div class="col-xl-10">
+            <div class="col-xl-12">
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
@@ -58,8 +49,8 @@
                                             <td><?= h($user->nome_completo) ?></td>
                                             <td><?= h($user->email) ?></td>
                                             <td><?= h($user->senha) ?></td>
-                                            <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->id, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
-                                            <td><?= $user->has('cliente') ? $this->Html->link($user->cliente->id, ['controller' => 'Clientes', 'action' => 'view', $user->cliente->id]) : '' ?></td>
+                                            <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->nome, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
+                                            <td><?= $user->has('cliente') ? $this->Html->link($user->cliente->nome, ['controller' => 'Clientes', 'action' => 'view', $user->cliente->id]) : '' ?></td>
                                             <td><?= h($user->created) ?></td>
                                             <td><?= h($user->modified) ?></td>
                                             <td class="actions">

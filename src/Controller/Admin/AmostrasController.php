@@ -112,11 +112,12 @@ class AmostrasController extends AppController
     public function index()
     {   
 
-        $limitDefault = 6;
+        $limitDefault = 15;
         $options = [];
 
         $this->paginate = [
-            'limit' => $limitDefault
+            'limit' => $limitDefault,
+            'contain' => ['Exames']
         ];
 
         $amostras = $this->paginate($this->Amostras);

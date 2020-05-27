@@ -1,58 +1,20 @@
 <div class="row">
-   
-<div class="col-xl-6">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="header-title mb-4">Dash</h4>
-            
-            <div id="pie_chart" class="apex-charts" dir="ltr"></div>
-        </div>
-    </div>
-</div>
 
-   <div class="col-lg-6">
+    <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
-                <div class="float-right ml-2">
-                    <!-- <a href="#">View all</a> -->
-                </div>
-                <!-- <h5 class="header-title mb-4">Latest Transaction</h5> -->
+                <h4 class="header-title mb-4">Pizza</h4>
+                
+                <div id="pie_chart" class="apex-charts" dir="ltr"></div>
+            </div>
+        </div>
+    </div>
 
-                <div class="table-responsive">
-                    <table class="table table-centered table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Porcentagem %</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <a href="#">Positivo</a>
-                                </th>
-                                <td>10</td>
-                                <td>5%</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <a href="#">Negativo</a>
-                                </th>
-                                <td>15</td>
-                                <td>30%</td>
-                            </tr> 
-                            <tr>
-                                <th scope="row">
-                                    <a href="#">Inconclusivo</a>
-                                </th>
-                                <td>20</td>
-                                <td>20%</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                  <h4 class="header-title mb-4">Coluna UF</h4>
+                 <div id="column_chart_uf" class="apex-charts" dir="ltr"></div>
             </div>
         </div>
     </div>
@@ -60,7 +22,30 @@
 </div>
 <!-- end row -->
 
+<div class="row">
+   
+  <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                  <h4 class="header-title mb-4">Coluna Faixa Etária</h4>
+                 <div id="column_chart_idade" class="apex-charts" dir="ltr"></div>
+            </div>
+        </div>
+    </div>
 
+   <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                  <h4 class="header-title mb-4">Coluna Sexo</h4>
+                 <div id="column_chart_sexo" class="apex-charts" dir="ltr"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+<!-- 
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
@@ -149,5 +134,5 @@
         </div>
     </div>
 
-</div>
+</div> -->
 <!-- end row -->

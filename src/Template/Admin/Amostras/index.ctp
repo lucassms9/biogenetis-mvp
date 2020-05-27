@@ -1,5 +1,3 @@
-
-
 <!-- Page-Title -->
 <div class="page-title-box">
 <div class="container-fluid">
@@ -24,7 +22,7 @@
 <div class="page-content-wrapper">
     <div class="container-fluid">
          <div class="row">
-            <div class="col-xl-10">
+            <div class="col-xl-12">
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
@@ -38,6 +36,7 @@
                                         <th scope="col"><?= $this->Paginator->sort('uf') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('idade') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('resultado') ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
                                     </tr>
                                 </thead>
@@ -49,6 +48,7 @@
                                             <td><?= h($amostra->uf) ?></td>
                                             <td><?= $this->Number->format($amostra->idade) ?></td>
                                             <td><?= h($amostra->sexo) ?></td>
+                                            <td><?= h($amostra->exame->resultado) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $amostra->id], ['escape' => false]) ?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $amostra->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $amostra->id)]) ?>

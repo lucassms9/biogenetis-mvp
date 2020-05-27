@@ -40,8 +40,17 @@
                             echo $this->Form->control('sexo',['class' => 'form-control']);
                         ?>
                         <div style="margin-top: 10px" class="row">
-                            <div class="col-xl-10">
-                            <?= $this->Form->button(__('Submit'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                            <div class="col-md-2">
+
+                                <?= $this->Html->link(
+                                    $this->Form->button(__('Voltar'),
+                                        ['type' => 'button', 'class' => 'btn btn-secondary btn-rounded waves-effect waves-light']),
+                                        ['action' => 'index'],
+                                        ['escape' => false]
+                                        ) ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
                             </div>
                         </div>
                         <?= $this->Form->end() ?>

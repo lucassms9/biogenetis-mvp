@@ -25,7 +25,8 @@ class ExamesController extends AppController
          if ($this->request->is('post')) {
 
             try {   
-           
+
+                
                 if(!empty($this->request->data['file'])){
                     $files = $this->request->data['file'];
 
@@ -45,13 +46,16 @@ class ExamesController extends AppController
                       
                     }
 
-                    $this->Flash->success(__('Exames enviados com sucesso'));
-                    return $this->redirect(['action' => 'index']);
                 }
              } catch (Exception $e) {
                   $this->Flash->error(__('Tivemos algum problema ao enviar os Exames'));
             }
          }
+    }
+
+    public function relatorio()
+    {
+
     }
 
     /**

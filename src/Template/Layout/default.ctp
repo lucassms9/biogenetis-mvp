@@ -46,12 +46,19 @@ $cakeDescription = 'Dash - Biogenetics';
     <link href="<?= $this->Url->build('/', true);?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= $this->Url->build('/', true);?>css/main.css" rel="stylesheet" type="text/css" />
 
+    <!-- Plugins css -->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+
+
   <!-- DataTables -->
     <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Responsive datatable examples -->
     <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />   
+
+    <!-- Sweet Alert-->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
 
  <!-- JAVASCRIPT -->
@@ -114,6 +121,9 @@ $cakeDescription = 'Dash - Biogenetics';
 <!-- Responsive examples -->
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+
+    <!-- Sweet Alerts js -->
+    <script src="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
 <script src="<?= $this->Url->build('/', true);?>assets/js/pages/dashboard.init.js"></script>
 

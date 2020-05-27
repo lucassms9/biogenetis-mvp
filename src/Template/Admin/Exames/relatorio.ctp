@@ -1,0 +1,55 @@
+<!-- Page-Title -->
+<div class="page-title-box">
+<div class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h4 class="page-title mb-1">Relatório</h4>
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item"><a href="javascript: void(0);">Relatório</a></li>
+            <li class="breadcrumb-item active">Exames</li>
+            </ol>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+
+</div>
+</div>
+<!-- end page title end breadcrumb -->
+
+
+<div class="page-content-wrapper">
+    <div class="container-fluid">
+         <div class="row">
+            <div class="col-xl-10">
+                <?= $this->Flash->render() ?>
+                <div class="card">
+                    <div class="card-body"> 
+                        <?= $this->Form->create(null) ?>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="example-date-input" class="col-form-label">Date Início</label>
+                                <input class="form-control" name="data_init" value="<?=@$this->request->data['data_init']?>" type="date" value="2019-08-19" id="example-date-input">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="example-date-input" class="col-form-label">Date Fim</label>
+                               <input class="form-control" type="date" name="data_fim" value="<?=@$this->request->data['data_fim']?>" id="example-date-input">
+                            </div>
+                        </div>
+
+                         <div style="margin-top: 10px" class="row">
+                            <div class="col-md-4">
+                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                            </div>
+                        </div>
+
+                        <?= $this->Form->end() ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

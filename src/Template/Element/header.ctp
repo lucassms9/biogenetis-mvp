@@ -48,22 +48,6 @@
                                 </a>
                             </li>
 
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Exames <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-components">
-
-                                        <a href="<?= $this->Url->build('/admin', true);?>/exames/import" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Importar</a>
-
-                                        <a href="<?= $this->Url->build('/admin', true);?>/exames" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todos</a>
-                                    </div>
-
-                            </li>
-
                               <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Amostras <div class="arrow-down"></div>
@@ -80,6 +64,20 @@
 
                             </li>
 
+                              <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Exames <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+
+                                        <a href="<?= $this->Url->build('/admin', true);?>/exames/import" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Importar</a>
+
+                                        <a href="<?= $this->Url->build('/admin', true);?>/exames" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todos</a>
+                                    </div>
+                            </li>
+                            
                              <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Users <div class="arrow-down"></div>
@@ -88,7 +86,7 @@
                                     <a href="<?= $this->Url->build('/admin', true);?>/users/add" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Novo</a>
 
-                                        <a href="<?= $this->Url->build('/admin', true);?>/" class="dropdown-item">
+                                        <a href="<?= $this->Url->build('/admin', true);?>/users" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todos</a>
                                     </div>
                             </li>

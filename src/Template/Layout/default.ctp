@@ -46,7 +46,13 @@ $cakeDescription = 'Dash - Biogenetics';
     <link href="<?= $this->Url->build('/', true);?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= $this->Url->build('/', true);?>css/main.css" rel="stylesheet" type="text/css" />
 
+  <!-- DataTables -->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- Responsive datatable examples -->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />   
+        
 
  <!-- JAVASCRIPT -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery/jquery.min.js"></script>
@@ -95,9 +101,26 @@ $cakeDescription = 'Dash - Biogenetics';
   <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
 
-  <script src="<?= $this->Url->build('/', true);?>assets/js/pages/dashboard.init.js"></script>
+  
+<!-- Required datatable js -->
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons examples -->
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/jszip/jszip.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/pdfmake/build/pdfmake.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/pdfmake/build/vfs_fonts.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+<!-- Responsive examples -->
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 
-    <script src="<?= $this->Url->build('/', true);?>assets/js/app.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/js/pages/dashboard.init.js"></script>
+
+<script src="<?= $this->Url->build('/', true);?>assets/js/app.js"></script>
 
 </body>
 </html>

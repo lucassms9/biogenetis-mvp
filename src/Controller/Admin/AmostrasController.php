@@ -11,14 +11,29 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Amostra[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AmostrasController extends AppController
-{
+{   
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('Paginator');
+    }
+
     /**
      * Index method
      *
      * @return \Cake\Http\Response|null
      */
     public function index()
-    {
+    {   
+
+        $limitDefault = 6;
+        $options = [];
+
+        $this->paginate = [
+            'limit' => $limitDefault
+        ];
+
         $amostras = $this->paginate($this->Amostras);
 
         $this->set(compact('amostras'));

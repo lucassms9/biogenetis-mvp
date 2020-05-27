@@ -1,3 +1,35 @@
 .position-bottom {
     bottom: 0 !important;
 }
+
+.pagination > li > .disabled {
+	color: #7c8a96;
+    pointer-events: none;
+    cursor: auto;
+    background-color: #f8f9fa;
+    border-color: #d7dce1;
+
+}
+
+.pagination > li.active a{
+	z-index: 3;
+    color: #fff;
+    background-color: #3051d3;
+    border-color: #3051d3;
+}
+
+.pagination-rounded > li > a {
+    border-radius: 30px!important;
+    margin: 0 3px;
+}
+
+.pagination > li > a{
+	position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #7c8a96;
+    background-color: #fff;
+    border: 1px solid #d7dce1;
+}

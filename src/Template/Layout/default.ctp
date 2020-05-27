@@ -52,7 +52,7 @@ $cakeDescription = 'Dash - Biogenetics';
 
     <!-- Responsive datatable examples -->
     <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />   
-        
+
 
  <!-- JAVASCRIPT -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery/jquery.min.js"></script>
@@ -82,10 +82,7 @@ $cakeDescription = 'Dash - Biogenetics';
 <body data-topbar="colored" data-layout="horizontal" data-layout-size="boxed">
 
   <div id="layout-wrapper">
-     <?= $this->Flash->render() ?>
-
      <?=$this->element('header')?>
-
   </div>
 
 <div class="main-content">

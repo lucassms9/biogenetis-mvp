@@ -25,6 +25,7 @@
     <div class="container-fluid">
          <div class="row">
             <div class="col-xl-10">
+                <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
                         
@@ -50,7 +51,7 @@
                                             <td><?= h($amostra->sexo) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $amostra->id], ['escape' => false]) ?>
-                                                <?= $this->Html->link(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $amostra->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $amostra->id)]) ?>
+                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $amostra->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $amostra->id)]) ?>
 
                                             </td>
                                         </tr>

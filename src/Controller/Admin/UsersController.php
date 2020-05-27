@@ -162,10 +162,7 @@ class UsersController extends AppController
             }else{
                 $this->Flash->error(__('E-mail ou senha incorretos'));
             }
-            debug($this->request->data);
-            die();
-
-            $this->request->data['cpf'] = preg_replace("/[^0-9]/", "", $this->request->data['cpf']);
+            $this->request->data['email'] = $this->request->data['email'];
         }
 
         $this->set(compact('user'));

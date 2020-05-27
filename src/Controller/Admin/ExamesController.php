@@ -10,7 +10,50 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Exame[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ExamesController extends AppController
-{
+{   
+
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->loadModel('Exames');
+    }
+
+    public function import()
+    {
+         if ($this->request->is('post')) {
+
+            try {   
+           
+                if(!empty($this->request->data['file'])){
+                    $files = $this->request->data['file'];
+
+                    foreach ($files as $key => $file) {
+                        if($file['size'] > 0){
+                             $exame = [
+                                'paciente_id' => 1,
+                                'amostra_id' => 1,
+                                'created_by' => $this->Auth->user('id'),
+                             ];
+
+                             $exame_save = $this->Exames->newEntity();
+                             $exame_save = $this->Exames->patchEntity($exame_save, $exame);
+
+                             $this->Exames->save($exame_save);
+                        }
+                      
+                    }
+
+                    $this->Flash->success(__('Exames enviados com sucesso'));
+                    return $this->redirect(['action' => 'index']);
+                }
+             } catch (Exception $e) {
+                  $this->Flash->error(__('Tivemos algum problema ao enviar os Exames'));
+            }
+         }
+    }
+
     /**
      * Index method
      *

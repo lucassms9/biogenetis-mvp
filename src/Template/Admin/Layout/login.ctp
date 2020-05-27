@@ -24,21 +24,47 @@ $cakeDescription = 'Login - Biogenetics';
         <?= $cakeDescription ?>:
         <?= $this->fetch('title') ?>
     </title>
-    <?= $this->Html->meta('icon') ?>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('style.css') ?>
+        <!-- Bootstrap Css -->
+        <link href="<?= $this->Url->build('/', true);?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- Icons Css -->
+        <link href="<?= $this->Url->build('/', true);?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <!-- App Css-->
+        <link href="<?= $this->Url->build('/', true);?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
 
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
 </head>
-<body>
-    <?= $this->Flash->render() ?>
-    <div class="container clearfix">
-        <?= $this->fetch('content') ?>
+<body class="bg-primary bg-pattern">
+    
+     <div class="account-pages my-5">
+        <div class="container">          
+             <div class="row">
+                    <div class="col-lg-12">
+                        <div class="text-center mb-5">
+                            <a href="index.html" class="logo"><img src="<?= $this->Url->build('/', true);?>assets/images/logo-light.png" height="24" alt="logo"></a>
+                            <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            <?= $this->fetch('content') ?>
+        </div>
     </div>
-    <footer>
-    </footer>
+
+    <footer></footer>
+
+    <!-- JAVASCRIPT -->
+        <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery/jquery.min.js"></script>
+        <script src="<?= $this->Url->build('/', true);?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= $this->Url->build('/', true);?>assets/libs/metismenu/metisMenu.min.js"></script>
+        <script src="<?= $this->Url->build('/', true);?>assets/libs/simplebar/simplebar.min.js"></script>
+        <script src="<?= $this->Url->build('/', true);?>assets/libs/node-waves/waves.min.js"></script>
+
+        <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
+
+        <script src="<?= $this->Url->build('/', true);?>assets/js/app.js"></script>
+
 </body>
 </html>

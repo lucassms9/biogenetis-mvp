@@ -9,8 +9,17 @@ use App\Controller\AppController;
 class DashboardController extends AppController
 {
 
+
+	public function initialize()
+    {
+        parent::initialize();
+
+    }
+
 	public function index()
 	{
-		# code...
+		$user = $this->Auth->user();
+		
+		$this->set(compact('user'));
 	}
 }

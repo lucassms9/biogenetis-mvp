@@ -160,41 +160,131 @@ class DashboardController extends AppController
         $conditions20['Amostras.idade <='] = 20;
         $amostras20 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras'],
-	        	'conditions' => $conditions20])->count();
+	        	'conditions' => $conditions20])->toArray();
 
+        $inconclusivo = 0;
+		$positivo = 0;
+		$negativo = 0;
+
+		if(!empty($amostras20)){
+	        foreach ($amostras20 as $key => $amostra20) {
+
+	        	if($amostra20->resultado == 'Em Análise'){
+					$inconclusivo++;
+				}elseif($amostra20->resultado == 'Positivo'){
+					$positivo++;
+				}elseif($amostra20->resultado == 'Negativo'){
+					$negativo++;
+				}
+	        }
+
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        		$result['0-20'] = [
+		        		'Positivo' => $inconclusivo,
+						'Negativo' => $positivo,
+						'Inconclusivo' => $negativo,
+		        	];
+		     }
+	 	}
+
+	  
         //> 20 && <= 40
+
+	    $inconclusivo = 0;
+		$positivo = 0;
+		$negativo = 0;
+
         $conditions40['Amostras.idade >'] = 20;
         $conditions40['Amostras.idade <='] = 40;
         $amostras40 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras'],
-	        	'conditions' => $conditions40])->count();
+	        	'conditions' => $conditions40])->toArray();
+
+        if(!empty($amostras40)){
+	        foreach ($amostras40 as $key => $amostra40) {
+
+	        	if($amostra40->resultado == 'Em Análise'){
+					$inconclusivo++;
+				}elseif($amostra40->resultado == 'Positivo'){
+					$positivo++;
+				}elseif($amostra40->resultado == 'Negativo'){
+					$negativo++;
+				}
+	        }
+
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        		$result['21-40'] = [
+		        		'Positivo' => $inconclusivo,
+						'Negativo' => $positivo,
+						'Inconclusivo' => $negativo,
+		        	];
+		    }
+	 	}
 
          //> 40 && <= 80
+
+	    $inconclusivo = 0;
+		$positivo = 0;
+		$negativo = 0;
+
         $conditions80['Amostras.idade >'] = 40;
         $conditions80['Amostras.idade <='] = 80;
         $amostras80 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras'],
-	        	'conditions' => $conditions80])->count();
+	        	'conditions' => $conditions80])->toArray();
 
-         //> 80
+        if(!empty($amostra80)){
+	        foreach ($amostras80 as $key => $amostra80) {
+
+	        	if($amostra80->resultado == 'Em Análise'){
+					$inconclusivo++;
+				}elseif($amostra80->resultado == 'Positivo'){
+					$positivo++;
+				}elseif($amostra80->resultado == 'Negativo'){
+					$negativo++;
+				}
+	        }
+
+	         if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+		      	$result['41-80'] = [
+		        		'Positivo' => $inconclusivo,
+						'Negativo' => $positivo,
+						'Inconclusivo' => $negativo,
+		        ];
+	    	}
+    	}
+
+
+	    $inconclusivo = 0;
+		$positivo = 0;
+		$negativo = 0;
+
+         // > 80
         $conditions81['Amostras.idade >'] = 80;
         $amostras81 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras'],
-	        	'conditions' => $conditions81])->count();
+	        	'conditions' => $conditions81])->toArray();
 
-        if($amostras20 > 0){
-        	$result['0-20'] = $amostras20;
-        }
-        if($amostras40 > 0){
-        	$result['21-40'] = $amostras40;
-        }
-        if($amostras80 > 0){
-        	$result['41-80'] = $amostras80;
-        }
-        if($amostras81 > 0){
-        	$result['> 81'] = $amostras81;
-        }
+        if(!empty($amostras81)){
+	        foreach ($amostras81 as $key => $amostra81) {
 
+	        	if($amostra81->resultado == 'Em Análise'){
+					$inconclusivo++;
+				}elseif($amostra81->resultado == 'Positivo'){
+					$positivo++;
+				}elseif($amostra81->resultado == 'Negativo'){
+					$negativo++;
+				}
+	        }
+
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+		        $result['> 81'] = [
+		        		'Positivo' => $inconclusivo,
+						'Negativo' => $positivo,
+						'Inconclusivo' => $negativo,
+		        ];
+			}
+        }
         echo json_encode($result);
         die();
 

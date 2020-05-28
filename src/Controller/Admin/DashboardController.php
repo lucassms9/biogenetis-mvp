@@ -89,12 +89,13 @@ class DashboardController extends AppController
 	        }
 
 	        $result[$uf] = [
-	        		'Positivo' => $inconclusivo,
-					'Negativo' => $positivo,
-					'Inconclusivo' => $negativo,
+	        		'Positivo' => $positivo,
+					'Negativo' => $negativo,
+					'Inconclusivo' => $inconclusivo,
 	        	];
 
         }
+
 
 			echo json_encode($result);
 	        die();
@@ -135,9 +136,9 @@ class DashboardController extends AppController
 	        }
 
 	        $result[$sexo] = [
-	        		'Positivo' => $inconclusivo,
-					'Negativo' => $positivo,
-					'Inconclusivo' => $negativo,
+	        		'Positivo' => $positivo,
+					'Negativo' => $negativo,
+					'Inconclusivo' => $inconclusivo,
 	        	];
 
         }
@@ -180,9 +181,9 @@ class DashboardController extends AppController
 
 	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
-		        		'Positivo' => $inconclusivo,
-						'Negativo' => $positivo,
-						'Inconclusivo' => $negativo,
+		        		'Positivo' => $positivo,
+						'Negativo' => $negativo,
+						'Inconclusivo' => $inconclusivo,
 		        	];
 		     }
 	 	}
@@ -214,9 +215,9 @@ class DashboardController extends AppController
 
 	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
-		        		'Positivo' => $inconclusivo,
-						'Negativo' => $positivo,
-						'Inconclusivo' => $negativo,
+		        		'Positivo' => $positivo,
+						'Negativo' => $negativo,
+						'Inconclusivo' => $inconclusivo,
 		        	];
 		    }
 	 	}
@@ -233,7 +234,9 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras'],
 	        	'conditions' => $conditions80])->toArray();
 
-        if(!empty($amostra80)){
+
+        if(!empty($amostras80)){
+
 	        foreach ($amostras80 as $key => $amostra80) {
 
 	        	if($amostra80->resultado == 'Em Análise'){
@@ -247,11 +250,13 @@ class DashboardController extends AppController
 
 	         if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 		      	$result['41-80'] = [
-		        		'Positivo' => $inconclusivo,
-						'Negativo' => $positivo,
-						'Inconclusivo' => $negativo,
+		        		'Positivo' => $positivo,
+						'Negativo' => $negativo,
+						'Inconclusivo' => $inconclusivo,
 		        ];
 	    	}
+
+	    	
     	}
 
 
@@ -279,9 +284,9 @@ class DashboardController extends AppController
 
 	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 		        $result['> 81'] = [
-		        		'Positivo' => $inconclusivo,
-						'Negativo' => $positivo,
-						'Inconclusivo' => $negativo,
+		        		'Positivo' => $positivo,
+						'Negativo' => $negativo,
+						'Inconclusivo' => $inconclusivo,
 		        ];
 			}
         }

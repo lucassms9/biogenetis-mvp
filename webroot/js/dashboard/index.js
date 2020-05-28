@@ -230,7 +230,7 @@ if ($('#column_chart_uf').length) {
             colors: ['transparent']
         },
         series: body,
-        colors: ['#eff2f7', '#3051d3','#00a7e1'],
+        colors: ['#f06543', '#3ddc97', '#e4cc37'],
         xaxis: {
             categories: ufs,
         },
@@ -300,7 +300,7 @@ if ($('#column_chart_sexo').length) {
             colors: ['transparent']
         },
         series: body,
-        colors: ['#eff2f7', '#3051d3','#00a7e1'],
+        colors: ['#f06543', '#3ddc97', '#e4cc37'],
         xaxis: {
             categories: gener,
         },
@@ -371,7 +371,7 @@ if ($('#column_chart_idade').length) {
             colors: ['transparent']
         },
         series: body,
-        colors: ['#eff2f7', '#3051d3','#00a7e1'],
+        colors: ['#f06543', '#3ddc97', '#e4cc37'],
         xaxis: {
             categories: idades,
         },

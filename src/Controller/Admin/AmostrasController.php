@@ -39,7 +39,7 @@ class AmostrasController extends AppController
                     'code_amostra' => $amostra['amostra_id'],
                     'uf' => $amostra['uf'],
                     'idade' => $amostra['idade'],
-                    'sexo' => $amostra['sexo'],
+                    'sexo' => strtoupper($amostra['sexo']),
                 ]);
                 $amostra_save = $this->Amostras->save($amostra_save);
 

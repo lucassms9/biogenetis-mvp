@@ -21,19 +21,37 @@
 
 <div class="page-content-wrapper">
     <div class="container-fluid">
+
          <div class="row">
             <div class="col-xl-12">
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
                         
+                        <div class="row">
+                            <div class="col-xl-12">
+                               <form method="get">
+                                    <div style="margin-bottom: 30px;" class="row">
+                                        <div class="col-md-4">
+                                            <label for="amostra_id"> Amostra ID</label>
+                                           <input name="amostra_id" value="<?= @$this->request->query['amostra_id']?>" class="form-control">
+                                        </div>
+                                         <div style="margin-top: 30px;" class="col-md-4">
+                                           <button class="btn btn-primary btn-rounded waves-effect waves-light" type="submit">Buscar</button>
+                                        </div>
+                                    </div>
+
+                               </form>
+                            </div>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">
                                     <tr>
                                         <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('code_amostra') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('uf') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('code_amostra','Amostra ID') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('uf','UF') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('idade') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('resultado') ?></th>

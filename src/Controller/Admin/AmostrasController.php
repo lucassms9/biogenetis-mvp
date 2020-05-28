@@ -113,14 +113,20 @@ class AmostrasController extends AppController
     {   
 
         $limitDefault = 15;
-        $options = [];
+        $conditions = [];
 
         $this->paginate = [
             'limit' => $limitDefault,
             'contain' => ['Exames']
         ];
 
-        $amostras = $this->paginate($this->Amostras);
+        if(!empty($this->request->query['amostra_id'])){
+            $conditions['code_amostra like'] = $this->request->query['amostra_id'].'%';
+        }
+
+        $amostras = $this->paginate($this->Amostras,[
+            'conditions' => $conditions
+        ]);
 
         $this->set(compact('amostras'));
     }

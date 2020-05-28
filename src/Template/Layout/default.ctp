@@ -82,7 +82,9 @@ $cakeDescription = 'Dash - Biogenetics';
     <!-- Jq vector map -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/jquery.vmap.min.js"></script>
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
-
+    <script>
+        var BASE_URL_ADMIN = '<?=$this->Url->build('/admin', true)?>/';
+    </script>
 
 </head>
 

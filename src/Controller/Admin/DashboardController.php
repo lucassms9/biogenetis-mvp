@@ -36,8 +36,9 @@ class DashboardController extends AppController
 
 		$exames = $this->Exames->find('all',[
 			'contain' => ['Amostras'],
-			'conditions' => $conditions
-		]);
+			'conditions' => $conditions,
+			'group' => ['Exames.id']
+		])->toList();
 
 		foreach ($exames as $key => $exame) {
 			if($exame->resultado == 'Em Análise'){

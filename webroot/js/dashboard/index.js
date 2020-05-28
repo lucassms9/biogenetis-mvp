@@ -1,11 +1,32 @@
-// Pie Chart
+
+$(document).ready(function() {
+    
+    runExamesGlobal();
+    runExamesUF();
+
+});
+
+function runExamesGlobal() {
+     $.ajax({
+        url: BASE_URL_ADMIN + 'dashboard/getExamesGlobal',
+        type: 'GET',
+        dataType: 'json',
+        data:{}
+    })
+    .done(function(data) {
+        pizzaGlobal(data)
+    });
+}
+
+function pizzaGlobal(dados) {
+   // Pie Chart
 if ($('#pie_chart').length) {
     var options = {
         chart: {
             height: 300,
             type: 'pie',
         },
-        series: [44, 55, 41,],
+        series: [dados.Positivo, dados.Negativo, dados.Inconclusivo,],
         labels: ["Positivo", "Negativo", "Inconclusivo"],
         colors: ['#f06543', '#3ddc97', '#e4cc37'],
         legend: {
@@ -39,8 +60,66 @@ if ($('#pie_chart').length) {
 
     chart.render();
 }
+}
 
-// Column chart
+
+function runExamesUF() {
+    $.ajax({
+        url: BASE_URL_ADMIN + 'dashboard/getExamesByUf',
+        type: 'GET',
+        dataType: 'json',
+        data:{}
+    })
+    .done(function(data) {
+       console.log(data)
+
+       // {
+       //      name: 'Net Profit',
+       //      data: [46, 57, 59, 54, 62, 58, 64, 60, 66]
+       //  }
+
+
+       //[uf]
+       var body = [];
+       var ufR = [];
+
+       var positivos = [];
+       var negativos = [];
+       var inconclusivo = [];
+
+        $.each(data, function (index, uf) {
+            
+            positivos.push(uf.Positivo);
+            negativos.push(uf.Negativo);
+            inconclusivo.push(uf.Inconclusivo);
+
+            ufR.push(index);
+            
+        });
+
+        body.push({
+                name: 'Positivo',
+                data: positivos
+            });
+
+            body.push({
+                name: 'Negativos',
+                data: negativos
+            });
+
+            body.push({
+                name: 'Inconclusivo',
+                data: inconclusivo
+            });
+
+
+        renderExamesUF(body,ufR)
+    });
+}
+
+
+function renderExamesUF(body, ufs) {
+   // Column chart
 if ($('#column_chart_uf').length) {
     var options = {
         chart: {
@@ -65,19 +144,10 @@ if ($('#column_chart_uf').length) {
             width: 2,
             colors: ['transparent']
         },
-        series: [{
-            name: 'Net Profit',
-            data: [46, 57, 59, 54, 62, 58, 64, 60, 66]
-        }, {
-            name: 'Revenue',
-            data: [74, 83, 102, 97, 86, 106, 93, 114, 94]
-        }, {
-            name: 'Free Cash Flow',
-            data: [37, 42, 38, 26, 47, 50, 54, 55, 43]
-        }],
+        series: body,
         colors: ['#eff2f7', '#3051d3','#00a7e1'],
         xaxis: {
-            categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+            categories: ufs,
         },
         yaxis: {
             title: {
@@ -94,7 +164,7 @@ if ($('#column_chart_uf').length) {
         tooltip: {
             y: {
                 formatter: function (val) {
-                    return "$ " + val + " thousands"
+                    return val;
                 }
             }
         }
@@ -106,6 +176,8 @@ if ($('#column_chart_uf').length) {
     );
 
     chart.render();
+}
+
 }
 
 

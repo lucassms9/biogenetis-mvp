@@ -19,7 +19,28 @@ function addInput(){
 
 
 function submitForm() {
-	$('#formFiles').submit();
+
+            Swal.fire({
+            title: 'Enviado Dados',
+            html: 'Por favor aguarde, estamos processando os dados',
+            timer: '',
+            onBeforeOpen:function () {
+                Swal.showLoading()
+               
+            },
+            onClose: function () {
+             
+            }
+            }).then(function (result) {
+            if (
+                // Read more about handling dismissals
+                result.dismiss === Swal.DismissReason.timer
+            ) {
+                console.log('I was closed by the timer')
+            }
+            })
+
+	$('#sendData').submit();
 }
 
 function amountForm(file) {

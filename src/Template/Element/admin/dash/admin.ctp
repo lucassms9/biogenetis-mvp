@@ -1,5 +1,148 @@
 <div class="row">
 
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 15px" class="row">
+                    <div class="col-md-4">
+                    <select class="form-control">
+                        <option value="">Escolha</option>
+                        <option value="SP">SP</option>
+                        <option value="MG">MG</option>
+                        <option value="RJ">RJ</option>
+                    </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" id="filter-table" class="btn btn-primary mt-3 mt-sm-0">Buscar</button>
+                    </div>
+                </div>
+                 <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th style="text-align: center;" colspan="9" scope="col">TOTAL</th>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th colspan="2" scope="col">POS</th>
+                                        <th colspan="2" scope="col">NEG</th>
+                                        <th colspan="2" scope="col">INC</th>
+                                        <th style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
+                                        <th style="vertical-align: middle;" rowspan="2" scope="col">%</th>
+                                    </tr>
+                                     <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">MASC</th>
+                                        <th scope="col">FEM</th>
+                                        <th scope="col">MASC</th>
+                                        <th scope="col">FEM</th>
+                                        <th scope="col">MASC</th>
+                                        <th scope="col">FEM</th>
+                                    </tr>
+                                </thead>
+                                 <tbody>
+                                     <tr>
+                                        <td>0-20</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>3%</td>
+                                    </tr>
+                                      <tr>
+                                        <td>21-40</td>
+                                         <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>3%</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>41-60</td>
+                                         <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>61-80</td>
+                                         <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>3%</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>> 81</td>
+                                         <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>3%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TOTAIS</td>
+                                         <td>0</td>
+                                        <td>0</td>
+                                        <td>1</td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>3</td>
+                                        <td>100%</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>%</td>
+                                        <td>10%</td>
+                                        <td>10%</td>
+                                        <td>10%</td>
+                                        <td>10%</td>
+                                        <td>10%</td>
+                                        <td>10%</td>
+                                        <td>100%</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>% TOTAL</td>
+                                        <td style="text-align: center;" colspan="2">10%</td>
+                                        <td style="text-align: center;" colspan="2">10%</td>
+                                        <td style="text-align: center;" colspan="2">10%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                </div>
+               
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- end row -->
+
+
+
+<div class="row">
+
     <div class="col-xl-6">
         <div class="card">
             <div class="card-body">

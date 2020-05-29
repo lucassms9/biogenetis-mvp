@@ -2,7 +2,8 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
-
+use Cake\Http\Client;
+use DOMDocument;
 /**
  * Amostras Controller
  *
@@ -25,6 +26,10 @@ class AmostrasController extends AppController
     public function sendData()
     {
         if ($this->request->is('post')) {
+
+            ini_set("memory_limit", -1);
+            ini_set('max_execution_time', 0);
+            set_time_limit(0);
 
             for ($i = 0; $i < $this->request->data['totalFiles']; $i++) {
                  $amostra = [
@@ -50,7 +55,17 @@ class AmostrasController extends AppController
                     'conditions' => ['amostra_id' => $amostra['amostra_id']]
                 ])->first();
 
-                $exame_find->resultado = 'Em Análise';
+                $integration = $this->callIntegration($exame_find);
+                
+                if($integration == 'Positive'){
+                    $integration = 'Positivo';
+                }else if($integration == 'Negative'){
+                     $integration = 'Negativo';
+                }else{
+                    $integration = 'Inconclusivo';
+                }
+
+                $exame_find->resultado = $integration;
                 $this->Exames->save($exame_find);
                 
             }
@@ -61,6 +76,54 @@ class AmostrasController extends AppController
             }
               
         }
+    }
+    
+    public function callIntegration($exame)
+    {
+        
+        $url = "http://ec2-177-71-237-9.sa-east-1.compute.amazonaws.com/covid19/sampletest.php";
+        $filedata = AMOSTRAS . $exame->amostra_id. '.csv';
+
+        $http = new Client();
+        $response = $http->post($url, [
+          'Userfile' => fopen($filedata, 'r'),
+        ]);
+
+        $result = $this->html_to_obj($response->body);
+        return $result;
+
+    }
+
+    public function html_to_obj($html) {
+        try {
+
+            $dom = new DOMDocument();
+            @$dom->loadHTML($html);
+            $getElement = $this->element_to_obj($dom->documentElement);
+            $result = trim($getElement['children'][0]['children'][1]['html']);
+            $hanldeData = substr($result, 0, 8);
+            return $hanldeData;
+        } catch (Exception $e) {
+            throw new Exception($e->message, 1);
+        }
+    }
+
+    public function element_to_obj($element)
+    {
+        $obj = array( "tag" => $element->tagName );
+        foreach ($element->attributes as $attribute) {
+            $obj[$attribute->name] = $attribute->value;
+        }
+        foreach ($element->childNodes as $subElement) {
+            if ($subElement->nodeType == XML_TEXT_NODE) {
+                $obj["html"] = $subElement->wholeText;
+            }
+            else {
+                $obj["children"][] = $this->element_to_obj($subElement);
+            }
+        }
+        return $obj;
+
     }
 
     public function import()

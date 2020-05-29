@@ -13,7 +13,7 @@
 * @license       https://opensource.org/licenses/mit-license.php MIT License
 */
 
-$cakeDescription = 'Dash - Biogenetics';
+$cakeDescription = 'Biogenetics';
 ?>
 <!DOCTYPE html>
 <html>

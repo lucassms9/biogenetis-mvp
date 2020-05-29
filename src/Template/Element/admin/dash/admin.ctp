@@ -146,7 +146,7 @@
     <div class="col-xl-6">
         <div class="card">
             <div class="card-body">
-                <h4 class="header-title mb-4">Pizza</h4>
+                <h4 class="header-title mb-4">Rsumo</h4>
                 
                 <div id="pie_chart" class="apex-charts" dir="ltr"></div>
             </div>
@@ -156,7 +156,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                  <h4 class="header-title mb-4">Coluna UF</h4>
+                  <h4 class="header-title mb-4">Por UF</h4>
                  <div id="column_chart_uf" class="apex-charts" dir="ltr"></div>
             </div>
         </div>
@@ -170,7 +170,7 @@
   <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                  <h4 class="header-title mb-4">Coluna Faixa Etária</h4>
+                  <h4 class="header-title mb-4">Por Faixa Etária</h4>
                  <div id="column_chart_idade" class="apex-charts" dir="ltr"></div>
             </div>
         </div>
@@ -179,7 +179,7 @@
    <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                  <h4 class="header-title mb-4">Coluna Sexo</h4>
+                  <h4 class="header-title mb-4">Por Sexo</h4>
                  <div id="column_chart_sexo" class="apex-charts" dir="ltr"></div>
             </div>
         </div>

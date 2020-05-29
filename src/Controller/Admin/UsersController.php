@@ -16,12 +16,28 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
+    public function home(){
+
+    }
+    
     public function index()
-    {
+    {   
+
+        $conditions = [];
+
         $this->paginate = [
-            'contain' => ['UserTypes', 'Clientes'],
+            'contain' => ['Clientes','UserTypes'],
         ];
-        $users = $this->paginate($this->Users);
+
+
+        if($this->Auth->user('user_type_id') == 2){
+            $conditions['cliente_id'] = $this->Auth->user('cliente_id');
+        }
+        
+
+        $users = $this->paginate($this->Users,[
+            'conditions' => $conditions
+        ]);
 
         $this->set(compact('users'));
     }
@@ -59,8 +75,21 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200]);
-        $clientes = $this->Users->Clientes->find('list', ['limit' => 200]);
+        $conditionsType = [];
+        $conditionsCliente = [];
+
+
+        if($this->Auth->user('user_type_id') == 2){
+            $conditionsType['UserTypes.id in'] = ['2','3'];
+        } 
+
+        if($this->Auth->user('user_type_id') == 2){
+            $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
+        }
+
+        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
+
+        $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
         $this->set(compact('user', 'userTypes', 'clientes'));
     }
 
@@ -77,6 +106,7 @@ class UsersController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -85,8 +115,17 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200]);
-        $clientes = $this->Users->Clientes->find('list', ['limit' => 200]);
+         if($this->Auth->user('user_type_id') == 2){
+            $conditionsType['UserTypes.id in'] = ['2','3'];
+        } 
+
+        if($this->Auth->user('user_type_id') == 2){
+            $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
+        }
+
+        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
+
+        $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
         $this->set(compact('user', 'userTypes', 'clientes'));
     }
 
@@ -158,6 +197,11 @@ class UsersController extends AppController
                 $user['permissoes'] = $permissoes;
 
                 $this->Auth->setUser($user);
+                
+                if($user->user_type_id == 3){
+                    return $this->redirect(['controller' =>'amostras', 'action' => 'index']);
+                }
+
                 return $this->redirect($this->Auth->redirectUrl());
             }else{
                 $this->Flash->error(__('E-mail ou senha incorretos'));

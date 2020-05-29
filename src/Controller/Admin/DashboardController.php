@@ -33,9 +33,17 @@ class DashboardController extends AppController
 			'Negativo' => 0,
 			'Inconclusivo' => 0,
 		];
+		
+		if($this->Auth->user('user_type_id') == 3){
+			$conditions['Exames.created_by'] = $this->Auth->user('id');
+		}
+
+		if($this->Auth->user('user_type_id') == 2){
+			$conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+		}
 
 		$exames = $this->Exames->find('all',[
-			'contain' => ['Amostras'],
+			'contain' => ['Amostras','Users'],
 			'conditions' => $conditions,
 			'group' => ['Exames.id']
 		])->toList();
@@ -63,6 +71,14 @@ class DashboardController extends AppController
         $result = [];
         $conditions = [];
 
+        if($this->Auth->user('user_type_id') == 3){
+			$conditions['Exames.created_by'] = $this->Auth->user('id');
+		}
+
+		if($this->Auth->user('user_type_id') == 2){
+			$conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+		}
+
         foreach ($ufs_lista as $row)
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
 
@@ -70,7 +86,7 @@ class DashboardController extends AppController
 	        $conditions['Amostras.uf'] = $uf;
 
 	        $amostras = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions
 	        ]);
 	        $inconclusivo = 0;
@@ -113,11 +129,19 @@ class DashboardController extends AppController
         foreach ($sexo_lista as $row)
             $sexos[$row['DISTINCT Amostras']['sexo']] = $row['DISTINCT Amostras']['sexo'];
 
+        if($this->Auth->user('user_type_id') == 3){
+			$conditions['Exames.created_by'] = $this->Auth->user('id');
+		}
+
+		if($this->Auth->user('user_type_id') == 2){
+			$conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+		}
+
         foreach ($sexos as $key => $sexo) {
 	        $conditions['Amostras.sexo'] = $sexo;
 
 	        $amostras = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions
 	        ]);
 	        $inconclusivo = 0;
@@ -157,10 +181,24 @@ class DashboardController extends AppController
         $conditions80 = [];
         $conditions81 = [];
 
+        if($this->Auth->user('user_type_id') == 3){
+			$conditions20['Exames.created_by'] = $this->Auth->user('id');
+			$conditions40['Exames.created_by'] = $this->Auth->user('id');
+			$conditions80['Exames.created_by'] = $this->Auth->user('id');
+			$conditions81['Exames.created_by'] = $this->Auth->user('id');
+		}
+
+		if($this->Auth->user('user_type_id') == 2){
+			$conditions20['Users.cliente_id'] = $this->Auth->user('cliente_id');
+			$conditions40['Users.cliente_id'] = $this->Auth->user('cliente_id');
+			$conditions80['Users.cliente_id'] = $this->Auth->user('cliente_id');
+			$conditions81['Users.cliente_id'] = $this->Auth->user('cliente_id');
+		}
+
         //<= 20
         $conditions20['Amostras.idade <='] = 20;
         $amostras20 = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions20])->toArray();
 
         $inconclusivo = 0;
@@ -198,7 +236,7 @@ class DashboardController extends AppController
         $conditions40['Amostras.idade >'] = 20;
         $conditions40['Amostras.idade <='] = 40;
         $amostras40 = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions40])->toArray();
 
         if(!empty($amostras40)){
@@ -231,7 +269,7 @@ class DashboardController extends AppController
         $conditions80['Amostras.idade >'] = 40;
         $conditions80['Amostras.idade <='] = 80;
         $amostras80 = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions80])->toArray();
 
 
@@ -267,7 +305,7 @@ class DashboardController extends AppController
          // > 80
         $conditions81['Amostras.idade >'] = 80;
         $amostras81 = $this->Exames->find('all', [
-	        	'contain' => ['Amostras'],
+	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions81])->toArray();
 
         if(!empty($amostras81)){

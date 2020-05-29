@@ -34,6 +34,7 @@ $cakeDescription = 'Login - Biogenetics';
         <link href="<?= $this->Url->build('/', true);?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="<?= $this->Url->build('/', true);?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?= $this->Url->build('/', true);?>css/main.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body class="bg-primary bg-pattern">
@@ -43,10 +44,10 @@ $cakeDescription = 'Login - Biogenetics';
              <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center mb-5">
-                            <!-- <a href="index.html" class="logo"><img src="<?= $this->Url->build('/', true);?>assets/images/logo-light.png" height="24" alt="logo"></a> -->
-                            <div style="font-size: 20pt;
-    font-weight: bold;
-    color: #fff;">LOGO</div>
+                            <a style="  background: #ffffffeb;
+    border-radius: 15px;
+    padding: 15px;" class="logo"><img src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" height="40" alt="logo"></a>
+                           
                             <!-- <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5> -->
                         </div>
                     </div>

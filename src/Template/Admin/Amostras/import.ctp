@@ -13,7 +13,7 @@
             <h4 class="page-title mb-1">Amostras</h4>
             <ol class="breadcrumb m-0">
                 <li class="breadcrumb-item"><a href="javascript: void(0);">Amostras</a></li>
-            <li class="breadcrumb-item active">Importar</li>
+            <li class="breadcrumb-item active">Cadastrar</li>
             </ol>
         </div>
         <div class="col-md-4">
@@ -45,6 +45,7 @@
                             </div>
                             
                             <h4>Arraste ou escolha os arquivos</h4>
+
                         </div>
                         <?= $this->Form->end() ?>
 
@@ -55,9 +56,9 @@
                                 <thead>
                                     <tr>
                                         <th>ID amostra</th>
-                                        <th>UF</th>
-                                        <th>Idade</th>
-                                        <th>Sexo</th>
+                                        <th>UF *</th>
+                                        <th>Idade *</th>
+                                        <th>Sexo *</th>
                                     </tr>
                                 </thead>
                                 <tbody id="input-files">

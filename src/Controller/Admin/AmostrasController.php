@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use Cake\Http\Client;
 use DOMDocument;
+use Cake\Http\Exception\BadRequestException;
+
 /**
  * Amostras Controller
  *
@@ -31,6 +33,8 @@ class AmostrasController extends AppController
             ini_set('max_execution_time', 0);
             set_time_limit(0);
 
+            $date_init = date('YmdHi');
+
             for ($i = 0; $i < $this->request->data['totalFiles']; $i++) {
                  $amostra = [
                     'amostra_id' => $this->request->data['amostraid'.$i.'_'],
@@ -45,6 +49,7 @@ class AmostrasController extends AppController
                     'uf' => $amostra['uf'],
                     'idade' => $amostra['idade'],
                     'sexo' => strtoupper($amostra['sexo']),
+                    'lote' => $this->generateLote($date_init)
                 ]);
                 $amostra_save = $this->Amostras->save($amostra_save);
 
@@ -69,15 +74,18 @@ class AmostrasController extends AppController
                 $this->Exames->save($exame_find);
                 
             }
-            if($this->request->data['totalFiles'] == 1){
-                return $this->redirect(['constroller' => 'relatorio', 'action' => 'index']);
-            }else{
-                return $this->redirect(['action' => 'index']);
-            }
+
+            return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);
               
         }
     }
     
+    public function generateLote($date)
+    {   
+        $lote = $this->Auth->user('id') . $this->Auth->user('cliente_id') . $date;
+        return $lote;
+    }
+
     public function callIntegration($exame)
     {
         
@@ -140,6 +148,17 @@ class AmostrasController extends AppController
                         move_uploaded_file($file['tmp_name'], AMOSTRAS . $file['name']);
 
                         $amostra_id = explode('.', $file['name']);
+
+                        $amostraExist = $this->Exames->find('all',[
+                            'conditions' => ['amostra_id' => $amostra_id[0]]
+                        ])->first();
+
+
+                        if(!empty($amostraExist)){
+                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
+                             die();
+                        }
+
                         $exame = [
                             'amostra_id' => $amostra_id[0],
                             'file_name' => $file['name'],
@@ -155,6 +174,7 @@ class AmostrasController extends AppController
                             exit;
                         }else{
                             throw new Exception("Error Processing Request", 1);
+                            die();
                         }
 
                     }
@@ -167,6 +187,10 @@ class AmostrasController extends AppController
          }
     }
 
+    public function relatorio()
+    {
+        # code...
+    }
     /**
      * Index method
      *
@@ -180,11 +204,24 @@ class AmostrasController extends AppController
 
         $this->paginate = [
             'limit' => $limitDefault,
-            'contain' => ['Exames']
+            'contain' => ['Exames.Users']
         ];
 
+
+        if($this->Auth->user('user_type_id') == 3){
+            $conditions['Exames.created_by'] = $this->Auth->user('id');
+        }
+
+        if($this->Auth->user('user_type_id') == 2){
+            $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+        }
+        
         if(!empty($this->request->query['amostra_id'])){
             $conditions['code_amostra like'] = $this->request->query['amostra_id'].'%';
+        } 
+
+        if(!empty($this->request->query['lote'])){
+            $conditions['lote'] = $this->request->query['lote'];
         }
 
         $amostras = $this->paginate($this->Amostras,[

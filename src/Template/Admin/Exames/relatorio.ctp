@@ -22,22 +22,26 @@
 <div class="page-content-wrapper">
     <div class="container-fluid">
          <div class="row">
-            <div class="col-xl-10">
+            <div class="col-xl-12">
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
                         <?= $this->Form->create(null) ?>
 
                         <div class="row">
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Amostra ID</label>
                                 <input class="form-control" name="amostra_id" value="<?=@$this->request->data['amostra_id']?>">
+                            </div> 
+                            <div class="col-md-3">
+                                <label for="example-date-input" class="col-form-label">Lote</label>
+                                <input class="form-control" name="amostra_id" value="<?=@$this->request->data['amostra_id']?>">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Date Início</label>
                                 <input class="form-control" name="data_init" value="<?=@$this->request->data['data_init']?>" type="date">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Date Fim</label>
                                <input class="form-control" type="date" name="data_fim" value="<?=@$this->request->data['data_fim']?>">
                             </div>
@@ -45,7 +49,7 @@
 
                          <div style="margin-top: 10px" class="row">
                             <div class="col-md-4">
-                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                                <?= $this->Form->button(__('Gerar Relatório'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
                             </div>
                         </div>
 

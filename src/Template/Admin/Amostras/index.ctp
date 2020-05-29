@@ -55,7 +55,7 @@
                                         <th scope="col"><?= $this->Paginator->sort('idade') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('resultado') ?></th>
-                                        <th scope="col" class="actions"><?= __('Actions') ?></th>
+                                        <!-- <th scope="col" class="actions"><?= __('Ações') ?></th> -->
                                     </tr>
                                 </thead>
                                  <tbody>
@@ -67,11 +67,11 @@
                                             <td><?= $this->Number->format($amostra->idade) ?></td>
                                             <td><?= h($amostra->sexo) ?></td>
                                             <td><?= h($amostra->exame->resultado) ?></td>
-                                            <td class="actions">
-                                                <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $amostra->id], ['escape' => false]) ?>
-                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $amostra->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $amostra->id)]) ?>
+                                            <!-- <td class="actions"> -->
+                                                <!-- <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $amostra->code_amostra], ['escape' => false]) ?> -->
+                                                <!-- <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $amostra->code_amostra], ['escape' => false, 'confirm' => __('Deseja deletar?', $amostra->code_amostra)]) ?> -->
 
-                                            </td>
+                                            <!-- </td> -->
                                         </tr>
                                         <?php endforeach; ?>
                                 </tbody>

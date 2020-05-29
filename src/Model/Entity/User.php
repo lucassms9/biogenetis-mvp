@@ -40,4 +40,13 @@ class User extends Entity
         'user_type' => true,
         'cliente' => true,
     ];
+
+    protected function _setSenha($value)
+    {   
+
+        if (!empty($value)) {
+            return md5($value);
+        }
+    }
+
 }

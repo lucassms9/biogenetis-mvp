@@ -57,7 +57,7 @@ class PagesController extends AppController
 
 
         if (!$count) {
-            return $this->redirect('/admin/dashboard');
+            return $this->redirect('/admin/amostras/import');
         }
 
         if (in_array('..', $path, true) || in_array('.', $path, true)) {

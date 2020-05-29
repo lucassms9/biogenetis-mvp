@@ -94,7 +94,6 @@ class UsersTable extends Table
     {
         $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['user_type_id'], 'UserTypes'));
-        $rules->add($rules->existsIn(['cliente_id'], 'Clientes'));
 
         return $rules;
     }

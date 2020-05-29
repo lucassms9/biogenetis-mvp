@@ -17,7 +17,7 @@
                             </div>
                             <?= $this->Flash->render() ?>
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-success btn-block waves-effect waves-light"><?= __('Entrar') ?></button>
+                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light"><?= __('Entrar') ?></button>
                             </div>
 
                         </div>

@@ -35,13 +35,10 @@
 <div class="page-content-wrapper">
 	<div class="container-fluid">
 <?php 
-	if($user->user_type_id == 1){
-		echo $this->element('admin/dash/admin');
-	}else if($user->user_type_id == 2){
-		echo $this->element('admin/dash/manage');
-	}else{
-		echo $this->element('admin/dash/tecnico');
-	}
+
+    echo $this->element('admin/dash/admin');
+
+
 ?>
 	</div>
 </div>

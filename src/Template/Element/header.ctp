@@ -3,7 +3,6 @@
         <div class="container-fluid">
             <div class="float-right">
 
-
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user" src="https://api.adorable.io/avatars/50/abott@adorable.png" alt="Header Avatar">
@@ -20,15 +19,16 @@
             </div>
 
             <!-- LOGO -->
-            <div style="padding: 24px 20px 0;" class="navbar-brand-box">
+            <div  class="navbar-brand-box">
              
                 <a href="<?= $this->Url->build('/admin', true);?>" class="logo logo-light">
-                    <span class="logo-sm">
+                    <!-- <span class="logo-sm"> -->
                         <!-- <img src="assets/images/logo-sm-light.png" alt="" height="22"> -->
-                    </span>
+                    <!-- </span> -->
                     <span class="logo-lg">
-                        <h5 style="color: #fff; font-weight: bold; display: flex;justify-content: center;">Logo</h5>
-                        <!-- <img src="assets/images/logo-light.png" alt="" height="20"> -->
+                        <img style="    background: #ffffffeb;
+    padding: 5px;
+    border-radius: 10px;" src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" alt="" height="40">
                     </span>
                 </a>
             </div>
@@ -42,31 +42,17 @@
 
                     <div class="collapse navbar-collapse" id="topnav-menu-content">
                         <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>">
-                                    Dashboard
+
+                              <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/amostras/import">
+                                    Amostras
                                 </a>
                             </li>
 
-                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Amostras <div class="arrow-down"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-components">
-                                  
-                                      <a href="<?= $this->Url->build('/admin', true);?>/amostras/import" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div>Importar</a>
-
-                                        <a href="<?= $this->Url->build('/admin', true);?>/amostras" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todas</a>
-
-                                </div>
-
-                            </li>
-
+                             <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                              <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Users <div class="arrow-down"></div>
+                                    Usuários <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-components">
                                     <a href="<?= $this->Url->build('/admin', true);?>/users/add" class="dropdown-item">
@@ -76,16 +62,23 @@
                                         <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todos</a>
                                     </div>
                             </li>
+                            <?php endif;?>
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Relatório <div class="arrow-down"></div>
+                             <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
+                                    Relatório
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-components">
-                                    <a href="<?= $this->Url->build('/admin', true);?>/exames/relatorio" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Exames</a>
-                                </div>
                             </li>
+
+
+                             <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/dashboard">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <?php endif;?>
+                             
                         </ul>
                     </div>
                 </nav>

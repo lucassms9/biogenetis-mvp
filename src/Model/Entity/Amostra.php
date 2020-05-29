@@ -30,6 +30,7 @@ class Amostra extends Entity
         'uf' => true,
         'idade' => true,
         'sexo' => true,
+        'lote' => true,
         'exames' => true,
         'created' => true,
         'modified' => true,

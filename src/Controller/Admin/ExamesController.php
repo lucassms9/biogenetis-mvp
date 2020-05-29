@@ -60,6 +60,14 @@ class ExamesController extends AppController
           
             $settings = [];
 
+            if($this->Auth->user('user_type_id') == 3){
+                $settings['Exames.created_by'] = $this->Auth->user('id');
+            }
+
+            if($this->Auth->user('user_type_id') == 2){
+                $settings['Users.cliente_id'] = $this->Auth->user('cliente_id');
+            }
+
              if (!empty($this->request->data['data_init'])){
                     $data_de = $this->request->data['data_init'];
                     $settings['cast(Exames.created as date) >='] = $data_de;

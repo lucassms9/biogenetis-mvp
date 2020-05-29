@@ -1,3 +1,6 @@
+/*color primary: #004ba7 */
+/*color secondary: #0098f0 */
+
 .position-bottom {
     bottom: 0 !important;
 }
@@ -6,7 +9,7 @@
 	color: #7c8a96;
     pointer-events: none;
     cursor: auto;
-    background-color: #f8f9fa;
+    background-color: #c1c7d0;
     border-color: #d7dce1;
 
 }
@@ -14,8 +17,8 @@
 .pagination > li.active a{
 	z-index: 3;
     color: #fff;
-    background-color: #3051d3;
-    border-color: #3051d3;
+    background-color: #004ba7;
+    border-color: #004ba7;
 }
 
 .pagination-rounded > li > a {
@@ -32,4 +35,37 @@
     color: #7c8a96;
     background-color: #fff;
     border: 1px solid #d7dce1;
+}
+
+.btn-primary{
+    background-color: #004ba7;
+    border-color: #004ba7;
+}
+
+.btn-secondary{
+     background-color: #0098f0;
+    border-color: #0098f0;
+}
+
+.bg-primary {
+    background-color: #004ba7 !important;
+}
+
+.page-title-box {
+    background-color: #004ba7 !important;
+}
+
+body[data-topbar=colored] #page-topbar{
+    background-color: #004ba7 !important;
+}
+
+body[data-layout=horizontal][data-topbar=colored] .topnav .navbar-nav .nav-link{
+    /*color: rgb(228, 228, 228) !important;*/
+}
+a {
+    color: #004ba7;
+}
+
+.dropzone .dz-preview .dz-error-message{
+    top:150px !important;
 }

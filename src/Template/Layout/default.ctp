@@ -61,7 +61,7 @@ $cakeDescription = 'Biogenetics';
     <link href="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
 
- <!-- JAVASCRIPT -->
+    <!-- JAVASCRIPT -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery/jquery.min.js"></script>
     <script src="<?= $this->Url->build('/', true);?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="<?= $this->Url->build('/', true);?>assets/libs/metismenu/metisMenu.min.js"></script>
@@ -71,8 +71,11 @@ $cakeDescription = 'Biogenetics';
     <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
 
     <!-- datepicker -->
+    <!-- Selectize -->
+    <script src="<?= $this->Url->build('/', true);?>assets/libs/selectize/js/standalone/selectize.min.js"></script>
+
     <script src="<?= $this->Url->build('/', true);?>assets/libs/air-datepicker/js/datepicker.min.js"></script>
-    <script src="<?= $this->Url->build('/', true);?>assets/libs/air-datepicker/js/i18n/datepicker.en.js"></script>
+    <script src="<?= $this->Url->build('/', true);?>assets/libs/air-datepicker/js/i18n/datepicker.pt-BR.js"></script>
 
     <!-- apexcharts -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/apexcharts/apexcharts.min.js"></script>
@@ -82,6 +85,7 @@ $cakeDescription = 'Biogenetics';
     <!-- Jq vector map -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/jquery.vmap.min.js"></script>
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="<?= $this->Url->build('/', true);?>js/jquery.mask.js"></script>
     <script>
         var BASE_URL_ADMIN = '<?=$this->Url->build('/admin', true)?>/';
     </script>

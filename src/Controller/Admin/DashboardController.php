@@ -27,13 +27,33 @@ class DashboardController extends AppController
 	public function getExamesGlobal()
 	{	
 
-		$conditions = [];
+		$query = $this->request->query;
+		$conditions_query = [];
+		
+		if(!empty($query['date_init'])){
+			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
+			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
+		}
+		if(!empty($query['date_end'])){
+			$data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
+			$conditions_query['cast(Amostras.created as date) <='] = $data2;
+		}
+		if(!empty($query['estado'])){
+			$conditions_query['Amostras.uf'] = $query['estado'];
+		}
+
+
+        $conditions = [];
+
+        $conditions = array_merge($conditions,$conditions_query);
+
 		$result = [
 			'Positivo' => 0,
 			'Negativo' => 0,
 			'Inconclusivo' => 0,
 		];
 		
+
 		if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
 		}
@@ -66,10 +86,37 @@ class DashboardController extends AppController
 	public function getExamesByUf()
 	{
 		
-		$ufs_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.uf'], 'order' => ['Amostras.uf' => 'ASC']]);
+
+		$query = $this->request->query;
+		$conditions_query = [];
+		
+		if(!empty($query['date_init'])){
+			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
+			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
+		}
+		if(!empty($query['date_end'])){
+			$data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
+			$conditions_query['cast(Amostras.created as date) <='] = $data2;
+		}
+		if(!empty($query['estado'])){
+			$conditions_query['Amostras.uf'] = $query['estado'];
+		}
+
+
+       
+		$conditions_uf = [];
+
+        $conditions_uf = array_merge($conditions_uf,$conditions_query);
+
+		$ufs_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.uf'],
+			'conditions' => $conditions_uf,
+		 'order' => ['Amostras.uf' => 'ASC']]);
         $ufs = [];
         $result = [];
+
+      
         $conditions = [];
+       
 
         if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -79,16 +126,19 @@ class DashboardController extends AppController
 			$conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
 		}
 
+
         foreach ($ufs_lista as $row)
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
 
         foreach ($ufs as $key => $uf) {
+
 	        $conditions['Amostras.uf'] = $uf;
 
 	        $amostras = $this->Exames->find('all', [
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions
-	        ]);
+	        ])->toArray();
+
 	        $inconclusivo = 0;
 	        $positivo = 0;
 	        $negativo = 0;
@@ -120,11 +170,32 @@ class DashboardController extends AppController
 	}
 
 	public function getExamesByGener()
-	{
+	{	
+
+
 		$sexo_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.sexo'], 'order' => ['Amostras.sexo' => 'ASC']]);
         $sexos = [];
         $result = [];
+
+        $query = $this->request->query;
+		$conditions_query = [];
+		
+		if(!empty($query['date_init'])){
+			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
+			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
+		}
+		if(!empty($query['date_end'])){
+			$data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
+			$conditions_query['cast(Amostras.created as date) <='] = $data2;
+		}
+		if(!empty($query['estado'])){
+			$conditions_query['Amostras.uf'] = $query['estado'];
+		}
+
+
         $conditions = [];
+
+        $conditions = array_merge($conditions,$conditions_query);
 
         foreach ($sexo_lista as $row)
             $sexos[$row['DISTINCT Amostras']['sexo']] = $row['DISTINCT Amostras']['sexo'];
@@ -174,12 +245,31 @@ class DashboardController extends AppController
 	public function getExamesByAge()
 	{
 		
+		$query = $this->request->query;
+		$conditions_query = [];
+		
+		if(!empty($query['date_init'])){
+			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
+			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
+		}
+		if(!empty($query['date_end'])){
+			$data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
+			$conditions_query['cast(Amostras.created as date) <='] = $data2;
+		}
+		if(!empty($query['estado'])){
+			$conditions_query['Amostras.uf'] = $query['estado'];
+		}
 
         $result = [];
         $conditions20 = [];
         $conditions40 = [];
         $conditions80 = [];
         $conditions81 = [];
+
+        $conditions20 = array_merge($conditions20,$conditions_query);
+        $conditions40 = array_merge($conditions40,$conditions_query);
+        $conditions80 = array_merge($conditions80,$conditions_query);
+        $conditions81 = array_merge($conditions81,$conditions_query);
 
         if($this->Auth->user('user_type_id') == 3){
 			$conditions20['Exames.created_by'] = $this->Auth->user('id');

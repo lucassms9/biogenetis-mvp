@@ -89,10 +89,9 @@ function submitForm() {
                 confirmButtonText: "Entendi"
               });
 
-        return
+        return;
     }
 
-    // return  
 
     Swal.fire({
     title: 'Enviado Dados',

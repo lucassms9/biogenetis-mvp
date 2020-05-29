@@ -1,20 +1,74 @@
 
+
+
 $(document).ready(function() {
-    
-    runExamesGlobal();
-    runExamesUF();
-    runExamesGener();
-    runExamesIdade();
+        
+    var campos_data = "#date-init-filter, #date-end-filter"; 
+    $( campos_data ).mask('99/99/9999');
+    // $( campos_data ).datepicker({ language: 'pt-BR' });  
+
+    var data = {};
+
+     $('#reset-filter').click(function(e) {
+        e.preventDefault();
+       window.location = window.location.href.split("?")[0];
+    })
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    console.log(urlParams.get('estados_filter'))
+
+    if(urlParams.get('estados_filter')){
+        data.estado = urlParams.get('estados_filter')
+    }
+
+    if(urlParams.get('date_end_filter')){
+        data.date_end = urlParams.get('date_end_filter')
+    }
+
+    if(urlParams.get('date_init_filter')){
+        data.date_init = urlParams.get('date_init_filter')
+    }
+    runExamesGlobal(data);
+    runExamesUF(data);
+    runExamesGener(data);
+    runExamesIdade(data);
 
 });
 
-function runExamesIdade() {
+function filterDash(argument) {
+    var date_init = $('#date-init-filter').val();
+    var date_end = $('#date-end-filter').val();
+    var estado = $('#estados-filter :selected').val();
+   
+    if(date_init == '' && date_end == '' && estado == ''){
+        return alert('Você precisa ao menos preencher um dos campos');
+    }
+    var data = {
+        date_init:date_init,
+        date_end:date_end,
+        estado:estado
+    };
+
+
+    $("#column_chart_sexo").children("div:first").remove();
+    $("#column_chart_idade > div:first").children("div:first").remove();
+    $('#pie_chart > div:first').remove();
+    $('#column_chart_uf > div:first').remove();
+    runExamesGlobal(data);
+    runExamesUF(data);
+    runExamesGener(data);
+    runExamesIdade(data);
+
+}
+
+function runExamesIdade(data) {
 
       $.ajax({
         url: BASE_URL_ADMIN + 'dashboard/getExamesByAge',
         type: 'GET',
         dataType: 'json',
-        data:{}
+        data:data
     })
     .done(function(data) {
 
@@ -35,7 +89,7 @@ function runExamesIdade() {
             
         });
 
-        body.push({
+            body.push({
                 name: 'Positivo',
                 data: positivos
             });
@@ -55,12 +109,12 @@ function runExamesIdade() {
 
 }
 
-function runExamesGener() {
+function runExamesGener(data) {
     $.ajax({
         url: BASE_URL_ADMIN + 'dashboard/getExamesByGener',
         type: 'GET',
         dataType: 'json',
-        data:{}
+        data:data
     })
     .done(function(data) {
 
@@ -71,6 +125,7 @@ function runExamesGener() {
        var negativos = [];
        var inconclusivo = [];
 
+       // console.log(data)
         $.each(data, function (index, gener) {
             
             positivos.push(gener.Positivo);
@@ -81,7 +136,7 @@ function runExamesGener() {
             
         });
 
-        body.push({
+            body.push({
                 name: 'Positivo',
                 data: positivos
             });
@@ -101,12 +156,12 @@ function runExamesGener() {
     });
 }
 
-function runExamesGlobal() {
+function runExamesGlobal(data) {
      $.ajax({
         url: BASE_URL_ADMIN + 'dashboard/getExamesGlobal',
         type: 'GET',
         dataType: 'json',
-        data:{}
+        data:data
     })
     .done(function(data) {
         pizzaGlobal(data)
@@ -158,12 +213,12 @@ if ($('#pie_chart').length) {
 }
 
 
-function runExamesUF() {
+function runExamesUF(data) {
     $.ajax({
         url: BASE_URL_ADMIN + 'dashboard/getExamesByUf',
         type: 'GET',
         dataType: 'json',
-        data:{}
+        data:data
     })
     .done(function(data) {
        var body = [];
@@ -236,7 +291,7 @@ if ($('#column_chart_uf').length) {
         },
         yaxis: {
             title: {
-                text: '$ (thousands)'
+                text: '(Total)'
             }
         },
         grid: {
@@ -268,6 +323,8 @@ if ($('#column_chart_uf').length) {
 
 
 function renderExamesGener(body, gener) {
+    console.log(body)
+    console.log(gener)
     
 /*
 grafico por sexo
@@ -306,7 +363,7 @@ if ($('#column_chart_sexo').length) {
         },
         yaxis: {
             title: {
-                text: '$ (thousands)'
+                text: '(Total)'
             }
         },
         grid: {
@@ -377,7 +434,7 @@ if ($('#column_chart_idade').length) {
         },
         yaxis: {
             title: {
-                text: '$ (thousands)'
+                text: '(Total)'
             }
         },
         grid: {

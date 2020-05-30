@@ -5,60 +5,36 @@
     <div class="col-xl-10">
     
         <div class="card">
-            <div class="card-body">
+            <h4 style="padding: 15px 15px 0 15px;">Faça o filtro, utilizando um dos campos baixo</h4>
+            <div style="justify-content: center; display: flex;" class="card-body">
                  <form method="get"> 
                 <div class="row">
                    
-                 <div class="col-md-3">
-                    <label>Estado</label>
-                     <select name="estados_filter" id="estados-filter" class="form-control">
-                       <option value="">Escolha</option>
-                        <option <?= (@$this->request->query['estados_filter']) == 'AC' ? 'selected' : '' ?> value="AC">Acre</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'AL' ? 'selected' : '' ?> value="AL">Alagoas</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'AM' ? 'selected' : '' ?> value="AM">Amapá</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'AP' ? 'selected' : '' ?> value="AP">Amazonas</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'BA' ? 'selected' : '' ?> value="BA">Bahia</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'CE' ? 'selected' : '' ?> value="CE">Ceará</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'DF' ? 'selected' : '' ?> value="DF">Distrito Federal</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'ES' ? 'selected' : '' ?> value="ES">Espírito Santo</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'GO' ? 'selected' : '' ?> value="GO">Goiás</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'MA' ? 'selected' : '' ?> value="MA">Maranhão</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'MG' ? 'selected' : '' ?> value="MG">Minas Gerais</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'MS' ? 'selected' : '' ?> value="MS">Mato Grosso do Sul</option>
-                         <option  value="MT">Mato Grosso</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'PA' ? 'selected' : '' ?> value="PA">Pará</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'PB' ? 'selected' : '' ?> value="PB">Paraíba</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'PE' ? 'selected' : '' ?> value="PE">Pernambuco</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'PI' ? 'selected' : '' ?> value="PI">Piauí</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'PR' ? 'selected' : '' ?> value="PR">Paraná</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'RJ' ? 'selected' : '' ?> value="RJ">Rio de Janeiro</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'RN' ? 'selected' : '' ?> value="RN">Rio Grande do Norte</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'RO' ? 'selected' : '' ?> value="RO">Rondônia</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'RR' ? 'selected' : '' ?> value="RR">Roraima</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'RS' ? 'selected' : '' ?> value="RS">Rio Grande do Sul</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'SC' ? 'selected' : '' ?> value="SC">Santa Catarina</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'SE' ? 'selected' : '' ?> value="SE">Sergipe</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'SP' ? 'selected' : '' ?> value="SP">São Paulo</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'TO' ? 'selected' : '' ?> value="TO">Tocantins</option>
-                    </select>
+                 <div class="col-md-6">
+                    <!-- <label>Estado</label> -->
+                    <?= $this->Form->control('estados_filter',['label' =>'Estado', 'class' => 'form-control', 'type' => 'select', 'options' => $ufs,'empty' =>'Escolha','default' => @$this->request->query['estados_filter']]);?>
                 </div>
-                    <div class="col-md-2">
+                  
+                </div>
+                <div class="row">
+                      <div class="col-md-6">
                         <label>Data de</label>
                         <input name="date_init_filter" value="<?=@$this->request->query['date_init_filter']?>" class="form-control datepicker-here" data-language="pt-BR" id="date-init-filter" type="text" />
                     </div>
                     
-                    <div class="col-md-2">
+                    <div class="col-md-6">
                         <label>Data até</label>
                         <input name="date_end_filter" data-language="pt-BR" value="<?=@$this->request->query['date_end_filter']?>" class="form-control datepicker-here" id="date-end-filter" type="text" />
                     </div>
 
-                    <div style="margin-top: 28px;" class="col-md-1">
+                    </div>
+                    <div class="row">
+                        <div style="margin-top: 28px;" class="col-md-4">
                         <button type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
                     </div>
-                     <div style="margin-top: 28px;" class="col-md-3">
+                     <div style="margin-top: 28px;" class="col-md-4">
                         <button type="button" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
                     </div>
-                  
                 </div>
                  </form>
             </div>

@@ -20,8 +20,28 @@ class DashboardController extends AppController
 	public function index()
 	{
 		$user = $this->Auth->user();
+
+		$conditions_uf = [];
+
+		if($this->Auth->user('user_type_id') == 3){
+			$conditions_uf['Exames.created_by'] = $this->Auth->user('id');
+		}
+
+		if($this->Auth->user('user_type_id') == 2){
+			$conditions_uf['Users.cliente_id'] = $this->Auth->user('cliente_id');
+		}
+
+		$ufs_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.uf'],
+			'conditions' => $conditions_uf,
+			'contain' => ['Exames.Users'],
+		 'order' => ['Amostras.uf' => 'ASC']]);
+        $ufs = [];
+
+        foreach ($ufs_lista as $row)
+            $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
+
 		
-		$this->set(compact('user'));
+		$this->set(compact('user','ufs'));
 	}
 
 	public function getExamesGlobal()
@@ -112,6 +132,7 @@ class DashboardController extends AppController
 			'conditions' => $conditions_uf,
 		 'order' => ['Amostras.uf' => 'ASC']]);
         $ufs = [];
+
         $result = [];
 
       

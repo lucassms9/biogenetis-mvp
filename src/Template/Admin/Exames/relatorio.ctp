@@ -27,6 +27,7 @@
                 <div class="card">
                     <div class="card-body"> 
                          <h4>Faça o filtro, utilizando um dos campos baixo</h4>
+                         <p>Caso queira buscar todas as amostras, basta não usar os filtros.</p>
                         <?= $this->Form->create(null) ?>
 
                         <div class="row">
@@ -65,7 +66,7 @@
 
                  <div class="card">
                     <div class="card-body"> 
-                        
+
                     </div>
                 </div>
             </div>

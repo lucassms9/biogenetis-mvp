@@ -5,7 +5,7 @@
     <div class="col-xl-10">
     
         <div class="card">
-            <h4 style="padding: 15px 15px 0 15px;">Faça o filtro, utilizando um dos campos baixo</h4>
+            <h4 style="padding: 15px 15px 0 15px;">Faça o filtro utilizando um dos campos baixo</h4>
             <div style="justify-content: center; display: flex;" class="card-body">
                  <form method="get"> 
                 <div class="row">
@@ -32,7 +32,7 @@
                         <div style="margin-top: 28px;" class="col-md-4">
                         <button type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
                     </div>
-                     <div style="margin-top: 28px;" class="col-md-4">
+                     <div style="margin-top: 28px;text-align: right;" class="col-md-8">
                         <button type="button" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
                     </div>
                 </div>

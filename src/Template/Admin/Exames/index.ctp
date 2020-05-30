@@ -33,7 +33,6 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
-                        
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">

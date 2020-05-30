@@ -49,7 +49,24 @@
                                 </a>
                             </li>
 
+
+                             <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
+                                    Relatórios
+                                </a>
+                            </li>
+
+
                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/dashboard">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <?php endif;?>
+
+
+                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                              <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Usuários <div class="arrow-down"></div>
@@ -64,20 +81,6 @@
                             </li>
                             <?php endif;?>
 
-                             <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
-                                    Relatório
-                                </a>
-                            </li>
-
-
-                             <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/dashboard">
-                                    Dashboard
-                                </a>
-                            </li>
-                            <?php endif;?>
                              
                         </ul>
                     </div>

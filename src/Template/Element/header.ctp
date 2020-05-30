@@ -6,7 +6,7 @@
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img class="rounded-circle header-profile-user" src="https://api.adorable.io/avatars/50/abott@adorable.png" alt="Header Avatar">
-                        <span class="d-none d-sm-inline-block ml-1"><?= $_SESSION['Auth']['User']['nome_completo']?></span>
+                        <span class="fontboldonly d-none d-sm-inline-block ml-1"><?= $_SESSION['Auth']['User']['nome_completo']?></span>
                         <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -28,7 +28,7 @@
                     <span class="logo-lg">
                         <img style="    background: #ffffffeb;
     padding: 5px;
-    border-radius: 10px;" src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" alt="" height="40">
+    border-radius: 10px;" src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" alt="" height="60">
                     </span>
                 </a>
             </div>
@@ -44,14 +44,14 @@
                         <ul class="navbar-nav">
 
                               <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/amostras/import">
+                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/amostras/import">
                                     Amostras
                                 </a>
                             </li>
 
 
                              <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
+                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
                                     Relatórios
                                 </a>
                             </li>
@@ -59,7 +59,7 @@
 
                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= $this->Url->build('/admin', true);?>/dashboard">
+                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/dashboard">
                                     Dashboard
                                 </a>
                             </li>
@@ -68,15 +68,15 @@
 
                               <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                              <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Usuários <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-components">
                                     <a href="<?= $this->Url->build('/admin', true);?>/users/add" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Novo</a>
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-plus"></i></div> Novo</a>
 
                                         <a href="<?= $this->Url->build('/admin', true);?>/users" class="dropdown-item">
-                                        <div class="d-inline-block icons-sm mr-2"><i class="uim uim-schedule"></i></div> Ver Todos</a>
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Ver Todos</a>
                                     </div>
                             </li>
                             <?php endif;?>

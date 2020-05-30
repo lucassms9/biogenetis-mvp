@@ -261,19 +261,23 @@ class DashboardController extends AppController
 		}
 
         $result = [];
+        $result2 = [];
         $conditions20 = [];
         $conditions40 = [];
+        $conditions60 = [];
         $conditions80 = [];
         $conditions81 = [];
 
         $conditions20 = array_merge($conditions20,$conditions_query);
         $conditions40 = array_merge($conditions40,$conditions_query);
+        $conditions60 = array_merge($conditions60,$conditions_query);
         $conditions80 = array_merge($conditions80,$conditions_query);
         $conditions81 = array_merge($conditions81,$conditions_query);
 
         if($this->Auth->user('user_type_id') == 3){
 			$conditions20['Exames.created_by'] = $this->Auth->user('id');
 			$conditions40['Exames.created_by'] = $this->Auth->user('id');
+			$conditions60['Exames.created_by'] = $this->Auth->user('id');
 			$conditions80['Exames.created_by'] = $this->Auth->user('id');
 			$conditions81['Exames.created_by'] = $this->Auth->user('id');
 		}
@@ -281,6 +285,7 @@ class DashboardController extends AppController
 		if($this->Auth->user('user_type_id') == 2){
 			$conditions20['Users.cliente_id'] = $this->Auth->user('cliente_id');
 			$conditions40['Users.cliente_id'] = $this->Auth->user('cliente_id');
+			$conditions60['Users.cliente_id'] = $this->Auth->user('cliente_id');
 			$conditions80['Users.cliente_id'] = $this->Auth->user('cliente_id');
 			$conditions81['Users.cliente_id'] = $this->Auth->user('cliente_id');
 		}
@@ -292,36 +297,68 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions20])->toArray();
 
         $inconclusivo = 0;
+        $inconclusivoM = 0;
+        $inconclusivoF = 0;
 		$positivo = 0;
+		$positivoM = 0;
+		$positivoF = 0;
 		$negativo = 0;
+		$negativoM = 0;
+		$negativoF = 0;
 
-		// if(!empty($amostras20)){
+
+		if(!empty($amostras20)){
 	        foreach ($amostras20 as $key => $amostra20) {
 
 	        	if($amostra20->resultado == 'Em Análise'){
 					$inconclusivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$inconclusivoM++;
+					}else{
+						$inconclusivoF++;
+					}
 				}elseif($amostra20->resultado == 'Positivo'){
 					$positivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$positivoM++;
+					}else{
+						$positivoF++;
+					}
 				}elseif($amostra20->resultado == 'Negativo'){
 					$negativo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$negativoM++;
+					}else{
+						$negativoF++;
+					}
 				}
 	        }
 
-	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        	];
-		     // }
-	 	// }
+		     }
+	 	}
+	 	$result2['0-20'] = [
+		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
+						'Inconclusivo' => ['M' => $inconclusivoM, 'F' => $inconclusivoF],
+		        	];
 
-	  
         //> 20 && <= 40
 
 	    $inconclusivo = 0;
+        $inconclusivoM = 0;
+        $inconclusivoF = 0;
 		$positivo = 0;
+		$positivoM = 0;
+		$positivoF = 0;
 		$negativo = 0;
+		$negativoM = 0;
+		$negativoF = 0;
 
         $conditions40['Amostras.idade >'] = 20;
         $conditions40['Amostras.idade <='] = 40;
@@ -329,68 +366,178 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions40])->toArray();
 
-        // if(!empty($amostras40)){
+        if(!empty($amostras40)){
 	        foreach ($amostras40 as $key => $amostra40) {
 
 	        	if($amostra40->resultado == 'Em Análise'){
 					$inconclusivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$inconclusivoM++;
+					}else{
+						$inconclusivoF++;
+					}
 				}elseif($amostra40->resultado == 'Positivo'){
 					$positivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$positivoM++;
+					}else{
+						$positivoF++;
+					}
 				}elseif($amostra40->resultado == 'Negativo'){
 					$negativo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$negativoM++;
+					}else{
+						$negativoF++;
+					}
 				}
 	        }
 
-	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        	];
-		    // }
-	 	// }
+		    }
+	 	}
+	 	$result2['21-40'] = [
+		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+		        	];
+
+		  //> 41 && <= 60
+
+	   	$inconclusivo = 0;
+        $inconclusivoM = 0;
+        $inconclusivoF = 0;
+		$positivo = 0;
+		$positivoM = 0;
+		$positivoF = 0;
+		$negativo = 0;
+		$negativoM = 0;
+		$negativoF = 0;
+
+        $conditions60['Amostras.idade >'] = 41;
+        $conditions60['Amostras.idade <='] = 60;
+        $amostras60 = $this->Exames->find('all', [
+	        	'contain' => ['Amostras','Users'],
+	        	'conditions' => $conditions40])->toArray();
+
+        if(!empty($amostras40)){
+	        foreach ($amostras60 as $key => $amostra60) {
+
+	        	if($amostra60->resultado == 'Em Análise'){
+					$inconclusivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$inconclusivoM++;
+					}else{
+						$inconclusivoF++;
+					}
+				}elseif($amostra60->resultado == 'Positivo'){
+					$positivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$positivoM++;
+					}else{
+						$positivoF++;
+					}
+				}elseif($amostra60->resultado == 'Negativo'){
+					$negativo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$negativoM++;
+					}else{
+						$negativoF++;
+					}
+				}
+	        }
+
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        		$result['41-60'] = [
+		        		'Positivo' => $positivo,
+						'Negativo' => $negativo,
+						'Inconclusivo' => $inconclusivo,
+		        	];
+		    }
+	 	}
+
+	 	$result2['41-60'] = [
+		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+		        	];
 
          //> 40 && <= 80
 
 	    $inconclusivo = 0;
+        $inconclusivoM = 0;
+        $inconclusivoF = 0;
 		$positivo = 0;
+		$positivoM = 0;
+		$positivoF = 0;
 		$negativo = 0;
+		$negativoM = 0;
+		$negativoF = 0;
 
-        $conditions80['Amostras.idade >'] = 40;
+        $conditions80['Amostras.idade >'] = 61;
         $conditions80['Amostras.idade <='] = 80;
         $amostras80 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions80])->toArray();
 
 
-        // if(!empty($amostras80)){
+        if(!empty($amostras80)){
 
 	        foreach ($amostras80 as $key => $amostra80) {
 
 	        	if($amostra80->resultado == 'Em Análise'){
 					$inconclusivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$inconclusivoM++;
+					}else{
+						$inconclusivoF++;
+					}
 				}elseif($amostra80->resultado == 'Positivo'){
 					$positivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$positivoM++;
+					}else{
+						$positivoF++;
+					}
 				}elseif($amostra80->resultado == 'Negativo'){
 					$negativo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$negativoM++;
+					}else{
+						$negativoF++;
+					}
 				}
 	        }
 
-	         // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
-		      	$result['41-80'] = [
+	         if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+		      	$result['61-80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        ];
-	    	// }
-
+	    	}
 	    	
-    	// }
-
+    	}
+    	$result2['61-80'] = [
+		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+		        ];
 
 	    $inconclusivo = 0;
+        $inconclusivoM = 0;
+        $inconclusivoF = 0;
 		$positivo = 0;
+		$positivoM = 0;
+		$positivoF = 0;
 		$negativo = 0;
+		$negativoM = 0;
+		$negativoF = 0;
 
          // > 80
         $conditions81['Amostras.idade >'] = 80;
@@ -398,27 +545,52 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions81])->toArray();
 
-        // if(!empty($amostras81)){
+        if(!empty($amostras81)){
 	        foreach ($amostras81 as $key => $amostra81) {
 
 	        	if($amostra81->resultado == 'Em Análise'){
 					$inconclusivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$inconclusivoM++;
+					}else{
+						$inconclusivoF++;
+					}
 				}elseif($amostra81->resultado == 'Positivo'){
 					$positivo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$positivoM++;
+					}else{
+						$positivoF++;
+					}
 				}elseif($amostra81->resultado == 'Negativo'){
 					$negativo++;
+					if($amostra20->amostra->sexo == 'M'){
+						$negativoM++;
+					}else{
+						$negativoF++;
+					}
 				}
 	        }
 
-	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
-		        $result['> 81'] = [
+	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+		        $result['> 80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        ];
-			// }
-        // }
-        echo json_encode($result);
+			}
+        }
+        $result2['> 80'] = [
+		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+		        ];
+
+		 $resulfinal = [
+		 	'result' => $result,
+		 	'result_table' => $result2
+		 ];       
+        echo json_encode($resulfinal);
         die();
 
 	}

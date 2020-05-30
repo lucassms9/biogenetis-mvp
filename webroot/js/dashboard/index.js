@@ -16,7 +16,6 @@ $(document).ready(function() {
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    console.log(urlParams.get('estados_filter'))
 
     if(urlParams.get('estados_filter')){
         data.estado = urlParams.get('estados_filter')
@@ -61,7 +60,135 @@ function filterDash(argument) {
     runExamesIdade(data);
 
 }
+function amountTableAge(data) {
+   console.log(data)
+   var total020 = 0;
+   var total2140 = 0;
+   var total4160 = 0;
+   var total6180 = 0;
+   var total81 = 0;
 
+   var totalPM = 0
+   var totalPF = 0
+   var totalNM = 0
+   var totalNF = 0
+   var totalIM = 0
+   var totalIF = 0
+   var totalTT = 0
+
+    $.each(data, function (index, idade) {
+        console.log(idade)
+        if(idade.Positivo.M){
+            totalPM += idade.Positivo.M;
+        }
+        if(idade.Positivo.F){
+            totalPF += idade.Positivo.F;
+        }
+        if(idade.Negativo.M){
+            totalNM += idade.Negativo.M;
+        }
+        if(idade.Negativo.F){
+            totalNF += idade.Negativo.F;
+        }
+
+        if(idade.Inconclusivo.M){
+            totalIM += idade.Inconclusivo.M;
+        }
+        if(idade.Inconclusivo.F){
+            totalIF += idade.Inconclusivo.F;
+        }
+
+        if(index == '0-20'){
+            $('#020pm').text(idade.Positivo.M);
+            $('#020pf').text(idade.Positivo.F);
+            $('#020nm').text(idade.Negativo.M);
+            $('#020nf').text(idade.Negativo.F);
+            $('#020im').text(idade.Inconclusivo.M);
+            $('#020if').text(idade.Inconclusivo.F);
+            total020 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#020tu').text(total020);
+
+        }
+        if(index == '21-40'){
+            $('#2140pm').text(idade.Positivo.M);
+            $('#2140pf').text(idade.Positivo.F);
+            $('#2140nm').text(idade.Negativo.M);
+            $('#2140nf').text(idade.Negativo.F);
+            $('#2140im').text(idade.Inconclusivo.M);
+            $('#2140if').text(idade.Inconclusivo.F);
+            total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#2140tu').text(total2140);
+       
+        }
+
+        if(index == '41-60'){
+            $('#4160pm').text(idade.Positivo.M);
+            $('#4160pf').text(idade.Positivo.F);
+            $('#4160nm').text(idade.Negativo.M);
+            $('#4160nf').text(idade.Negativo.F);
+            $('#4160im').text(idade.Inconclusivo.M);
+            $('#4160if').text(idade.Inconclusivo.F);
+            total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#4160tu').text(total4160);
+           
+        }
+
+        if(index == '61-80'){
+            $('#6180pm').text(idade.Positivo.M);
+            $('#6180pf').text(idade.Positivo.F);
+            $('#6180nm').text(idade.Negativo.M);
+            $('#6180nf').text(idade.Negativo.F);
+            $('#6180im').text(idade.Inconclusivo.M);
+            $('#6180if').text(idade.Inconclusivo.F);
+            total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#6180tu').text(total6180);
+            
+        }
+
+        if(index == '> 80'){
+            $('#81pm').text(idade.Positivo.M);
+            $('#81pf').text(idade.Positivo.F);
+            $('#81nm').text(idade.Negativo.M);
+            $('#81nf').text(idade.Negativo.F);
+            $('#81im').text(idade.Inconclusivo.M);
+            $('#81if').text(idade.Inconclusivo.F);
+            total81 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#81tu').text(total81);
+        }
+
+     });
+
+    totalTT = totalPM + totalPF + totalNM + totalNF + totalIM + totalIF;
+
+    $('#totalupm').text(totalPM);
+    $('#totalupf').text(totalPF);
+    $('#totalunm').text(totalNM);
+    $('#totalunf').text(totalNF);
+    $('#totaluim').text(totalIM);
+    $('#totaluif').text(totalIF);
+    $('#totalutu').text(totalTT);
+
+    $('#020tp').text('% '+ ((total020 / totalTT) * 100).toFixed(2) );
+    $('#2140tp').text('% '+ ((total2140 / totalTT) * 100).toFixed(2) );
+    $('#4160tp').text('% '+ ((total4160 / totalTT) * 100).toFixed(2) );
+    $('#81tp').text('% '+ ((total81 / totalTT) * 100).toFixed(2) );
+    $('#6180tp').text('% '+ ((total6180 / totalTT) * 100).toFixed(2) );
+    $('#totalutp').text('% '+ ( ((total020 / totalTT) * 100) + ((total2140 / totalTT) * 100) + ((total4160 / totalTT) * 100) + ((total6180 / totalTT) * 100) + ((total81 / totalTT) * 100) ).toFixed(2));
+
+    $('#totalporpm').text('% '+ ((totalPM / totalTT) * 100).toFixed(2) );
+    $('#totalporpf').text('% '+ ((totalPF / totalTT) * 100).toFixed(2) );
+    $('#totalpornm').text('% '+ ((totalNM / totalTT) * 100).toFixed(2) );
+    $('#totalpornf').text('% '+ ((totalNF / totalTT) * 100).toFixed(2) );
+    $('#totalporim').text('% '+ ((totalIM / totalTT) * 100).toFixed(2) );
+    $('#totalporif').text('% '+ ((totalIF / totalTT) * 100).toFixed(2) );
+    $('#totalportp').text('% '+ ( ((totalPM / totalTT) * 100) + ((totalPF / totalTT) * 100) + ((totalNM / totalTT) * 100) + ((totalNF / totalTT) * 100) + ((totalIM / totalTT) * 100) + ((totalIF / totalTT) * 100) ).toFixed(2) );
+
+
+    $('#totalmfporpos').text( (((totalPM + totalPF) / totalTT) * 100).toFixed(2) );
+    $('#totalmfporneg').text( (((totalNM + totalNF) / totalTT) * 100).toFixed(2) );
+    $('#totalmfporinc').text( (((totalIM + totalIF) / totalTT) * 100).toFixed(2) );
+
+}
 function runExamesIdade(data) {
 
       $.ajax({
@@ -72,6 +199,7 @@ function runExamesIdade(data) {
     })
     .done(function(data) {
 
+        amountTableAge(data.result_table);
         var body = [];
         var idades = [];
 
@@ -79,7 +207,7 @@ function runExamesIdade(data) {
        var negativos = [];
        var inconclusivo = [];
 
-        $.each(data, function (index, idade) {
+        $.each(data.result, function (index, idade) {
             
             positivos.push(idade.Positivo);
             negativos.push(idade.Negativo);
@@ -323,8 +451,6 @@ if ($('#column_chart_uf').length) {
 
 
 function renderExamesGener(body, gener) {
-    console.log(body)
-    console.log(gener)
     
 /*
 grafico por sexo

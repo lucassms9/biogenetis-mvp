@@ -123,33 +123,33 @@
             <div class="card-body">
                  <div class="table-responsive">
                             <table class="table table-bordered mb-0">
-                                <thead class="thead-light">
+                                <thead>
                                     <tr>
-                                        <th scope="col"></th>
-                                        <th style="text-align: center;" colspan="9" scope="col">TOTAL</th>
+                                        <th style="border-bottom: 2px solid #b8e6f7; border-right: 2px solid #b8e6f7;" class="table-info" scope="col"></th>
+                                        <th class="table-info" style="text-align: center;" colspan="9" scope="col">TOTAL</th>
                                     </tr>
 
                                     <tr>
-                                        <th scope="col"></th>
-                                        <th colspan="2" scope="col">POS</th>
-                                        <th colspan="2" scope="col">NEG</th>
-                                        <th colspan="2" scope="col">INC</th>
-                                        <th style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
-                                        <th style="vertical-align: middle;" rowspan="2" scope="col">%</th>
+                                        <th style="border-bottom: 2px solid #b8e6f7;" class="table-info" class="table-info" scope="col"></th>
+                                        <th class="table-info" colspan="2" scope="col">POS</th>
+                                        <th class="table-info" colspan="2" scope="col">NEG</th>
+                                        <th class="table-info" colspan="2" scope="col">INC</th>
+                                        <th class="table-info" style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
+                                        <th class="table-info" style="vertical-align: middle;" rowspan="2" scope="col">%</th>
                                     </tr>
                                      <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">MASC</th>
-                                        <th scope="col">FEM</th>
-                                        <th scope="col">MASC</th>
-                                        <th scope="col">FEM</th>
-                                        <th scope="col">MASC</th>
-                                        <th scope="col">FEM</th>
+                                        <th class="table-info" scope="col"></th>
+                                        <th class="table-info" scope="col">MASC</th>
+                                        <th class="table-info" scope="col">FEM</th>
+                                        <th class="table-info" scope="col">MASC</th>
+                                        <th class="table-info" scope="col">FEM</th>
+                                        <th class="table-info" scope="col">MASC</th>
+                                        <th class="table-info" scope="col">FEM</th>
                                     </tr>
                                 </thead>
                                  <tbody>
                                      <tr>
-                                        <td>0-20</td>
+                                        <td class="table-info">0-20</td>
                                         <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -160,7 +160,7 @@
                                         <td>3%</td>
                                     </tr>
                                       <tr>
-                                        <td>21-40</td>
+                                        <td class="table-info">21-40</td>
                                          <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -171,7 +171,7 @@
                                         <td>3%</td>
                                     </tr> 
                                     <tr>
-                                        <td>41-60</td>
+                                        <td class="table-info">41-60</td>
                                          <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -182,7 +182,7 @@
                                         <td>10%</td>
                                     </tr>
                                     <tr>
-                                        <td>61-80</td>
+                                        <td class="table-info">61-80</td>
                                          <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -193,7 +193,7 @@
                                         <td>3%</td>
                                     </tr> 
                                     <tr>
-                                        <td>> 81</td>
+                                        <td class="table-info"> 81</td>
                                          <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -204,7 +204,7 @@
                                         <td>3%</td>
                                     </tr>
                                     <tr>
-                                        <td>TOTAIS</td>
+                                        <td class="table-info">TOTAIS</td>
                                          <td>0</td>
                                         <td>0</td>
                                         <td>1</td>
@@ -215,20 +215,20 @@
                                         <td>100%</td>
                                     </tr> 
                                     <tr>
-                                        <td>%</td>
-                                        <td>10%</td>
-                                        <td>10%</td>
-                                        <td>10%</td>
-                                        <td>10%</td>
-                                        <td>10%</td>
-                                        <td>10%</td>
+                                        <td class="table-info">%</td>
+                                        <td class="table-danger">10%</td>
+                                        <td class="table-danger">10%</td>
+                                        <td class="table-success">10%</td>
+                                        <td class="table-success">10%</td>
+                                        <td class="table-warning">10%</td>
+                                        <td class="table-warning">10%</td>
                                         <td>100%</td>
                                     </tr> 
                                     <tr>
-                                        <td>% TOTAL</td>
-                                        <td style="text-align: center;" colspan="2">10%</td>
-                                        <td style="text-align: center;" colspan="2">10%</td>
-                                        <td style="text-align: center;" colspan="2">10%</td>
+                                        <td class="table-info">% TOTAL</td>
+                                        <td style="text-align: center;" class="table-danger" colspan="2">10%</td>
+                                        <td style="text-align: center;" class="table-success"colspan="2">10%</td>
+                                        <td style="text-align: center;" class="table-warning" colspan="2">10%</td>
                                     </tr>
                                 </tbody>
                             </table>

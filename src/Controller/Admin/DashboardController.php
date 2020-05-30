@@ -295,7 +295,7 @@ class DashboardController extends AppController
 		$positivo = 0;
 		$negativo = 0;
 
-		if(!empty($amostras20)){
+		// if(!empty($amostras20)){
 	        foreach ($amostras20 as $key => $amostra20) {
 
 	        	if($amostra20->resultado == 'Em Análise'){
@@ -307,14 +307,14 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        	];
-		     }
-	 	}
+		     // }
+	 	// }
 
 	  
         //> 20 && <= 40
@@ -329,7 +329,7 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions40])->toArray();
 
-        if(!empty($amostras40)){
+        // if(!empty($amostras40)){
 	        foreach ($amostras40 as $key => $amostra40) {
 
 	        	if($amostra40->resultado == 'Em Análise'){
@@ -341,14 +341,14 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        	];
-		    }
-	 	}
+		    // }
+	 	// }
 
          //> 40 && <= 80
 
@@ -363,7 +363,7 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions80])->toArray();
 
 
-        if(!empty($amostras80)){
+        // if(!empty($amostras80)){
 
 	        foreach ($amostras80 as $key => $amostra80) {
 
@@ -376,16 +376,16 @@ class DashboardController extends AppController
 				}
 	        }
 
-	         if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	         // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 		      	$result['41-80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        ];
-	    	}
+	    	// }
 
 	    	
-    	}
+    	// }
 
 
 	    $inconclusivo = 0;
@@ -398,7 +398,7 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions81])->toArray();
 
-        if(!empty($amostras81)){
+        // if(!empty($amostras81)){
 	        foreach ($amostras81 as $key => $amostra81) {
 
 	        	if($amostra81->resultado == 'Em Análise'){
@@ -410,14 +410,14 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        // if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
 		        $result['> 81'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Inconclusivo' => $inconclusivo,
 		        ];
-			}
-        }
+			// }
+        // }
         echo json_encode($result);
         die();
 

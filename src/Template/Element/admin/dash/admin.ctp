@@ -24,7 +24,7 @@
                          <option <?= (@$this->request->query['estados_filter']) == 'GO' ? 'selected' : '' ?> value="GO">Goiás</option>
                          <option <?= (@$this->request->query['estados_filter']) == 'MA' ? 'selected' : '' ?> value="MA">Maranhão</option>
                          <option <?= (@$this->request->query['estados_filter']) == 'MG' ? 'selected' : '' ?> value="MG">Minas Gerais</option>
-                         <option <?= (@$this->request->query['estados_filter']) == 'AC' ? 'selected' : '' ?> value="MS">Mato Grosso do Sul</option>
+                         <option <?= (@$this->request->query['estados_filter']) == 'MS' ? 'selected' : '' ?> value="MS">Mato Grosso do Sul</option>
                          <option  value="MT">Mato Grosso</option>
                          <option <?= (@$this->request->query['estados_filter']) == 'PA' ? 'selected' : '' ?> value="PA">Pará</option>
                          <option <?= (@$this->request->query['estados_filter']) == 'PB' ? 'selected' : '' ?> value="PB">Paraíba</option>

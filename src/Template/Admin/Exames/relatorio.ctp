@@ -31,19 +31,19 @@
                         <div class="row">
                              <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Amostra ID</label>
-                                <input class="form-control" name="amostra_id" value="<?=@$this->request->data['amostra_id']?>">
+                                <input class="form-control" name="amostra_id" value="">
                             </div> 
                             <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Lote</label>
-                                <input class="form-control" name="amostra_id" value="<?=@$this->request->data['amostra_id']?>">
+                                <input class="form-control" name="lote" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Date Início</label>
-                                <input class="form-control" name="data_init" value="<?=@$this->request->data['data_init']?>" type="date">
+                                <input class="form-control" name="data_init" value="" type="date">
                             </div>
                             <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Date Fim</label>
-                               <input class="form-control" type="date" name="data_fim" value="<?=@$this->request->data['data_fim']?>">
+                               <input class="form-control" type="date" name="data_fim" value="">
                             </div>
                         </div>
 

@@ -5,6 +5,11 @@ use App\Controller\AppController;
 use Cake\Http\Client;
 use DOMDocument;
 use Cake\Http\Exception\BadRequestException;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use Cake\I18n\Time;
+use Cake\I18n\FrozenDate;
+use Cake\I18n\FrozenTime;
 
 /**
  * Amostras Controller
@@ -21,9 +26,214 @@ class AmostrasController extends AppController
         parent::initialize();
         $this->loadComponent('Paginator');
         $this->loadModel('Exames');
+        $this->loadComponent('Email');
     }
 
+    public function sendEmail()
+    {
+         if ($this->request->is('post')) {
+            $conditions = [];
 
+            $redirect = [
+                'amostra_id' => $this->request->data['amostra_id'],
+                'lote' => $this->request->data['lote'],
+                'data_init' => $this->request->data['data_init'],
+                'data_fim' => $this->request->data['data_fim'],
+            ];
+
+            if($this->Auth->user('user_type_id') == 3){
+                $conditions['Exames.created_by'] = $this->Auth->user('id');
+            }
+
+            if($this->Auth->user('user_type_id') == 2){
+                $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+            }
+            
+            if(!empty($this->request->data['amostra_id'])){
+                $conditions['code_amostra'] = $this->request->data['amostra_id'];
+            } 
+
+            if(!empty($this->request->data['lote'])){
+                $conditions['lote'] = $this->request->data['lote'];
+            }
+
+            if (!empty($this->request->data['data_init'])){
+                $data_de = $this->request->data['data_init'];
+                $conditions['cast(Exames.created as date) >='] = $data_de;
+            }
+
+            if (!empty($this->request->data['data_fim'])){
+                $data_ate = $this->request->data['data_fim'];
+                $conditions['cast(Exames.created as date) >='] = $data_ate;
+             }
+
+            $amostras = $this->Amostras->find('all',[
+                'contain' => 'Exames.Users',
+                'conditions' => $conditions
+            ])->toList();
+
+            $qtd_colunas = 7;
+
+            $nome_colunas = [
+                'Id',
+                'Amostra ID',
+                'Lote',
+                'UF',
+                'Idade',
+                'Sexo',
+                'Resultado',
+                'Data de criação',
+            ];
+
+            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+
+            $objPHPExcel = new PHPExcel();
+
+            for ($i = 0; $i <= $qtd_colunas; $i++)
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]); 
+
+            foreach($amostras as $i => $amostra){
+                 $dados = [
+                    $amostra->id,
+                    $amostra->code_amostra,
+                    $amostra->lote,
+                    $amostra->uf,
+                    $amostra->idade,
+                    $amostra->sexo,
+                    $amostra->exame->resultado,
+                    $amostra->created->i18nFormat('dd/MM/yyyy HH:mm')
+                ];
+
+                for ($j = 0; $j <= $qtd_colunas; $j++) {
+                    if (isset($alfabeto[$j])) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$j] . ($i + 2),$dados[$j]);
+                    }
+                }
+
+            }
+
+            $nome_arquivo = md5(date('Y-m-d_H-i-s')) . '_reimport.xls';
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save(XLS_AMOSTRAS . $nome_arquivo);
+
+
+            $dadosEmail = array();
+            $dadosEmail['from'] = ['lucas.santos@dedtechsolutions.com.br' => 'Lucas Agrega'];
+            $dadosEmail['to'] = $this->Auth->user('email');
+            // $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
+            $dadosEmail['subject'] = 'Relatório - Amostras';
+
+            $dadosEmail['message'] = 'segue em anexo o relatorio das amostras amostras';
+
+            $dadosEmail['attachments'] = [
+                                            $nome_arquivo => [
+                                                'file' => XLS_AMOSTRAS . $nome_arquivo,
+                                                // 'mimetype' => 'image/png',
+                                                // 'contentId' => 'my-unique-id'
+                                            ]
+                                        ];
+
+           
+            $this->Email->sendEmail($dadosEmail);
+            
+            $handleRed = array_merge(['controller' => 'amostras', 'action' => 'index'], $redirect);
+
+            $this->Flash->success(__('E-mail enviado com sucesso!'));
+           return $this->redirect($handleRed);
+            
+        }
+    }
+
+    public function generateExcel()
+    {   
+
+        if ($this->request->is('post')) {
+            $conditions = [];
+
+            if($this->Auth->user('user_type_id') == 3){
+                $conditions['Exames.created_by'] = $this->Auth->user('id');
+            }
+
+            if($this->Auth->user('user_type_id') == 2){
+                $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
+            }
+            
+            if(!empty($this->request->data['amostra_id'])){
+                $conditions['code_amostra'] = $this->request->data['amostra_id'];
+            } 
+
+            if(!empty($this->request->data['lote'])){
+                $conditions['lote'] = $this->request->data['lote'];
+            }
+
+            if (!empty($this->request->data['data_init'])){
+                $data_de = $this->request->data['data_init'];
+                $conditions['cast(Exames.created as date) >='] = $data_de;
+            }
+
+            if (!empty($this->request->data['data_fim'])){
+                $data_ate = $this->request->data['data_fim'];
+                $conditions['cast(Exames.created as date) >='] = $data_ate;
+             }
+
+            $amostras = $this->Amostras->find('all',[
+                'contain' => 'Exames.Users',
+                'conditions' => $conditions
+            ])->toList();
+
+            $qtd_colunas = 7;
+
+            $nome_colunas = [
+                'Id',
+                'Amostra ID',
+                'Lote',
+                'UF',
+                'Idade',
+                'Sexo',
+                'Resultado',
+                'Data de criação',
+            ];
+
+            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+
+            $objPHPExcel = new PHPExcel();
+
+            for ($i = 0; $i <= $qtd_colunas; $i++)
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]); 
+
+            foreach($amostras as $i => $amostra){
+                 $dados = [
+                    $amostra->id,
+                    $amostra->code_amostra,
+                    $amostra->lote,
+                    $amostra->uf,
+                    $amostra->idade,
+                    $amostra->sexo,
+                    $amostra->exame->resultado,
+                    $amostra->created->i18nFormat('dd/MM/yyyy HH:mm')
+                ];
+
+                for ($j = 0; $j <= $qtd_colunas; $j++) {
+                    if (isset($alfabeto[$j])) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$j] . ($i + 2),$dados[$j]);
+                    }
+                }
+
+            }
+
+            $arquivo = 'amostras_'.date('Y-m-d-H-i-s'); 
+
+            // Redirect output to a client’s web browser (Excel5) 
+            header("Content-Type: application/vnd.ms-excel"); 
+            header("Content-Disposition: attachment;filename=$arquivo.xls"); 
+            header("Cache-Control: max-age=0"); 
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
+            $objWriter->save('php://output');
+
+        }
+
+    }
 
     public function sendData()
     {
@@ -199,13 +409,13 @@ class AmostrasController extends AppController
     public function index()
     {   
 
-        $limitDefault = 15;
+        // $limitDefault = 300;
         $conditions = [];
 
-        $this->paginate = [
-            'limit' => $limitDefault,
-            'contain' => ['Exames.Users']
-        ];
+        // $this->paginate = [
+        //     'limit' => $limitDefault,
+        //     'contain' => ['Exames.Users']
+        // ];
 
 
         if($this->Auth->user('user_type_id') == 3){
@@ -217,16 +427,28 @@ class AmostrasController extends AppController
         }
         
         if(!empty($this->request->query['amostra_id'])){
-            $conditions['code_amostra like'] = $this->request->query['amostra_id'].'%';
+            $conditions['code_amostra'] = $this->request->query['amostra_id'];
         } 
 
         if(!empty($this->request->query['lote'])){
             $conditions['lote'] = $this->request->query['lote'];
         }
 
-        $amostras = $this->paginate($this->Amostras,[
-            'conditions' => $conditions
-        ]);
+        if (!empty($this->request->query['data_init'])){
+            $data_de = $this->request->query['data_init'];
+            $conditions['cast(Amostras.created as date) >='] = $data_de;
+        }
+
+        if (!empty($this->request->query['data_fim'])){
+            $data_ate = $this->request->query['data_fim'];
+            $conditions['cast(Amostras.created as date) >='] = $data_ate;
+         }
+
+
+        $amostras = $this->Amostras->find('all',[
+            'contain' => ['Exames.Users'],
+             'conditions' => $conditions
+        ])->toList();
 
         $this->set(compact('amostras'));
     }

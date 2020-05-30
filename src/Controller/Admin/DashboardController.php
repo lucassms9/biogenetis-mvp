@@ -371,21 +371,21 @@ class DashboardController extends AppController
 
 	        	if($amostra40->resultado == 'Em Análise'){
 					$inconclusivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra40->amostra->sexo == 'M'){
 						$inconclusivoM++;
 					}else{
 						$inconclusivoF++;
 					}
 				}elseif($amostra40->resultado == 'Positivo'){
 					$positivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra40->amostra->sexo == 'M'){
 						$positivoM++;
 					}else{
 						$positivoF++;
 					}
 				}elseif($amostra40->resultado == 'Negativo'){
 					$negativo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra40->amostra->sexo == 'M'){
 						$negativoM++;
 					}else{
 						$negativoF++;
@@ -430,21 +430,21 @@ class DashboardController extends AppController
 
 	        	if($amostra60->resultado == 'Em Análise'){
 					$inconclusivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra60->amostra->sexo == 'M'){
 						$inconclusivoM++;
 					}else{
 						$inconclusivoF++;
 					}
 				}elseif($amostra60->resultado == 'Positivo'){
 					$positivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra60->amostra->sexo == 'M'){
 						$positivoM++;
 					}else{
 						$positivoF++;
 					}
 				}elseif($amostra60->resultado == 'Negativo'){
 					$negativo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra60->amostra->sexo == 'M'){
 						$negativoM++;
 					}else{
 						$negativoF++;
@@ -550,21 +550,21 @@ class DashboardController extends AppController
 
 	        	if($amostra81->resultado == 'Em Análise'){
 					$inconclusivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra81->amostra->sexo == 'M'){
 						$inconclusivoM++;
 					}else{
 						$inconclusivoF++;
 					}
 				}elseif($amostra81->resultado == 'Positivo'){
 					$positivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra81->amostra->sexo == 'M'){
 						$positivoM++;
 					}else{
 						$positivoF++;
 					}
 				}elseif($amostra81->resultado == 'Negativo'){
 					$negativo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra81->amostra->sexo == 'M'){
 						$negativoM++;
 					}else{
 						$negativoF++;

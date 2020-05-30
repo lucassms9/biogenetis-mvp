@@ -49,6 +49,7 @@ class Application extends BaseApplication
             $this->addPlugin(\DebugKit\Plugin::class);
         }
 
+        $this->addPlugin('Cewi/Excel');
         // Load more plugins here
     }
 

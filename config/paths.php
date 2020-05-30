@@ -56,6 +56,7 @@ define('CONFIG', ROOT . DS . 'config' . DS);
 define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 
 define('AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras' . DS);
+define('XLS_AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras_excel' . DS);
 
 /**
  * Path to the tests directory.

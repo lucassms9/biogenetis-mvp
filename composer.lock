@@ -4,8 +4,64 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bae3f640a631a993a49129d353eefbf9",
+    "content-hash": "53f1dac0651db61e6fa16764b3bbb374",
     "packages": [
+        {
+            "name": "Cewi/Excel",
+            "version": "0.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cewi/excel.git",
+                "reference": "ea48c1b63bd7a3842103f750502b6550322e8c32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cewi/excel/zipball/ea48c1b63bd7a3842103f750502b6550322e8c32",
+                "reference": "ea48c1b63bd7a3842103f750502b6550322e8c32",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "cakephp/plugin-installer": "*",
+                "php": ">=5.4",
+                "phpoffice/phpexcel": "1.8.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cewi\\Excel\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Cewi\\Excel\\Test\\": "tests",
+                    "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cornelius Wichmann",
+                    "role": "Author"
+                }
+            ],
+            "description": "Excel plugin for CakePHP 3",
+            "homepage": "https://github.com/cewi/excel",
+            "keywords": [
+                "cakephp",
+                "excel"
+            ],
+            "support": {
+                "issues": "https://github.com/cewi/excel/issues",
+                "source": "https://github.com/cewi/excel"
+            },
+            "time": "2019-10-12T14:08:32+00:00"
+        },
         {
             "name": "aura/intl",
             "version": "3.0.0",
@@ -342,6 +398,69 @@
                 "php mobile detect"
             ],
             "time": "2019-09-18T18:44:20+00:00"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/1441011fb7ecdd8cc689878f54f8b58a6805f870",
+                "reference": "1441011fb7ecdd8cc689878f54f8b58a6805f870",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": "^5.2|^7.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Erik Tilt"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://rootslabs.net"
+                },
+                {
+                    "name": "Mark Baker",
+                    "homepage": "http://markbakeruk.net"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "https://github.com/PHPOffice/PHPExcel",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "abandoned": "phpoffice/phpspreadsheet",
+            "time": "2018-11-22T23:07:24+00:00"
         },
         {
             "name": "psr/container",

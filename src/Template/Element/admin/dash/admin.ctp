@@ -100,111 +100,111 @@
                  <div class="table-responsive">
                             <table class="table table-bordered mb-0">
                                 <thead>
-                                    <tr>
-                                        <th style="border-bottom: 2px solid #b8e6f7; border-right: 2px solid #b8e6f7;" class="table-info" scope="col"></th>
-                                        <th class="table-info" style="text-align: center;" colspan="9" scope="col">TOTAL</th>
+                                    <tr style="text-align: center;">
+                                        <th  class="td-blue-strong" scope="col">COVID</th>
+                                        <th class="td-blue-strong" style="text-align: center;" colspan="9" scope="col">TOTAL</th>
                                     </tr>
 
-                                    <tr>
-                                        <th style="border-bottom: 2px solid #b8e6f7;" class="table-info" class="table-info" scope="col"></th>
-                                        <th class="table-info" colspan="2" scope="col">POS</th>
-                                        <th class="table-info" colspan="2" scope="col">NEG</th>
-                                        <th class="table-info" colspan="2" scope="col">INC</th>
-                                        <th class="table-info" style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
-                                        <th class="table-info" style="vertical-align: middle;" rowspan="2" scope="col">%</th>
+                                    <tr style="text-align: center;">
+                                        <th class="td-blue-strong" class="td-blue-strong" scope="col">RESULTADOS</th>
+                                        <th class="td-blue-strong" colspan="2" scope="col">POS</th>
+                                        <th class="td-blue-strong" colspan="2" scope="col">NEG</th>
+                                        <th class="td-blue-strong" colspan="2" scope="col">INC</th>
+                                        <th class="td-blue-strong" style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
+                                        <th class="td-blue-strong" style="vertical-align: middle;" rowspan="2" scope="col">%</th>
                                     </tr>
-                                     <tr>
-                                        <th class="table-info" scope="col"></th>
-                                        <th class="table-info" scope="col">MASC</th>
-                                        <th class="table-info" scope="col">FEM</th>
-                                        <th class="table-info" scope="col">MASC</th>
-                                        <th class="table-info" scope="col">FEM</th>
-                                        <th class="table-info" scope="col">MASC</th>
-                                        <th class="table-info" scope="col">FEM</th>
+                                     <tr style="text-align: center;">
+                                        <th class="td-blue-strong" scope="col">IDADE/SEXO</th>
+                                        <th class="td-blue-strong" scope="col">MASC</th>
+                                        <th class="td-blue-strong" scope="col">FEM</th>
+                                        <th class="td-blue-strong" scope="col">MASC</th>
+                                        <th class="td-blue-strong" scope="col">FEM</th>
+                                        <th class="td-blue-strong" scope="col">MASC</th>
+                                        <th class="td-blue-strong" scope="col">FEM</th>
                                     </tr>
                                 </thead>
                                  <tbody>
                                      <tr>
-                                        <td class="table-info">0-20</td>
-                                        <td id="020pm"></td>
-                                        <td id="020pf"></td>
-                                        <td id="020nm"></td>
-                                        <td id="020nf"></td>
-                                        <td id="020im"></td>
-                                        <td id="020if"></td>
-                                        <td id="020tu"></td>
-                                        <td id="020tp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">0-20</td>
+                                        <td style="text-align: right;" id="020pm"></td>
+                                        <td style="text-align: right;" id="020pf"></td>
+                                        <td style="text-align: right;" id="020nm"></td>
+                                        <td style="text-align: right;" id="020nf"></td>
+                                        <td style="text-align: right;" id="020im"></td>
+                                        <td style="text-align: right;" id="020if"></td>
+                                        <td style="text-align: right;" id="020tu"></td>
+                                        <td style="text-align: right;" id="020tp"></td>
                                     </tr>
                                       <tr>
-                                        <td class="table-info">21-40</td>
-                                        <td id="2140pm"></td>
-                                        <td id="2140pf"></td>
-                                        <td id="2140nm"></td>
-                                        <td id="2140nf"></td>
-                                        <td id="2140im"></td>
-                                        <td id="2140if"></td>
-                                        <td id="2140tu"></td>
-                                        <td id="2140tp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">21-40</td>
+                                        <td style="text-align: right;" id="2140pm"></td>
+                                        <td style="text-align: right;" id="2140pf"></td>
+                                        <td style="text-align: right;" id="2140nm"></td>
+                                        <td style="text-align: right;" id="2140nf"></td>
+                                        <td style="text-align: right;" id="2140im"></td>
+                                        <td style="text-align: right;" id="2140if"></td>
+                                        <td style="text-align: right;" id="2140tu"></td>
+                                        <td style="text-align: right;" id="2140tp"></td>
                                     </tr> 
                                     <tr>
-                                        <td class="table-info">41-60</td>
-                                        <td id="4160pm"></td>
-                                        <td id="4160pf"></td>
-                                        <td id="4160nm"></td>
-                                        <td id="4160nf"></td>
-                                        <td id="4160im"></td>
-                                        <td id="4160if"></td>
-                                        <td id="4160tu"></td>
-                                        <td id="4160tp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">41-60</td>
+                                        <td style="text-align: right;" id="4160pm"></td>
+                                        <td style="text-align: right;" id="4160pf"></td>
+                                        <td style="text-align: right;" id="4160nm"></td>
+                                        <td style="text-align: right;" id="4160nf"></td>
+                                        <td style="text-align: right;" id="4160im"></td>
+                                        <td style="text-align: right;" id="4160if"></td>
+                                        <td style="text-align: right;" id="4160tu"></td>
+                                        <td style="text-align: right;" id="4160tp"></td>
                                     </tr>
                                     <tr>
-                                        <td class="table-info">61-80</td>
-                                        <td id="6180pm"></td>
-                                        <td id="6180pf"></td>
-                                        <td id="6180nm"></td>
-                                        <td id="6180nf"></td>
-                                        <td id="6180im"></td>
-                                        <td id="6180if"></td>
-                                        <td id="6180tu"></td>
-                                        <td id="6180tp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">61-80</td>
+                                        <td style="text-align: right;" id="6180pm"></td>
+                                        <td style="text-align: right;" id="6180pf"></td>
+                                        <td style="text-align: right;" id="6180nm"></td>
+                                        <td style="text-align: right;" id="6180nf"></td>
+                                        <td style="text-align: right;" id="6180im"></td>
+                                        <td style="text-align: right;" id="6180if"></td>
+                                        <td style="text-align: right;" id="6180tu"></td>
+                                        <td style="text-align: right;" id="6180tp"></td>
                                     </tr> 
                                     <tr>
-                                        <td class="table-info">81</td>
-                                        <td id="81pm"></td>
-                                        <td id="81pf"></td>
-                                        <td id="81nm"></td>
-                                        <td id="81nf"></td>
-                                        <td id="81im"></td>
-                                        <td id="81if"></td>
-                                        <td id="81tu"></td>
-                                        <td id="81tp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">81</td>
+                                        <td style="text-align: right;" id="81pm"></td>
+                                        <td style="text-align: right;" id="81pf"></td>
+                                        <td style="text-align: right;" id="81nm"></td>
+                                        <td style="text-align: right;" id="81nf"></td>
+                                        <td style="text-align: right;" id="81im"></td>
+                                        <td style="text-align: right;" id="81if"></td>
+                                        <td style="text-align: right;" id="81tu"></td>
+                                        <td style="text-align: right;" id="81tp"></td>
                                     </tr>
                                     <tr>
-                                        <td class="table-info">TOTAIS</td>
-                                        <td id="totalupm"></td>
-                                        <td id="totalupf"></td>
-                                        <td id="totalunm"></td>
-                                        <td id="totalunf"></td>
-                                        <td id="totaluim"></td>
-                                        <td id="totaluif"></td>
-                                        <td id="totalutu"></td>
-                                        <td id="totalutp"></td>
+                                        <td style="text-align: center;" class="td-blue-strong">TOTAIS</td>
+                                        <td style="text-align: right;" id="totalupm"></td>
+                                        <td style="text-align: right;" id="totalupf"></td>
+                                        <td style="text-align: right;" id="totalunm"></td>
+                                        <td style="text-align: right;" id="totalunf"></td>
+                                        <td style="text-align: right;" id="totaluim"></td>
+                                        <td style="text-align: right;" id="totaluif"></td>
+                                        <td style="text-align: right;" id="totalutu"></td>
+                                        <td style="text-align: right;" id="totalutp"></td>
                                     </tr> 
                                     <tr>
-                                        <td class="table-info">%</td>
-                                        <td id="totalporpm" class="table-danger">10%</td>
-                                        <td id="totalporpf" class="table-danger">10%</td>
-                                        <td id="totalpornm" class="table-success">10%</td>
-                                        <td id="totalpornf" class="table-success">10%</td>
-                                        <td id="totalporim" class="table-warning">10%</td>
-                                        <td id="totalporif" class="table-warning">10%</td>
-                                        <td id="totalportp">100%</td>
+                                        <td style="text-align: center;" class="td-blue-strong">%</td>
+                                        <td style="text-align: right;"  id="totalporpm" class="td-red"></td>
+                                        <td style="text-align: right;" id="totalporpf" class="td-red"></td>
+                                        <td style="text-align: right;" id="totalpornm" class="td-green"></td>
+                                        <td style="text-align: right;" id="totalpornf" class="td-green"></td>
+                                        <td style="text-align: right;" id="totalporim" class="td-yellow"></td>
+                                        <td style="text-align: right;" id="totalporif" class="td-yellow"></td>
+                                        <td  style="vertical-align: middle; text-align: right;" colspan="2" rowspan="2" id="totalportp"></td>
                                     </tr> 
                                     <tr>
-                                        <td class="table-info">% TOTAL</td>
-                                        <td id="totalmfporpos" style="text-align: center;" class="table-danger" colspan="2">10%</td>
-                                        <td id="totalmfporneg" style="text-align: center;" class="table-success"colspan="2">10%</td>
-                                        <td id="totalmfporinc" style="text-align: center;" class="table-warning" colspan="2">10%</td>
+                                        <td style="text-align: center;" class="td-blue-strong">% TOTAL</td>
+                                        <td style="text-align: center;" id="totalmfporpos" style="text-align: center;" class="td-red" colspan="2"></td>
+                                        <td style="text-align: center;" id="totalmfporneg" style="text-align: center;" class="td-green"colspan="2"></td>
+                                        <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>
                                     </tr>
                                 </tbody>
                             </table>

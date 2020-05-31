@@ -168,25 +168,25 @@ function amountTableAge(data) {
     $('#totaluif').text(totalIF);
     $('#totalutu').text(totalTT);
 
-    $('#020tp').text('% '+ ((total020 / totalTT) * 100).toFixed(2) );
-    $('#2140tp').text('% '+ ((total2140 / totalTT) * 100).toFixed(2) );
-    $('#4160tp').text('% '+ ((total4160 / totalTT) * 100).toFixed(2) );
-    $('#81tp').text('% '+ ((total81 / totalTT) * 100).toFixed(2) );
-    $('#6180tp').text('% '+ ((total6180 / totalTT) * 100).toFixed(2) );
-    $('#totalutp').text('% '+ ( ((total020 / totalTT) * 100) + ((total2140 / totalTT) * 100) + ((total4160 / totalTT) * 100) + ((total6180 / totalTT) * 100) + ((total81 / totalTT) * 100) ).toFixed(2));
+    $('#020tp').text(((total020 / totalTT) * 100).toFixed(2) + '%' );
+    $('#2140tp').text(((total2140 / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#4160tp').text(((total4160 / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#81tp').text(((total81 / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#6180tp').text(((total6180 / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#totalutp').text(( ((total020 / totalTT) * 100) + ((total2140 / totalTT) * 100) + ((total4160 / totalTT) * 100) + ((total6180 / totalTT) * 100) + ((total81 / totalTT) * 100) ).toFixed(2) + '%' );
 
-    $('#totalporpm').text('% '+ ((totalPM / totalTT) * 100).toFixed(2) );
-    $('#totalporpf').text('% '+ ((totalPF / totalTT) * 100).toFixed(2) );
-    $('#totalpornm').text('% '+ ((totalNM / totalTT) * 100).toFixed(2) );
-    $('#totalpornf').text('% '+ ((totalNF / totalTT) * 100).toFixed(2) );
-    $('#totalporim').text('% '+ ((totalIM / totalTT) * 100).toFixed(2) );
-    $('#totalporif').text('% '+ ((totalIF / totalTT) * 100).toFixed(2) );
-    $('#totalportp').text('% '+ ( ((totalPM / totalTT) * 100) + ((totalPF / totalTT) * 100) + ((totalNM / totalTT) * 100) + ((totalNF / totalTT) * 100) + ((totalIM / totalTT) * 100) + ((totalIF / totalTT) * 100) ).toFixed(2) );
+    $('#totalporpm').text(((totalPM / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalporpf').text(((totalPF / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalpornm').text(((totalNM / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalpornf').text(((totalNF / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalporim').text(((totalIM / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalporif').text(((totalIF / totalTT) * 100).toFixed(2) + '%'  );
+    $('#totalportp').text(( ((totalPM / totalTT) * 100) + ((totalPF / totalTT) * 100) + ((totalNM / totalTT) * 100) + ((totalNF / totalTT) * 100) + ((totalIM / totalTT) * 100) + ((totalIF / totalTT) * 100) ).toFixed(2) + '%'  );
 
 
-    $('#totalmfporpos').text( (((totalPM + totalPF) / totalTT) * 100).toFixed(2) );
-    $('#totalmfporneg').text( (((totalNM + totalNF) / totalTT) * 100).toFixed(2) );
-    $('#totalmfporinc').text( (((totalIM + totalIF) / totalTT) * 100).toFixed(2) );
+    $('#totalmfporpos').text( (((totalPM + totalPF) / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#totalmfporneg').text( (((totalNM + totalNF) / totalTT) * 100).toFixed(2)  + '%'  );
+    $('#totalmfporinc').text( (((totalIM + totalIF) / totalTT) * 100).toFixed(2)  + '%'  );
 
 }
 function runExamesIdade(data) {

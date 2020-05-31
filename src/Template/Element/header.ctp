@@ -26,9 +26,7 @@
                         <!-- <img src="assets/images/logo-sm-light.png" alt="" height="22"> -->
                     <!-- </span> -->
                     <span class="logo-lg">
-                        <img style="    background: #ffffffeb;
-    padding: 5px;
-    border-radius: 10px;" src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" alt="" height="60">
+                        <img src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" alt="" height="55">
                     </span>
                 </a>
             </div>

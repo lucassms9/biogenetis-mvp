@@ -44,9 +44,7 @@ $cakeDescription = 'Login - Biogenetics';
              <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center mb-5">
-                            <a style="  background: #ffffffeb;
-    border-radius: 15px;
-    padding: 15px;" class="logo"><img src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.svg" height="40" alt="logo"></a>
+                            <a class="logo"><img src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.png" height="70" alt="logo"></a>
                            
                             <!-- <h5 class="font-size-16 text-white-50 mb-4">Responsive Bootstrap 4 Admin Dashboard</h5> -->
                         </div>
@@ -54,6 +52,13 @@ $cakeDescription = 'Login - Biogenetics';
                 </div>
                 <!-- end row -->
             <?= $this->fetch('content') ?>
+            <img style="position: absolute;
+    top: 6%;
+    right: 4%;" src="<?= $this->Url->build('/', true);?>img/image-home.png" height="250" alt="home">
+
+    <img style="position: absolute;
+    top: 50%;
+    left: 4%;" src="<?= $this->Url->build('/', true);?>img/image-home-2.png" height="250"  alt="home">
         </div>
     </div>
 

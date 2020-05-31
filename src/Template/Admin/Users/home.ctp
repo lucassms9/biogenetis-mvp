@@ -27,8 +27,21 @@
                 <div style="height: 250px;" class="card">
                     <div style="    display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;" class="card-body"> 
-                            <h4>Favor escolher uma das opções do menu</h4>
+                            <div class="row">
+                                  <div class="col-xl-12">
+                                <h4>Favor escolher uma das opções do menu</h4>
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <img style="margin: 40px;" height="100" src="<?= $this->Url->build('/', true);?>img/image-home.png">
+                                    <img style="margin: 40px;" height="100" src="<?= $this->Url->build('/', true);?>img/image-home-2.png">
+                                    <img style="margin: 40px;" height="100" src="<?= $this->Url->build('/', true);?>img/image-home-3.png">
+                                    <img style="margin: 40px;" height="100" src="<?= $this->Url->build('/', true);?>img/image-home-4.png">
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>

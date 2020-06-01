@@ -9,11 +9,12 @@
                 <div class="card">
                     <div style="height: 500px;" class="card-body"> 
                          <div class="row">
-                        <div class="col-sm-6">
+                        <div  class="col-sm-6">
+
                         <div class="text-center">
-                            <a class="logo"><img src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.png" height="80" alt="logo"></a>
+                            <a  class="logo-home"><img id="logo-home" style="display: none;" src="<?= $this->Url->build('/', true);?>img/biogenetics-logo.png" height="80" alt="logo"></a>
                         </div>
-                        <p style="font-size: 28px;color: #004ba7;font-family: Open Sans,sans-serif;text-align: center;" class="cobalt f16 mb12 mb16-m style-module--subtitle--3nUDw">Favor escolher uma das opções do menu</p>
+                        <p id="text-home" style="display: none; font-size: 28px;color: #004ba7;font-family: Open Sans,sans-serif;text-align: center;" class="cobalt f16 mb12 mb16-m style-module--subtitle--3nUDw">Favor escolher uma das opções do menu</p>
                     </div>
                     <div class="col-sm-6">
                         <img style="width: 70%;left: 23%;top: 50%;z-index: 0;position: absolute;" src="<?= $this->Url->build('/', true);?>img/image-home.png" alt="logo">
@@ -54,3 +55,4 @@
         </div> -->
     </div>
 </div>
+<script type="text/javascript" src="<?= $this->Url->build('/', true) ?>js/home/index.js"></script>

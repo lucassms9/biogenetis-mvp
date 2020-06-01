@@ -513,21 +513,21 @@ class DashboardController extends AppController
 
 	        	if($amostra80->resultado == 'Em Análise'){
 					$inconclusivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra80->amostra->sexo == 'M'){
 						$inconclusivoM++;
 					}else{
 						$inconclusivoF++;
 					}
 				}elseif($amostra80->resultado == 'Positivo'){
 					$positivo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra80->amostra->sexo == 'M'){
 						$positivoM++;
 					}else{
 						$positivoF++;
 					}
 				}elseif($amostra80->resultado == 'Negativo'){
 					$negativo++;
-					if($amostra20->amostra->sexo == 'M'){
+					if($amostra80->amostra->sexo == 'M'){
 						$negativoM++;
 					}else{
 						$negativoF++;

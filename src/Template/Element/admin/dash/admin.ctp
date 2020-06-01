@@ -169,7 +169,7 @@
                                         <td style="text-align: right;" id="6180tp"></td>
                                     </tr> 
                                     <tr>
-                                        <td style="text-align: center;" class="td-blue-strong">81</td>
+                                        <td style="text-align: center;" class="td-blue-strong">> 81</td>
                                         <td style="text-align: right;" id="81pm"></td>
                                         <td style="text-align: right;" id="81pf"></td>
                                         <td style="text-align: right;" id="81nm"></td>

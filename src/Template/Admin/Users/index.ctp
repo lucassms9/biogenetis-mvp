@@ -34,12 +34,12 @@
                                         <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('nome_completo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('email') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('senha') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('user_type_id') ?></th>
+                                        <!-- <th scope="col"><?= $this->Paginator->sort('senha') ?></th> -->
+                                        <th scope="col"><?= $this->Paginator->sort('user_type_id','Perfil') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('cliente_id') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                                        <th scope="col" class="actions"><?= __('Actions') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('created', 'Criado em') ?></th>
+                                        <!-- <th scope="col"><?= $this->Paginator->sort('modified') ?></th> -->
+                                        <th scope="col" class="actions"><?= __('Ações') ?></th>
                                     </tr>
                                 </thead>
                                  <tbody>
@@ -48,7 +48,7 @@
                                            <td><?= $this->Number->format($user->id) ?></td>
                                             <td><?= h($user->nome_completo) ?></td>
                                             <td><?= h($user->email) ?></td>
-                                            <td><?= h($user->senha) ?></td>
+                                            <!-- <td><?= h($user->senha) ?></td> -->
                                             <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->nome, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
                                             <td><?= $user->has('cliente') ? $this->Html->link($user->cliente->nome, ['controller' => 'Clientes', 'action' => 'view', $user->cliente->id]) : '' ?></td>
                                             <td><?= h($user->created) ?></td>

@@ -42,9 +42,7 @@
                                         <i style="margin-right: 5px;" class="mdi mdi-email-multiple"></i>Enviar por E-mail
                                     </button>
                                      <?= $this->Form->end() ?>
-                                    <button onclick="printerPage();" type="button" class="btn btn-secondary">
-                                        <i style="margin-right: 5px;" class="mdi mdi-printer"></i>Imprimir
-                                    </button>
+                                   
 
                                     <?= $this->Form->create(null,['action' => 'generateExcel']) ?>
                                         <input type="hidden" name="amostra_id" value="<?=@$this->request->query['amostra_id']?>">
@@ -56,6 +54,9 @@
                                             <i class="mdi mdi-file-excel"></i> Gerar Excel
                                         </button>
                                     <?= $this->Form->end() ?>
+                                     <button onclick="printerPage();" type="button" class="btn btn-secondary">
+                                        <i style="margin-right: 5px;" class="mdi mdi-printer"></i>Imprimir
+                                    </button>
                                 </div>
 
                             </div>
@@ -100,7 +101,7 @@
 
                       
                          <div class="mt-4">
-                            <h5>Plataforma de Inteligência Articial da Biogenitcs</h5>
+                            <h5>Plataforma de Inteligência Artificial da Biogenitcs</h5>
                             <p>Positivo: Lorem ipsum</p>
                             <p>Negativo: Lorem Ipsum</p>
                             <p>Inconclusivo: Lorem Ipsum</p>

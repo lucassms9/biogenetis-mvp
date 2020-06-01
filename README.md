@@ -1,3 +1,29 @@
+aumentar a fonte biogenetics - ok
+alterar layout de login - ok 
+alterar area retrita Covid Express - ok
+verificar o pq nao esta indo para home apos login
+na home criar o mesmo layout da login
+
+favor uma das opções acima do menu - colocar um efeito de transition - colocar sombra tbem
+
+dimunuir altura do header das paginas mantendo padrao
+
+dimunuir altura do box, icone, letras upload dos arquivos
+
+colocar frase preencha os campos abaixo
+  
+deixar o header das paginas de forma fixed seguindo o padrao do menu
+
+colocar texto alterar cor dos botoes azul mais claro e escuro na lista de amostras
+
+no excel e na listagem o resultado sempre sera a ultima coluna
+centralizar dados no excel
+colocar header da bio no arquivo excel e impressao
+todos lugares colocar coluna data de criação entre amostra de lote
+
+
+
+
 # CakePHP Application Skeleton
 
 [![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)

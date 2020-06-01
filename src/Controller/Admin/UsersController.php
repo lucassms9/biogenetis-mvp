@@ -17,7 +17,10 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function home(){
+        $action = 'Home';
+        $title = 'Biogenetics';
 
+        $this->set(compact('action','title'));
     }
     
     public function index()

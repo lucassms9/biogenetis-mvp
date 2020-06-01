@@ -107,6 +107,15 @@ a {
     border-radius: 29% 0% / 30% 24% !important;
     background: #0099f0 !important;
 }
+
+/*home*/
+
+.page-title-box{
+    padding: 5px 12px 30px 13px !important;
+}
+.page-content-wrapper {
+    margin-top: -25px;
+}
 /*login*/
 .bg-pattern {
     background-image: none !important; 

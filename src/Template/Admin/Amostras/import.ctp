@@ -48,14 +48,13 @@
 
                         </div>
 
-                        <!-- <div class="dz-image"> -->
-                            <!-- <img data-dz-thumbnail="" src="https://pngimage.net/wp-content/uploads/2018/06/teste-png-3.png"> -->
-                        <!-- </div> -->
-
                         <?= $this->Form->end() ?>
 
+                        <hr>
+                            <h3>Preencha os campos abaixo</h3>
+                        <hr>
                         <?= $this->Form->create(null, ['id' => 'sendData', 'url' => ['action' => 'sendData'] ]) ?>
-                        
+                            
                          <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead>

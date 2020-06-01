@@ -95,7 +95,7 @@ a {
 }
 
 .dropzone .dz-preview .dz-error-message{
-    top:150px !important;
+    left: -25px !important;
 }
 .dropzone .dz-preview.dz-file-preview .dz-details{
      color: #fdf6f6;
@@ -104,10 +104,23 @@ a {
     background: none !important;
 }
 .dropzone .dz-preview.dz-file-preview .dz-image {
-    border-radius: 29% 0% / 30% 24% !important;
+    border-radius: 0% 29% / 30% 24% !important;
     background: #0099f0 !important;
+    width: 100px !important;
+    height: 100px !important;
 }
 
+.dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg{
+    width: 44px !important;
+    height: 44px !important;
+}
+.dropzone{
+    padding: 0 20px !important;
+}
+.dropzone .dz-preview .dz-details{
+    font-size: 12px !important;
+    padding: 2em 0em !important;
+}
 /*home*/
 
 .page-title-box{

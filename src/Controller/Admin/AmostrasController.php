@@ -187,12 +187,12 @@ class AmostrasController extends AppController
             $nome_colunas = [
                 'Id',
                 'Amostra ID',
+                'Data de criação',
                 'Lote',
                 'UF',
                 'Idade',
                 'Sexo',
                 'Resultado',
-                'Data de criação',
             ];
 
             $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
@@ -206,12 +206,12 @@ class AmostrasController extends AppController
                  $dados = [
                     $amostra->id,
                     $amostra->code_amostra,
+                    $amostra->created->i18nFormat('dd/MM/yyyy HH:mm'),
                     $amostra->lote,
                     $amostra->uf,
                     $amostra->idade,
                     $amostra->sexo,
                     $amostra->exame->resultado,
-                    $amostra->created->i18nFormat('dd/MM/yyyy HH:mm')
                 ];
 
                 for ($j = 0; $j <= $qtd_colunas; $j++) {

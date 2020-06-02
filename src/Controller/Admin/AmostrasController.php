@@ -415,6 +415,8 @@ class AmostrasController extends AppController
     public function index()
     {   
 
+        $action = 'Ver Todas';
+        $title = 'Amostras';
         // $limitDefault = 300;
         $conditions = [];
 
@@ -456,7 +458,7 @@ class AmostrasController extends AppController
              'conditions' => $conditions
         ])->toList();
 
-        $this->set(compact('amostras'));
+        $this->set(compact('amostras','action','title'));
     }
 
     /**

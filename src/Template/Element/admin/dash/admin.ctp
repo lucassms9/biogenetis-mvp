@@ -46,6 +46,13 @@
 
 </div>
 <div id="printer-dash-to">
+
+     <div class="row">
+        <div class="col-md-12 printHeader">
+            <img width="100%" src="<?= $this->Url->build('/', true);?>img/header-printer.png">
+        </div>
+    </div>
+
 <div class="row">
     <div class="col-sm-6">
         <div class="card">

@@ -201,3 +201,13 @@ a {
     border-bottom: 1px solid #afafaf !important;
     border-top: 1px solid #afafaf !important;
 }
+
+.printHeader {
+   display : none;
+}
+
+@media print {
+    .printHeader {
+       display : block;
+    }
+}

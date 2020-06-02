@@ -1,23 +1,6 @@
-<!-- Page-Title -->
-<div class="page-title-box">
-<div class="container-fluid">
-    <div class="row align-items-center">
-        <div class="col-md-8">
-            <h4 class="page-title mb-1">Amostras</h4>
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Amostras</a></li>
-            <li class="breadcrumb-item active">Ver Todas</li>
-            </ol>
-        </div>
-        <div class="col-md-4">
 
-        </div>
-    </div>
-
-</div>
-</div>
+<?php echo $this->element('admin/home/index');?>
 <!-- end page title end breadcrumb -->
-
 
 <div class="page-content-wrapper">
     <div class="container-fluid">
@@ -62,6 +45,11 @@
                             </div>
                         </div>
                         <div id="printer">
+                        <div class="row">
+                            <div class="col-md-12 printHeader">
+                                <img width="100%" src="<?= $this->Url->build('/', true);?>img/header-printer.png">
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">

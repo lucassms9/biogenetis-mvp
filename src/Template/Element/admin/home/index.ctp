@@ -15,5 +15,13 @@
     </div>
 
 </div>
+<div style="    background: #fff;
+    width: 100%;
+    margin-top: 5px;
+    max-width: 1232px;
+    height: 15px;
+    left: 24px;
+    border-radius: 2px;
+    position: absolute;" class="row-fake"></div>
 </div>
 <!-- end page title end breadcrumb -->

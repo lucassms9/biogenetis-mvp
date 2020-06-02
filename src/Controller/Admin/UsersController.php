@@ -26,6 +26,9 @@ class UsersController extends AppController
     public function index()
     {   
 
+        $action = 'Ver Todos';
+        $title = 'Usuários';
+
         $conditions = [];
 
         $this->paginate = [
@@ -42,7 +45,7 @@ class UsersController extends AppController
             'conditions' => $conditions
         ]);
 
-        $this->set(compact('users'));
+        $this->set(compact('users','action','title'));
     }
 
     /**
@@ -67,7 +70,10 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
-    {
+    {   
+        $action = 'Cadastrar';
+        $title = 'Usuários';
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -93,7 +99,8 @@ class UsersController extends AppController
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
 
         $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
-        $this->set(compact('user', 'userTypes', 'clientes'));
+
+        $this->set(compact('user', 'userTypes', 'clientes', 'action','title'));
     }
 
     /**
@@ -104,10 +111,15 @@ class UsersController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
-    {
+    {   
+        $action = 'Cadastrar';
+        $title = 'Usuários';
+
         $user = $this->Users->get($id, [
             'contain' => [],
         ]);
+        $conditionsType = [];
+        $conditionsCliente = [];
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             $user = $this->Users->patchEntity($user, $this->request->getData());
@@ -129,7 +141,7 @@ class UsersController extends AppController
         $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
 
         $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
-        $this->set(compact('user', 'userTypes', 'clientes'));
+        $this->set(compact('user', 'userTypes', 'clientes','action','title'));
     }
 
     /**

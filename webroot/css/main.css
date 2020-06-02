@@ -1,5 +1,8 @@
 /*color primary: #004ba7 */
 /*color secondary: #0098f0 */
+.border-rt{
+    border-right: 1px solid #afafaf !important;
+}
 
 .position-bottom {
     bottom: 0 !important;
@@ -49,7 +52,7 @@
 
 
 .page-title-box {
-    background: linear-gradient(45deg, #4399f0, transparent);
+    background: linear-gradient(45deg, #4399f0, #fff);
 }
 
 .fontboldonly {
@@ -60,7 +63,7 @@
     font-size: 17px;
 }
 body[data-topbar=colored] #page-topbar{
-    background: hsla(0,0%,100%,.8);
+    background: #fff
 }
 
 .dropdown-item {
@@ -95,7 +98,8 @@ a {
 }
 
 .dropzone .dz-preview .dz-error-message{
-    left: -25px !important;
+    left: -33px !important;
+    top: 110px !important;
 }
 .dropzone .dz-preview.dz-file-preview .dz-details{
      color: #fdf6f6;
@@ -106,28 +110,43 @@ a {
 .dropzone .dz-preview.dz-file-preview .dz-image {
     border-radius: 0% 29% / 30% 24% !important;
     background: #0099f0 !important;
-    width: 100px !important;
-    height: 100px !important;
+    width: 80px !important;
+    height: 80px !important;
 }
-
+.dropzone .dz-preview{
+    margin: 10px !important;
+    margin-left: 0 !important;
+}
 .dropzone .dz-preview .dz-success-mark svg, .dropzone .dz-preview .dz-error-mark svg{
     width: 44px !important;
     height: 44px !important;
 }
 .dropzone{
     padding: 0 20px !important;
+    min-height: 125px !important;
 }
 .dropzone .dz-preview .dz-details{
     font-size: 12px !important;
     padding: 2em 0em !important;
 }
+.dropzone .dz-preview .dz-details .dz-size{
+    margin-bottom: 5px !important;
+    font-size: 15px !important;
+}
+.dropzone .dz-preview .dz-details .dz-filename:not(:hover) span{
+    font-size: 10px !important;
+}
 /*home*/
 
 .page-title-box{
-    padding: 5px 12px 30px 13px !important;
+    padding: 5px 12px 12px 13px !important;
+    position: fixed  !important;
+    z-index: 1  !important;
+    width: 100%  !important;
 }
 .page-content-wrapper {
-    margin-top: -25px;
+    /*margin-top: -25px;*/
+    margin-top: 70px;
 }
 /*login*/
 .bg-pattern {
@@ -167,4 +186,18 @@ a {
 .td-blue-strong{
     background:#2c6fa7;
     color: #fff;
+}
+
+.table .thead-light th{
+    background-color: #eef1f3 !important;
+}
+.head-table{
+    color: #004ba7;
+}
+.table td, .table th{
+    padding: 0.65rem !important;
+}
+.border-hz{
+    border-bottom: 1px solid #afafaf !important;
+    border-top: 1px solid #afafaf !important;
 }

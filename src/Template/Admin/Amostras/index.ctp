@@ -102,7 +102,7 @@
 
                       
                          <div class="mt-4">
-                            <h5>Plataforma de Inteligência Artificial da Biogenitcs</h5>
+                            <p style="font-weight: bold; font-size: 17px;">Plataforma de Inteligência Artificial Biogenitcs</p>
                             <p>Positivo: Lorem ipsum</p>
                             <p>Negativo: Lorem Ipsum</p>
                             <p>Inconclusivo: Lorem Ipsum</p>

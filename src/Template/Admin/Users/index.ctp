@@ -1,21 +1,5 @@
-<!-- Page-Title -->
-<div class="page-title-box">
-<div class="container-fluid">
-    <div class="row align-items-center">
-        <div class="col-md-8">
-            <h4 class="page-title mb-1">Usuários</h4>
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Usuários</a></li>
-            <li class="breadcrumb-item active">Ver Todos</li>
-            </ol>
-        </div>
-        <div class="col-md-4">
+<?php echo $this->element('admin/home/index');?>
 
-        </div>
-    </div>
-
-</div>
-</div>
 <!-- end page title end breadcrumb -->
 
 
@@ -52,7 +36,6 @@
                                             <td><?= $user->has('user_type') ? $this->Html->link($user->user_type->nome, ['controller' => 'UserTypes', 'action' => 'view', $user->user_type->id]) : '' ?></td>
                                             <td><?= $user->has('cliente') ? $this->Html->link($user->cliente->nome, ['controller' => 'Clientes', 'action' => 'view', $user->cliente->id]) : '' ?></td>
                                             <td><?= h($user->created) ?></td>
-                                            <td><?= h($user->modified) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $user->id], ['escape' => false]) ?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $user->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $user->id)]) ?>

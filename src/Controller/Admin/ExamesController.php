@@ -56,6 +56,9 @@ class ExamesController extends AppController
     public function relatorio()
     {   
 
+        $action = 'Relatório';
+        $title = 'Amostras';
+
          if ($this->request->is('post')) {
             
 
@@ -131,6 +134,8 @@ class ExamesController extends AppController
             
 
          }
+
+        $this->set(compact('action','title'));
 
     }
 

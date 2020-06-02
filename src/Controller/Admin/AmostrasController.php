@@ -345,7 +345,11 @@ class AmostrasController extends AppController
     }
 
     public function import()
-    {
+    {   
+
+        $action = 'Cadastrar';
+        $title = 'Amostras';
+
          if ($this->request->is('post')) {
 
             try {   
@@ -395,6 +399,8 @@ class AmostrasController extends AppController
                   $this->Flash->error(__('Tivemos algum problema ao enviar os Exames'));
             }
          }
+
+        $this->set(compact('action','title'));
     }
 
     public function relatorio()

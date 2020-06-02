@@ -12,6 +12,10 @@ $(document).ready(function() {
      $('#reset-filter').click(function(e) {
         e.preventDefault();
        window.location = window.location.href.split("?")[0];
+    }) 
+     $('#printer-dash').click(function(e) {
+        e.preventDefault();
+        printer_dashs();
     })
 
     const queryString = window.location.search;
@@ -34,6 +38,17 @@ $(document).ready(function() {
     runExamesIdade(data);
 
 });
+
+function printer_dashs(argument) {
+ var printContents = document.getElementById('printer-dash-to').innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
+}
 
 function filterDash(argument) {
     var date_init = $('#date-init-filter').val();

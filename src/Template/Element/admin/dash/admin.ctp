@@ -1,54 +1,53 @@
 
 <div class="row">
-    <div class="col-xl-1">
-    </div>
-    <div class="col-xl-10">
+    <div class="col-sm-12">
     
         <div class="card">
-            <h4 style="padding: 15px 15px 0 15px;">Faça o filtro utilizando um dos campos baixo</h4>
-            <div style="justify-content: center; display: flex;" class="card-body">
+            <h4 style="padding: 15px 15px 0 15px;">Faça o filtro utilizando um dos campos baixo:</h4>
+            <div style="" class="card-body">
                  <form method="get"> 
                 <div class="row">
                    
-                 <div class="col-md-6">
+                 <div class="col-md-2">
                     <!-- <label>Estado</label> -->
                     <?= $this->Form->control('estados_filter',['label' =>'Estado', 'class' => 'form-control', 'type' => 'select', 'options' => $ufs,'empty' =>'Escolha','default' => @$this->request->query['estados_filter']]);?>
                 </div>
-                  
-                </div>
-                <div class="row">
-                      <div class="col-md-6">
+                 <div class="col-md-2">
                         <label>Data de</label>
                         <input name="date_init_filter" value="<?=@$this->request->query['date_init_filter']?>" class="form-control datepicker-here" data-language="pt-BR" id="date-init-filter" type="text" />
                     </div>
-                    
-                    <div class="col-md-6">
+                     <div style="display: flex;align-items: center;justify-content: center;font-size: 15px;margin-top: 35px;">
+                                 e/ou
+                             </div>
+                    <div class="col-md-2">
                         <label>Data até</label>
                         <input name="date_end_filter" data-language="pt-BR" value="<?=@$this->request->query['date_end_filter']?>" class="form-control datepicker-here" id="date-end-filter" type="text" />
                     </div>
-
-                    </div>
-                    <div class="row">
-                        <div style="margin-top: 28px;" class="col-md-4">
+                     <div style="margin-top: 28px;" class="col-md-1">
                         <button type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
+                    </div> 
+                     <div style="margin-top: 28px;" class="col-md-2">
+                        <button type="button" style="background-color: #0089d8;border-color: #0089d8;" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
                     </div>
-                     <div style="margin-top: 28px;text-align: right;" class="col-md-8">
-                        <button type="button" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
+                   <div style="margin-top: 28px;margin-left: -50px;" class="col-md-1">
+                        <button style="background-color: #31b1fb;border-color: #31b1fb;" type="button" id="printer-dash" class="btn btn-secondary  mt-3 mt-sm-0">Imprimir</button>
                     </div>
                 </div>
+
                  </form>
             </div>
         </div>
        
         </div>
-        <div class="col-xl-1">
-        </div>
+        <!-- <div class="col-xl-1"> -->
+        <!-- </div> -->
     </div>
 </div>
 
 </div>
+<div id="printer-dash-to">
 <div class="row">
-    <div class="col-xl-6">
+    <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title mb-4">Resumo</h4>
@@ -58,7 +57,7 @@
         </div>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                   <h4 class="header-title mb-4">Por UF</h4>
@@ -72,7 +71,7 @@
 
 <div class="row">
    
-  <div class="col-lg-6">
+  <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                   <h4 class="header-title mb-4">Por Faixa Etária</h4>
@@ -81,7 +80,7 @@
         </div>
     </div>
 
-   <div class="col-lg-6">
+   <div class="col-sm-6">
         <div class="card">
             <div class="card-body">
                   <h4 class="header-title mb-4">Por Sexo</h4>
@@ -94,7 +93,7 @@
 
 <div class="row">
 
-    <div class="col-xl-8">
+    <div class="col-sm-8">
         <div class="card">
             <div class="card-body">
                  <div class="table-responsive">
@@ -127,68 +126,68 @@
                                      <tr>
                                         <td style="text-align: center;" class="td-blue-strong">0-20</td>
                                         <td style="text-align: right;" id="020pm"></td>
-                                        <td style="text-align: right;" id="020pf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020pf"></td>
                                         <td style="text-align: right;" id="020nm"></td>
-                                        <td style="text-align: right;" id="020nf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020nf"></td>
                                         <td style="text-align: right;" id="020im"></td>
-                                        <td style="text-align: right;" id="020if"></td>
-                                        <td style="text-align: right;" id="020tu"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020tu"></td>
                                         <td style="text-align: right;" id="020tp"></td>
                                     </tr>
                                       <tr>
                                         <td style="text-align: center;" class="td-blue-strong">21-40</td>
                                         <td style="text-align: right;" id="2140pm"></td>
-                                        <td style="text-align: right;" id="2140pf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140pf"></td>
                                         <td style="text-align: right;" id="2140nm"></td>
-                                        <td style="text-align: right;" id="2140nf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140nf"></td>
                                         <td style="text-align: right;" id="2140im"></td>
-                                        <td style="text-align: right;" id="2140if"></td>
-                                        <td style="text-align: right;" id="2140tu"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140tu"></td>
                                         <td style="text-align: right;" id="2140tp"></td>
                                     </tr> 
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">41-60</td>
                                         <td style="text-align: right;" id="4160pm"></td>
-                                        <td style="text-align: right;" id="4160pf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160pf"></td>
                                         <td style="text-align: right;" id="4160nm"></td>
-                                        <td style="text-align: right;" id="4160nf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160nf"></td>
                                         <td style="text-align: right;" id="4160im"></td>
-                                        <td style="text-align: right;" id="4160if"></td>
-                                        <td style="text-align: right;" id="4160tu"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160tu"></td>
                                         <td style="text-align: right;" id="4160tp"></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">61-80</td>
                                         <td style="text-align: right;" id="6180pm"></td>
-                                        <td style="text-align: right;" id="6180pf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180pf"></td>
                                         <td style="text-align: right;" id="6180nm"></td>
-                                        <td style="text-align: right;" id="6180nf"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180nf"></td>
                                         <td style="text-align: right;" id="6180im"></td>
-                                        <td style="text-align: right;" id="6180if"></td>
-                                        <td style="text-align: right;" id="6180tu"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180tu"></td>
                                         <td style="text-align: right;" id="6180tp"></td>
                                     </tr> 
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">> 81</td>
-                                        <td style="text-align: right;" id="81pm"></td>
-                                        <td style="text-align: right;" id="81pf"></td>
-                                        <td style="text-align: right;" id="81nm"></td>
-                                        <td style="text-align: right;" id="81nf"></td>
-                                        <td style="text-align: right;" id="81im"></td>
-                                        <td style="text-align: right;" id="81if"></td>
-                                        <td style="text-align: right;" id="81tu"></td>
-                                        <td style="text-align: right;" id="81tp"></td>
+                                        <td style="text-align: right;border-bottom: none;" id="81pm"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81pf"></td>
+                                        <td style="text-align: right;border-bottom: none;" id="81nm"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81nf"></td>
+                                        <td style="text-align: right;border-bottom: none;" id="81im"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81if"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81tu"></td>
+                                        <td style="text-align: right;border-bottom: none;" id="81tp"></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">TOTAIS</td>
-                                        <td style="text-align: right;" id="totalupm"></td>
-                                        <td style="text-align: right;" id="totalupf"></td>
-                                        <td style="text-align: right;" id="totalunm"></td>
-                                        <td style="text-align: right;" id="totalunf"></td>
-                                        <td style="text-align: right;" id="totaluim"></td>
-                                        <td style="text-align: right;" id="totaluif"></td>
-                                        <td style="text-align: right;" id="totalutu"></td>
-                                        <td style="text-align: right;" id="totalutp"></td>
+                                        <td style="text-align: right;" class="border-hz" id="totalupm"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totalupf"></td>
+                                        <td style="text-align: right;" class="border-hz" id="totalunm"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totalunf"></td>
+                                        <td style="text-align: right;" class="border-hz" id="totaluim"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluif"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totalutu"></td>
+                                        <td style="text-align: right;" class="border-hz" id="totalutp"></td>
                                     </tr> 
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">%</td>
@@ -214,6 +213,7 @@
         </div>
     </div>
 
+</div>
 </div>
 <!-- end row -->
 

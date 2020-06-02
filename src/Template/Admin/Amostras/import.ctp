@@ -1,28 +1,5 @@
+<?php echo $this->element('admin/home/index');?>
 
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Amostra $amostra
- */
-?>
-<!-- Page-Title -->
-<div class="page-title-box">
-<div class="container-fluid">
-    <div class="row align-items-center">
-        <div class="col-md-8">
-            <h4 class="page-title mb-1">Amostras</h4>
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Amostras</a></li>
-            <li class="breadcrumb-item active">Cadastrar</li>
-            </ol>
-        </div>
-        <div class="col-md-4">
-
-        </div>
-    </div>
-
-</div>
-</div>
 <!-- end page title end breadcrumb -->
 
 <div class="page-content-wrapper">
@@ -51,18 +28,18 @@
                         <?= $this->Form->end() ?>
 
                         <hr>
-                            <h3>Preencha os campos abaixo</h3>
+                            <h3>Preencha os campos abaixo:</h3>
                         <hr>
                         <?= $this->Form->create(null, ['id' => 'sendData', 'url' => ['action' => 'sendData'] ]) ?>
                             
                          <div class="table-responsive">
                             <table class="table mb-0">
-                                <thead>
+                                <thead class="thead-light">
                                     <tr>
-                                        <th>ID amostra</th>
-                                        <th>UF *</th>
-                                        <th>Idade *</th>
-                                        <th>Sexo *</th>
+                                        <th class="head-table" scope="col">ID amostra</th>
+                                        <th class="head-table" scope="col">UF *</th>
+                                        <th class="head-table" scope="col">Idade *</th>
+                                        <th class="head-table" scope="col">Sexo *</th>
                                     </tr>
                                 </thead>
                                 <tbody id="input-files">

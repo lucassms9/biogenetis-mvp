@@ -1,23 +1,6 @@
-<!-- Page-Title -->
-<div class="page-title-box">
-<div class="container-fluid">
-    <div class="row align-items-center">
-        <div class="col-md-8">
-            <h4 class="page-title mb-1">Relatório</h4>
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item"><a href="javascript: void(0);">Relatório</a></li>
-            <li class="breadcrumb-item active">Exames</li>
-            </ol>
-        </div>
-        <div class="col-md-4">
+<?php echo $this->element('admin/home/index');?>
 
-        </div>
-    </div>
-
-</div>
-</div>
 <!-- end page title end breadcrumb -->
-
 
 <div class="page-content-wrapper">
     <div class="container-fluid">
@@ -26,8 +9,8 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body"> 
-                         <h4>Faça o filtro utilizando um dos campos baixo.</h4>
-                         <p>Caso queira buscar todas as amostras, basta não usar os filtros.</p>
+                         <h4>Faça o filtro utilizando um dos campos baixo:</h4>
+                         <p>Para buscar todas a amostras processadas clique em gerar relatório.</p>
                         <?= $this->Form->create(null) ?>
 
                         <div class="row">
@@ -47,13 +30,20 @@
                                 <label for="example-date-input" class="col-form-label">Date Início</label>
                                 <input class="form-control" name="data_init" value="" type="date">
                             </div>
+                             <div style="display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-top: 35px;">
+                                 e/ou
+                             </div>
                              <div class="col-md-3">
                                 <label for="example-date-input" class="col-form-label">Date Fim</label>
                                <input class="form-control" type="date" name="data_fim" value="">
                             </div>
                         </div>
 
-                         <div style="margin-top: 10px" class="row">
+                         <div style="margin-top: 15px" class="row">
                             <div class="col-md-4">
                                 <?= $this->Form->button(__('Gerar Relatório'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
                             </div>
@@ -64,11 +54,6 @@
                     </div>
                 </div>
 
-                 <div class="card">
-                    <div class="card-body"> 
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>

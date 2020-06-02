@@ -18,7 +18,10 @@ class DashboardController extends AppController
     }
 
 	public function index()
-	{
+	{	
+		$action = 'Geral';
+        $title = 'Dashboard';
+
 		$user = $this->Auth->user();
 
 		$conditions_uf = [];
@@ -41,7 +44,7 @@ class DashboardController extends AppController
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
 
 		
-		$this->set(compact('user','ufs'));
+		$this->set(compact('user','ufs','action','title'));
 	}
 
 	public function getExamesGlobal()

@@ -1,19 +1,48 @@
-aumentar a fonte biogenetics - ok
-alterar layout de login - ok 
-alterar area retrita Covid Express -ok
-verificar o pq nao esta indo para home apos login - ok
-na home criar o mesmo layout da login - ok 
-favor uma das opções acima do menu - colocar um efeito de transition - colocar sombra tbem - ok
-dimunuir altura do header das paginas mantendo padrao - ok 
-no excel e na listagem o resultado sempre sera a ultima coluna - ok
-colocar frase preencha os campos abaixo - ok
-dimunuir altura do box, icone, letras upload dos arquivos - ok
-todos lugares colocar coluna data de criação entre amostra de lote - ok
-colocar texto alterar cor dos botoes azul mais claro e escuro na lista de amostras - ok
 
-deixar o header das paginas de forma fixed seguindo o padrao do menu
+- colocar a opcao de impressao da tela geral
+- ajustar header das paginas colocando um bottom branco em linha
 
-colocar header da bio no arquivo excel e impressao
+
+
+HOME
+
+- tirar efeito de transparencia do header do menu e header das paginas - ok
+- centralizar verticalmente na home o logo e text  com base a photo - ok 
+
+AMOSTRAS - IMPORT
+- no texto: Preencha os campos abaixo colocar - ok
+- colocar um background com uma cor zinca para destacar - ok
+- aumentar padding entre Plataforma de Inteligência Artificial da Biogenitcs e Positivo: Lorem ipsum - ok
+- mostrar o total de amostras processadas na lista de amostras - ok
+- dimunuir espaços entre os arquivos no box de upload - ok
+- dimuir o tamanho o card dos arquivos - ok
+- destacar mais o heade das tables - ok
+- diminuir padding das amostras na listagem - ok
+
+
+AMOSTRAS - INDEX
+
+ - alterar Plataforma de Inteligência Artificial Biogenitcs - ok
+ - Faça o filtro utilizando um dos campos baixo: - ok
+ 
+RELATORIO
+
+- para buscar todas a amostras processadas clique em gerar relatorio - ok
+- aumentar marging-top do botao de gerar relatorio - ok
+- colocar E/OU entre os campos de datas - ok
+
+DASHBOARD
+
+- Colocar bradcran geral - ok
+- Colocar E/OU entre os campos de datas - ok
+- Colocar em uma unica linha campos e botao - ok
+- ajustar bordas da tables - ok
+
+
+USER 
+- ajustar actions - ok
+
+
 centralizar dados no excel
 
 

@@ -1,6 +1,4 @@
 
-
-
 $(document).ready(function() {
         
     var campos_data = "#date-init-filter, #date-end-filter"; 
@@ -92,7 +90,6 @@ function amountTableAge(data) {
    var totalTT = 0
 
     $.each(data, function (index, idade) {
-        console.log(idade)
         if(idade.Positivo.M){
             totalPM += idade.Positivo.M;
         }
@@ -106,11 +103,11 @@ function amountTableAge(data) {
             totalNF += idade.Negativo.F;
         }
 
-        if(idade.Inconclusivo.M){
-            totalIM += idade.Inconclusivo.M;
+        if(idade.Indeterminado.M){
+            totalIM += idade.Indeterminado.M;
         }
-        if(idade.Inconclusivo.F){
-            totalIF += idade.Inconclusivo.F;
+        if(idade.Indeterminado.F){
+            totalIF += idade.Indeterminado.F;
         }
 
         if(index == '0-20'){
@@ -118,9 +115,9 @@ function amountTableAge(data) {
             $('#020pf').text(idade.Positivo.F);
             $('#020nm').text(idade.Negativo.M);
             $('#020nf').text(idade.Negativo.F);
-            $('#020im').text(idade.Inconclusivo.M);
-            $('#020if').text(idade.Inconclusivo.F);
-            total020 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#020im').text(idade.Indeterminado.M);
+            $('#020if').text(idade.Indeterminado.F);
+            total020 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#020tu').text(total020);
 
         }
@@ -129,9 +126,9 @@ function amountTableAge(data) {
             $('#2140pf').text(idade.Positivo.F);
             $('#2140nm').text(idade.Negativo.M);
             $('#2140nf').text(idade.Negativo.F);
-            $('#2140im').text(idade.Inconclusivo.M);
-            $('#2140if').text(idade.Inconclusivo.F);
-            total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#2140im').text(idade.Indeterminado.M);
+            $('#2140if').text(idade.Indeterminado.F);
+            total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#2140tu').text(total2140);
        
         }
@@ -141,9 +138,9 @@ function amountTableAge(data) {
             $('#4160pf').text(idade.Positivo.F);
             $('#4160nm').text(idade.Negativo.M);
             $('#4160nf').text(idade.Negativo.F);
-            $('#4160im').text(idade.Inconclusivo.M);
-            $('#4160if').text(idade.Inconclusivo.F);
-            total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#4160im').text(idade.Indeterminado.M);
+            $('#4160if').text(idade.Indeterminado.F);
+            total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#4160tu').text(total4160);
            
         }
@@ -153,9 +150,9 @@ function amountTableAge(data) {
             $('#6180pf').text(idade.Positivo.F);
             $('#6180nm').text(idade.Negativo.M);
             $('#6180nf').text(idade.Negativo.F);
-            $('#6180im').text(idade.Inconclusivo.M);
-            $('#6180if').text(idade.Inconclusivo.F);
-            total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#6180im').text(idade.Indeterminado.M);
+            $('#6180if').text(idade.Indeterminado.F);
+            total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#6180tu').text(total6180);
             
         }
@@ -165,9 +162,9 @@ function amountTableAge(data) {
             $('#81pf').text(idade.Positivo.F);
             $('#81nm').text(idade.Negativo.M);
             $('#81nf').text(idade.Negativo.F);
-            $('#81im').text(idade.Inconclusivo.M);
-            $('#81if').text(idade.Inconclusivo.F);
-            total81 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Inconclusivo.M + idade.Inconclusivo.F
+            $('#81im').text(idade.Indeterminado.M);
+            $('#81if').text(idade.Indeterminado.F);
+            total81 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#81tu').text(total81);
         }
 
@@ -220,13 +217,13 @@ function runExamesIdade(data) {
 
        var positivos = [];
        var negativos = [];
-       var inconclusivo = [];
+       var Indeterminado = [];
 
         $.each(data.result, function (index, idade) {
             
             positivos.push(idade.Positivo);
             negativos.push(idade.Negativo);
-            inconclusivo.push(idade.Inconclusivo);
+            Indeterminado.push(idade.Indeterminado);
 
             idades.push(index);
             
@@ -243,8 +240,8 @@ function runExamesIdade(data) {
             });
 
             body.push({
-                name: 'Inconclusivo',
-                data: inconclusivo
+                name: 'Indeterminado',
+                data: Indeterminado
             });
 
         renderExamesIdade(body, idades)
@@ -266,14 +263,14 @@ function runExamesGener(data) {
 
        var positivos = [];
        var negativos = [];
-       var inconclusivo = [];
+       var Indeterminado = [];
 
        // console.log(data)
         $.each(data, function (index, gener) {
             
             positivos.push(gener.Positivo);
             negativos.push(gener.Negativo);
-            inconclusivo.push(gener.Inconclusivo);
+            Indeterminado.push(gener.Indeterminado);
 
             geners.push(index);
             
@@ -290,8 +287,8 @@ function runExamesGener(data) {
             });
 
             body.push({
-                name: 'Inconclusivo',
-                data: inconclusivo
+                name: 'Indeterminado',
+                data: Indeterminado
             });
 
 
@@ -319,8 +316,8 @@ if ($('#pie_chart').length) {
             height: 300,
             type: 'pie',
         },
-        series: [dados.Positivo, dados.Negativo, dados.Inconclusivo,],
-        labels: ["Positivo", "Negativo", "Inconclusivo"],
+        series: [dados.Positivo, dados.Negativo, dados.Indeterminado,],
+        labels: ["Positivo", "Negativo", "Indeterminado"],
         colors: ['#f06543', '#3ddc97', '#e4cc37'],
         legend: {
             show: true,
@@ -369,13 +366,13 @@ function runExamesUF(data) {
 
        var positivos = [];
        var negativos = [];
-       var inconclusivo = [];
+       var Indeterminado = [];
 
         $.each(data, function (index, uf) {
             
             positivos.push(uf.Positivo);
             negativos.push(uf.Negativo);
-            inconclusivo.push(uf.Inconclusivo);
+            Indeterminado.push(uf.Indeterminado);
 
             ufR.push(index);
             
@@ -392,8 +389,8 @@ function runExamesUF(data) {
             });
 
             body.push({
-                name: 'Inconclusivo',
-                data: inconclusivo
+                name: 'Indeterminado',
+                data: Indeterminado
             });
 
         renderExamesUF(body,ufR)

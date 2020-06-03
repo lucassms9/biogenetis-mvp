@@ -73,7 +73,7 @@ class DashboardController extends AppController
 		$result = [
 			'Positivo' => 0,
 			'Negativo' => 0,
-			'Inconclusivo' => 0,
+			'Indeterminado' => 0,
 		];
 		
 
@@ -92,8 +92,8 @@ class DashboardController extends AppController
 		])->toList();
 
 		foreach ($exames as $key => $exame) {
-			if($exame->resultado == 'Em Análise'){
-				$result['Inconclusivo']++;
+			if($exame->resultado == 'Indeterminado'){
+				$result['Indeterminado']++;
 			}elseif($exame->resultado == 'Positivo'){
 				$result['Positivo']++;
 			}elseif($exame->resultado == 'Negativo'){
@@ -163,14 +163,14 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions
 	        ])->toArray();
 
-	        $inconclusivo = 0;
+	        $Indeterminado = 0;
 	        $positivo = 0;
 	        $negativo = 0;
 
 	        foreach ($amostras as $key => $amostra) {
 
-	        	if($amostra->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra->resultado == 'Indeterminado'){
+					$Indeterminado++;
 				}elseif($amostra->resultado == 'Positivo'){
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
@@ -181,7 +181,7 @@ class DashboardController extends AppController
 	        $result[$uf] = [
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
-					'Inconclusivo' => $inconclusivo,
+					'Indeterminado' => $Indeterminado,
 	        	];
 
         }
@@ -239,14 +239,14 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions
 	        ]);
-	        $inconclusivo = 0;
+	        $Indeterminado = 0;
 	        $positivo = 0;
 	        $negativo = 0;
 
 	        foreach ($amostras as $key => $amostra) {
 
-	        	if($amostra->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra->resultado == 'Indeterminado'){
+					$Indeterminado++;
 				}elseif($amostra->resultado == 'Positivo'){
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
@@ -257,7 +257,7 @@ class DashboardController extends AppController
 	        $result[$sexo] = [
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
-					'Inconclusivo' => $inconclusivo,
+					'Indeterminado' => $Indeterminado,
 	        	];
 
         }
@@ -320,9 +320,9 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions20])->toArray();
 
-        $inconclusivo = 0;
-        $inconclusivoM = 0;
-        $inconclusivoF = 0;
+        $Indeterminado = 0;
+        $IndeterminadoM = 0;
+        $IndeterminadoF = 0;
 		$positivo = 0;
 		$positivoM = 0;
 		$positivoF = 0;
@@ -334,12 +334,12 @@ class DashboardController extends AppController
 		if(!empty($amostras20)){
 	        foreach ($amostras20 as $key => $amostra20) {
 
-	        	if($amostra20->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra20->resultado == 'Indeterminado'){
+					$Indeterminado++;
 					if($amostra20->amostra->sexo == 'M'){
-						$inconclusivoM++;
+						$IndeterminadoM++;
 					}else{
-						$inconclusivoF++;
+						$IndeterminadoF++;
 					}
 				}elseif($amostra20->resultado == 'Positivo'){
 					$positivo++;
@@ -358,25 +358,25 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
-						'Inconclusivo' => $inconclusivo,
+						'Indeterminado' => $Indeterminado,
 		        	];
 		     }
 	 	}
 	 	$result2['0-20'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
-						'Inconclusivo' => ['M' => $inconclusivoM, 'F' => $inconclusivoF],
+						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
 		        	];
 
         //> 20 && <= 40
 
-	    $inconclusivo = 0;
-        $inconclusivoM = 0;
-        $inconclusivoF = 0;
+	    $Indeterminado = 0;
+        $IndeterminadoM = 0;
+        $IndeterminadoF = 0;
 		$positivo = 0;
 		$positivoM = 0;
 		$positivoF = 0;
@@ -393,12 +393,12 @@ class DashboardController extends AppController
         if(!empty($amostras40)){
 	        foreach ($amostras40 as $key => $amostra40) {
 
-	        	if($amostra40->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra40->resultado == 'Indeterminado'){
+					$Indeterminado++;
 					if($amostra40->amostra->sexo == 'M'){
-						$inconclusivoM++;
+						$IndeterminadoM++;
 					}else{
-						$inconclusivoF++;
+						$IndeterminadoF++;
 					}
 				}elseif($amostra40->resultado == 'Positivo'){
 					$positivo++;
@@ -417,25 +417,25 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
-						'Inconclusivo' => $inconclusivo,
+						'Indeterminado' => $Indeterminado,
 		        	];
 		    }
 	 	}
 	 	$result2['21-40'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
 		        	];
 
 		  //> 41 && <= 60
 
-	   	$inconclusivo = 0;
-        $inconclusivoM = 0;
-        $inconclusivoF = 0;
+	   	$Indeterminado = 0;
+        $IndeterminadoM = 0;
+        $IndeterminadoF = 0;
 		$positivo = 0;
 		$positivoM = 0;
 		$positivoF = 0;
@@ -449,15 +449,15 @@ class DashboardController extends AppController
 	        	'contain' => ['Amostras','Users'],
 	        	'conditions' => $conditions40])->toArray();
 
-        if(!empty($amostras40)){
+        if(!empty($amostras60)){
 	        foreach ($amostras60 as $key => $amostra60) {
 
-	        	if($amostra60->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra60->resultado == 'Indeterminado'){
+					$Indeterminado++;
 					if($amostra60->amostra->sexo == 'M'){
-						$inconclusivoM++;
+						$IndeterminadoM++;
 					}else{
-						$inconclusivoF++;
+						$IndeterminadoF++;
 					}
 				}elseif($amostra60->resultado == 'Positivo'){
 					$positivo++;
@@ -476,26 +476,27 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['41-60'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
-						'Inconclusivo' => $inconclusivo,
+						'Indeterminado' => $Indeterminado,
 		        	];
 		    }
+
 	 	}
 
 	 	$result2['41-60'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
-						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
+						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
 		        	];
 
          //> 40 && <= 80
 
-	    $inconclusivo = 0;
-        $inconclusivoM = 0;
-        $inconclusivoF = 0;
+	    $Indeterminado = 0;
+        $IndeterminadoM = 0;
+        $IndeterminadoF = 0;
 		$positivo = 0;
 		$positivoM = 0;
 		$positivoF = 0;
@@ -514,12 +515,12 @@ class DashboardController extends AppController
 
 	        foreach ($amostras80 as $key => $amostra80) {
 
-	        	if($amostra80->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra80->resultado == 'Indeterminado'){
+					$Indeterminado++;
 					if($amostra80->amostra->sexo == 'M'){
-						$inconclusivoM++;
+						$IndeterminadoM++;
 					}else{
-						$inconclusivoF++;
+						$IndeterminadoF++;
 					}
 				}elseif($amostra80->resultado == 'Positivo'){
 					$positivo++;
@@ -538,11 +539,11 @@ class DashboardController extends AppController
 				}
 	        }
 
-	         if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	         if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		      	$result['61-80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
-						'Inconclusivo' => $inconclusivo,
+						'Indeterminado' => $Indeterminado,
 		        ];
 	    	}
 	    	
@@ -550,12 +551,12 @@ class DashboardController extends AppController
     	$result2['61-80'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
 		        ];
 
-	    $inconclusivo = 0;
-        $inconclusivoM = 0;
-        $inconclusivoF = 0;
+	    $Indeterminado = 0;
+        $IndeterminadoM = 0;
+        $IndeterminadoF = 0;
 		$positivo = 0;
 		$positivoM = 0;
 		$positivoF = 0;
@@ -572,12 +573,12 @@ class DashboardController extends AppController
         if(!empty($amostras81)){
 	        foreach ($amostras81 as $key => $amostra81) {
 
-	        	if($amostra81->resultado == 'Em Análise'){
-					$inconclusivo++;
+	        	if($amostra81->resultado == 'Indeterminado'){
+					$Indeterminado++;
 					if($amostra81->amostra->sexo == 'M'){
-						$inconclusivoM++;
+						$IndeterminadoM++;
 					}else{
-						$inconclusivoF++;
+						$IndeterminadoF++;
 					}
 				}elseif($amostra81->resultado == 'Positivo'){
 					$positivo++;
@@ -596,18 +597,18 @@ class DashboardController extends AppController
 				}
 	        }
 
-	        if($inconclusivo > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		        $result['> 80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
-						'Inconclusivo' => $inconclusivo,
+						'Indeterminado' => $Indeterminado,
 		        ];
 			}
         }
         $result2['> 80'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inconclusivo' => ['M' => $positivoM, 'F' => $positivoF],
+						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
 		        ];
 
 		 $resulfinal = [

@@ -1,5 +1,23 @@
+$(window).scroll(function (event) {
+    var scroll = $(window).scrollTop();
+    if(scroll > 40){
+        $('.dz-details').css("z-index", "0");
+        $('.dz-image').css("z-index", "0");
+        $('.dz-error-message').css("z-index", "0");
+        $('.dz-error-mark').css("z-index", "0");
+    }else{
+        $('.dz-details').css("z-index", "20");
+        $('.dz-image').css("z-index", "10");
+        $('.dz-error-message').css("z-index", "1000");
+        $('.dz-error-mark').css("z-index", "500");
+    }
+});
+
+
+
 var templete = '<div class="input file"><label for="file">Escolha um arquivo</label><input type="file" name="file[]" class="files"></div>';
 var qtd_files = 0;
+var qtd_files_removed = 0;
 
 var options_sexos = '<option value="">Escolha</option>'+
                         '<option value="M">M</option>'+
@@ -94,7 +112,7 @@ function submitForm() {
 
 
     Swal.fire({
-    title: 'Enviado Dados',
+    title: 'Enviando Dados',
     html: 'Por favor aguarde, estamos processando os dados',
     timer: '',
     onBeforeOpen:function () {
@@ -122,13 +140,13 @@ function amountForm(file) {
 
     var html  = '';
 
-    html += '<tr>';
+    html += '<tr id="'+file.amostra_id+'">';
     html += '<th scope="row">'+file.amostra_id+' ';
-    html += '<input class="form-control" type="hidden" name="amostraid'+qtd_files+' " value="'+file.amostra_id+'" />';
+    html += '<input class="form-control" type="hidden" name="amostraid[]" value="'+file.amostra_id+'" />';
     html += '</th>';
-    html += '<td><select isValidate="validate" name="uf'+qtd_files+'" class="form-control">'+options_uf+'</select></td>';
-    html += '<td><input isValidate="validate" class="form-control" name="idade'+qtd_files+'" /></td>';
-    html += '<td><select isValidate="validate" name="sexo'+qtd_files+'" class="form-control">'+options_sexos+'</select></td>';
+    html += '<td><select isValidate="validate" name="uf[]" class="form-control">'+options_uf+'</select></td>';
+    html += '<td><input isValidate="validate" class="form-control" name="idade[]" /></td>';
+    html += '<td><select isValidate="validate" name="sexo[]" class="form-control">'+options_sexos+'</select></td>';
     html += '</tr>';
 
     $("#input-files").append( html );
@@ -137,6 +155,13 @@ function amountForm(file) {
 
     $('#total-files').val(qtd_files);
 
+}
+
+function removeTr(fileId) {
+    var newFileId = fileId.split('.')[0];
+    $('#'+newFileId).remove();
+    qtd_files_removed++;
+    $('#files-removed').val(qtd_files_removed);
 }
 
 Dropzone.autoDiscover = false;
@@ -163,6 +188,10 @@ $(document).ready(function(){
         error: function(file, message) {
             console.log(message)
             $(file.previewElement).addClass("dz-error").find('.dz-error-message').text(message.message);
+        },
+        removedfile: function(file) {
+            removeTr(file.name);
+            file.previewElement.remove();
         }
     });
 

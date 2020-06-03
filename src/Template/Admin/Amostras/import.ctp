@@ -48,6 +48,7 @@
                         </div>
                          <div class="text-center mt-4">
                                 <input class="form-control" type="hidden" name="totalFiles" id="total-files" value="0" />
+                                <input class="form-control" type="hidden" name="filesRemoved" id="files-removed" value="0" />
                                 <?= $this->Form->button(__('Enviar'),['type' => 'button', 'id' => 'buttonSend', 'onClick' => 'submitForm()', 'class' => 'btn btn-primary waves-effect waves-light']) ?>
                             </div>
                         

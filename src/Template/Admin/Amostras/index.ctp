@@ -90,10 +90,10 @@
 
                       
                          <div class="mt-4">
-                            <p style="font-weight: bold; font-size: 17px;">Plataforma de Inteligência Artificial Biogenitcs</p>
+                            <p style="font-weight: bold; font-size: 17px;">Inteligência Artificial Biogenetics</p>
                             <p>Positivo: Lorem ipsum</p>
                             <p>Negativo: Lorem Ipsum</p>
-                            <p>Inconclusivo: Lorem Ipsum</p>
+                            <p>Indeterminado: Lorem Ipsum</p>
 
                         </div>
                         </div>

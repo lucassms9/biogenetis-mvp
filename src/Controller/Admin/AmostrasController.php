@@ -244,15 +244,29 @@ class AmostrasController extends AppController
             set_time_limit(0);
 
             $date_init = date('YmdHi');
+            $amostras = [];
 
-            for ($i = 0; $i < $this->request->data['totalFiles']; $i++) {
-                 $amostra = [
-                    'amostra_id' => $this->request->data['amostraid'.$i.'_'],
-                    'uf' => $this->request->data['uf'.$i],
-                    'sexo' => $this->request->data['sexo'.$i],
-                    'idade' => $this->request->data['idade'.$i],
-                ];
+            $itemFor = $this->request->data['totalFiles'] - $this->request->data['filesRemoved'];
 
+
+            foreach ($this->request->data['amostraid'] as $key => $amostraid) {
+                $amostras[$key] = ['amostra_id' => $amostraid];
+            } 
+            foreach ($this->request->data['uf'] as $key => $uf) {
+                $merge_arr = array_merge($amostras[$key], ['uf' => $uf]);
+                $amostras[$key] = $merge_arr;
+            }
+
+            foreach ($this->request->data['idade'] as $key => $idade) {
+                $merge_arr = array_merge($amostras[$key], ['idade' => $idade]);
+                $amostras[$key] = $merge_arr;
+            } 
+            foreach ($this->request->data['sexo'] as $key => $sexo) {
+                $merge_arr = array_merge($amostras[$key], ['sexo' => $sexo]);
+                $amostras[$key] = $merge_arr;
+            }
+
+            foreach ($amostras as $key => $amostra) {
                 $amostra_save = $this->Amostras->newEntity();
                 $amostra_save = $this->Amostras->patchEntity($amostra_save,[
                     'code_amostra' => $amostra['amostra_id'],
@@ -277,12 +291,12 @@ class AmostrasController extends AppController
                 }else if($integration == 'Negative'){
                      $integration = 'Negativo';
                 }else{
-                    $integration = 'Inconclusivo';
+                    $integration = 'Indeterminado';
                 }
 
                 $exame_find->resultado = $integration;
                 $this->Exames->save($exame_find);
-                
+
             }
 
             return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);

@@ -50,11 +50,6 @@
     border-color: #0098f0;
 }
 
-
-.page-title-box {
-    background: linear-gradient(45deg, #4399f0, #fff);
-}
-
 .fontboldonly {
     font-weight: bold;
 }
@@ -139,14 +134,14 @@ a {
 /*home*/
 
 .page-title-box{
+    background: linear-gradient(45deg, #4399f0, #fff);
     padding: 5px 12px 12px 13px !important;
     position: fixed  !important;
-    z-index: 1  !important;
+    z-index: 0;
     width: 100%  !important;
 }
 .page-content-wrapper {
-    /*margin-top: -25px;*/
-    margin-top: 70px;
+    margin-top: 65px;
 }
 /*login*/
 .bg-pattern {
@@ -204,6 +199,11 @@ a {
 
 .printHeader {
    display : none;
+}
+
+.dropzone .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark{
+    top: 45% !important;
+    left: 55% !important;
 }
 
 @media print {

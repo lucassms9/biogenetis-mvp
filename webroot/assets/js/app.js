@@ -1,10 +1,12 @@
-/*
-Template Name: Xoric - Responsive Bootstrap 4 Admin Dashboard
-Author: Themesdesign
-Version: 1.0.0
-Website: https://themesdesign.in/
-File: Main Js File
-*/
+$(window).scroll(function (event) {
+    var scroll = $(window).scrollTop();
+    if(scroll > 0){
+        $('.page-title-box').css("z-index", "1");
+    }else{
+         $('.page-title-box').css("z-index", "0");
+    }
+});
+
 
 
 (function ($) {

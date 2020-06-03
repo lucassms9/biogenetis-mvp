@@ -1,99 +1,24 @@
+# Biogenetics Applications
+	Esse sistema é um MVP, construido exclusivamente para a biogenetics. 
 
-- colocar a opcao de impressao da tela geral
-- ajustar header das paginas colocando um bottom branco em linha
+## Requisitos
 
-
-
-HOME
-
-- tirar efeito de transparencia do header do menu e header das paginas - ok
-- centralizar verticalmente na home o logo e text  com base a photo - ok 
-
-AMOSTRAS - IMPORT
-- no texto: Preencha os campos abaixo colocar - ok
-- colocar um background com uma cor zinca para destacar - ok
-- aumentar padding entre Plataforma de Inteligência Artificial da Biogenitcs e Positivo: Lorem ipsum - ok
-- mostrar o total de amostras processadas na lista de amostras - ok
-- dimunuir espaços entre os arquivos no box de upload - ok
-- dimuir o tamanho o card dos arquivos - ok
-- destacar mais o heade das tables - ok
-- diminuir padding das amostras na listagem - ok
+## Configuração
+configurar o
 
 
-AMOSTRAS - INDEX
 
- - alterar Plataforma de Inteligência Artificial Biogenitcs - ok
- - Faça o filtro utilizando um dos campos baixo: - ok
- 
-RELATORIO
-
-- para buscar todas a amostras processadas clique em gerar relatorio - ok
-- aumentar marging-top do botao de gerar relatorio - ok
-- colocar E/OU entre os campos de datas - ok
-
-DASHBOARD
-
-- Colocar bradcran geral - ok
-- Colocar E/OU entre os campos de datas - ok
-- Colocar em uma unica linha campos e botao - ok
-- ajustar bordas da tables - ok
+### Ajustes
 
 
-USER 
-- ajustar actions - ok
+- Quando você removeu todos os arquivos não aconteceu o refresh da tela, ou seja, os campos para preenchimento de UF, Idade e Sexo ficaram duplicados; - ok
 
+- Imagem dos arquivos ainda está sobrepondo a barra azul e menu; - ok
 
-centralizar dados no excel
+- Mudar o texto Plataforma de Inteligência Artificial Biogenetics para Inteligência Artificial Biogenetics-ok
 
+- Trocar tudo que é Inconclusivo por Indeterminado; - ok
 
-# CakePHP Application Skeleton
+- Dashboard – Juntar todos os botões; - ok
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
-
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
-
-## Installation
-
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
-
-If Composer is installed globally, run
-
-```bash
-composer create-project --prefer-dist cakephp/app
-```
-
-In case you want to use a custom app dir name (e.g. `/myapp/`):
-
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
-
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
-
-```bash
-bin/cake server -p 8765
-```
-
-Then visit `http://localhost:8765` to see the welcome page.
-
-## Update
-
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
-
-## Configuration
-
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
-
-## Layout
-
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) (v5) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+- Na Matriz do Dashboard colocar uma linha diagonal entre Idade\Sexo;

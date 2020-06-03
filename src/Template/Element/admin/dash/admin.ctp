@@ -16,14 +16,19 @@
                         <label>Data de</label>
                         <input name="date_init_filter" value="<?=@$this->request->query['date_init_filter']?>" class="form-control datepicker-here" data-language="pt-BR" id="date-init-filter" type="text" />
                     </div>
-                     <div style="display: flex;align-items: center;justify-content: center;font-size: 15px;margin-top: 35px;">
+                     <div style="display: flex;align-items: center;justify-content: center;font-size: 15px;margin-top: 30px;">
                                  e/ou
                              </div>
                     <div class="col-md-2">
                         <label>Data até</label>
                         <input name="date_end_filter" data-language="pt-BR" value="<?=@$this->request->query['date_end_filter']?>" class="form-control datepicker-here" id="date-end-filter" type="text" />
                     </div>
-                     <div style="margin-top: 28px;" class="col-md-1">
+                    <div style="margin-top: 28px" class="">
+                        <button style="margin-right: 5px;" type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
+                        <button type="button" style="margin-right: 5px;background-color: #0089d8;border-color: #0089d8;" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
+                        <button style="margin-right: 5px;background-color: #31b1fb;border-color: #31b1fb;" type="button" id="printer-dash" class="btn btn-secondary  mt-3 mt-sm-0">Imprimir</button>
+                    </div>
+                   <!--   <div style="margin-top: 28px;" class="col-md-1">
                         <button type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
                     </div> 
                      <div style="margin-top: 28px;" class="col-md-2">
@@ -31,7 +36,7 @@
                     </div>
                    <div style="margin-top: 28px;margin-left: -50px;" class="col-md-1">
                         <button style="background-color: #31b1fb;border-color: #31b1fb;" type="button" id="printer-dash" class="btn btn-secondary  mt-3 mt-sm-0">Imprimir</button>
-                    </div>
+                    </div> -->
                 </div>
 
                  </form>

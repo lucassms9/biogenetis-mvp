@@ -206,6 +206,13 @@ a {
     left: 55% !important;
 }
 
+.crossOut .child{
+    position:absolute; 
+    display:block;
+    height:1px; 
+    background: #fff;
+}
+
 @media print {
     .printHeader {
        display : block;

@@ -119,12 +119,12 @@ class AmostrasController extends AppController
 
 
             $dadosEmail = array();
-            $dadosEmail['from'] = ['lucas.santos@dedtechsolutions.com.br' => 'Lucas Agrega'];
+            $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
             $dadosEmail['to'] = $this->Auth->user('email');
             // $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
             $dadosEmail['subject'] = 'Relatório - Amostras';
 
-            $dadosEmail['message'] = 'segue em anexo o relatorio das amostras amostras';
+            $dadosEmail['message'] = 'segue em anexo o relatório das amostras';
 
             $dadosEmail['attachments'] = [
                                             $nome_arquivo => [
@@ -313,7 +313,7 @@ class AmostrasController extends AppController
     public function callIntegration($exame)
     {
         
-        $url = "http://ec2-177-71-237-9.sa-east-1.compute.amazonaws.com/covid19/sampletest.php";
+        $url = "http://152.67.59.237/covid19/sampletest.php";
         $filedata = AMOSTRAS . $exame->amostra_id. '.csv';
 
         $http = new Client();

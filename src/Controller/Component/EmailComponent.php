@@ -17,24 +17,8 @@ class EmailComponent extends Component
             $port = Configure::read('EmailSend.smtp_port');
             $usern = Configure::read('EmailSend.smtp_user');
             $password = Configure::read('EmailSend.smtp_password');
-            
-            // Email::configTransport('gmail', [
-            //     'host' => $host,
-            //     'port' => $port,
-            //     'username' => $usern, // valid email account
-            //     'password' => $password, // valid account password 
-            //     'className' => 'Smtp',
-            //     'log' => true,
-            //     'context' => [
-            //         'ssl' => [
-            //             'verify_peer' => false,
-            //             'verify_peer_name' => false,
-            //             'allow_self_signed' => true
-            //         ]
-            //     ]
-            // ]);
 
-            TransportFactory::setConfig('mailtrap', [
+             TransportFactory::setConfig('covid_express', [
               'host' => $host,
               'port' => $port,
               'username' => $usern,
@@ -42,8 +26,16 @@ class EmailComponent extends Component
               'className' => 'Smtp'
             ]);
 
+            // TransportFactory::setConfig('mailtrap', [
+            //   'host' => $host,
+            //   'port' => $port,
+            //   'username' => $usern,
+            //   'password' => $password,
+            //   'className' => 'Smtp'
+            // ]);
+
             $email = new Email();
-            $email->transport('mailtrap');
+            $email->transport('covid_express');
             $email->from($dados['from']);
             $email->to($dados['to']);
              

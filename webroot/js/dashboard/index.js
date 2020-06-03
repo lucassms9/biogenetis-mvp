@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-        
+
     var campos_data = "#date-init-filter, #date-end-filter"; 
     $( campos_data ).mask('99/99/9999');
     // $( campos_data ).datepicker({ language: 'pt-BR' });  
@@ -199,6 +199,36 @@ function amountTableAge(data) {
     $('#totalmfporpos').text( (((totalPM + totalPF) / totalTT) * 100).toFixed(2)  + '%'  );
     $('#totalmfporneg').text( (((totalNM + totalNF) / totalTT) * 100).toFixed(2)  + '%'  );
     $('#totalmfporinc').text( (((totalIM + totalIF) / totalTT) * 100).toFixed(2)  + '%'  );
+
+
+       var arrJCrossOut = $('.crossOut');
+    
+    arrJCrossOut.each(function(i){
+    
+        var jTemp      = $(this),
+            nWidth   = jTemp.innerWidth(),
+            nHeight  = jTemp.innerHeight(),
+            nHyp      = Math.sqrt(nWidth*nWidth + nHeight*nHeight),
+            nAnglRad = Math.atan2(nHeight,nWidth),
+            nAnglSex = nAnglRad*360/(2*Math.PI), nCatOp, nCatAd, nHyp2
+            sDomTemp = '<b class="child" ';
+            sDomTemp += 'style="width:'+nHyp+'px;';
+            sDomTemp += '-webkit-transform: rotate(-'+nAnglSex+'deg);';
+            sDomTemp += '-moz-transform: rotate(-'+nAnglSex+'deg);';
+            sDomTemp += '-ms-transform: rotate(-'+nAnglSex+'deg);';
+            sDomTemp += '-o-transform: rotate(-'+nAnglSex+'deg);';
+            sDomTemp += 'transform: rotate(-'+nAnglSex+'deg);';
+            sDomTemp += '-sand-transform: rotate(-'+nAnglSex+'deg);';
+            nHyp2     = (nHyp/2);
+            nCatOp      = Math.sin(nAnglRad)*nHyp2;
+            nCatAd      = Math.sqrt((nHyp2*nHyp2) - (nCatOp*nCatOp));
+            sDomTemp += 'margin-top: -'+nCatOp+'px;';
+            sDomTemp += 'margin-left: -'+(nHyp2-nCatAd)+'px;';
+            sDomTemp += '"></b>';
+        
+        jTemp.append(sDomTemp);
+    });
+    
 
 }
 function runExamesIdade(data) {

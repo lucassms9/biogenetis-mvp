@@ -35,10 +35,10 @@ class AmostrasController extends AppController
             $conditions = [];
 
             $redirect = [
-                'amostra_id' => $this->request->data['amostra_id'],
-                'lote' => $this->request->data['lote'],
-                'data_init' => $this->request->data['data_init'],
-                'data_fim' => $this->request->data['data_fim'],
+                'amostra_id' =>$this->request->getData('amostra_id'),
+                'lote' =>$this->request->getData('lote'),
+                'data_init' =>$this->request->getData('data_init'),
+                'data_fim' =>$this->request->getData('data_fim'),
             ];
 
             if($this->Auth->user('user_type_id') == 3){
@@ -49,21 +49,21 @@ class AmostrasController extends AppController
                 $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
             
-            if(!empty($this->request->data['amostra_id'])){
-                $conditions['code_amostra'] = $this->request->data['amostra_id'];
+            if(!empty($this->request->getData('amostra_id'))){
+                $conditions['code_amostra'] =$this->request->getData('amostra_id');
             } 
 
-            if(!empty($this->request->data['lote'])){
-                $conditions['lote'] = $this->request->data['lote'];
+            if(!empty($this->request->getData('lote'))){
+                $conditions['lote'] =$this->request->getData('lote');
             }
 
-            if (!empty($this->request->data['data_init'])){
-                $data_de = $this->request->data['data_init'];
+            if (!empty($this->request->getData('data_init'))){
+                $data_de =$this->request->getData('data_init');
                 $conditions['cast(Exames.created as date) >='] = $data_de;
             }
 
-            if (!empty($this->request->data['data_fim'])){
-                $data_ate = $this->request->data['data_fim'];
+            if (!empty($this->request->getData('data_fim'))){
+                $data_ate =$this->request->getData('data_fim');
                 $conditions['cast(Exames.created as date) >='] = $data_ate;
              }
 
@@ -150,6 +150,7 @@ class AmostrasController extends AppController
 
         if ($this->request->is('post')) {
             $conditions = [];
+            ob_start(null, 0, false);
 
             if($this->Auth->user('user_type_id') == 3){
                 $conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -159,21 +160,21 @@ class AmostrasController extends AppController
                 $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
             
-            if(!empty($this->request->data['amostra_id'])){
-                $conditions['code_amostra'] = $this->request->data['amostra_id'];
+            if(!empty($this->request->getData('amostra_id'))){
+                $conditions['code_amostra'] =$this->request->getData('amostra_id');
             } 
 
-            if(!empty($this->request->data['lote'])){
-                $conditions['lote'] = $this->request->data['lote'];
+            if(!empty($this->request->getData('lote'))){
+                $conditions['lote'] =$this->request->getData('lote');
             }
 
-            if (!empty($this->request->data['data_init'])){
-                $data_de = $this->request->data['data_init'];
+            if (!empty($this->request->getData('data_init'))){
+                $data_de =$this->request->getData('data_init');
                 $conditions['cast(Exames.created as date) >='] = $data_de;
             }
 
-            if (!empty($this->request->data['data_fim'])){
-                $data_ate = $this->request->data['data_fim'];
+            if (!empty($this->request->getData('data_fim'))){
+                $data_ate =$this->request->getData('data_fim');
                 $conditions['cast(Exames.created as date) >='] = $data_ate;
              }
 
@@ -246,22 +247,22 @@ class AmostrasController extends AppController
             $date_init = date('YmdHi');
             $amostras = [];
 
-            $itemFor = $this->request->data['totalFiles'] - $this->request->data['filesRemoved'];
+            $itemFor =$this->request->getData('totalFiles') -$this->request->getData('filesRemoved');
 
 
-            foreach ($this->request->data['amostraid'] as $key => $amostraid) {
+            foreach ($this->request->getData('amostraid') as $key => $amostraid) {
                 $amostras[$key] = ['amostra_id' => $amostraid];
             } 
-            foreach ($this->request->data['uf'] as $key => $uf) {
+            foreach ($this->request->getData('uf') as $key => $uf) {
                 $merge_arr = array_merge($amostras[$key], ['uf' => $uf]);
                 $amostras[$key] = $merge_arr;
             }
 
-            foreach ($this->request->data['idade'] as $key => $idade) {
+            foreach ($this->request->getData('idade') as $key => $idade) {
                 $merge_arr = array_merge($amostras[$key], ['idade' => $idade]);
                 $amostras[$key] = $merge_arr;
             } 
-            foreach ($this->request->data['sexo'] as $key => $sexo) {
+            foreach ($this->request->getData('sexo') as $key => $sexo) {
                 $merge_arr = array_merge($amostras[$key], ['sexo' => $sexo]);
                 $amostras[$key] = $merge_arr;
             }
@@ -368,8 +369,8 @@ class AmostrasController extends AppController
 
             try {   
                 
-                if(!empty($this->request->data['file'])){
-                    $file = $this->request->data['file'];
+                if(!empty($this->request->getData('file'))) {
+                    $file = $this->request->getData('file');
 
                     if($file['size'] > 0){
 
@@ -448,21 +449,21 @@ class AmostrasController extends AppController
             $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
         }
         
-        if(!empty($this->request->query['amostra_id'])){
-            $conditions['code_amostra'] = $this->request->query['amostra_id'];
+        if(!empty($this->request->getQuery('amostra_id'))){
+            $conditions['code_amostra'] = $this->request->getQuery('amostra_id');
         } 
 
-        if(!empty($this->request->query['lote'])){
-            $conditions['lote'] = $this->request->query['lote'];
+        if(!empty($this->request->getQuery('lote'))) {
+            $conditions['lote'] = $this->request->getQuery('lote');
         }
 
-        if (!empty($this->request->query['data_init'])){
-            $data_de = $this->request->query['data_init'];
+        if (!empty($this->request->getQuery('data_init'))){
+            $data_de = $this->request->getQuery('data_init');
             $conditions['cast(Amostras.created as date) >='] = $data_de;
         }
 
-        if (!empty($this->request->query['data_fim'])){
-            $data_ate = $this->request->query['data_fim'];
+        if (!empty($this->request->getQuery('data_fim'))){
+            $data_ate = $this->request->getQuery('data_fim');
             $conditions['cast(Amostras.created as date) >='] = $data_ate;
          }
 

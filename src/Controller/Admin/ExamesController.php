@@ -27,8 +27,8 @@ class ExamesController extends AppController
             try {   
 
                 
-                if(!empty($this->request->data['file'])){
-                    $files = $this->request->data['file'];
+                if(!empty($this->request->getData('file'))){
+                    $files = $this->request->getData('file');
 
                     foreach ($files as $key => $file) {
                         if($file['size'] > 0){
@@ -62,7 +62,7 @@ class ExamesController extends AppController
          if ($this->request->is('post')) {
             
 
-            return $this->redirect(['controller' => 'amostras', 'action' => 'index','amostra_id' => $this->request->data['amostra_id'],'data_init' => $this->request->data['data_init'], 'data_fim' => $this->request->data['data_fim'], 'lote' =>  $this->request->data['lote']]);
+            return $this->redirect(['controller' => 'amostras', 'action' => 'index', 'amostra_id' => $this->request->getData('amostra_id'),'data_init' => $this->request->getData('data_init'), 'data_fim' => $this->request->getData('data_fim'), 'lote' =>  $this->request->getData('lote') ]);
 
             // $settings = [];
 
@@ -74,18 +74,18 @@ class ExamesController extends AppController
             //     $settings['Users.cliente_id'] = $this->Auth->user('cliente_id');
             // }
 
-            //  if (!empty($this->request->data['data_init'])){
-            //         $data_de = $this->request->data['data_init'];
+            //  if (!empty($this->request->getData('data_init'])){
+            //         $data_de = $this->request->getData('data_init'];
             //         $settings['cast(Exames.created as date) >='] = $data_de;
             //  }
 
-            // if (!empty($this->request->data['data_fim'])){
-            //         $data_ate = $this->request->data['data_fim'];
+            // if (!empty($this->request->getData('data_fim'])){
+            //         $data_ate = $this->request->getData('data_fim'];
             //         $settings['cast(Exames.created as date) >='] = $data_ate;
             //  }
 
-            // if (!empty($this->request->data['amostra_id'])){
-            //      $settings['Exames.amostra_id'] = $this->request->data['amostra_id'];
+            // if (!empty($this->request->getData('amostra_id'])){
+            //      $settings['Exames.amostra_id'] = $this->request->getData('amostra_id'];
             // }
 
             // $exames = $this->Exames->find('all', [

@@ -15,24 +15,35 @@
                             <div style="display: flex;justify-content: flex-end;" class="col-xl-12">
 
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <?= $this->Form->create(null,['action' => 'sendEmail']) ?>
-                                     <input type="hidden" name="amostra_id" value="<?=@$this->request->query['amostra_id']?>">
-                                         <input type="hidden" name="lote" value="<?=@$this->request->query['lote']?>">
-                                        <input type="hidden" name="lote" value="<?=@$this->request->query['lote']?>">
-                                        <input type="hidden" name="data_init" value="<?=@$this->request->query['data_init']?>">
-                                        <input type="hidden" name="data_fim" value="<?=@$this->request->query['data_fim']?>">
+                                     <?= $this->Form->create(null,[
+                                    'url' => [
+                                            'controller' => 'Amostras',
+                                            'action' => 'sendEmail'
+                                        ]
+                                    ]) ?>
+
+                                     <input type="hidden" name="amostra_id" value="<?=@$this->request->getQuery('amostra_id')?>">
+                                         <input type="hidden" name="lote" value="<?=@$this->request->getQuery('lote')?>">
+                                        <input type="hidden" name="lote" value="<?=@$this->request->getQuery('lote')?>">
+                                        <input type="hidden" name="data_init" value="<?=@$this->request->getQuery('data_init')?>">
+                                        <input type="hidden" name="data_fim" value="<?=@$this->request->getQuery('data_fim')?>">
                                     <button type="submit" class="btn btn-primary"> 
                                         <i style="margin-right: 5px;" class="mdi mdi-email-multiple"></i>Enviar por E-mail
                                     </button>
                                      <?= $this->Form->end() ?>
                                    
 
-                                    <?= $this->Form->create(null,['action' => 'generateExcel']) ?>
-                                        <input type="hidden" name="amostra_id" value="<?=@$this->request->query['amostra_id']?>">
-                                         <input type="hidden" name="lote" value="<?=@$this->request->query['lote']?>">
-                                        <input type="hidden" name="lote" value="<?=@$this->request->query['lote']?>">
-                                        <input type="hidden" name="data_init" value="<?=@$this->request->query['data_init']?>">
-                                        <input type="hidden" name="data_fim" value="<?=@$this->request->query['data_fim']?>">
+                                    <?= $this->Form->create(null,[
+                                    'url' => [
+                                            'controller' => 'Amostras',
+                                            'action' => 'generateExcel'
+                                        ]
+                                    ]) ?>
+                                        <input type="hidden" name="amostra_id" value="<?=@$this->request->getQuery('amostra_id')?>">
+                                         <input type="hidden" name="lote" value="<?=@$this->request->getQuery('lote')?>">
+                                        <input type="hidden" name="lote" value="<?=@$this->request->getQuery('lote')?>">
+                                        <input type="hidden" name="data_init" value="<?=@$this->request->getQuery('data_init')?>">
+                                        <input type="hidden" name="data_fim" value="<?=@$this->request->getQuery('data_fim')?>">
                                         <button style="background-color: #0089d8;border-color: #0089d8;" type="submit" class="btn btn-secondary">
                                             <i class="mdi mdi-file-excel"></i> Gerar Excel
                                         </button>

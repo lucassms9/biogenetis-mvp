@@ -35,9 +35,9 @@ class EmailComponent extends Component
             // ]);
 
             $email = new Email();
-            $email->transport('covid_express');
-            $email->from($dados['from']);
-            $email->to($dados['to']);
+            $email->setTransport('covid_express');
+            $email->setFrom($dados['from']);
+            $email->setTo($dados['to']);
              
             if(isset($dados['replyTo']) && $dados['replyTo'] != ''){
                 $email->replyTo($dados['replyTo']);
@@ -53,10 +53,10 @@ class EmailComponent extends Component
 
 
             if(isset($dados['attachments']) && $dados['attachments']){
-                $email->attachments($dados['attachments']);
+                $email->setAttachments($dados['attachments']);
             }
 
-            $email->subject($dados['subject']); 
+            $email->setSubject($dados['subject']); 
             $email->send($dados['message']);
 
             if($email){ 

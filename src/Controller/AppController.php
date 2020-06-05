@@ -71,7 +71,7 @@ class AppController extends Controller
         ]);
 
         if( $this->Auth->user() && 
-            $this->request->params['controller'] == 'Pages' || $this->request->params['controller'] == 'Admin' 
+           $this->request->getParam('controller') == 'Pages' || $this->request->getParam('controller') == 'Admin' 
         )
         return $this->redirect( '/admin' . $this->Auth->redirectUrl() );
 

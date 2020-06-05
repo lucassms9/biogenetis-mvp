@@ -50,7 +50,7 @@ class Application extends BaseApplication
         }
 
         $this->addPlugin('Cewi/Excel');
-        $this->addPlugin(\CakeDC\OracleDriver\Plugin::class, ['bootstrap' => true]);
+        // $this->addPlugin(\CakeDC\OracleDriver\Plugin::class, ['bootstrap' => true]);
         // Load more plugins here
     }
 

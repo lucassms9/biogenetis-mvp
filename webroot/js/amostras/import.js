@@ -181,7 +181,7 @@ $(document).ready(function(){
     $("#formFiles").dropzone({
         maxFiles: 2000,
         addRemoveLinks: true,
-        url: "/admin/amostras/import",
+        url: BASE_URL_ADMIN+"amostras/import",
         success: function (file, response) {
             amountForm(response)
         },

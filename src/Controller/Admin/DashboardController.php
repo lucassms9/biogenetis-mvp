@@ -50,7 +50,7 @@ class DashboardController extends AppController
 	public function getExamesGlobal()
 	{	
 
-		$query = $this->request->query;
+		$query = $this->request->getQuery();
 		$conditions_query = [];
 		
 		if(!empty($query['date_init'])){
@@ -110,7 +110,7 @@ class DashboardController extends AppController
 	{
 		
 
-		$query = $this->request->query;
+		$query = $this->request->getQuery();
 		$conditions_query = [];
 		
 		if(!empty($query['date_init'])){
@@ -201,7 +201,7 @@ class DashboardController extends AppController
         $sexos = [];
         $result = [];
 
-        $query = $this->request->query;
+        $query = $this->request->getQuery();
 		$conditions_query = [];
 		
 		if(!empty($query['date_init'])){
@@ -269,7 +269,7 @@ class DashboardController extends AppController
 	public function getExamesByAge()
 	{
 		
-		$query = $this->request->query;
+		$query = $this->request->getQuery();
 		$conditions_query = [];
 		
 		if(!empty($query['date_init'])){

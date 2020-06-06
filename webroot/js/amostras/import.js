@@ -20,7 +20,7 @@ var qtd_files = 0;
 var qtd_files_removed = 0;
 
 var options_sexos = '<option value="">Escolha</option>'+
-                        '<option value="M">M</option>'+
+                        '<option selected value="M">M</option>'+
                         '<option value="F">F</option>';
 
 var options_uf = '<option value="">Escolha</option>'+
@@ -34,7 +34,7 @@ var options_uf = '<option value="">Escolha</option>'+
  '<option value="ES">Espírito Santo</option>'+
  '<option value="GO">Goiás</option>'+
  '<option value="MA">Maranhão</option>'+
- '<option value="MG">Minas Gerais</option>'+
+ '<option selected value="MG">Minas Gerais</option>'+
  '<option value="MS">Mato Grosso do Sul</option>'+
  '<option value="MT">Mato Grosso</option>'+
  '<option value="PA">Pará</option>'+
@@ -145,7 +145,7 @@ function amountForm(file) {
     html += '<input class="form-control" type="hidden" name="amostraid[]" value="'+file.amostra_id+'" />';
     html += '</th>';
     html += '<td><select isValidate="validate" name="uf[]" class="form-control">'+options_uf+'</select></td>';
-    html += '<td><input isValidate="validate" class="form-control" name="idade[]" /></td>';
+    html += '<td><input isValidate="validate" class="form-control" value="50" name="idade[]" /></td>';
     html += '<td><select isValidate="validate" name="sexo[]" class="form-control">'+options_sexos+'</select></td>';
     html += '</tr>';
 

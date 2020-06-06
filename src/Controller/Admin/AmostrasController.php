@@ -30,8 +30,14 @@ class AmostrasController extends AppController
     }
 
     public function sendEmail()
-    {
+    {       
+
          if ($this->request->is('post')) {
+            ob_start(null, 0, false);
+            ini_set("memory_limit", -1);
+            ini_set('max_execution_time', 0);
+            set_time_limit(0);
+
             $conditions = [];
 
             $redirect = [
@@ -150,7 +156,11 @@ class AmostrasController extends AppController
 
         if ($this->request->is('post')) {
             $conditions = [];
+            
             ob_start(null, 0, false);
+            ini_set("memory_limit", -1);
+            ini_set('max_execution_time', 0);
+            set_time_limit(0);
 
             if($this->Auth->user('user_type_id') == 3){
                 $conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -231,7 +241,7 @@ class AmostrasController extends AppController
             header("Cache-Control: max-age=0"); 
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
             $objWriter->save('php://output');
-
+            die();
         }
 
     }
@@ -240,6 +250,7 @@ class AmostrasController extends AppController
     {
         if ($this->request->is('post')) {
 
+            ob_start(null, 0, false);
             ini_set("memory_limit", -1);
             ini_set('max_execution_time', 0);
             set_time_limit(0);
@@ -322,7 +333,7 @@ class AmostrasController extends AppController
           'Userfile' => fopen($filedata, 'r'),
         ]);
 
-        $result = $this->html_to_obj($response->body);
+        $result = $this->html_to_obj($response->getStringBody());
         return $result;
 
     }
@@ -433,7 +444,9 @@ class AmostrasController extends AppController
         $action = 'Ver Todas';
         $title = 'Amostras';
         // $limitDefault = 300;
-        $conditions = [];
+        $conditions = [
+            'Exames.resultado <>' => 'null' 
+        ];
 
         // $this->paginate = [
         //     'limit' => $limitDefault,

@@ -184,8 +184,8 @@ class UsersController extends AppController
             
             $user = $this->Users->find('all',[
                 'conditions' => [
-                    'email' => $this->request->data['email'],
-                    'senha' => md5($this->request->data['password']),
+                    'email' => $this->request->getData('email'),
+                    'senha' => md5($this->request->getData('password')),
 
                 ]
             ])->first();
@@ -221,7 +221,7 @@ class UsersController extends AppController
             }else{
                 $this->Flash->error(__('E-mail ou senha incorretos'));
             }
-            $this->request->data['email'] = $this->request->data['email'];
+            // $this->request->getData('email') = $this->request->getData('email');
         }
 
         $this->set(compact('user'));

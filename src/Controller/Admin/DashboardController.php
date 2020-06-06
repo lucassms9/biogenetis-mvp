@@ -447,7 +447,7 @@ class DashboardController extends AppController
         $conditions60['Amostras.idade <='] = 60;
         $amostras60 = $this->Exames->find('all', [
 	        	'contain' => ['Amostras','Users'],
-	        	'conditions' => $conditions40])->toArray();
+	        	'conditions' => $conditions60])->toArray();
 
         if(!empty($amostras60)){
 	        foreach ($amostras60 as $key => $amostra60) {

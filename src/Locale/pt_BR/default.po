@@ -1,0 +1,5 @@
+msgid "The user could not be saved. Please, try again."
+msgstr "Erro ao salvar usuário. Por favor, tente novamente."
+
+msgid "The user has been saved."
+msgstr "Usuário salvo com sucesso"

@@ -126,7 +126,7 @@
                                     </tr>
                                      <tr style="text-align: center;">
                                         <th style="padding: 0 !important;" class="td-blue-strong crossOut" scope="col">
-                                        <span style="position: relative;top: -20px;left: -25px;">IDADE</span>
+                                        <span style="font-size: 11px;position: relative;top: -20px;left: -25px;">IDADE</span>
                                         <span style="font-size: 11px;position: relative;left: 24px;">SEXO</span></th>
                                         <th class="td-blue-strong" scope="col">MASC</th>
                                         <th class="td-blue-strong" scope="col">FEM</th>

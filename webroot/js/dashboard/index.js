@@ -172,6 +172,37 @@ function amountTableAge(data) {
 
     totalTT = totalPM + totalPF + totalNM + totalNF + totalIM + totalIF;
 
+    if(totalTT == 0){
+         $('#totalupm').text(0);
+        $('#totalupf').text(0);
+        $('#totalunm').text(0);
+        $('#totalunf').text(0);
+        $('#totaluim').text(0);
+        $('#totaluif').text(0);
+        $('#totalutu').text(0);
+
+        $('#020tp').text('0 %');
+        $('#2140tp').text('0 %');
+        $('#4160tp').text('0 %');
+        $('#81tp').text('0 %');
+        $('#6180tp').text('0 %');
+        $('#totalutp').text('0 %');
+
+        $('#totalporpm').text('0 %');
+        $('#totalporpf').text('0 %');
+        $('#totalpornm').text('0 %');
+        $('#totalpornf').text('0 %');
+        $('#totalporim').text('0 %');
+        $('#totalporif').text('0 %');
+        $('#totalportp').text('0 %');
+
+
+        $('#totalmfporpos').text('0 %');
+        $('#totalmfporneg').text('0 %');
+        $('#totalmfporinc').text('0 %');
+
+        return
+    }
     $('#totalupm').text(totalPM);
     $('#totalupf').text(totalPF);
     $('#totalunm').text(totalNM);

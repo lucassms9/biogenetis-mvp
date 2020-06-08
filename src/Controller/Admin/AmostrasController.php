@@ -26,6 +26,7 @@ class AmostrasController extends AppController
         parent::initialize();
         $this->loadComponent('Paginator');
         $this->loadModel('Exames');
+        $this->loadModel('AmostraErros');
         $this->loadComponent('Email');
     }
 
@@ -390,13 +391,51 @@ class AmostrasController extends AppController
                         $amostra_id = explode('.', $file['name']);
 
                         $amostraExist = $this->Exames->find('all',[
-                            'conditions' => ['amostra_id' => $amostra_id[0]]
+                            'conditions' => ['amostra_id' => $amostra_id[0], 'resultado <>' => 'null']
                         ])->first();
 
+
+                        $file = fopen(AMOSTRAS . $file['name'], 'r');
+                        $value = 0; 
+                        while (($line = fgetcsv($file)) !== false) {
+                            $dados = preg_split('/\s+/', $line[0]);
+
+                            if(is_numeric($dados[1])){
+                                if($dados[1] > $value){
+                                    $value = $dados[1];
+                                }
+                            }
+                          
+                        }   
 
                         if(!empty($amostraExist)){
                              throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
                              die();
+                        }
+
+                        if($value < 0.018){
+                            $error_dados = [
+                                'amostra_id' => $amostra_id[0],
+                                'created_by' => $this->Auth->user('id'),
+                            ];
+                            $error_save = $this->AmostraErros->newEntity();
+                            $error_save = $this->AmostraErros->patchEntity($error_save, $error_dados);
+                            $error_save = $this->AmostraErros->save($error_save);   
+
+
+                            $countErros = $this->AmostraErros->find('all',[
+                            'conditions' => ['amostra_id' => $amostra_id[0]]
+                            ])->count();
+
+                            if($countErros >= 3){
+                                throw new BadRequestException(__('O paciente deve ser chamado para coleta de nova amostra'));
+                                die();
+                            }else{
+                                throw new BadRequestException(__('Amostra com valores inadequados para leitura. Favor repetir o processamento no FTIR.'));
+                            die();
+                            }
+
+
                         }
 
                         $exame = [

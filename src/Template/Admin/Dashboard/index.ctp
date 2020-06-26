@@ -5,12 +5,7 @@
 
 <div class="page-content-wrapper">
 	<div class="container-fluid">
-<?php 
-
-    echo $this->element('admin/dash/admin');
-
-
-?>
+<?php echo $this->element('admin/dash/admin');?>
 	</div>
 </div>
 

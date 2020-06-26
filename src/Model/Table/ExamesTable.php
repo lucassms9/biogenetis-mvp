@@ -43,11 +43,12 @@ class ExamesTable extends Table
 
         $this->belongsTo('Amostras', [
             'foreignKey' => 'amostra_id',
-        ]); 
+        ]);
 
-        $this->belongsTo('Origens', [
-            'foreignKey' => 'origem_id',
-        ]); 
+        $this->hasMany('ExameOrigens', [
+            'className' => 'ExameOrigens',
+            'foreignKey' => 'exame_id',
+        ]);
 
         $this->belongsTo('Users', [
             'foreignKey' => 'created_by',

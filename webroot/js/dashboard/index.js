@@ -1,16 +1,16 @@
 
 $(document).ready(function() {
 
-    var campos_data = "#date-init-filter, #date-end-filter"; 
+    var campos_data = "#date-init-filter, #date-end-filter";
     $( campos_data ).mask('99/99/9999');
-    // $( campos_data ).datepicker({ language: 'pt-BR' });  
+    // $( campos_data ).datepicker({ language: 'pt-BR' });
 
     var data = {};
 
      $('#reset-filter').click(function(e) {
         e.preventDefault();
        window.location = window.location.href.split("?")[0];
-    }) 
+    })
      $('#printer-dash').click(function(e) {
         e.preventDefault();
         printer_dashs();
@@ -18,6 +18,15 @@ $(document).ready(function() {
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+    console.log(urlParams.get('equipamentos_filter'))
+
+    if(urlParams.get('equipamentos_filter')){
+        data.equipamentos = urlParams.get('equipamentos_filter')
+    }
+
+    if(urlParams.get('amostras_filter')){
+        data.amostras = urlParams.get('amostras_filter')
+    }
 
     if(urlParams.get('estados_filter')){
         data.estado = urlParams.get('estados_filter')
@@ -52,7 +61,7 @@ function filterDash(argument) {
     var date_init = $('#date-init-filter').val();
     var date_end = $('#date-end-filter').val();
     var estado = $('#estados-filter :selected').val();
-   
+
     if(date_init == '' && date_end == '' && estado == ''){
         return alert('Você precisa ao menos preencher um dos campos');
     }
@@ -130,7 +139,7 @@ function amountTableAge(data) {
             $('#2140if').text(idade.Indeterminado.F);
             total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#2140tu').text(total2140);
-       
+
         }
 
         if(index == '41-60'){
@@ -142,7 +151,7 @@ function amountTableAge(data) {
             $('#4160if').text(idade.Indeterminado.F);
             total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#4160tu').text(total4160);
-           
+
         }
 
         if(index == '61-80'){
@@ -154,7 +163,7 @@ function amountTableAge(data) {
             $('#6180if').text(idade.Indeterminado.F);
             total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
             $('#6180tu').text(total6180);
-            
+
         }
 
         if(index == '> 80'){
@@ -233,9 +242,9 @@ function amountTableAge(data) {
 
 
        var arrJCrossOut = $('.crossOut');
-    
+
     arrJCrossOut.each(function(i){
-    
+
         var jTemp      = $(this),
             nWidth   = jTemp.innerWidth(),
             nHeight  = jTemp.innerHeight(),
@@ -256,10 +265,10 @@ function amountTableAge(data) {
             sDomTemp += 'margin-top: -'+nCatOp+'px;';
             sDomTemp += 'margin-left: -'+(nHyp2-nCatAd)+'px;';
             sDomTemp += '"></b>';
-        
+
         jTemp.append(sDomTemp);
     });
-    
+
 
 }
 function runExamesIdade(data) {
@@ -281,13 +290,13 @@ function runExamesIdade(data) {
        var Indeterminado = [];
 
         $.each(data.result, function (index, idade) {
-            
+
             positivos.push(idade.Positivo);
             negativos.push(idade.Negativo);
             Indeterminado.push(idade.Indeterminado);
 
             idades.push(index);
-            
+
         });
 
             body.push({
@@ -328,13 +337,13 @@ function runExamesGener(data) {
 
        // console.log(data)
         $.each(data, function (index, gener) {
-            
+
             positivos.push(gener.Positivo);
             negativos.push(gener.Negativo);
             Indeterminado.push(gener.Indeterminado);
 
             geners.push(index);
-            
+
         });
 
             body.push({
@@ -430,13 +439,13 @@ function runExamesUF(data) {
        var Indeterminado = [];
 
         $.each(data, function (index, uf) {
-            
+
             positivos.push(uf.Positivo);
             negativos.push(uf.Negativo);
             Indeterminado.push(uf.Indeterminado);
 
             ufR.push(index);
-            
+
         });
 
         body.push({
@@ -524,7 +533,7 @@ if ($('#column_chart_uf').length) {
 
 
 function renderExamesGener(body, gener) {
-    
+
 /*
 grafico por sexo
 */
@@ -575,7 +584,7 @@ if ($('#column_chart_sexo').length) {
         tooltip: {
             y: {
                 formatter: function (val) {
-                    return val; 
+                    return val;
                 }
             }
         }
@@ -595,7 +604,7 @@ if ($('#column_chart_sexo').length) {
 
 
 function renderExamesIdade(body, idades) {
-   
+
 /*
 grafico por faixa etaria 20 anos
 */

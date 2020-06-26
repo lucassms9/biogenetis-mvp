@@ -34,9 +34,9 @@ class Exame extends Entity
         'created' => true,
         'modified' => true,
         'file_extesion' => true,
-        'origem_id' => true,
         'resultado' => true,
-        'paciente' => true,
+        'equip_tipo' => true,
+        'amostra_tipo' => true,
         'amostra' => true,
         'file_name' => true,
     ];

@@ -7,6 +7,7 @@ use DOMDocument;
 use Cake\Http\Exception\BadRequestException;
 use PHPExcel;
 use PHPExcel_IOFactory;
+use Cake\Core\Exception\Exception;
 use Cake\I18n\Time;
 use Cake\I18n\FrozenDate;
 use Cake\I18n\FrozenTime;
@@ -19,7 +20,7 @@ use Cake\I18n\FrozenTime;
  * @method \App\Model\Entity\Amostra[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class AmostrasController extends AppController
-{   
+{
 
     public function initialize()
     {
@@ -27,11 +28,13 @@ class AmostrasController extends AppController
         $this->loadComponent('Paginator');
         $this->loadModel('Exames');
         $this->loadModel('AmostraErros');
+        $this->loadModel('ExameOrigens');
+        $this->loadModel('Origens');
         $this->loadComponent('Email');
     }
 
     public function sendEmail()
-    {       
+    {
 
          if ($this->request->is('post')) {
             ob_start(null, 0, false);
@@ -55,10 +58,10 @@ class AmostrasController extends AppController
             if($this->Auth->user('user_type_id') == 2){
                 $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
-            
+
             if(!empty($this->request->getData('amostra_id'))){
                 $conditions['code_amostra'] =$this->request->getData('amostra_id');
-            } 
+            }
 
             if(!empty($this->request->getData('lote'))){
                 $conditions['lote'] =$this->request->getData('lote');
@@ -97,7 +100,7 @@ class AmostrasController extends AppController
             $objPHPExcel = new PHPExcel();
 
             for ($i = 0; $i <= $qtd_colunas; $i++)
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]); 
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
             foreach($amostras as $i => $amostra){
                  $dados = [
@@ -141,23 +144,23 @@ class AmostrasController extends AppController
                                             ]
                                         ];
 
-           
+
             $this->Email->sendEmail($dadosEmail);
-            
+
             $handleRed = array_merge(['controller' => 'amostras', 'action' => 'index'], $redirect);
 
             $this->Flash->success(__('E-mail enviado com sucesso!'));
            return $this->redirect($handleRed);
-            
+
         }
     }
 
     public function generateExcel()
-    {   
+    {
 
         if ($this->request->is('post')) {
             $conditions = [];
-            
+
             ob_start(null, 0, false);
             ini_set("memory_limit", -1);
             ini_set('max_execution_time', 0);
@@ -170,10 +173,10 @@ class AmostrasController extends AppController
             if($this->Auth->user('user_type_id') == 2){
                 $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
-            
+
             if(!empty($this->request->getData('amostra_id'))){
                 $conditions['code_amostra'] =$this->request->getData('amostra_id');
-            } 
+            }
 
             if(!empty($this->request->getData('lote'))){
                 $conditions['lote'] =$this->request->getData('lote');
@@ -212,7 +215,7 @@ class AmostrasController extends AppController
             $objPHPExcel = new PHPExcel();
 
             for ($i = 0; $i <= $qtd_colunas; $i++)
-                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]); 
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
             foreach($amostras as $i => $amostra){
                  $dados = [
@@ -234,13 +237,13 @@ class AmostrasController extends AppController
 
             }
 
-            $arquivo = 'amostras_'.date('Y-m-d-H-i-s'); 
+            $arquivo = 'amostras_'.date('Y-m-d-H-i-s');
 
-            // Redirect output to a client’s web browser (Excel5) 
-            header("Content-Type: application/vnd.ms-excel"); 
-            header("Content-Disposition: attachment;filename=$arquivo.xls"); 
-            header("Cache-Control: max-age=0"); 
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
+            // Redirect output to a client’s web browser (Excel5)
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment;filename=$arquivo.xls");
+            header("Cache-Control: max-age=0");
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save('php://output');
             die();
         }
@@ -264,7 +267,7 @@ class AmostrasController extends AppController
 
             foreach ($this->request->getData('amostraid') as $key => $amostraid) {
                 $amostras[$key] = ['amostra_id' => $amostraid];
-            } 
+            }
             foreach ($this->request->getData('uf') as $key => $uf) {
                 $merge_arr = array_merge($amostras[$key], ['uf' => $uf]);
                 $amostras[$key] = $merge_arr;
@@ -273,7 +276,7 @@ class AmostrasController extends AppController
             foreach ($this->request->getData('idade') as $key => $idade) {
                 $merge_arr = array_merge($amostras[$key], ['idade' => $idade]);
                 $amostras[$key] = $merge_arr;
-            } 
+            }
             foreach ($this->request->getData('sexo') as $key => $sexo) {
                 $merge_arr = array_merge($amostras[$key], ['sexo' => $sexo]);
                 $amostras[$key] = $merge_arr;
@@ -294,19 +297,11 @@ class AmostrasController extends AppController
                 // SALVA O RETORNO EM RESULTADO
 
                 $exame_find = $this->Exames->find('all',[
-                    'contain' => ['Origens'],
+                    'contain' => ['ExameOrigens.Origens'],
                     'conditions' => ['amostra_id' => $amostra['amostra_id']]
                 ])->first();
 
                 $integration = $this->callIntegration($exame_find);
-                
-                if($integration == 'Positive'){
-                    $integration = 'Positivo';
-                }else if($integration == 'Negative'){
-                     $integration = 'Negativo';
-                }else{
-                    $integration = 'Indeterminado';
-                }
 
                 $exame_find->resultado = $integration;
                 $this->Exames->save($exame_find);
@@ -314,32 +309,59 @@ class AmostrasController extends AppController
             }
 
             return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);
-              
+
         }
     }
-    
+
     public function generateLote($date)
-    {   
+    {
         $lote = $this->Auth->user('id') . $this->Auth->user('cliente_id') . $date;
         return $lote;
     }
 
     public function callIntegration($exame)
     {
+        $positivo = 0;
+        $negativo = 0;
+        $inderterminado = 0;
 
-        $url = $exame->origen->url_request;
+        foreach ($exame->exame_origens as $origem) {
+            $url = $origem->origen->url_request;
+            $filedata = AMOSTRAS . $exame->amostra_id. $exame->file_extesion;
 
-        $filedata = AMOSTRAS . $exame->amostra_id. $exame->file_extesion;
+            $http = new Client();
+            $response = $http->post($url, [
+              'Userfile' => fopen($filedata, 'r'),
+            ]);
 
-        $http = new Client();
-        $response = $http->post($url, [
-          'Userfile' => fopen($filedata, 'r'),
-        ]);
+            $result = $this->html_to_obj($response->getStringBody());
 
-        $result = $this->html_to_obj($response->getStringBody());
+            if($result == 'Positive'){
+                $integration = 'Positivo';
+                $positivo++;
+            }else if($result == 'Negative'){
+                $integration = 'Negativo';
+                $negativo++;
+            }else{
+                $integration = 'Indeterminado';
+                $inderterminado++;
+            }
+
+            $origem->data_request = date('Y-m-d H:i:s');
+            $origem->resultado = $integration;
+            $this->ExameOrigens->save($origem);
+        }
+        if($positivo > $negativo){
+            $result = 'Positivo';
+        }else if($positivo < $negativo){
+            $result = 'Negativo';
+        }else{
+            $result = 'Indeterminado';
+        }
+
         return $result;
-
     }
+
 
     public function html_to_obj($html) {
         try {
@@ -373,13 +395,45 @@ class AmostrasController extends AppController
 
     }
 
+    public function setOrigens($exame)
+    {
+
+        $conditions = [
+            'amostra_tipo' => $exame->amostra_tipo,
+            'equip_tipo' => $exame->equip_tipo,
+             'ativo' => 1
+        ];
+
+        $origensByExame = $this->Origens->find('all',[
+            'conditions' => $conditions
+        ])->toList();
+
+        foreach ($origensByExame as $key => $origem) {
+            $dados = [
+                'exame_id' => $exame->id,
+                'origem_id' => $origem->id,
+            ];
+            $newOriginExame = $this->ExameOrigens->newEntity();
+            $newOriginExame = $this->ExameOrigens->patchEntity($newOriginExame, $dados);
+            $newOriginExame = $this->ExameOrigens->save($newOriginExame);
+        }
+
+        return true;
+    }
+
     public function getBetterRestul($file_extesion, $file)
-    {   
+    {
+        /**
+         * type_file = 1 - EQUIPAMENTO LCMS
+         * type_file = 2 - EQUIPAMENTO FTIR
+         */
 
         $file_extesion = strtolower($file_extesion);
-        $value = 0; 
+        $value = 0;
         $frase_key = '#MS Peaks One';
         $type_file = 1;
+        $amostra_tipo = strpos(strtolower($file['name']), 'swab') ? 'SWAB' : 'SALIVA';
+        $equip_tipo = '';
 
         if($file_extesion == 'csv'){
             $file = fopen(AMOSTRAS . $file['name'], 'r');
@@ -392,12 +446,14 @@ class AmostrasController extends AppController
                     if($line[1] > $value){
                         $value = $line[1];
                     }
-                } 
-            } 
+                }
+            }
 
-            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'csv'];
-        }
-        if($file_extesion == 'txt'){
+            $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
+
+            return ['value' => $value, 'type_file' => $type_file,'file_extesion' => 'csv', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
+
+        }else if($file_extesion == 'txt'){
             $file = fopen(AMOSTRAS . $file['name'], 'r');
 
             while ($line = fgets($file)) {
@@ -413,25 +469,25 @@ class AmostrasController extends AppController
             }
 
             fclose($file);
-            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'txt'];
+            $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
+
+            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'txt', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
         }
     }
 
     public function import()
-    {   
+    {
 
         $action = 'Cadastrar';
         $title = 'Amostras';
 
          if ($this->request->is('post')) {
+            try {
 
-            try {   
-                
                 if(!empty($this->request->getData('file'))) {
                     $file = $this->request->getData('file');
 
                     if($file['size'] > 0){
-
                         move_uploaded_file($file['tmp_name'], AMOSTRAS . $file['name']);
 
                         $amostra_id = explode('.', $file['name']);
@@ -455,7 +511,7 @@ class AmostrasController extends AppController
                             ];
                             $error_save = $this->AmostraErros->newEntity();
                             $error_save = $this->AmostraErros->patchEntity($error_save, $error_dados);
-                            $error_save = $this->AmostraErros->save($error_save);   
+                            $error_save = $this->AmostraErros->save($error_save);
 
 
                             $countErros = $this->AmostraErros->find('all',[
@@ -476,7 +532,8 @@ class AmostrasController extends AppController
                         $exame = [
                             'amostra_id' => $amostra_id[0],
                             'file_extesion' => $handle_file['file_extesion'],
-                            'origem_id' => $handle_file['type_file'],
+                            'equip_tipo' => $handle_file['equip_tipo'],
+                            'amostra_tipo' => $handle_file['amostra_tipo'],
                             'file_name' => $file['name'],
                             'created_by' => $this->Auth->user('id'),
                         ];
@@ -486,6 +543,9 @@ class AmostrasController extends AppController
                         $exame_save = $this->Exames->save($exame_save);
 
                         if($exame_save){
+                            //seta as origens para disparo de request
+                            $this->setOrigens($exame_save);
+
                             echo json_encode($exame_save);
                             exit;
                         }else{
@@ -494,11 +554,12 @@ class AmostrasController extends AppController
                         }
 
                     }
-                      
+
                 }
 
-             } catch (Exception $e) {
-                  $this->Flash->error(__('Tivemos algum problema ao enviar os Exames'));
+             } catch (BadRequestException $e) {
+                throw new BadRequestException($e->getMessage());
+                die();
             }
          }
 
@@ -515,13 +576,13 @@ class AmostrasController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index()
-    {   
+    {
 
         $action = 'Ver Todas';
         $title = 'Amostras';
         // $limitDefault = 300;
         $conditions = [
-            'Exames.resultado <>' => 'null' 
+            'Exames.resultado <>' => 'null'
         ];
 
         // $this->paginate = [
@@ -537,10 +598,10 @@ class AmostrasController extends AppController
         if($this->Auth->user('user_type_id') == 2){
             $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
         }
-        
+
         if(!empty($this->request->getQuery('amostra_id'))){
             $conditions['code_amostra'] = $this->request->getQuery('amostra_id');
-        } 
+        }
 
         if(!empty($this->request->getQuery('lote'))) {
             $conditions['lote'] = $this->request->getQuery('lote');

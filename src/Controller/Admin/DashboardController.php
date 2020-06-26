@@ -9,7 +9,6 @@ use App\Controller\AppController;
 class DashboardController extends AppController
 {
 
-
 	public function initialize()
     {
         parent::initialize();
@@ -18,7 +17,7 @@ class DashboardController extends AppController
     }
 
 	public function index()
-	{	
+	{
 		$action = 'Geral';
         $title = 'Dashboard';
 
@@ -43,16 +42,21 @@ class DashboardController extends AppController
         foreach ($ufs_lista as $row)
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
 
-		
-		$this->set(compact('user','ufs','action','title'));
+        // - Campo Equipamento: LCMS ou FTIR;
+        // - Campo Amostra: Saliva ou Swab
+        $equipamentos_options = ['LCMS' => 'LCMS','FTIR' => 'FTIR'];
+        $amostras_options = ['SALIVA' => 'Saliva','SWAB' => 'Swab'];
+
+		$this->set(compact('user','ufs','action','title','equipamentos_options','amostras_options'));
 	}
 
 	public function getExamesGlobal()
-	{	
+	{
 
-		$query = $this->request->getQuery();
+        $query = $this->request->getQuery();
+
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -62,9 +66,14 @@ class DashboardController extends AppController
 			$conditions_query['cast(Amostras.created as date) <='] = $data2;
 		}
 		if(!empty($query['estado'])){
-			$conditions_query['Amostras.uf'] = $query['estado'];
+			$conditions_query['Exames.uf'] = $query['estado'];
 		}
-
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+		}
 
         $conditions = [];
 
@@ -75,7 +84,7 @@ class DashboardController extends AppController
 			'Negativo' => 0,
 			'Indeterminado' => 0,
 		];
-		
+
 
 		if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -108,11 +117,10 @@ class DashboardController extends AppController
 
 	public function getExamesByUf()
 	{
-		
 
 		$query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -125,8 +133,13 @@ class DashboardController extends AppController
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
 
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+		}
 
-       
 		$conditions_uf = [];
 
         $conditions_uf = array_merge($conditions_uf,$conditions_query);
@@ -138,9 +151,9 @@ class DashboardController extends AppController
 
         $result = [];
 
-      
+
         $conditions = [];
-       
+
 
         if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -186,15 +199,13 @@ class DashboardController extends AppController
 
         }
 
-
 			echo json_encode($result);
 	        die();
-        
 
 	}
 
 	public function getExamesByGener()
-	{	
+	{
 
 
 		$sexo_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.sexo'], 'order' => ['Amostras.sexo' => 'ASC']]);
@@ -203,7 +214,7 @@ class DashboardController extends AppController
 
         $query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -216,6 +227,12 @@ class DashboardController extends AppController
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
 
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+        }
 
         $conditions = [];
 
@@ -262,16 +279,16 @@ class DashboardController extends AppController
 
         }
 
-			echo json_encode($result);
-	        die();
+		echo json_encode($result);
+	    die();
 	}
 
 	public function getExamesByAge()
 	{
-		
+
 		$query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -283,6 +300,13 @@ class DashboardController extends AppController
 		if(!empty($query['estado'])){
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
+
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+        }
 
         $result = [];
         $result2 = [];
@@ -546,7 +570,7 @@ class DashboardController extends AppController
 						'Indeterminado' => $Indeterminado,
 		        ];
 	    	}
-	    	
+
     	}
     	$result2['61-80'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
@@ -614,7 +638,7 @@ class DashboardController extends AppController
 		 $resulfinal = [
 		 	'result' => $result,
 		 	'result_table' => $result2
-		 ];       
+		 ];
         echo json_encode($resulfinal);
         die();
 

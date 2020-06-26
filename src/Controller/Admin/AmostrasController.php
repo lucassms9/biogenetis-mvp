@@ -119,7 +119,7 @@ class AmostrasController extends AppController
 
             }
 
-            $nome_arquivo = md5(date('Y-m-d_H-i-s')) . '_reimport.xls';
+            $nome_arquivo = md5(date('Y-m-d_H-i-s')) . '_amostas.xls';
 
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
             $objWriter->save(XLS_AMOSTRAS . $nome_arquivo);
@@ -294,6 +294,7 @@ class AmostrasController extends AppController
                 // SALVA O RETORNO EM RESULTADO
 
                 $exame_find = $this->Exames->find('all',[
+                    'contain' => ['Origens'],
                     'conditions' => ['amostra_id' => $amostra['amostra_id']]
                 ])->first();
 
@@ -325,9 +326,10 @@ class AmostrasController extends AppController
 
     public function callIntegration($exame)
     {
-        
-        $url = "http://152.67.59.237/covid19/sampletest.php";
-        $filedata = AMOSTRAS . $exame->amostra_id. '.csv';
+
+        $url = $exame->origen->url_request;
+
+        $filedata = AMOSTRAS . $exame->amostra_id. $exame->file_extesion;
 
         $http = new Client();
         $response = $http->post($url, [
@@ -371,6 +373,50 @@ class AmostrasController extends AppController
 
     }
 
+    public function getBetterRestul($file_extesion, $file)
+    {   
+
+        $file_extesion = strtolower($file_extesion);
+        $value = 0; 
+        $frase_key = '#MS Peaks One';
+        $type_file = 1;
+
+        if($file_extesion == 'csv'){
+            $file = fopen(AMOSTRAS . $file['name'], 'r');
+                while ($line = fgetcsv($file)) {
+                if(strpos($line[0], $frase_key)){
+                    $type_file = 2;
+                }
+
+                if(is_numeric($line[1])){
+                    if($line[1] > $value){
+                        $value = $line[1];
+                    }
+                } 
+            } 
+
+            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'csv'];
+        }
+        if($file_extesion == 'txt'){
+            $file = fopen(AMOSTRAS . $file['name'], 'r');
+
+            while ($line = fgets($file)) {
+                if(strpos($line, $frase_key)){
+                    $type_file = 2;
+                }
+                if(is_numeric($line[1])){
+                $line_new = preg_split('/\s+/', trim($line));
+                    if($line_new[1] > $value){
+                        $value = $line_new[1];
+                    }
+                }
+            }
+
+            fclose($file);
+            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'txt'];
+        }
+    }
+
     public function import()
     {   
 
@@ -389,31 +435,20 @@ class AmostrasController extends AppController
                         move_uploaded_file($file['tmp_name'], AMOSTRAS . $file['name']);
 
                         $amostra_id = explode('.', $file['name']);
+                        $file_extesion = $amostra_id[1];
 
                         $amostraExist = $this->Exames->find('all',[
                             'conditions' => ['amostra_id' => $amostra_id[0], 'resultado <>' => 'null']
                         ])->first();
 
-
-                        $file = fopen(AMOSTRAS . $file['name'], 'r');
-                        $value = 0; 
-                        while (($line = fgetcsv($file)) !== false) {
-                            $dados = preg_split('/\s+/', $line[0]);
-
-                            if(is_numeric($dados[1])){
-                                if($dados[1] > $value){
-                                    $value = $dados[1];
-                                }
-                            }
-                          
-                        }   
+                        $handle_file = $this->getBetterRestul($file_extesion, $file);
 
                         if(!empty($amostraExist)){
                              throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
                              die();
                         }
 
-                        if($value < 0.018){
+                        if($handle_file['value'] < 0.018){
                             $error_dados = [
                                 'amostra_id' => $amostra_id[0],
                                 'created_by' => $this->Auth->user('id'),
@@ -440,6 +475,8 @@ class AmostrasController extends AppController
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],
+                            'file_extesion' => $handle_file['file_extesion'],
+                            'origem_id' => $handle_file['type_file'],
                             'file_name' => $file['name'],
                             'created_by' => $this->Auth->user('id'),
                         ];

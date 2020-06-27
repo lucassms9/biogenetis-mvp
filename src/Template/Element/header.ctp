@@ -20,7 +20,7 @@
 
             <!-- LOGO -->
             <div  class="navbar-brand-box">
-             
+
                 <a href="<?= $this->Url->build('/admin', true);?>" class="logo logo-light">
                     <!-- <span class="logo-sm"> -->
                         <!-- <img src="assets/images/logo-sm-light.png" alt="" height="22"> -->
@@ -47,12 +47,24 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item dropdown">
+                                <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Relatórios <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                    <a href="<?= $this->Url->build('/admin', true);?>/exames/relatorio" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Amostras</a>
 
-                             <li class="nav-item">
+                                        <a href="<?= $this->Url->build('/admin', true);?>/amostras/resultados" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Resultados Gerais</a>
+                                    </div>
+                            </li>
+
+                             <!-- <li class="nav-item">
                                 <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
                                     Relatórios
                                 </a>
-                            </li>
+                            </li> -->
 
 
                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
@@ -79,7 +91,7 @@
                             </li>
                             <?php endif;?>
 
-                             
+
                         </ul>
                     </div>
                 </nav>
@@ -87,5 +99,5 @@
         </div>
     </div>
 
-    
+
 </header>

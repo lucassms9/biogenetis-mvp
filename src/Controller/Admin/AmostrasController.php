@@ -155,6 +155,97 @@ class AmostrasController extends AppController
         }
     }
 
+    public function resultados()
+    {
+        $action = 'Cadastrar';
+        $title = 'Resultados';
+
+        if ($this->request->is('post')) {
+            $conditions = [
+                'Exames.resultado <>' => 'null'
+            ];
+
+            if(!empty($this->request->getQuery('lote'))) {
+                $conditions['Amostras.lote'] = $this->request->getQuery('lote');
+            }
+
+            if (!empty($this->request->getQuery('data_init'))){
+                $data_de = $this->request->getQuery('data_init');
+                $conditions['cast(Amostras.created as date) >='] = $data_de;
+            }
+
+            if (!empty($this->request->getQuery('data_fim'))){
+                $data_ate = $this->request->getQuery('data_fim');
+                $conditions['cast(Amostras.created as date) >='] = $data_ate;
+             }
+
+
+            $amostras = $this->ExameOrigens->find('all',[
+                'contain' => ['Origens','Exames.Users','Exames.Amostras'],
+                 'conditions' => $conditions
+            ])->toList();
+
+            $qtd_colunas = 10;
+
+            $nome_colunas = [
+                'Amostra ID',
+                'Restulado do Endpoint',
+                'Nome origem',
+                'URL Endpoint Request',
+                'ativo',
+                'tipo de equipamento',
+                'tipo de amostra',
+                'IAModelType',
+                'IAModelName',
+                'DataScience',
+                'Data do Request',
+            ];
+
+            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K');
+
+            $objPHPExcel = new PHPExcel();
+
+            for ($i = 0; $i <= $qtd_colunas; $i++)
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
+
+            foreach($amostras as $i => $amostra){
+                 $dados = [
+                    $amostra->exame->amostra_id,
+                    $amostra->resultado,
+                    $amostra->origen->nome_origem,
+                    $amostra->origen->url_request,
+                    $amostra->origen->ativo,
+                    $amostra->origen->equip_tipo,
+                    $amostra->origen->amostra_tipo,
+                    $amostra->origen->IAModelType,
+                    $amostra->origen->IAModelName,
+                    $amostra->origen->DataScience,
+                    $amostra->data_request->i18nFormat('dd/MM/yyyy HH:mm'),
+                ];
+
+                for ($j = 0; $j <= $qtd_colunas; $j++) {
+                    if (isset($alfabeto[$j])) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$j] . ($i + 2),$dados[$j]);
+                    }
+                }
+
+            }
+
+            $arquivo = 'resultado_geral_'.date('Y-m-d-H-i-s');
+
+            // Redirect output to a client’s web browser (Excel5)
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment;filename=$arquivo.xls");
+            header("Cache-Control: max-age=0");
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            die();
+
+        }
+
+        $this->set(compact('action','title'));
+    }
+
     public function generateExcel()
     {
 

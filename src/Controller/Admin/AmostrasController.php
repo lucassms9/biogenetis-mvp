@@ -189,6 +189,7 @@ class AmostrasController extends AppController
 
             $nome_colunas = [
                 'Amostra ID',
+                'Lote',
                 'Restulado do Endpoint',
                 'Nome origem',
                 'URL Endpoint Request',
@@ -211,6 +212,7 @@ class AmostrasController extends AppController
             foreach($amostras as $i => $amostra){
                  $dados = [
                     $amostra->exame->amostra_id,
+                    $amostra->exame->amostra->lote,
                     $amostra->resultado,
                     $amostra->origen->nome_origem,
                     $amostra->origen->url_request,
@@ -382,8 +384,8 @@ class AmostrasController extends AppController
                     'sexo' => strtoupper($amostra['sexo']),
                     'lote' => $this->generateLote($date_init)
                 ]);
-                $amostra_save = $this->Amostras->save($amostra_save);
 
+                $amostra_save = $this->Amostras->save($amostra_save);
                 // FAZ COMUNICAO COM O SERVICO DE IA
                 // SALVA O RETORNO EM RESULTADO
 
@@ -414,18 +416,23 @@ class AmostrasController extends AppController
     {
         $positivo = 0;
         $negativo = 0;
-        $inderterminado = 0;
+        $inadequado = 0;
 
         foreach ($exame->exame_origens as $origem) {
             $url = $origem->origen->url_request;
-            $filedata = AMOSTRAS . $exame->amostra_id. $exame->file_extesion;
+            $filedata = AMOSTRAS . $exame->amostra_id. '.'.$exame->file_extesion;
 
             $http = new Client();
             $response = $http->post($url, [
               'Userfile' => fopen($filedata, 'r'),
             ]);
 
-            $result = $this->html_to_obj($response->getStringBody());
+            if(strpos($url, '168.138.139.32') !== FALSE){
+                $result = $response->getJson();
+                $result = $result['retorno'];
+            }else{
+                $result = $this->html_to_obj($response->getStringBody());
+            }
 
             if($result == 'Positive'){
                 $integration = 'Positivo';
@@ -434,18 +441,27 @@ class AmostrasController extends AppController
                 $integration = 'Negativo';
                 $negativo++;
             }else{
-                $integration = 'Indeterminado';
-                $inderterminado++;
+                $integration = 'Inadequado';
+                $inadequado++;
             }
 
             $origem->data_request = date('Y-m-d H:i:s');
             $origem->resultado = $integration;
             $this->ExameOrigens->save($origem);
         }
-        if($positivo > $negativo){
-            $result = 'Positivo';
-        }else if($positivo < $negativo){
-            $result = 'Negativo';
+
+        if( ($positivo + $negativo + $inadequado) > 0 ){
+            if( ($inadequado >= ($positivo + $negativo))){
+                $result = 'Inadequado';
+            }else{
+                if( ($positivo > $negativo) && ($positivo + $negativo) > 0){
+                    $result = 'Positivo';
+                }else if($positivo < $negativo && ($positivo + $negativo) > 0){
+                    $result = 'Negativo';
+                }else{
+                    $result = 'Indeterminado';
+                }
+            }
         }else{
             $result = 'Indeterminado';
         }
@@ -492,7 +508,7 @@ class AmostrasController extends AppController
         $conditions = [
             'amostra_tipo' => $exame->amostra_tipo,
             'equip_tipo' => $exame->equip_tipo,
-             'ativo' => 1
+            'ativo' => 1
         ];
 
         $origensByExame = $this->Origens->find('all',[
@@ -523,7 +539,8 @@ class AmostrasController extends AppController
         $value = 0;
         $frase_key = '#MS Peaks One';
         $type_file = 1;
-        $amostra_tipo = strpos(strtolower($file['name']), 'swab') ? 'SWAB' : 'SALIVA';
+        $amostra_tipo = strpos(strtolower($file['name']), 'swab') !== FALSE ? 'SWAB' : 'SALIVA';
+
         $equip_tipo = '';
 
         if($file_extesion == 'csv'){
@@ -595,30 +612,30 @@ class AmostrasController extends AppController
                              die();
                         }
 
-                        if($handle_file['value'] < 0.018){
-                            $error_dados = [
-                                'amostra_id' => $amostra_id[0],
-                                'created_by' => $this->Auth->user('id'),
-                            ];
-                            $error_save = $this->AmostraErros->newEntity();
-                            $error_save = $this->AmostraErros->patchEntity($error_save, $error_dados);
-                            $error_save = $this->AmostraErros->save($error_save);
+                        // if($handle_file['value'] < 0.018){
+                        //     $error_dados = [
+                        //         'amostra_id' => $amostra_id[0],
+                        //         'created_by' => $this->Auth->user('id'),
+                        //     ];
+                        //     $error_save = $this->AmostraErros->newEntity();
+                        //     $error_save = $this->AmostraErros->patchEntity($error_save, $error_dados);
+                        //     $error_save = $this->AmostraErros->save($error_save);
 
 
-                            $countErros = $this->AmostraErros->find('all',[
-                            'conditions' => ['amostra_id' => $amostra_id[0]]
-                            ])->count();
+                        //     $countErros = $this->AmostraErros->find('all',[
+                        //     'conditions' => ['amostra_id' => $amostra_id[0]]
+                        //     ])->count();
 
-                            if($countErros >= 3){
-                                throw new BadRequestException(__('O paciente deve ser chamado para coleta de nova amostra'));
-                                die();
-                            }else{
-                                throw new BadRequestException(__('Amostra com valores inadequados para leitura. Favor repetir o processamento no FTIR.'));
-                            die();
-                            }
+                        //     if($countErros >= 3){
+                        //         throw new BadRequestException(__('O paciente deve ser chamado para coleta de nova amostra'));
+                        //         die();
+                        //     }else{
+                        //         throw new BadRequestException(__('Amostra com valores inadequados para leitura. Favor repetir o processamento no FTIR.'));
+                        //     die();
+                        //     }
 
 
-                        }
+                        // }
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],

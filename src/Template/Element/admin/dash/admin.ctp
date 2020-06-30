@@ -113,7 +113,7 @@
 
 <div class="row">
 
-    <div class="col-sm-8">
+    <div class="col-sm-9">
         <div class="card">
             <div class="card-body">
                  <div class="table-responsive">
@@ -121,21 +121,24 @@
                                 <thead>
                                     <tr style="text-align: center;">
                                         <th  class="td-blue-strong" scope="col">COVID</th>
-                                        <th class="td-blue-strong" style="text-align: center;" colspan="9" scope="col">TOTAL</th>
+                                        <th class="td-blue-strong" style="text-align: center;" colspan="11" scope="col">TOTAL</th>
                                     </tr>
 
                                     <tr style="text-align: center;">
                                         <th class="td-blue-strong" class="td-blue-strong" scope="col">RESULTADOS</th>
                                         <th class="td-blue-strong" colspan="2" scope="col">POS</th>
                                         <th class="td-blue-strong" colspan="2" scope="col">NEG</th>
-                                        <th class="td-blue-strong" colspan="2" scope="col">INC</th>
+                                        <th class="td-blue-strong" colspan="2" scope="col">IND</th>
+                                        <th class="td-blue-strong" colspan="2" scope="col">INQ</th>
                                         <th class="td-blue-strong" style="vertical-align: middle;" rowspan="2" scope="col">TOTAIS</th>
                                         <th class="td-blue-strong" style="vertical-align: middle;" rowspan="2" scope="col">%</th>
                                     </tr>
                                      <tr style="text-align: center;">
                                         <th style="padding: 0 !important;" class="td-blue-strong crossOut" scope="col">
-                                        <span style="font-size: 11px;position: relative;top: -20px;left: -25px;">IDADE</span>
-                                        <span style="font-size: 11px;position: relative;left: 24px;">SEXO</span></th>
+                                        <span style="font-size: 11px;position: relative;top: 0px;left: -25px;">IDADE</span>
+                                        <span style="font-size: 11px;position: relative;left: -20px;">SEXO</span></th>
+                                        <th class="td-blue-strong" scope="col">MASC</th>
+                                        <th class="td-blue-strong" scope="col">FEM</th>
                                         <th class="td-blue-strong" scope="col">MASC</th>
                                         <th class="td-blue-strong" scope="col">FEM</th>
                                         <th class="td-blue-strong" scope="col">MASC</th>
@@ -152,7 +155,9 @@
                                         <td style="text-align: right;" id="020nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="020nf"></td>
                                         <td style="text-align: right;" id="020im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="020if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020if"></td>  
+                                        <td style="text-align: right;" id="020iqm"></td>
+                                        <td style="text-align: right;" class="border-rt" id="020iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="020tu"></td>
                                         <td style="text-align: right;" id="020tp"></td>
                                     </tr>
@@ -163,7 +168,9 @@
                                         <td style="text-align: right;" id="2140nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="2140nf"></td>
                                         <td style="text-align: right;" id="2140im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="2140if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140if"></td> 
+                                        <td style="text-align: right;" id="2140iqm"></td>
+                                        <td style="text-align: right;" class="border-rt" id="2140iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="2140tu"></td>
                                         <td style="text-align: right;" id="2140tp"></td>
                                     </tr>
@@ -174,7 +181,9 @@
                                         <td style="text-align: right;" id="4160nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="4160nf"></td>
                                         <td style="text-align: right;" id="4160im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="4160if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160if"></td>  
+                                        <td style="text-align: right;" id="4160iqm"></td>
+                                        <td style="text-align: right;" class="border-rt" id="4160iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="4160tu"></td>
                                         <td style="text-align: right;" id="4160tp"></td>
                                     </tr>
@@ -185,7 +194,9 @@
                                         <td style="text-align: right;" id="6180nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="6180nf"></td>
                                         <td style="text-align: right;" id="6180im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="6180if"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180if"></td>  
+                                        <td style="text-align: right;" id="6180iqm"></td>
+                                        <td style="text-align: right;" class="border-rt" id="6180iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="6180tu"></td>
                                         <td style="text-align: right;" id="6180tp"></td>
                                     </tr>
@@ -196,7 +207,8 @@
                                         <td style="text-align: right;border-bottom: none;" id="81nm"></td>
                                         <td style="text-align: right;border-bottom: none;" class="border-rt" id="81nf"></td>
                                         <td style="text-align: right;border-bottom: none;" id="81im"></td>
-                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81if"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81if"></td>  <td style="text-align: right;border-bottom: none;" id="81iqm"></td>
+                                        <td style="text-align: right;border-bottom: none;" class="border-rt" id="81iqf"></td>
                                         <td style="text-align: right;border-bottom: none;" class="border-rt" id="81tu"></td>
                                         <td style="text-align: right;border-bottom: none;" id="81tp"></td>
                                     </tr>
@@ -207,7 +219,9 @@
                                         <td style="text-align: right;" class="border-hz" id="totalunm"></td>
                                         <td style="text-align: right;" class="border-rt border-hz" id="totalunf"></td>
                                         <td style="text-align: right;" class="border-hz" id="totaluim"></td>
-                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluif"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluif"></td> 
+                                        <td style="text-align: right;" class="border-hz" id="totaluiqm"></td>
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluiqf"></td>
                                         <td style="text-align: right;" class="border-rt border-hz" id="totalutu"></td>
                                         <td style="text-align: right;" class="border-hz" id="totalutp"></td>
                                     </tr>
@@ -218,14 +232,17 @@
                                         <td style="text-align: right;" id="totalpornm" class="td-green"></td>
                                         <td style="text-align: right;" id="totalpornf" class="td-green"></td>
                                         <td style="text-align: right;" id="totalporim" class="td-yellow"></td>
-                                        <td style="text-align: right;" id="totalporif" class="td-yellow"></td>
+                                        <td style="text-align: right;" id="totalporif" class="td-yellow"></td>   
+                                        <td style="text-align: right;" id="totalporiqm" class="td-yellow">1</td>
+                                        <td style="text-align: right;" id="totalporiqf" class="td-yellow"></td>
                                         <td  style="vertical-align: middle; text-align: right;" colspan="2" rowspan="2" id="totalportp"></td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: center;" class="td-blue-strong">% TOTAL</td>
                                         <td style="text-align: center;" id="totalmfporpos" style="text-align: center;" class="td-red" colspan="2"></td>
                                         <td style="text-align: center;" id="totalmfporneg" style="text-align: center;" class="td-green"colspan="2"></td>
-                                        <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>
+                                        <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>   
+                                        <td style="text-align: center;" id="totalmfporinq" style="text-align: center;" class="td-yellow" colspan="2"></td>
                                     </tr>
                                 </tbody>
                             </table>

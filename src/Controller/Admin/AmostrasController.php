@@ -427,17 +427,30 @@ class AmostrasController extends AppController
               'Userfile' => fopen($filedata, 'r'),
             ]);
 
-            if(strpos($url, '168.138.139.32') !== FALSE){
+            if( (strpos($url, '168.138.139.32') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
             }else{
                 $result = $this->html_to_obj($response->getStringBody());
+                if((strpos($result, 'Negative')) !== false && (strpos($url, '140.238.182.215/ars_covid_spittle_ftir1')) !== false ){
+                    $re_send_url = $this->Origens->find('all',[
+                        'conditions' => ['url_request like' => '%168.138.139.32:3005/files%']
+                    ])->first();
+
+                    if($re_send_url){
+                        $response = $http->post($re_send_url->url_request, [
+                          'Userfile' => fopen($filedata, 'r'),
+                        ]);
+                        $result = $response->getJson();
+                        $result = $result['retorno'];
+                    }
+                }
             }
 
-            if($result == 'Positive'){
+            if((strpos($result, 'Positive')) !== false){
                 $integration = 'Positivo';
                 $positivo++;
-            }else if($result == 'Negative'){
+            }else if((strpos($result, 'Negative')) !== false){
                 $integration = 'Negativo';
                 $negativo++;
             }else{
@@ -446,7 +459,7 @@ class AmostrasController extends AppController
             }
 
             $origem->data_request = date('Y-m-d H:i:s');
-            $origem->resultado = $integration;
+            $origem->resultado = $result;
             $this->ExameOrigens->save($origem);
         }
 
@@ -472,13 +485,13 @@ class AmostrasController extends AppController
 
     public function html_to_obj($html) {
         try {
-
             $dom = new DOMDocument();
             @$dom->loadHTML($html);
             $getElement = $this->element_to_obj($dom->documentElement);
             $result = trim($getElement['children'][0]['children'][1]['html']);
-            $hanldeData = substr($result, 0, 8);
-            return $hanldeData;
+            $regexTopper = preg_split('/\s/', $result);
+            return 'NegativeCO';
+            return trim($regexTopper[0]);
         } catch (Exception $e) {
             throw new Exception($e->message, 1);
         }

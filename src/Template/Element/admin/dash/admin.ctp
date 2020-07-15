@@ -233,8 +233,8 @@
                                         <td style="text-align: right;" id="totalpornf" class="td-green"></td>
                                         <td style="text-align: right;" id="totalporim" class="td-yellow"></td>
                                         <td style="text-align: right;" id="totalporif" class="td-yellow"></td>   
-                                        <td style="text-align: right;" id="totalporiqm" class="td-yellow">1</td>
-                                        <td style="text-align: right;" id="totalporiqf" class="td-yellow"></td>
+                                        <td style="text-align: right;background: #ff8a26" id="totalporiqm" class="td-yellow"></td>
+                                        <td style="text-align: right;background: #ff8a26" id="totalporiqf" class="td-yellow"></td>
                                         <td  style="vertical-align: middle; text-align: right;" colspan="2" rowspan="2" id="totalportp"></td>
                                     </tr>
                                     <tr>
@@ -242,7 +242,7 @@
                                         <td style="text-align: center;" id="totalmfporpos" style="text-align: center;" class="td-red" colspan="2"></td>
                                         <td style="text-align: center;" id="totalmfporneg" style="text-align: center;" class="td-green"colspan="2"></td>
                                         <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>   
-                                        <td style="text-align: center;" id="totalmfporinq" style="text-align: center;" class="td-yellow" colspan="2"></td>
+                                        <td style="text-align: center;background: #ff8a26;" id="totalmfporinq" style="text-align: center;" class="td-yellow" colspan="2"></td>
                                     </tr>
                                 </tbody>
                             </table>

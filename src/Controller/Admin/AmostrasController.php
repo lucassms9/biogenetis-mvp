@@ -430,11 +430,13 @@ class AmostrasController extends AppController
             if( (strpos($url, '168.138.139.32') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
-            }else{
-                $result = $this->html_to_obj($response->getStringBody());
-                if((strpos($result, 'Negative')) !== false && (strpos($url, '140.238.182.215/ars_covid_spittle_ftir1')) !== false ){
+                $isEncadeado = (strpos($origem->origen->nome_origem, 'Encadeado'));
+
+                if((strpos($result, 'Negative')) === false && $isEncadeado !== false ){
+
+                    //find endpoint http://168.138.139.32:3003/files
                     $re_send_url = $this->Origens->find('all',[
-                        'conditions' => ['url_request like' => '%168.138.139.32:3005/files%']
+                        'conditions' => ['nome_origem like' => '%Murillo saliva ftir4%']
                     ])->first();
 
                     if($re_send_url){
@@ -443,8 +445,42 @@ class AmostrasController extends AppController
                         ]);
                         $result = $response->getJson();
                         $result = $result['retorno'];
+
+                        if((strpos($result, 'Positive')) === false){
+
+                            if( strpos($origem->origen->nome_origem, 'Encadeado 3001 3003 3012 ftir') !== false ){
+
+                                //find endpoint http://168.138.139.32:3012/files
+                                $re_send_url = $this->Origens->find('all',[
+                                    'conditions' => ['nome_origem like' => '%Wagner saliva ftir4%']
+                                ])->first();
+
+                                $response = $http->post($re_send_url->url_request, [
+                                    'Userfile' => fopen($filedata, 'r'),
+                                  ]);
+                                $result = $response->getJson();
+                                $result = $result['retorno'];
+
+                            }else{
+                                //find endpoint http://140.238.182.215/ars_covid_spittle_ftir2/sampletest.php
+                                $re_send_url = $this->Origens->find('all',[
+                                    'conditions' => ['nome_origem like' => '%Anderson saliva ftir2%']
+                                ])->first();
+
+                                $response = $http->post($re_send_url->url_request, [
+                                    'Userfile' => fopen($filedata, 'r'),
+                                ]);
+
+                                $result = $this->html_to_obj($response->getStringBody());
+
+                            }
+                        }
                     }
                 }
+
+
+            }else{
+                $result = $this->html_to_obj($response->getStringBody());
             }
 
             if((strpos($result, 'Positive')) !== false){
@@ -464,7 +500,8 @@ class AmostrasController extends AppController
         }
 
         if( ($positivo + $negativo + $inadequado) > 0 ){
-            if( ($inadequado >= ($positivo + $negativo))){
+            //so vai gravar inadequado se todos retornos forem inadequados
+            if( ($inadequado == ($positivo + $negativo + $inadequado))){
                 $result = 'Inadequado';
             }else{
                 if( ($positivo > $negativo) && ($positivo + $negativo) > 0){
@@ -490,7 +527,6 @@ class AmostrasController extends AppController
             $getElement = $this->element_to_obj($dom->documentElement);
             $result = trim($getElement['children'][0]['children'][1]['html']);
             $regexTopper = preg_split('/\s/', $result);
-            return 'NegativeCO';
             return trim($regexTopper[0]);
         } catch (Exception $e) {
             throw new Exception($e->message, 1);

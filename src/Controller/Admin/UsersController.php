@@ -112,7 +112,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {   
-        $action = 'Cadastrar';
+        $action = 'Editar Dados';
         $title = 'Usuários';
 
         $user = $this->Users->get($id, [

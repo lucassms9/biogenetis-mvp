@@ -60,15 +60,15 @@ class AmostrasController extends AppController
             }
 
             if(!empty($this->request->getData('amostra_id'))){
-                $conditions['code_amostra'] =$this->request->getData('amostra_id');
+                $conditions['code_amostra'] = $this->request->getData('amostra_id');
             }
 
             if(!empty($this->request->getData('lote'))){
-                $conditions['lote'] =$this->request->getData('lote');
+                $conditions['lote'] = $this->request->getData('lote');
             }
 
             if (!empty($this->request->getData('data_init'))){
-                $data_de =$this->request->getData('data_init');
+                $data_de = $this->request->getData('data_init');
                 $conditions['cast(Exames.created as date) >='] = $data_de;
             }
 
@@ -181,7 +181,7 @@ class AmostrasController extends AppController
 
 
             $amostras = $this->ExameOrigens->find('all',[
-                'contain' => ['Origens','Exames.Users','Exames.Amostras'],
+                'contain' => ['Origens','Exames.Users','Exames.Amostras','Exames.Origens'],
                  'conditions' => $conditions
             ])->toList();
 
@@ -191,8 +191,9 @@ class AmostrasController extends AppController
                 'Amostra ID',
                 'Lote',
                 'Restulado do Endpoint',
-                'Nome origem',
                 'URL Endpoint Request',
+                'Nome origem',
+                'Endpoint Resp. pelo Resultado',
                 'ativo',
                 'tipo de equipamento',
                 'tipo de amostra',
@@ -210,12 +211,15 @@ class AmostrasController extends AppController
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
             foreach($amostras as $i => $amostra){
+                $url_encad = !empty($amostra->exame->origen->url_request) ? $amostra->exame->origen->url_request : 'Sem Encadeamentos';
+
                  $dados = [
                     $amostra->exame->amostra_id,
                     $amostra->exame->amostra->lote,
                     $amostra->resultado,
-                    $amostra->origen->nome_origem,
                     $amostra->origen->url_request,
+                    $amostra->origen->nome_origem,
+                    $url_encad,
                     $amostra->origen->ativo,
                     $amostra->origen->equip_tipo,
                     $amostra->origen->amostra_tipo,
@@ -390,7 +394,7 @@ class AmostrasController extends AppController
                 // SALVA O RETORNO EM RESULTADO
 
                 $exame_find = $this->Exames->find('all',[
-                    'contain' => ['ExameOrigens.Origens'],
+                    'contain' => ['ExameOrigens.Origens.Encadeamentos.Origens'],
                     'conditions' => ['amostra_id' => $amostra['amostra_id']]
                 ])->first();
 
@@ -411,6 +415,39 @@ class AmostrasController extends AppController
         $lote = $this->Auth->user('id') . $this->Auth->user('cliente_id') . $date;
         return $lote;
     }
+    public function requestEndpoints($encad, $filedata, $isLastRequest)
+    {   
+
+        $parse_status = [
+            'Positivo' => 'Positive',
+            'Negativo' => 'Negative'
+        ];
+
+        $http = new Client();
+        $response = $http->post($encad->origen->url_request, [
+          'Userfile' => fopen($filedata, 'r'),
+        ]);
+
+        if( (strpos($encad->origen->url_request, '168.138.139.32') !== false) ){
+            $result = $response->getJson();
+            $result = $result['retorno'];
+        }else{
+            $result = $this->html_to_obj($response->getStringBody());
+        } 
+
+        $status_branch = $parse_status[$encad->regra];
+
+        if($isLastRequest){
+            $result = ['stop_loop' => true, 'result' => $result];
+        }
+        else if((strpos($result, $status_branch)) !== false){
+            $result = ['stop_loop' => true, 'result' => $result];
+        }else{
+            $result = ['stop_loop' => false, 'result' => $result];
+        }
+
+        return $result;
+    }
 
     public function callIntegration($exame)
     {
@@ -418,7 +455,13 @@ class AmostrasController extends AppController
         $negativo = 0;
         $inadequado = 0;
 
+        $parse_status = [
+            'Positivo' => 'Positive',
+            'Negativo' => 'Negative'
+        ];
+
         foreach ($exame->exame_origens as $origem) {
+
             $url = $origem->origen->url_request;
             $filedata = AMOSTRAS . $exame->amostra_id. '.'.$exame->file_extesion;
 
@@ -427,60 +470,44 @@ class AmostrasController extends AppController
               'Userfile' => fopen($filedata, 'r'),
             ]);
 
+            $total_enc = count($origem->origen->encadeamentos);
+
+            $isEncadeado = $total_enc > 0 ? true : false;
+         
             if( (strpos($url, '168.138.139.32') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
-                $isEncadeado = (strpos($origem->origen->nome_origem, 'Encadeado'));
-
-                if((strpos($result, 'Negative')) === false && $isEncadeado !== false ){
-
-                    //find endpoint http://168.138.139.32:3003/files
-                    $re_send_url = $this->Origens->find('all',[
-                        'conditions' => ['nome_origem like' => '%Murillo saliva ftir4%']
-                    ])->first();
-
-                    if($re_send_url){
-                        $response = $http->post($re_send_url->url_request, [
-                          'Userfile' => fopen($filedata, 'r'),
-                        ]);
-                        $result = $response->getJson();
-                        $result = $result['retorno'];
-
-                        if((strpos($result, 'Positive')) === false){
-
-                            if( strpos($origem->origen->nome_origem, 'Encadeado 3001 3003 3012 ftir') !== false ){
-
-                                //find endpoint http://168.138.139.32:3012/files
-                                $re_send_url = $this->Origens->find('all',[
-                                    'conditions' => ['nome_origem like' => '%Wagner saliva ftir4%']
-                                ])->first();
-
-                                $response = $http->post($re_send_url->url_request, [
-                                    'Userfile' => fopen($filedata, 'r'),
-                                  ]);
-                                $result = $response->getJson();
-                                $result = $result['retorno'];
-
-                            }else{
-                                //find endpoint http://140.238.182.215/ars_covid_spittle_ftir2/sampletest.php
-                                $re_send_url = $this->Origens->find('all',[
-                                    'conditions' => ['nome_origem like' => '%Anderson saliva ftir2%']
-                                ])->first();
-
-                                $response = $http->post($re_send_url->url_request, [
-                                    'Userfile' => fopen($filedata, 'r'),
-                                ]);
-
-                                $result = $this->html_to_obj($response->getStringBody());
-
-                            }
-                        }
-                    }
-                }
-
-
             }else{
                 $result = $this->html_to_obj($response->getStringBody());
+            }   
+
+            $status_main = $parse_status[$origem->origen->regra_encadeamento];
+            $stop_loop = false;
+
+            $sum_request = 0;
+            $origem_saved = '';
+
+            //tratamento encadeamentos
+            if((strpos($result, $status_main)) === false && $isEncadeado ){
+                foreach ($origem->origen->encadeamentos as $key => $encadeamento) {
+                    $sum_request++;
+
+                    if ($stop_loop) {
+                        break;
+                    }
+
+                    $last_request = $sum_request == $total_enc ? true : false;
+                    $handle = $this->requestEndpoints($encadeamento, $filedata, $last_request);
+
+                    $stop_loop = $handle['stop_loop'];
+                    $result = $handle['result'];
+                    $origem_saved = $encadeamento->origen->id;
+                }
+                if (!empty($origem_saved)) {
+                    $get_exame = $this->Exames->get($exame->id);
+                    $get_exame->origem_id = $origem_saved;
+                    $get_exame = $this->Exames->save($get_exame);
+                }
             }
 
             if((strpos($result, 'Positive')) !== false){

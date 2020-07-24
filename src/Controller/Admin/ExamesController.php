@@ -27,7 +27,6 @@ class ExamesController extends AppController
 
             try {
 
-
                 if(!empty($this->request->getData('file'))){
                     $files = $this->request->getData('file');
 

@@ -11,7 +11,160 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Origen[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class OrigensController extends AppController
-{
+{   
+
+       /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadModel('Encadeamentos');
+    }
+
+    public function nextOrder($id_main)
+    {
+        $encads = $this->Encadeamentos->find('all',[
+            'conditions' => ['origem_parent_id' => $id_main],
+            'order' => ['ordem' => 'DESC']
+        ])->toArray();
+
+        if(!empty($encads)){
+            echo json_encode($encads[0]->ordem);
+            exit();
+        }else{
+            echo json_encode(0);
+            exit();
+        }
+
+    }
+
+    public function saveEncademantoMain($id_main, $regra)
+    {
+        $retorno = [];
+        $origem = $this->Origens->get($id_main);
+        $origem->regra_encadeamento = $regra;
+        $origem = $this->Origens->save($origem);
+
+        if($origem){
+            $retorno = ['error' => 0];
+        }else{
+            $retorno = ['error' => 1];
+        }
+
+        echo json_encode($retorno);
+        exit();
+    }
+
+    public function allEncads($id)
+    {
+        $encads = $this->Encadeamentos->find('all',[
+            'conditions' => ['origem_parent_id' => $id
+        ]])->toArray();
+
+        echo json_encode($encads);
+        exit();
+
+    }
+
+    public function removeEncademanto($id)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $encad = $this->Encadeamentos->get($id);
+        if ($this->Encadeamentos->delete($encad)) {
+            $retorno = ['error' => 0];
+        } else {
+            $retorno = ['error' => 1];
+        }
+
+        echo json_encode($retorno);
+        exit();
+    }
+
+    public function saveEncademanto()
+    {   
+        $retorno = [];
+        $req = $this->request->getQuery();
+        $newItem = 0;
+
+
+        $dados_save = [
+           'origem_parent_id' => $req['endpoint_parent'],
+           'origem_encadeamento_id' => $req['url_encadeamento'],
+           'regra' => $req['regra'],
+           'ordem' => $req['ordem']
+        ];
+
+        if(!empty($req['instancia']) && is_numeric($req['instancia'])){
+
+            $find_encad = $this->Encadeamentos->get($req['instancia']);
+
+            $encad = $this->Encadeamentos->patchEntity($find_encad, $dados_save);
+            $encad = $this->Encadeamentos->save($encad);
+
+        }else{
+            $newItem = 1;
+            $encad = $this->Encadeamentos->newEntity();
+            $encad = $this->Encadeamentos->patchEntity($encad, $dados_save);
+            $encad = $this->Encadeamentos->save($encad);
+        }
+
+        if($encad) {
+            if($newItem){
+                $encad = $this->Encadeamentos->find()->last();    
+            }
+            
+            $retorno = ['error' => 0, 'encad' => $encad, 'newItem' => $newItem];
+        }else{
+            $retorno = ['error' => 1, 'encad' => [], 'newItem' => $newItem];
+        }
+
+        echo json_encode($retorno);
+        exit();
+
+    }
+        
+
+    public function origensApi(){
+        $endpoints = $this->Origens->find('all')->toArray();
+        $combo_endpoint = [];
+
+        foreach ($endpoints as $key => $endpoint) {
+            $combo_endpoint[] = ['name' => $endpoint->nome_origem . ' - ' . $endpoint->url_request, 'id' => $endpoint->id];
+        }
+
+        echo json_encode($combo_endpoint);
+        die();
+    }
+
+    public function encadeamentos($id)
+    {
+        $action = 'Ver Todos';
+        $title = 'Endpoints';
+
+        $origen = $this->Origens->get($id, [
+            'contain' => [],
+        ]);
+        $endpoints = $this->Origens->find('all')->toArray();
+        $combo_endpoint = [];
+
+        $regras = [
+            'Positivo' => 'Positivo',
+            'Negativo' => 'Negativo'
+        ];
+
+        foreach ($endpoints as $key => $endpoint) {
+            $combo_endpoint[$endpoint->id] = $endpoint->nome_origem . ' - ' . $endpoint->url_request;
+        }
+
+        $encadeamento = $this->Encadeamentos->newEntity();
+
+        $this->set(compact('origen', 'action', 'title','encadeamento','combo_endpoint','regras'));
+    }
+
     /**
      * Index method
      *
@@ -22,7 +175,10 @@ class OrigensController extends AppController
         $action = 'Ver Todos';
         $title = 'Endpoints';
 
-        $origens = $this->paginate($this->Origens);
+        $origens = $this->paginate($this->Origens,[
+            'contain' => ['Encadeamentos.Origens'],
+            'limit' => 25,
+        ]);
 
         $this->set(compact('origens', 'action', 'title'));
     }

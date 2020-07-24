@@ -33,6 +33,7 @@ class Exame extends Entity
         'created_by' => true,
         'created' => true,
         'modified' => true,
+        'origem_id' => true,
         'file_extesion' => true,
         'resultado' => true,
         'equip_tipo' => true,

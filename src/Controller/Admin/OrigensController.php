@@ -146,23 +146,75 @@ class OrigensController extends AppController
         $title = 'Endpoints';
 
         $origen = $this->Origens->get($id, [
-            'contain' => [],
+            'contain' => ['Encadeamentos'],
         ]);
+
+        if ($this->request->is('post')) {
+          
+            $encads = [];
+
+            foreach ($this->request->getData('url_encad') as $key => $url_encadid) {
+                $encads[$key] = ['origem_encadeamento_id' => $url_encadid];
+            }
+            foreach ($this->request->getData('regra') as $key => $regraid) {
+                $merge_arr = array_merge($encads[$key], ['regra' => $regraid]);
+                $encads[$key] = $merge_arr;
+            }
+
+            foreach ($this->request->getData('ordem') as $key => $ordemid) {
+                $merge_arr = array_merge($encads[$key], ['ordem' => $ordemid]);
+                $encads[$key] = $merge_arr;
+            }
+
+            $encads_find = $this->Encadeamentos->find('all',[
+                'conditions' => ['origem_parent_id' => $id
+            ]])->toArray();
+
+            foreach ($encads_find as $key => $encad_find) {
+               $this->Encadeamentos->delete($encad_find);
+            }
+
+            foreach ($encads as $key => $encad) {
+                if(!empty($encad['origem_encadeamento_id']) && !empty($encad['regra']) && !empty($encad['ordem'])){
+                    $encad['origem_parent_id'] = $id;
+                    $new_encad = $this->Encadeamentos->newEntity();
+                    $new_encad = $this->Encadeamentos->patchEntity($new_encad, $encad);
+                    $new_encad = $this->Encadeamentos->save($new_encad);
+                }
+            }
+            
+
+            $endpoint_main = $this->Origens->get($id);
+            $endpoint_main->regra_encadeamento = $this->request->getData('regra_main');
+
+            $this->Origens->save($endpoint_main);
+
+            $this->Flash->success(__('Dados salvos com sucesso.'));
+
+            return $this->redirect(['action' => 'index']);
+           
+
+        }
+
         $endpoints = $this->Origens->find('all')->toArray();
         $combo_endpoint = [];
 
         $regras = [
             'Positivo' => 'Positivo',
-            'Negativo' => 'Negativo'
+            'Negativo' => 'Negativo',
+            'Inadequado' => 'Inadequado',
+            'Restante' => 'Restante'
         ];
 
         foreach ($endpoints as $key => $endpoint) {
             $combo_endpoint[$endpoint->id] = $endpoint->nome_origem . ' - ' . $endpoint->url_request;
         }
 
-        $encadeamento = $this->Encadeamentos->newEntity();
 
-        $this->set(compact('origen', 'action', 'title','encadeamento','combo_endpoint','regras'));
+        $encadeamento = $this->Encadeamentos->newEntity();
+        $nextOrder = count($origen->encadeamentos) + 1;
+
+        $this->set(compact('origen', 'action', 'title','encadeamento','combo_endpoint','regras','nextOrder'));
     }
 
     /**

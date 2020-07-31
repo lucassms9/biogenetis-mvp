@@ -2,14 +2,14 @@
 var idIncrement = 0;
 var createProgrees = 0;
 var endpoints = [];
-var statusGet = ['Positivo', 'Negativo', 'Inadequado'];
-
+var statusGet = ['Positivo', 'Negativo', 'Inadequado','Restante'];
+var order = 0;
 
 var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
 					'<div class="col-md-5">'+
 						'<div class="input select">'+
 							'<label for="url-encad">URL encadeamento</label>'+
-							'<select name="url_encad" class="form-control" id="url-encad-{ID_ENPOINT}">'+
+							'<select isValidate="validate" name="url_encad[]" class="form-control" id="url-encad-{ID_ENPOINT}">'+
 								'<option value="">Escolha</option>'+
 								'{OPTIONS_ENDPOINT}'+
 							'</select>'+
@@ -18,7 +18,7 @@ var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
                     '<div class="col-md-2">'+
 						'<div class="input select">'+
 							'<label for="regra">Regra</label>'+
-							'<select name="regra" class="form-control" id="regra-{ID_ENPOINT}">'+
+							'<select isValidate="validate" name="regra[]" class="form-control combo-rule" id="regra-{ID_ENPOINT}">'+
 								'<option value="">Escolha</option>'+
 								'{OPTIONS_STATUS}'+
 							'</select>'+
@@ -27,21 +27,18 @@ var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
                     '<div class="col-md-2">'+
 						'<div class="input text">'+
 							'<label for="ordem">Ordem</label>'+
-							'<input type="text" name="ordem" value="{VALUE_ORDEM}" class="form-control" id="ordem-{ID_ENPOINT}">'+
+							'<input isValidate="validate" type="text" name="ordem[]" value="{VALUE_ORDEM}" class="form-control" id="ordem-{ID_ENPOINT}">'+
 						'</div>'+                                
 					'</div>'+
 					 '<div style="margin-top: 30px;" class="col-md-3">'+
                         '<div class="buttons">'+
-                        	'<input type="hidden" name="instancia" value="{VALUE_INSTANCIA}" class="form-control" id="instancia-{ID_ENPOINT}">'+
-                            '<button style="margin-right: 10px;" class="btn btn-primary btn-rounded waves-effect waves-light" onclick="removeEnpoint({ID_ENPOINT})" type="button">remover</button>'+
-                            '<button class="btn btn-primary btn-rounded waves-effect waves-light" onclick="saveEnpoint({ID_ENPOINT})" type="button">salvar</button>'+
+                            '<button style="margin-right: 10px;" class="btn btn-primary btn-rounded waves-effect waves-light btn-remove" onclick="removeEnpoint({ID_ENPOINT})" type="button">Remover</button>'+
                         '</div>'+
                     '</div>'+
                 '</div>';
 
 
 $(document).ready(function(){
-
 	 $.ajax({
         url: BASE_URL_ADMIN + 'origens/origensApi',
         type: 'GET',
@@ -49,15 +46,9 @@ $(document).ready(function(){
     })
     .done(function(data) {
         endpoints = data
-        var endpoint_parent = $('#endpoint_parent').val();
-    	getAllEncads(endpoint_parent)
-
     });
 
-    $('#regra-main').change(function(e){
-    	e.preventDefault();
-    	saveEncadMain();
-    });
+    order = nextOrder
 });
 
 function saveEncadMain(argument) {
@@ -76,6 +67,60 @@ function saveEncadMain(argument) {
 	
     });
 
+}
+
+function saveDataEncads() {
+
+	 /*
+    validacoes
+    */
+     var validate = true;
+     var restante = true;
+
+    $("#formSaveEncads").each(function(){
+	 //<-- Should return all input elements in that specific form.
+
+	 console.log($(this).find(':input'));
+    $(this).find(':input').each(function(val, element){
+
+        if($(element).val() == 'Restante'){
+        	restante = false
+        }
+
+        if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
+            if($(element).val() == ''){
+                validate = false;
+            }   
+        }
+
+        });
+    });
+
+    if(!validate){
+         Swal.fire({
+                title: "Atenção",
+                text: "Você precisa preencher todos os campos!",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+
+        return;
+    }       
+
+    if(restante){
+    	Swal.fire({
+                title: "Atenção",
+                text: "O último endpoint precisa ter a regra Restante",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+
+        return;
+    }
+
+	$('#formSaveEncads').submit();
 }
 
 function saveEnpoint(id) {
@@ -123,24 +168,14 @@ function saveEnpoint(id) {
 
 function removeEnpoint(id) {
 
-	var instancia_id = parseInt($('#instancia-'+id).val())
-	console.log(instancia_id)
-	console.log(Number.isInteger(instancia_id))
-	if(!Number.isInteger(instancia_id)){
-		return $('#'+id).remove();
-	}
+	order--;
+	$('#'+id).remove();
 
-	 $.ajax({
-        url: BASE_URL_ADMIN + 'origens/removeEncademanto/'+instancia_id,
-        type: 'POST',
-        dataType: 'json',
-    })
-    .done(function(data) {
-    	if(!data.error){
-    		$('#'+id).remove();
-    	}
-		
-    });
+	var index = $(".btn-remove").length - 1;
+
+	var element = $(".btn-remove")[index];
+
+	$(element).show();
 
 }
 
@@ -190,14 +225,75 @@ function getAllEncads(id_parent) {
 }
 
 function addEnpoint() {
-	var endpoint_parent = $('#endpoint_parent').val();
 
 	if(endpoints.length === 0){
-		return alert('Aguarde, Carregamento dados.')
+		 Swal.fire({
+                title: "Aguarde",
+                text: "Fazendo o carregamento dos dados.",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+    	 return
+
 	}
-	if(createProgrees == 1){
-		return alert('Cadastre ou remova o endpoint em criação para continuar.');
+
+		 /*
+    validacoes
+    */
+     var validate = true;
+     var restante = true;
+
+    $("#formSaveEncads").each(function(){
+	 //<-- Should return all input elements in that specific form.
+
+	 console.log($(this).find(':input'))
+    $(this).find(':input').each(function(val, element){
+        console.log($(element).attr('isValidate'))
+        console.log($(element).val())
+
+        if($(element).val() == 'Restante'){
+        	restante = false
+        }
+
+        if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
+            if($(element).val() == ''){
+                validate = false;
+            }   
+        }
+        })
+    });
+    
+
+    if(!validate){
+    	 Swal.fire({
+                title: "Atenção",
+                text: "Cadastre ou remova o endpoint em criação para continuar.",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+    	 return
+
+    }
+
+	if(!restante){
+		 Swal.fire({
+	                title: "Atenção",
+	                text: "O último endpoit cadastrado como restante, favor alterar para outro regra.",
+	                icon: "warning",
+	                confirmButtonColor: "#004ba7",
+	                confirmButtonText: "Entendi"
+	              });
+	    	 return
+
 	}
+
+	$(".combo-rule option[value='Restante']").remove();
+
+	$('.btn-remove').hide();
+
+	var endpoint_parent = $('#endpoint_parent').val();
 
 	var handleOptions = '';
 	$.each(endpoints, function (index, endpoint) {
@@ -211,20 +307,13 @@ function addEnpoint() {
 		handleOptionsStatus += '<option value="'+item+'">'+item+'</option>'
 	});
 
-	 $.ajax({
-        url: BASE_URL_ADMIN + 'origens/nextOrder/'+endpoint_parent,
-        type: 'GET',
-        dataType: 'json',
-    })
-    .done(function(data) {
-    	var html_templete = templete.replace(/{ID_ENPOINT}/g, idIncrement);
+	var html_templete = templete.replace(/{ID_ENPOINT}/g, idIncrement);
 		html_templete = html_templete.replace(/{OPTIONS_ENDPOINT}/g, handleOptions);
 		html_templete = html_templete.replace(/{OPTIONS_STATUS}/g, handleOptionsStatus);
-		html_templete = html_templete.replace('{VALUE_ORDEM}', data + 1);
+		html_templete = html_templete.replace('{VALUE_ORDEM}', order);
 
-		$('#content_inputs').append(html_templete);
-		idIncrement++;
-		createProgrees = 1
-    });
+	$('#content_inputs').append(html_templete);
+	idIncrement++;
+	order++;
 
 }

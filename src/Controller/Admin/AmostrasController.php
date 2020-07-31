@@ -30,6 +30,7 @@ class AmostrasController extends AppController
         $this->loadModel('AmostraErros');
         $this->loadModel('ExameOrigens');
         $this->loadModel('Origens');
+        $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
     }
 
@@ -155,6 +156,160 @@ class AmostrasController extends AppController
         }
     }
 
+    public function encadeamentos()
+    {
+        $action = 'Cadastrar';
+        $title = 'Resultados';
+
+        if ($this->request->is('post')) {
+            $conditions = [
+                'Exames.resultado <>' => 'null'
+            ];
+
+            if(!empty($this->request->getQuery('lote'))) {
+                $conditions['Amostras.lote'] = $this->request->getQuery('lote');
+            }
+
+            if (!empty($this->request->getQuery('data_init'))){
+                $data_de = $this->request->getQuery('data_init');
+                $conditions['cast(Amostras.created as date) >='] = $data_de;
+            }
+
+            if (!empty($this->request->getQuery('data_fim'))){
+                $data_ate = $this->request->getQuery('data_fim');
+                $conditions['cast(Amostras.created as date) >='] = $data_ate;
+             }
+
+
+            $encadeamentos = $this->EncadeamentoResultados->find('all',[
+                'contain' => ['Encadeamento.Origens', 'ExameOrigens.Exames.Users', 'ExameOrigens.Exames.Amostras','ExameOrigens.Origens'],
+                 'conditions' => $conditions,
+                 'order' => ['EncadeamentoResultados.id' => 'ASC']
+            ])->toList();
+
+            $qtd_colunas = 11;
+
+            $nome_colunas = [
+                'Amostra ID',
+                'Lote',
+                'Restulado do Endpoint',
+                'Nome origem',
+                'URL Endpoint Request',
+                'ativo',
+                'tipo de equipamento',
+                'tipo de amostra',
+                'IAModelType',
+                'IAModelName',
+                'DataScience',
+                'Data do Request',
+            ];
+
+            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L');
+
+            $objPHPExcel = new PHPExcel();
+
+            for ($i = 0; $i <= $qtd_colunas; $i++)
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
+
+
+            foreach($encadeamentos as $i => $encadeamentoObj){
+
+               
+                if(!empty($encadeamentoObj->encadeamento->origen)){
+
+                    $url_request = $encadeamentoObj->encadeamento->origen->url_request;
+                    $equip_tipo =  $encadeamentoObj->encadeamento->origen->equip_tipo;
+                    $amostra_tipo = $encadeamentoObj->encadeamento->origen->amostra_tipo;
+                    $IAModelType = $encadeamentoObj->encadeamento->origen->IAModelType;
+                    $IAModelName = $encadeamentoObj->encadeamento->origen->IAModelName;
+                    $DataScience = $encadeamentoObj->encadeamento->origen->DataScience;
+                }else{
+
+                    $url_request = $encadeamentoObj->exame_origen->origen->url_request;
+                    $equip_tipo =  $encadeamentoObj->exame_origen->origen->equip_tipo;
+                    $amostra_tipo = $encadeamentoObj->exame_origen->origen->amostra_tipo;
+                    $IAModelType = $encadeamentoObj->exame_origen->origen->IAModelType;
+                    $IAModelName = $encadeamentoObj->exame_origen->origen->IAModelName;
+                    $DataScience = $encadeamentoObj->exame_origen->origen->DataScience;
+                }
+
+
+                $dados = [  
+                    $encadeamentoObj->exame_origen->exame->amostra_id,
+                    $encadeamentoObj->exame_origen->exame->amostra->lote,
+                    $encadeamentoObj->resultado,
+                    $encadeamentoObj->exame_origen->origen->nome_origem,
+                    $url_request,
+                    $encadeamentoObj->exame_origen->origen->ativo,
+                    $equip_tipo,
+                    $amostra_tipo,
+                    $IAModelType,
+                    $IAModelName,
+                    $DataScience,
+                    $encadeamentoObj->exame_origen->data_request->i18nFormat('dd/MM/yyyy HH:mm'),
+                ];
+
+                for ($j = 0; $j <= $qtd_colunas; $j++) {
+                    if (isset($alfabeto[$j])) {
+                        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$j] . ($i + 2),$dados[$j]);
+                    }
+                }
+
+
+                // if(count($amostra->origen->encadeamentos) > 0){
+                //     foreach ($amostra->origen->encadeamentos as $key => $encadeamento) {
+                //         $i++;
+                //         $equip_tipo =  $encadeamento->origen->equip_tipo;
+                //         $amostra_tipo = $encadeamento->origen->amostra_tipo;
+                //         $IAModelType = $encadeamento->origen->IAModelType;
+                //         $IAModelName = $encadeamento->origen->IAModelName;
+                //         $DataScience = $encadeamento->origen->DataScience;
+
+                //         $dados = [
+                //             $amostra->exame->amostra_id,
+                //             $amostra->exame->amostra->lote,
+                //             $amostra->resultado,
+                //             $amostra->origen->nome_origem,
+                //             $amostra->origen->url_request,
+                //             $amostra->origen->ativo,
+                //             $equip_tipo,
+                //             $amostra_tipo,
+                //             $IAModelType,
+                //             $IAModelName,
+                //             $DataScience,
+                //             $amostra->data_request->i18nFormat('dd/MM/yyyy HH:mm'),
+                //         ];
+
+
+                //         for ($j = 0; $j <= $qtd_colunas; $j++) {
+                //             if (isset($alfabeto[$j])) {
+                //                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$j] . ($i + 4),$dados[$j]);
+                //             }
+                //         }
+
+                //     }
+
+                // }
+               
+
+            }
+
+            $arquivo = 'resultado_geral_'.date('Y-m-d-H-i-s');
+
+            // Redirect output to a client’s web browser (Excel5)
+            header("Content-Type: application/vnd.ms-excel");
+            header("Content-Disposition: attachment;filename=$arquivo.xls");
+            header("Cache-Control: max-age=0");
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            die();
+
+        }
+
+        $this->set(compact('action','title'));
+
+    }
+
     public function resultados()
     {
         $action = 'Cadastrar';
@@ -185,14 +340,14 @@ class AmostrasController extends AppController
                  'conditions' => $conditions
             ])->toList();
 
-            $qtd_colunas = 10;
+            $qtd_colunas = 12;
 
             $nome_colunas = [
                 'Amostra ID',
                 'Lote',
                 'Restulado do Endpoint',
-                'URL Endpoint Request',
                 'Nome origem',
+                'URL Endpoint Request',
                 'Endpoint Resp. pelo Resultado',
                 'ativo',
                 'tipo de equipamento',
@@ -203,7 +358,7 @@ class AmostrasController extends AppController
                 'Data do Request',
             ];
 
-            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K');
+            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M');
 
             $objPHPExcel = new PHPExcel();
 
@@ -211,21 +366,36 @@ class AmostrasController extends AppController
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
             foreach($amostras as $i => $amostra){
-                $url_encad = !empty($amostra->exame->origen->url_request) ? $amostra->exame->origen->url_request : 'Sem Encadeamentos';
+                if($amostra->exame->origen){
+                    $url_encad = $amostra->exame->origen->url_request;
+                    $equip_tipo =  $amostra->exame->origen->equip_tipo;
+                    $amostra_tipo = $amostra->exame->origen->amostra_tipo;
+                    $IAModelType = $amostra->exame->origen->IAModelType;
+                    $IAModelName = $amostra->exame->origen->IAModelName;
+                    $DataScience = $amostra->exame->origen->DataScience;
+                }else{
+                    $url_encad = 'Sem Encadeamentos';
+                    $equip_tipo =  $amostra->origen->equip_tipo;
+                    $amostra_tipo = $amostra->origen->amostra_tipo;
+                    $IAModelType = $amostra->origen->IAModelType;
+                    $IAModelName = $amostra->origen->IAModelName;
+                    $DataScience = $amostra->origen->DataScience;
+                }
+               
 
                  $dados = [
                     $amostra->exame->amostra_id,
                     $amostra->exame->amostra->lote,
                     $amostra->resultado,
-                    $amostra->origen->url_request,
                     $amostra->origen->nome_origem,
+                    $amostra->origen->url_request,
                     $url_encad,
                     $amostra->origen->ativo,
-                    $amostra->origen->equip_tipo,
-                    $amostra->origen->amostra_tipo,
-                    $amostra->origen->IAModelType,
-                    $amostra->origen->IAModelName,
-                    $amostra->origen->DataScience,
+                    $equip_tipo,
+                    $amostra_tipo,
+                    $IAModelType,
+                    $IAModelName,
+                    $DataScience,
                     $amostra->data_request->i18nFormat('dd/MM/yyyy HH:mm'),
                 ];
 
@@ -487,8 +657,19 @@ class AmostrasController extends AppController
             $sum_request = 0;
             $origem_saved = '';
 
+             $encadeamentoResul = $this->EncadeamentoResultados->newEntity();
+            $dados_save = [
+                'exame_origem_id' => $origem->id,
+                'encadeamento_id' => null,
+                'resultado' => $result
+            ];
+            $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
+            $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
+
             //tratamento encadeamentos
             if((strpos($result, $status_main)) === false && $isEncadeado ){
+
+
                 foreach ($origem->origen->encadeamentos as $key => $encadeamento) {
                     $sum_request++;
 
@@ -502,6 +683,16 @@ class AmostrasController extends AppController
                     $stop_loop = $handle['stop_loop'];
                     $result = $handle['result'];
                     $origem_saved = $encadeamento->origen->id;
+
+                    $encadeamentoResul = $this->EncadeamentoResultados->newEntity();
+                    $dados_save = [
+                        'exame_origem_id' => $origem->id,
+                        'encadeamento_id' => $encadeamento->id,
+                        'resultado' => $result
+                    ];
+                    $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
+                    $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
+
                 }
                 if (!empty($origem_saved)) {
                     $get_exame = $this->Exames->get($exame->id);

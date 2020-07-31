@@ -43,6 +43,10 @@ class ExameOrigensTable extends Table
         $this->belongsTo('Origens', [
             'foreignKey' => 'origem_id',
         ]);
+
+        $this->hasOne('EncadeamentoResultados', [
+            'foreignKey' => 'exame_origem_id',
+        ]);
     }
 
     /**

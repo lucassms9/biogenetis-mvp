@@ -80,7 +80,7 @@ function submitForm() {
     validacoes
     */
      var validate = true;
-
+     var isOk = false;
     $("#sendData").each(function(){
 
        
@@ -91,6 +91,7 @@ function submitForm() {
         console.log($(element).val())
 
         if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
+            isOk = true
             if($(element).val() == ''){
                 validate = false;
             }   
@@ -102,6 +103,18 @@ function submitForm() {
          Swal.fire({
                 title: "Atenção",
                 text: "Você precisa preencher todos os campos!",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+
+        return;
+    }
+
+    if( !isOk ){
+        Swal.fire({
+                title: "Atenção",
+                text: "É necessário ter pelo menos uma amostra válida para continuar.",
                 icon: "warning",
                 confirmButtonColor: "#004ba7",
                 confirmButtonText: "Entendi"
@@ -131,6 +144,7 @@ function submitForm() {
     }
     })
 
+   
 	$('#sendData').submit();
 }
 

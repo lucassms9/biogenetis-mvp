@@ -23,6 +23,7 @@
                                         <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('nome_origem') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('url_request') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('regra') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('ativo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('equip_tipo') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('amostra_tipo') ?></th>
@@ -35,6 +36,7 @@
                                             <td><?= $this->Number->format($origen->id) ?></td>
                                             <td><?= h($origen->nome_origem) ?></td>
                                             <td><?= h($origen->url_request) ?></td>
+                                            <td><?= h($origen->regra_encadeamento) ?></td>
                                             <td><?= ($origen->ativo) ? 'SIM' : 'NÃO' ?></td>
                                             <td><?= h($origen->equip_tipo) ?></td>
                                             <td><?= h($origen->amostra_tipo) ?></td>
@@ -54,6 +56,7 @@
                                                         <td class="no-border"></td>
                                                         <td class="no-border"><?= h($encadeamento->origen->nome_origem) ?></td>
                                                         <td class="no-border"><?= h($encadeamento->origen->url_request) ?></td>
+                                                        <td><?= h($encadeamento->regra) ?></td>
                                                         <td class="no-border"></td>
                                                         <td class="no-border"><?= h($encadeamento->origen->equip_tipo) ?></td>
                                                         <td class="no-border"><?= h($encadeamento->origen->amostra_tipo) ?></td>

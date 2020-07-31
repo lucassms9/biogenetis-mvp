@@ -40,6 +40,9 @@ class EncadeamentosTable extends Table
         $this->belongsTo('Origens', [
             'foreignKey' => 'origem_encadeamento_id',
         ]);
+        $this->hasOne('EncadeamentoResultados', [
+            'foreignKey' => 'encadeamento_id',
+        ]);
     }
 
     /**

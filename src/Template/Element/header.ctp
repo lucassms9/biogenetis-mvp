@@ -57,7 +57,11 @@
 
                                         <a href="<?= $this->Url->build('/admin', true);?>/amostras/resultados" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Resultados Gerais</a>
-                                    </div>
+
+                                         <a href="<?= $this->Url->build('/admin', true);?>/amostras/encadeamentos" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Encadeamentos</a>
+
+                                </div>
                             </li>
 
                              <!-- <li class="nav-item">

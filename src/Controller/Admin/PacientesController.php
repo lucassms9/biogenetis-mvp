@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
@@ -12,6 +12,17 @@ use App\Controller\AppController;
  */
 class PacientesController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->sexos = [
+            'M' => 'M',
+            'F' => 'F'
+        ];
+    }
+
     /**
      * Index method
      *
@@ -19,9 +30,13 @@ class PacientesController extends AppController
      */
     public function index()
     {
+
+        $action = 'Ver Todos';
+        $title = 'Pacientes';
+
         $pacientes = $this->paginate($this->Pacientes);
 
-        $this->set(compact('pacientes'));
+        $this->set(compact('pacientes','action','title'));
     }
 
     /**
@@ -47,6 +62,9 @@ class PacientesController extends AppController
      */
     public function add()
     {
+        $action = 'Cadastrar';
+        $title = 'Pacientes';
+
         $paciente = $this->Pacientes->newEntity();
         if ($this->request->is('post')) {
             $paciente = $this->Pacientes->patchEntity($paciente, $this->request->getData());
@@ -57,7 +75,9 @@ class PacientesController extends AppController
             }
             $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
         }
-        $this->set(compact('paciente'));
+        $sexos = $this->sexos;
+
+        $this->set(compact('paciente','action','title','sexos'));
     }
 
     /**
@@ -69,6 +89,9 @@ class PacientesController extends AppController
      */
     public function edit($id = null)
     {
+        $action = 'Editar';
+        $title = 'Clientes';
+
         $paciente = $this->Pacientes->get($id, [
             'contain' => [],
         ]);
@@ -81,7 +104,9 @@ class PacientesController extends AppController
             }
             $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
         }
-        $this->set(compact('paciente'));
+        $sexos = $this->sexos;
+
+        $this->set(compact('paciente','action','title','sexos'));
     }
 
     /**

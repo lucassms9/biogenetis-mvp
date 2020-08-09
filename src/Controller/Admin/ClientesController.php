@@ -61,7 +61,7 @@ class ClientesController extends AppController
      */
     public function add()
     {
-        $action = 'Editar';
+        $action = 'Cadastrar';
         $title = 'Clientes';
 
         $cliente = $this->Clientes->newEntity();

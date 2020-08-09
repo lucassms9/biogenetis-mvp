@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
@@ -12,6 +12,16 @@ use App\Controller\AppController;
  */
 class EntradaExamesController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->exame_tipos = [
+            'SALIVA' => 'SALIVA',
+            'SWAB' => 'SWAB'
+        ];
+    }
+
     /**
      * Index method
      *
@@ -19,9 +29,12 @@ class EntradaExamesController extends AppController
      */
     public function index()
     {
+        $action = 'Ver Todos';
+        $title = 'Pré Exame';
+
         $entradaExames = $this->paginate($this->EntradaExames);
 
-        $this->set(compact('entradaExames'));
+        $this->set(compact('entradaExames', 'action','title'));
     }
 
     /**
@@ -47,6 +60,9 @@ class EntradaExamesController extends AppController
      */
     public function add()
     {
+        $action = 'Cadastrar';
+        $title = 'Pré Exame';
+
         $entradaExame = $this->EntradaExames->newEntity();
         if ($this->request->is('post')) {
             $entradaExame = $this->EntradaExames->patchEntity($entradaExame, $this->request->getData());
@@ -57,7 +73,10 @@ class EntradaExamesController extends AppController
             }
             $this->Flash->error(__('The entrada exame could not be saved. Please, try again.'));
         }
-        $this->set(compact('entradaExame'));
+
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('entradaExame','action', 'title','exame_tipos'));
     }
 
     /**
@@ -69,6 +88,9 @@ class EntradaExamesController extends AppController
      */
     public function edit($id = null)
     {
+        $action = 'Editar';
+        $title = 'Pré Exame';
+
         $entradaExame = $this->EntradaExames->get($id, [
             'contain' => [],
         ]);
@@ -81,7 +103,10 @@ class EntradaExamesController extends AppController
             }
             $this->Flash->error(__('The entrada exame could not be saved. Please, try again.'));
         }
-        $this->set(compact('entradaExame'));
+
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('entradaExame','action','title','exame_tipos'));
     }
 
     /**

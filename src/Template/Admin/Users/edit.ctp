@@ -12,13 +12,15 @@
 
                         <?php
                             echo $this->Form->control('nome_completo',['class' => 'form-control']);
+                            echo $this->Form->control('cpf',['class' => 'form-control','label' => 'CPF']);
+                            echo $this->Form->control('telefone',['class' => 'form-control']);
                             echo $this->Form->control('email',['class' => 'form-control']);
-                            echo $this->Form->control('senha',['class' => 'form-control', 'type' => 'password','value'=>'']);
+                            echo $this->Form->control('senha',['class' => 'form-control', 'type' => 'password', 'required' => false, 'value'=>'']);
                             echo $this->Form->control('user_type_id',['label' =>'Perfil', 'class' => 'form-control']);
                             echo $this->Form->control('cliente_id',['class' => 'form-control']);
                         ?>
                         <div style="margin-top: 10px" class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-1">
 
                                 <?= $this->Html->link(
                                     $this->Form->button(__('Voltar'),
@@ -27,7 +29,7 @@
                                         ['escape' => false]
                                         ) ?>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-1">
                                 <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
                             </div>
                         </div>

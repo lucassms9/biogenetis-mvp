@@ -22,9 +22,9 @@ class UsersController extends AppController
 
         $this->set(compact('action','title'));
     }
-    
+
     public function index()
-    {   
+    {
 
         $action = 'Ver Todos';
         $title = 'Usuários';
@@ -39,7 +39,7 @@ class UsersController extends AppController
         if($this->Auth->user('user_type_id') == 2){
             $conditions['cliente_id'] = $this->Auth->user('cliente_id');
         }
-        
+
 
         $users = $this->paginate($this->Users,[
             'conditions' => $conditions
@@ -70,7 +70,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
-    {   
+    {
         $action = 'Cadastrar';
         $title = 'Usuários';
 
@@ -90,7 +90,7 @@ class UsersController extends AppController
 
         if($this->Auth->user('user_type_id') == 2){
             $conditionsType['UserTypes.id in'] = ['2','3'];
-        } 
+        }
 
         if($this->Auth->user('user_type_id') == 2){
             $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
@@ -111,7 +111,7 @@ class UsersController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
-    {   
+    {
         $action = 'Editar Dados';
         $title = 'Usuários';
 
@@ -121,8 +121,12 @@ class UsersController extends AppController
         $conditionsType = [];
         $conditionsCliente = [];
         if ($this->request->is(['patch', 'post', 'put'])) {
+            $request = $this->request->getData();
+            if(isset($request['senha']) && empty($request['senha'])){
+                unset($request['senha']);
+            }
 
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            $user = $this->Users->patchEntity($user, $request);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
@@ -132,7 +136,7 @@ class UsersController extends AppController
         }
          if($this->Auth->user('user_type_id') == 2){
             $conditionsType['UserTypes.id in'] = ['2','3'];
-        } 
+        }
 
         if($this->Auth->user('user_type_id') == 2){
             $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
@@ -173,7 +177,7 @@ class UsersController extends AppController
     {
 
         $user = $this->Users->newEntity();
-        
+
         if( $this->Auth->user() ){
              return $this->redirect( $this->Auth->redirectUrl() );
         }
@@ -181,7 +185,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
 
             $unidades = array();
-            
+
             $user = $this->Users->find('all',[
                 'conditions' => [
                     'email' => $this->request->getData('email'),
@@ -204,7 +208,7 @@ class UsersController extends AppController
                             $permissoes['manager'] = true;
                             break;
                         case 1:
-                            $permissoes['adm'] =  $permissoes['tecnico'] = $permissoes['manager'] = true;   
+                            $permissoes['adm'] =  $permissoes['tecnico'] = $permissoes['manager'] = true;
                             break;
                         default: break;
                     }
@@ -212,7 +216,7 @@ class UsersController extends AppController
                 $user['permissoes'] = $permissoes;
 
                 $this->Auth->setUser($user);
-                
+
                 if($user->user_type_id == 3){
                     return $this->redirect(['controller' =>'amostras', 'action' => 'index']);
                 }
@@ -225,7 +229,7 @@ class UsersController extends AppController
         }
 
         $this->set(compact('user'));
-        
+
         $this->viewBuilder()->setLayout('login');
 
     }

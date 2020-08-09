@@ -13,6 +13,8 @@
 
                         <?php
                             echo $this->Form->control('nome_completo',['class' => 'form-control']);
+                            echo $this->Form->control('cpf',['class' => 'form-control','label' => 'CPF']);
+                            echo $this->Form->control('telefone',['class' => 'form-control']);
                             echo $this->Form->control('email',['class' => 'form-control']);
                             echo $this->Form->control('senha',['class' => 'form-control', 'type' => 'password','value'=>'']);
                             echo $this->Form->control('user_type_id',['label' =>'Perfil', 'class' => 'form-control']);

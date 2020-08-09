@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
@@ -12,6 +12,16 @@ use App\Controller\AppController;
  */
 class ProdutosController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->exame_tipos = [
+            'SALIVA' => 'SALIVA',
+            'SWAB' => 'SWAB'
+        ];
+    }
+
     /**
      * Index method
      *
@@ -19,9 +29,12 @@ class ProdutosController extends AppController
      */
     public function index()
     {
+        $action = 'Ver Todos';
+        $title = 'Produtos';
+
         $produtos = $this->paginate($this->Produtos);
 
-        $this->set(compact('produtos'));
+        $this->set(compact('produtos','action','title'));
     }
 
     /**
@@ -47,6 +60,9 @@ class ProdutosController extends AppController
      */
     public function add()
     {
+        $action = 'Cadastrar';
+        $title = 'Produtos';
+
         $produto = $this->Produtos->newEntity();
         if ($this->request->is('post')) {
             $produto = $this->Produtos->patchEntity($produto, $this->request->getData());
@@ -57,7 +73,9 @@ class ProdutosController extends AppController
             }
             $this->Flash->error(__('The produto could not be saved. Please, try again.'));
         }
-        $this->set(compact('produto'));
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('produto', 'action', 'title','exame_tipos'));
     }
 
     /**
@@ -69,6 +87,9 @@ class ProdutosController extends AppController
      */
     public function edit($id = null)
     {
+        $action = 'Editar';
+        $title = 'Produtos';
+
         $produto = $this->Produtos->get($id, [
             'contain' => [],
         ]);
@@ -81,7 +102,10 @@ class ProdutosController extends AppController
             }
             $this->Flash->error(__('The produto could not be saved. Please, try again.'));
         }
-        $this->set(compact('produto'));
+
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('produto','action', 'title','exame_tipos'));
     }
 
     /**

@@ -21,13 +21,13 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('valor_particular',['class' => 'form-control']); ?>
+                                <?php echo $this->Form->control('valor_particular',['class' => 'form-control','label' => 'Valor Particular']); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('valor_laboratorio_conveniado',['class' => 'form-control']); ?>
+                                <?php echo $this->Form->control('valor_laboratorio_conveniado',['class' => 'form-control','label' => 'Valor laboratório conveniado']); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('valor_laboratorio_nao_conveniado',['class' => 'form-control']); ?>
+                                <?php echo $this->Form->control('valor_laboratorio_nao_conveniado',['class' => 'form-control', 'label' => 'Valor laboratório não conveniado']); ?>
                             </div>
                         </div>
 

@@ -12,6 +12,17 @@ use App\Controller\AppController;
  */
 class ClientesController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->cobranca_tipos = [
+            'Particular' => 'Particular',
+            'Convênio' => 'Convênio'
+        ];
+    }
+
     /**
      * Index method
      *
@@ -19,9 +30,12 @@ class ClientesController extends AppController
      */
     public function index()
     {
+        $action = 'Ver Todos';
+        $title = 'Clientes';
+
         $clientes = $this->paginate($this->Clientes);
 
-        $this->set(compact('clientes'));
+        $this->set(compact('clientes','action','title'));
     }
 
     /**
@@ -47,6 +61,9 @@ class ClientesController extends AppController
      */
     public function add()
     {
+        $action = 'Editar';
+        $title = 'Clientes';
+
         $cliente = $this->Clientes->newEntity();
         if ($this->request->is('post')) {
             $cliente = $this->Clientes->patchEntity($cliente, $this->request->getData());
@@ -57,7 +74,11 @@ class ClientesController extends AppController
             }
             $this->Flash->error(__('The cliente could not be saved. Please, try again.'));
         }
-        $this->set(compact('cliente'));
+
+        $cobranca_tipos = $this->cobranca_tipos;
+
+        $this->set(compact('cliente','action','title','cobranca_tipos'));
+
     }
 
     /**
@@ -69,6 +90,10 @@ class ClientesController extends AppController
      */
     public function edit($id = null)
     {
+
+        $action = 'Editar';
+        $title = 'Clientes';
+
         $cliente = $this->Clientes->get($id, [
             'contain' => [],
         ]);
@@ -81,7 +106,12 @@ class ClientesController extends AppController
             }
             $this->Flash->error(__('The cliente could not be saved. Please, try again.'));
         }
-        $this->set(compact('cliente'));
+
+        $clientes = $this->paginate($this->Clientes);
+
+        $cobranca_tipos = $this->cobranca_tipos;
+
+        $this->set(compact('cliente','action','title','cobranca_tipos'));
     }
 
     /**

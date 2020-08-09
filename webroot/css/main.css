@@ -145,7 +145,7 @@ a {
 }
 /*login*/
 .bg-pattern {
-    background-image: none !important; 
+    background-image: none !important;
 }
 .bg-primary{
     background-color: #f7f6f6 !important;
@@ -207,9 +207,9 @@ a {
 }
 
 .crossOut .child{
-    position:absolute; 
+    position:absolute;
     display:block;
-    height:1px; 
+    height:1px;
     background: #fff;
 }
 
@@ -217,4 +217,7 @@ a {
     .printHeader {
        display : block;
     }
+}
+.custom-style-check{
+    margin-right: 10px;
 }

@@ -1,40 +1,99 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Cliente $cliente
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Clientes'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="clientes form large-9 medium-8 columns content">
-    <?= $this->Form->create($cliente) ?>
-    <fieldset>
-        <legend><?= __('Add Cliente') ?></legend>
-        <?php
-            echo $this->Form->control('nome_fantasia');
-            echo $this->Form->control('razao_social');
-            echo $this->Form->control('cnpj_cpf');
-            echo $this->Form->control('cep');
-            echo $this->Form->control('endereco');
-            echo $this->Form->control('bairro');
-            echo $this->Form->control('cidade');
-            echo $this->Form->control('uf');
-            echo $this->Form->control('responsavel_nome');
-            echo $this->Form->control('responsavel_email');
-            echo $this->Form->control('responsavel_telefone');
-            echo $this->Form->control('responsavel_financeiro_nome');
-            echo $this->Form->control('responsavel_financeiro_email');
-            echo $this->Form->control('responsavel_financeiro_telefone');
-            echo $this->Form->control('tipo_cobranca');
-            echo $this->Form->control('ativo');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<?php echo $this->element('admin/home/index');?>
+<!-- end page title end breadcrumb -->
+
+<div class="page-content-wrapper">
+    <div class="container-fluid">
+         <div class="row">
+            <div class="col-xl-10">
+                <?= $this->Flash->render() ?>
+                <div class="card">
+                    <div class="card-body">
+                        <?= $this->Form->create($cliente) ?>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('nome_fantasia',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('razao_social',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('cnpj_cpf',['class' => 'form-control','label' => 'CNPJ']);?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2">
+                                <?php echo $this->Form->control('cep',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-3">
+                                <?php echo $this->Form->control('endereco',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-3">
+                                <?php echo $this->Form->control('bairro',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-2">
+                                <?php echo $this->Form->control('cidade',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-2">
+                                <?php echo $this->Form->control('uf',['class' => 'form-control','label' => 'UF']);?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_nome',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_email',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_telefone',['class' => 'form-control']);?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_financeiro_nome',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_financeiro_email',['class' => 'form-control']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('responsavel_financeiro_telefone',['class' => 'form-control']);?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('tipo_cobranca',['class' => 'form-control','options' => $cobranca_tipos, 'empty' => 'Escolha']);?>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px" class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('ativo',['class' => 'custom-style-check']);?>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px" class="row">
+                            <div class="col-md-1">
+
+                                <?= $this->Html->link(
+                                    $this->Form->button(__('Voltar'),
+                                        ['type' => 'button', 'class' => 'btn btn-secondary btn-rounded waves-effect waves-light']),
+                                        ['action' => 'index'],
+                                        ['escape' => false]
+                                        ) ?>
+                            </div>
+                            <div class="col-md-1">
+                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                            </div>
+                        </div>
+                        <?= $this->Form->end() ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

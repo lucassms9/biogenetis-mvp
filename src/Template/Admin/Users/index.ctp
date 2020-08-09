@@ -2,15 +2,14 @@
 
 <!-- end page title end breadcrumb -->
 
-
 <div class="page-content-wrapper">
     <div class="container-fluid">
          <div class="row">
             <div class="col-xl-12">
                 <?= $this->Flash->render() ?>
                 <div class="card">
-                    <div class="card-body"> 
-                        
+                    <div class="card-body">
+
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">
@@ -47,7 +46,7 @@
                             </table>
                         </div>
 
-                      
+
                          <div class="mt-4">
                             <div class="paginator">
                                 <ul class="pagination pagination pagination-rounded justify-content-center mb-0">
@@ -64,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <!-- end row -->
     </div>

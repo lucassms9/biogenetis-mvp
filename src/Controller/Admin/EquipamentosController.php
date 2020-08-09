@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
@@ -12,6 +12,17 @@ use App\Controller\AppController;
  */
 class EquipamentosController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->exame_tipos = [
+            'SALIVA' => 'SALIVA',
+            'SWAB' => 'SWAB'
+        ];
+    }
+
     /**
      * Index method
      *
@@ -19,12 +30,15 @@ class EquipamentosController extends AppController
      */
     public function index()
     {
+        $action = 'Ver Todos';
+        $title = 'Equipamentos';
+
         $this->paginate = [
             'contain' => ['Croquis'],
         ];
         $equipamentos = $this->paginate($this->Equipamentos);
 
-        $this->set(compact('equipamentos'));
+        $this->set(compact('equipamentos','action', 'title'));
     }
 
     /**
@@ -50,6 +64,9 @@ class EquipamentosController extends AppController
      */
     public function add()
     {
+        $action = 'Cadastrar';
+        $title = 'Equipamentos';
+
         $equipamento = $this->Equipamentos->newEntity();
         if ($this->request->is('post')) {
             $equipamento = $this->Equipamentos->patchEntity($equipamento, $this->request->getData());
@@ -61,7 +78,8 @@ class EquipamentosController extends AppController
             $this->Flash->error(__('The equipamento could not be saved. Please, try again.'));
         }
         $croquis = $this->Equipamentos->Croquis->find('list', ['limit' => 200]);
-        $this->set(compact('equipamento', 'croquis'));
+        $exame_tipos = $this->exame_tipos;
+        $this->set(compact('equipamento', 'croquis','exame_tipos', 'action','title'));
     }
 
     /**
@@ -73,6 +91,9 @@ class EquipamentosController extends AppController
      */
     public function edit($id = null)
     {
+        $action = 'Editar';
+        $title = 'Equipamentos';
+
         $equipamento = $this->Equipamentos->get($id, [
             'contain' => [],
         ]);
@@ -86,7 +107,10 @@ class EquipamentosController extends AppController
             $this->Flash->error(__('The equipamento could not be saved. Please, try again.'));
         }
         $croquis = $this->Equipamentos->Croquis->find('list', ['limit' => 200]);
-        $this->set(compact('equipamento', 'croquis'));
+
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('equipamento', 'croquis','exame_tipos','title', 'action'));
     }
 
     /**

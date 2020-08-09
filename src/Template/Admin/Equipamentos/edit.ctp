@@ -1,35 +1,52 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Equipamento $equipamento
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $equipamento->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $equipamento->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Equipamentos'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Croquis'), ['controller' => 'Croquis', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Croqui'), ['controller' => 'Croquis', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="equipamentos form large-9 medium-8 columns content">
-    <?= $this->Form->create($equipamento) ?>
-    <fieldset>
-        <legend><?= __('Edit Equipamento') ?></legend>
-        <?php
-            echo $this->Form->control('nome');
-            echo $this->Form->control('descricao');
-            echo $this->Form->control('foto_url');
-            echo $this->Form->control('tipo_exame');
-            echo $this->Form->control('croqui_id', ['options' => $croquis, 'empty' => true]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<?php echo $this->element('admin/home/index');?>
+
+<!-- end page title end breadcrumb -->
+
+<div class="page-content-wrapper">
+    <div class="container-fluid">
+         <div class="row">
+            <div class="col-xl-10">
+                <?= $this->Flash->render() ?>
+                <div class="card">
+                    <div class="card-body">
+                        <?= $this->Form->create($equipamento) ?>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?php
+                                    echo $this->Form->control('nome',['class' => 'form-control']);
+                                    echo $this->Form->control('descricao',['class' => 'form-control']);
+                                    echo $this->Form->control('tipo_exame',['class' => 'form-control','options' => $exame_tipos, 'empty' => 'Escolha']);
+                                    echo $this->Form->control('croqui_id', ['class' => 'form-control','options' => $croquis, 'empty' => 'Escolha']);
+                                ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <?php
+                                  echo $this->Form->control('foto_url',['class' => 'form-control','type' => 'file', 'label' => 'Foto do Equipamento']);
+                                  ?>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px" class="row">
+                            <div class="col-md-2">
+
+                                <?= $this->Html->link(
+                                    $this->Form->button(__('Voltar'),
+                                        ['type' => 'button', 'class' => 'btn btn-secondary btn-rounded waves-effect waves-light']),
+                                        ['action' => 'index'],
+                                        ['escape' => false]
+                                        ) ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                            </div>
+                        </div>
+                        <?= $this->Form->end() ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

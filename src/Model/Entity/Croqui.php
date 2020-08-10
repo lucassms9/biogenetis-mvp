@@ -30,6 +30,7 @@ class Croqui extends Entity
         'descricao' => true,
         'foto_url' => true,
         'qtde_posi_placa' => true,
+        'nome' => true,
         'tipo_exame_recomendado' => true,
         'tipo_equipament_recomendado' => true,
         'equipamentos' => true,

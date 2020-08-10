@@ -1,7 +1,8 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+
 
 /**
  * Croquis Controller
@@ -12,6 +13,23 @@ use App\Controller\AppController;
  */
 class CroquisController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $this->exame_tipos = [
+            'SALIVA' => 'SALIVA',
+            'SWAB' => 'SWAB'
+        ];
+
+        $this->equipamento_tipos = [
+            'LCMS' => 'LCMS',
+            'FTIR' => 'FTIR'
+        ];
+
+    }
+
     /**
      * Index method
      *
@@ -19,9 +37,12 @@ class CroquisController extends AppController
      */
     public function index()
     {
+        $action = 'Ver Todos';
+        $title = 'Croquis';
+
         $croquis = $this->paginate($this->Croquis);
 
-        $this->set(compact('croquis'));
+        $this->set(compact('croquis','action','title'));
     }
 
     /**
@@ -47,6 +68,9 @@ class CroquisController extends AppController
      */
     public function add()
     {
+        $action = 'Cadastrar';
+        $title = 'Croquis';
+
         $croqui = $this->Croquis->newEntity();
         if ($this->request->is('post')) {
             $croqui = $this->Croquis->patchEntity($croqui, $this->request->getData());
@@ -57,7 +81,11 @@ class CroquisController extends AppController
             }
             $this->Flash->error(__('The croqui could not be saved. Please, try again.'));
         }
-        $this->set(compact('croqui'));
+
+        $equipamento_tipos = $this->equipamento_tipos;
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('croqui','action','title','equipamento_tipos','exame_tipos'));
     }
 
     /**
@@ -69,6 +97,9 @@ class CroquisController extends AppController
      */
     public function edit($id = null)
     {
+        $action = 'Editar';
+        $title = 'Croquis';
+
         $croqui = $this->Croquis->get($id, [
             'contain' => [],
         ]);
@@ -81,7 +112,10 @@ class CroquisController extends AppController
             }
             $this->Flash->error(__('The croqui could not be saved. Please, try again.'));
         }
-        $this->set(compact('croqui'));
+        $equipamento_tipos = $this->equipamento_tipos;
+        $exame_tipos = $this->exame_tipos;
+
+        $this->set(compact('croqui','action','title','equipamento_tipos','exame_tipos'));
     }
 
     /**

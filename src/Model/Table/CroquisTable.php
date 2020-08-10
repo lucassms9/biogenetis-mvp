@@ -70,10 +70,6 @@ class CroquisTable extends Table
             ->scalar('tipo_exame_recomendado')
             ->allowEmptyString('tipo_exame_recomendado');
 
-        $validator
-            ->integer('tipo_equipament_recomendado')
-            ->allowEmptyString('tipo_equipament_recomendado');
-
         return $validator;
     }
 }

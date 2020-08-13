@@ -141,7 +141,7 @@ a {
     width: 100%  !important;
 }
 .page-content-wrapper {
-    margin-top: 65px;
+    margin-top: 82px;
 }
 /*login*/
 .bg-pattern {
@@ -220,4 +220,10 @@ a {
 }
 .custom-style-check{
     margin-right: 10px;
+}
+.row{
+    margin-top: 20px !important;
+}
+.footer{
+    height: auto !important;
 }

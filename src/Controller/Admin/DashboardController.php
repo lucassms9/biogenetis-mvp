@@ -14,6 +14,8 @@ class DashboardController extends AppController
         parent::initialize();
         $this->loadModel('Exames');
         $this->loadModel('Amostras');
+        $this->loadModel('Anamneses');
+        $this->loadModel('Pedidos');
     }
 
 	public function index()
@@ -709,5 +711,40 @@ class DashboardController extends AppController
 
 	}
 
+    public function operacao()
+    {
+        $action = 'Geral';
+        $title = 'Dashboard';
+
+        $aguardando_atendimento = $this->Anamneses->find('all', [
+            'conditions' => ['status' => 'created']
+        ])->count();
+
+        $atendimento = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmAtendimento']
+        ])->count();
+
+        $triagem = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmTriagem']
+        ])->count();
+
+        $diagnostico = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmDiagnostico']
+        ])->count();
+
+        $finalizados = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'Finalizado']
+        ])->count();
+
+        $result = [
+            'aguardando_atendimento' => $aguardando_atendimento,
+            'atendimento' => $atendimento,
+            'triagem' => $triagem,
+            'diagnostico' => $diagnostico,
+            'finalizados' => $finalizados,
+        ];
+
+        $this->set(compact('action', 'title','result'));
+    }
 
 }

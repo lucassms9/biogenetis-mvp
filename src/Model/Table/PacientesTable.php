@@ -57,7 +57,7 @@ class PacientesTable extends Table
         $validator
             ->scalar('nome')
             ->maxLength('nome', 255)
-            ->allowEmptyString('nome');
+            ->notEmpty('nome','Campo Obrigatório');
 
         $validator
             ->scalar('cpf')
@@ -154,7 +154,10 @@ class PacientesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add(
+            $rules->isUnique(['email']),
+            ['errorField' => 'email', 'message' => 'E-mail ja existente']
+        );
         $rules->add($rules->isUnique(['id']));
 
         return $rules;

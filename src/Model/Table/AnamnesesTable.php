@@ -51,11 +51,11 @@ class AnamnesesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->notEmpty('id', null, 'create');
 
         $validator
             ->boolean('gestante')
-            ->allowEmptyString('gestante');
+            ->notEmpty('gestante','Campo Obrigatório');
 
         $validator
             ->scalar('medico_solicitante')
@@ -81,7 +81,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->date('data_primeiros_sintomas')
-            ->allowEmptyDate('data_primeiros_sintomas');
+            ->notEmpty('data_primeiros_sintomas','Campo Obrigatório');
 
         $validator
             ->boolean('sintoma_febre')
@@ -186,7 +186,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->boolean('analgesico_antitermico_antiinflamatorio')
-            ->allowEmptyString('analgesico_antitermico_antiinflamatorio');
+            ->notEmpty('analgesico_antitermico_antiinflamatorio','Campo Obrigatório');
 
         $validator
             ->boolean('clinico_febre')
@@ -272,7 +272,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_hospitalizado')
-            ->allowEmptyString('paciente_hospitalizado');
+            ->notEmpty('paciente_hospitalizado', 'Campo Obrigatório');
 
         $validator
             ->scalar('paciente_hospitalizado_nome_hospital')
@@ -293,15 +293,15 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_ventilacao_mecanica')
-            ->allowEmptyString('paciente_ventilacao_mecanica');
+            ->notEmpty('paciente_ventilacao_mecanica','Campo Obrigatório');
 
         $validator
             ->scalar('paciente_situacao_notificacao')
-            ->allowEmptyString('paciente_situacao_notificacao');
+            ->notEmpty('paciente_situacao_notificacao','Campo Obrigatório');
 
         $validator
             ->scalar('paciente_historico_viagem_14_dias')
-            ->allowEmptyString('paciente_historico_viagem_14_dias');
+            ->notEmpty('paciente_historico_viagem_14_dias','Campo Obrigatório');
 
         $validator
             ->date('paciente_historico_viagem_14_dias_data_chegada')
@@ -309,7 +309,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_coleta_de_amostra')
-            ->allowEmptyString('paciente_coleta_de_amostra');
+            ->notEmpty('paciente_coleta_de_amostra','Campo Obrigatório');
 
         $validator
             ->scalar('paciente_his_deslocamento_14_dias')

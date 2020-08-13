@@ -16,29 +16,21 @@
                                     <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('nome') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('cpf') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('rg') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('celular') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('telefone') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('sexo') ?></th>
                                     <th scope="col" class="actions"><?= __('Ações') ?></th>
                                     </tr>
                                 </thead>
                                  <tbody>
                                      <?php
-                                      foreach ($pacientes as $paciente): ?>
+                                      foreach ($pedidos as $pedido): ?>
                                         <tr>
-                                        <td><?= $this->Number->format($paciente->id) ?></td>
-                                        <td><?= h($paciente->nome) ?></td>
-                                        <td><?= h($paciente->cpf) ?></td>
-                                        <td><?= h($paciente->rg) ?></td>
-                                        <td><?= h($paciente->email) ?></td>
-                                        <td><?= h($paciente->celular) ?></td>
-                                        <td><?= h($paciente->telefone) ?></td>
-                                        <td><?= h($paciente->sexo) ?></td>
+                                        <td><?= $this->Number->format($pedido->id) ?></td>
+                                        <td><?= h($pedido->anamnese->paciente->nome) ?></td>
+                                        <td><?= h($pedido->anamnese->paciente->cpf) ?></td>
+                                        <td><?= h($pedido->anamnese->paciente->celular) ?></td>
                                         <td class="actions">
-                                        <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $paciente->id], ['escape' => false]) ?>
-                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $paciente->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $paciente->id)]) ?>
+                                        <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $pedido->id], ['escape' => false]) ?>
+                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $pedido->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $pedido->id)]) ?>
                                         </td>
                                         </tr>
                                         <?php endforeach; ?>

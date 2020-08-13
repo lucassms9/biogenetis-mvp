@@ -97,6 +97,7 @@ class Anamnese extends Entity
      */
     protected $_accessible = [
         'paciente_id' => true,
+        'tipo_pagamento' => true,
         'gestante' => true,
         'medico_solicitante' => true,
         'medico_crm' => true,
@@ -104,6 +105,7 @@ class Anamnese extends Entity
         'observacao' => true,
         'assinatura' => true,
         'data_primeiros_sintomas' => true,
+        'status' => true,
         'sintoma_febre' => true,
         'sintoma_mialgia_artralgia' => true,
         'sintoma_coriza' => true,

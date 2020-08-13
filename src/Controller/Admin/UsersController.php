@@ -187,6 +187,7 @@ class UsersController extends AppController
             $unidades = array();
 
             $user = $this->Users->find('all',[
+                'contain' => ['Clientes'],
                 'conditions' => [
                     'email' => $this->request->getData('email'),
                     'senha' => md5($this->request->getData('password')),
@@ -197,7 +198,6 @@ class UsersController extends AppController
                                     'manager' => false,
                                     'adm' => false,
                                     );
-
 
             if(!empty($user)){
                     switch ($user->user_type_id) {

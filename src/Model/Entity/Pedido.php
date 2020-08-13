@@ -42,5 +42,6 @@ class Pedido extends Entity
         'status' => true,
         'amostra' => true,
         'cliente' => true,
+        'entrada_exame_id' => true,
     ];
 }

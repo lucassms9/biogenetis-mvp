@@ -33,7 +33,7 @@
         }
 
 
-        public function showpedido($id)
+        public function showpedido($id, $tab_current = 'paciente')
         {
             $action = 'Detalhe';
             $title = 'Pedido';
@@ -42,7 +42,7 @@
                 'contain' => ['Anamneses.Pacientes'],
             ]);
 
-            $this->set(compact('action','title','pedido'));
+            $this->set(compact('action','title','pedido','tab_current'));
 
         }
 

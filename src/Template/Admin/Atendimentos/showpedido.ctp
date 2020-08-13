@@ -8,28 +8,25 @@
                 <div class="card">
                     <?= $this->Flash->render(); ?>
                     <div class="card-body">
-                        <h4 class="header-title">Pedidos</h4>
-                        <p class="card-title-desc">Dados gerais</p>
-
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs nav-justified nav-tabs-custom" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#paciente" role="tab" aria-selected="true">
+                                <a class="nav-link <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" data-toggle="tab" href="#paciente" role="tab" aria-selected="true">
                                     <i class="fas fa-user-alt"></i> <span class="d-none d-md-inline-block">Paciente</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#anamnese" role="tab" aria-selected="true">
+                                <a class="nav-link <?= $tab_current === 'anamnese' ? 'active' :  ''; ?>" data-toggle="tab" href="#anamnese" role="tab" aria-selected="true">
                                     <i class="fas fa-list-ul"></i> <span class="d-none d-md-inline-block">Anamnese</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#pagamento" role="tab" aria-selected="false">
+                                <a class="nav-link <?= $tab_current === 'pagamento' ? 'active' :  ''; ?>" data-toggle="tab" href="#pagamento" role="tab" aria-selected="false">
                                     <i class="fas fa-money-check-alt"></i> <span class="d-none d-md-inline-block">Forma de Pagamento</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#etiquetas" role="tab" aria-selected="false">
+                                <a class="nav-link <?= $tab_current === 'etiquetas' ? 'active' :  ''; ?>" data-toggle="tab" href="#etiquetas" role="tab" aria-selected="false">
                                     <i class="fas fa-barcode"></i> <span class="d-none d-md-inline-block">Gerar Etiquetas</span>
                                 </a>
                             </li>
@@ -37,17 +34,23 @@
 
                         <!-- Tab panes -->
                         <div class="tab-content p-3">
-                            <div class="tab-pane active" id="paciente" role="tabpanel">
-                                <h1>Paciente</h1>
+                            <div class="tab-pane <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" id="paciente" role="tabpanel">
+                                <h2>Paciente</h2>
+
+                                <?php echo $this->element('admin/paciente/form');?>
+
                             </div>
-                            <div class="tab-pane" id="anamnese" role="tabpanel">
-                                <h1>anamnese</h1>
+                            <div class="tab-pane <?= $tab_current === 'anamnese' ? 'active' :  ''; ?>" id="anamnese" role="tabpanel">
+                                <h2>Anamnese</h2>
+                                <?php echo $this->element('admin/anamnese/form');?>
                             </div>
-                            <div class="tab-pane" id="pagamento" role="tabpanel">
-                                <h1>pagamento</h1>
+                            <div class="tab-pane <?= $tab_current === 'pagamento' ? 'active' :  ''; ?>" id="pagamento" role="tabpanel">
+                                <h2>Pagamento</h2>
+                                <?php echo $this->element('admin/pagamento/form');?>
                             </div>
-                            <div class="tab-pane" id="etiquetas" role="tabpanel">
-                                <h1>etiquetas</h1>
+                            <div class="tab-pane <?= $tab_current === 'etiquetas' ? 'active' :  ''; ?>" id="etiquetas" role="tabpanel">
+                                <h2>Etiquetas</h2>
+                                <?php echo $this->element('admin/etiquetas/generate');?>
                             </div>
                         </div>
 

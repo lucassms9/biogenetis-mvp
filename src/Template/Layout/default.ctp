@@ -55,7 +55,7 @@ $cakeDescription = 'Biogenetics';
     <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />   
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Sweet Alert-->
     <link href="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
@@ -80,12 +80,15 @@ $cakeDescription = 'Biogenetics';
     <!-- apexcharts -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/apexcharts/apexcharts.min.js"></script>
 
-    <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery-knob/jquery.knob.min.js"></script> 
+    <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery-knob/jquery.knob.min.js"></script>
 
     <!-- Jq vector map -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/jquery.vmap.min.js"></script>
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
     <script src="<?= $this->Url->build('/', true);?>js/jquery.mask.js"></script>
+
+    <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery-barcode/jquery-barcode.js"></script>
+
     <script>
         var BASE_URL_ADMIN = '<?=$this->Url->build('/admin', true)?>/';
     </script>
@@ -111,7 +114,7 @@ $cakeDescription = 'Biogenetics';
   <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
 
-  
+
 <!-- Required datatable js -->
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>

@@ -227,3 +227,13 @@ a {
 .footer{
     height: auto !important;
 }
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f7f7f7 !important;
+    opacity: 1 !important;
+}
+
+input[type="checkbox"]:disabled {
+    background-color: #3051D3 !important;
+    opacity: 1 !important;
+}

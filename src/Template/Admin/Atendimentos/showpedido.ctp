@@ -36,17 +36,22 @@
                         <div class="tab-content p-3">
                             <div class="tab-pane <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" id="paciente" role="tabpanel">
                                 <h2>Paciente</h2>
-
-                                <?php echo $this->element('admin/paciente/form');?>
-
+                                <?php echo $this->element('admin/paciente/form', [
+                                    'disabled' => 'disabled'
+                                ]);?>
                             </div>
                             <div class="tab-pane <?= $tab_current === 'anamnese' ? 'active' :  ''; ?>" id="anamnese" role="tabpanel">
                                 <h2>Anamnese</h2>
-                                <?php echo $this->element('admin/anamnese/form');?>
+                                <?php echo $this->element('admin/anamnese/form', [
+                                    'disabled' => true
+                                ]);?>
                             </div>
                             <div class="tab-pane <?= $tab_current === 'pagamento' ? 'active' :  ''; ?>" id="pagamento" role="tabpanel">
                                 <h2>Pagamento</h2>
-                                <?php echo $this->element('admin/pagamento/form');?>
+                                <?php echo $this->element('admin/pagamento/form', [
+                                    'disabled' => true,
+                                    'pedido' => $pedido
+                                ]);?>
                             </div>
                             <div class="tab-pane <?= $tab_current === 'etiquetas' ? 'active' :  ''; ?>" id="etiquetas" role="tabpanel">
                                 <h2>Etiquetas</h2>

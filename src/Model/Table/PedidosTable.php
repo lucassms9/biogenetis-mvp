@@ -57,6 +57,9 @@ class PedidosTable extends Table
         $this->belongsTo('EntradaExames', [
             'foreignKey' => 'entrada_exame_id',
         ]);
+        $this->belongsTo('Vouchers', [
+            'foreignKey' => 'voucher_id',
+        ]);
     }
 
     /**

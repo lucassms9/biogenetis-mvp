@@ -10,12 +10,16 @@
                     <div class="card-body">
                         <?= $this->Form->create($paciente) ?>
 
-                        <?php echo $this->element('admin/paciente/form');?>
+                        <?php echo $this->element('admin/paciente/form',[
+                            'disabled' => false
+                        ]);?>
                         <hr/>
 
                         <h2>Amamnese</h2>
 
-                        <?php echo $this->element('admin/anamnese/form');?>
+                        <?php echo $this->element('admin/anamnese/form',[
+                            'disabled' => false
+                        ]);?>
 
                         <div style="margin-top: 10px" class="row">
                             <div class="col-md-1">

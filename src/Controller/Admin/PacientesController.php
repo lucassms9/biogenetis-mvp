@@ -157,7 +157,8 @@ class PacientesController extends AppController
                                 'anamnese_id' => $anamnese->id,
                                 'cliente_id' => $user->cliente->id,
                                 'forma_pagamento' => $user->cliente->tipo_cobranca,
-                                'created_by' => $user->id
+                                'created_by' => $user->id,
+                                'exame_entrada_id' => 1
                             ];
 
                             $pedido = $this->Pedidos->newEntity();

@@ -4,22 +4,20 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Pedido Entity
+ * Voucher Entity
  *
  * @property int $id
- * @property int|null $anamnese_id
- * @property int|null $amostra_id
+ * @property string|null $codigo
+ * @property float|null $valor
  * @property int|null $cliente_id
- * @property string|null $forma_pagamento
  * @property \Cake\I18n\FrozenTime|null $created
- * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $created_by
+ * @property bool|null $used
  *
- * @property \App\Model\Entity\Anamnese $anamnese
- * @property \App\Model\Entity\Amostra $amostra
  * @property \App\Model\Entity\Cliente $cliente
+ * @property \App\Model\Entity\ExtratoSaldo[] $extrato_saldo
+ * @property \App\Model\Entity\Pedido[] $pedidos
  */
-class Pedido extends Entity
+class Voucher extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -31,18 +29,13 @@ class Pedido extends Entity
      * @var array
      */
     protected $_accessible = [
-        'anamnese_id' => true,
-        'amostra_id' => true,
+        'codigo' => true,
+        'valor' => true,
         'cliente_id' => true,
-        'forma_pagamento' => true,
         'created' => true,
-        'modified' => true,
-        'voucher_id' => true,
-        'created_by' => true,
-        'anamnese' => true,
-        'status' => true,
-        'amostra' => true,
+        'used' => true,
         'cliente' => true,
-        'entrada_exame_id' => true,
+        'extrato_saldo' => true,
+        'pedidos' => true,
     ];
 }

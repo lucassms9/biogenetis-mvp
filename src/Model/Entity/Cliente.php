@@ -40,6 +40,7 @@ class Cliente extends Entity
     protected $_accessible = [
         'nome_fantasia' => true,
         'razao_social' => true,
+        'parent_id' => true,
         'cnpj_cpf' => true,
         'cep' => true,
         'endereco' => true,

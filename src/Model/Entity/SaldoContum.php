@@ -4,22 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Pedido Entity
+ * SaldoContum Entity
  *
  * @property int $id
- * @property int|null $anamnese_id
- * @property int|null $amostra_id
  * @property int|null $cliente_id
- * @property string|null $forma_pagamento
+ * @property float|null $saldo
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
- * @property int|null $created_by
  *
- * @property \App\Model\Entity\Anamnese $anamnese
- * @property \App\Model\Entity\Amostra $amostra
  * @property \App\Model\Entity\Cliente $cliente
  */
-class Pedido extends Entity
+class SaldoContum extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -31,18 +26,10 @@ class Pedido extends Entity
      * @var array
      */
     protected $_accessible = [
-        'anamnese_id' => true,
-        'amostra_id' => true,
         'cliente_id' => true,
-        'forma_pagamento' => true,
+        'saldo' => true,
         'created' => true,
         'modified' => true,
-        'voucher_id' => true,
-        'created_by' => true,
-        'anamnese' => true,
-        'status' => true,
-        'amostra' => true,
         'cliente' => true,
-        'entrada_exame_id' => true,
     ];
 }

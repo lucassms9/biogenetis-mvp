@@ -70,6 +70,7 @@ class PacientesController extends AppController
         $action = 'Cadastrar';
         $title = 'Pacientes';
 
+        // $anamnese = $this->Anamneses->newEntity();
         $paciente = $this->Pacientes->newEntity();
         if ($this->request->is('post')) {
             $req = $this->request->getData();
@@ -138,6 +139,7 @@ class PacientesController extends AppController
                 if ($result) {
                     $save_ok = true;
                     if(true){
+
                         $req['paciente_id'] = $result->id;
                         $user = $this->Auth->user();
 

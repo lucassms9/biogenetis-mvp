@@ -51,11 +51,11 @@ class AnamnesesTable extends Table
     {
         $validator
             ->integer('id')
-            ->notEmpty('id', null, 'create');
+            ->notEmptyString('id', null, 'create');
 
         $validator
             ->boolean('gestante')
-            ->notEmpty('gestante','Campo Obrigatório');
+            ->notEmptyString('gestante');
 
         $validator
             ->scalar('medico_solicitante')
@@ -186,7 +186,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->boolean('analgesico_antitermico_antiinflamatorio')
-            ->notEmpty('analgesico_antitermico_antiinflamatorio','Campo Obrigatório');
+            ->notEmptyString('analgesico_antitermico_antiinflamatorio');
 
         $validator
             ->boolean('clinico_febre')
@@ -317,7 +317,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_contato_pessoa_com_suspeita_covid')
-            ->allowEmptyString('paciente_contato_pessoa_com_suspeita_covid');
+            ->notEmptyString('paciente_contato_pessoa_com_suspeita_covid');
 
         $validator
             ->scalar('paciente_contato_pessoa_com_suspeita_covid_local')
@@ -330,7 +330,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_contato_pessoa_com_confirmado_covid')
-            ->allowEmptyString('paciente_contato_pessoa_com_confirmado_covid');
+            ->notEmptyString('paciente_contato_pessoa_com_confirmado_covid');
 
         $validator
             ->scalar('paciente_contato_pessoa_com_confirmado_covid_caso_fonte')
@@ -339,7 +339,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_unidade_saude_14_dias')
-            ->allowEmptyString('paciente_unidade_saude_14_dias');
+            ->notEmptyString('paciente_unidade_saude_14_dias');
 
         $validator
             ->scalar('paciente_unidade_saude_14_dias_local')
@@ -348,7 +348,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_ocupacao')
-            ->allowEmptyString('paciente_ocupacao');
+            ->notEmptyString('paciente_ocupacao');
 
         $validator
             ->scalar('paciente_ocupacao_outros')

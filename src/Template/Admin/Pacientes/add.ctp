@@ -38,7 +38,7 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
-                        <?= $this->Form->create($paciente) ?>
+                        <?= $this->Form->create($paciente,['id'=>'formnovopaciente']) ?>
 
                         <?php echo $this->element('admin/paciente/form',[
                             'disabled' => $disabled_inputs
@@ -62,7 +62,7 @@
                                         ) ?>
                             </div>
                             <div class="col-md-1">
-                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light']) ?>
+                                <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light', 'type' => 'button', 'id'=>'submitformpaciente']) ?>
                             </div>
                         </div>
                         <?= $this->Form->end() ?>

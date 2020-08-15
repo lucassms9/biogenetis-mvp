@@ -1,6 +1,9 @@
 
 $(document).ready(function() {
-
+    $('#submitformpaciente').click(function (e) {
+        e.preventDefault();
+        submitformpaciente()
+    });
 });
 
 function submitGetPaciente(tipo){
@@ -11,4 +14,9 @@ function submitGetPaciente(tipo){
     $('#paciente-cpf').val('');
    }
     $('#getPaciente').submit();
+}
+
+function submitformpaciente() {
+    alert('melhorar validcao de campos');
+    $('#formnovopaciente').submit();
 }

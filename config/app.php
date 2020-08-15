@@ -50,7 +50,7 @@ return [
     'App' => [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
-        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
+        'defaultLocale' => env('APP_DEFAULT_LOCALE', 'pt_BR'),
         'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
         'base' => false,
         'dir' => 'src',
@@ -237,7 +237,7 @@ return [
             //'headerCharset' => 'utf-8',
         ],
     ],
-    
+
     'EmailSend' => [
         'smtp_host' => env('SMTP_HOST', ''),
         'smtp_port' => env('SMTP_PORT', '465'),

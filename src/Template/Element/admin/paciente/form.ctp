@@ -1,7 +1,9 @@
-<?= $this->Form->create($paciente) ?>
-<div class="row">
+<?php if ($useForm):?>
+<?= $this->Form->create($paciente,['id' => 'formnovopaciente']) ?>
+<?php endif;?>
+<div class="row mt20">
     <div class="col-md-4">
-        <?php echo $this->Form->control('nome',['class' => 'form-control', 'disabled' => $disabled]); ?>
+        <?php echo $this->Form->control('nome',['class' => 'form-control', 'title' => 'teste','disabled' => $disabled]); ?>
     </div>
     <div class="col-md-3">
         <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF', 'disabled' => $disabled]); ?>
@@ -14,7 +16,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mt20">
     <div class="col-md-3">
         <?php echo $this->Form->control('email',['class'=> 'form-control','label' => 'E-mail', 'disabled' => $disabled]); ?>
     </div>
@@ -29,7 +31,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mt20">
     <div class="col-md-2">
         <?php echo $this->Form->control('cep',['class'=> 'form-control','label' => 'CEP', 'disabled' => $disabled]); ?>
     </div>
@@ -46,7 +48,7 @@
     <?php echo $this->Form->control('uf',['class'=> 'form-control','label' => 'UF', 'disabled' => $disabled]); ?>
     </div>
 </div>
-<div class="row">
+<div class="row mt20">
     <div class="col-md-4">
         <?php echo $this->Form->control('nome_da_mae',['class'=> 'form-control', 'disabled' => $disabled]);?>
     </div>
@@ -57,7 +59,7 @@
         <?php echo $this->Form->control('pais_residencia',['class'=> 'form-control', 'disabled' => $disabled]);?>
     </div>
 </div>
-<div class="row">
+<div class="row mt20">
     <div class="col-md-3">
         <?php
         echo $this->Form->control('foto_perfil_url',['class'=> 'form-control','type' => 'file', 'label' => 'Foto do Paciente', 'disabled' => $disabled]);
@@ -70,6 +72,6 @@
     </div>
 </div>
 
-<?php if ($disabled):?>
+<?php if ($useForm):?>
     <?= $this->Form->end() ?>
 <?php endif;?>

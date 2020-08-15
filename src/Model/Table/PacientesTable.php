@@ -51,71 +51,71 @@ class PacientesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create')
+            ->notEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('nome')
             ->maxLength('nome', 255)
-            ->notEmpty('nome','Campo Obrigatório');
+            ->notEmptyString('nome');
 
         $validator
             ->scalar('cpf')
             ->maxLength('cpf', 255)
-            ->allowEmptyString('cpf');
+            ->notEmptyString('cpf');
 
         $validator
             ->scalar('rg')
             ->maxLength('rg', 255)
-            ->allowEmptyString('rg');
+            ->notEmptyString('rg');
 
         $validator
             ->email('email')
-            ->allowEmptyString('email');
+            ->notEmptyString('email');
 
         $validator
             ->scalar('celular')
             ->maxLength('celular', 255)
-            ->allowEmptyString('celular');
+            ->notEmptyString('celular');
 
         $validator
             ->scalar('telefone')
             ->maxLength('telefone', 255)
-            ->allowEmptyString('telefone');
+            ->notEmptyString('telefone');
 
         $validator
             ->scalar('sexo')
             ->maxLength('sexo', 255)
-            ->allowEmptyString('sexo');
+            ->notEmptyString('sexo');
 
         $validator
             ->date('data_nascimento')
-            ->allowEmptyDate('data_nascimento');
+            ->notEmptyDate('data_nascimento');
 
         $validator
             ->scalar('endereco')
             ->maxLength('endereco', 255)
-            ->allowEmptyString('endereco');
+            ->notEmptyString('endereco');
 
         $validator
             ->scalar('bairro')
             ->maxLength('bairro', 255)
-            ->allowEmptyString('bairro');
+            ->notEmptyString('bairro');
 
         $validator
             ->scalar('cep')
             ->maxLength('cep', 255)
-            ->allowEmptyString('cep');
+            ->notEmptyString('cep');
 
         $validator
             ->scalar('cidade')
             ->maxLength('cidade', 255)
-            ->allowEmptyString('cidade');
+            ->notEmptyString('cidade');
 
         $validator
             ->scalar('uf')
             ->maxLength('uf', 255)
-            ->allowEmptyString('uf');
+            ->notEmptyString('uf');
 
         $validator
             ->scalar('foto_perfil_url')
@@ -130,17 +130,17 @@ class PacientesTable extends Table
         $validator
             ->scalar('nome_da_mae')
             ->maxLength('nome_da_mae', 255)
-            ->allowEmptyString('nome_da_mae');
+            ->notEmptyString('nome_da_mae');
 
         $validator
             ->scalar('nacionalidade')
             ->maxLength('nacionalidade', 255)
-            ->allowEmptyString('nacionalidade');
+            ->notEmptyString('nacionalidade');
 
         $validator
             ->scalar('pais_residencia')
             ->maxLength('pais_residencia', 255)
-            ->allowEmptyString('pais_residencia');
+            ->notEmptyString('pais_residencia');
 
         return $validator;
     }

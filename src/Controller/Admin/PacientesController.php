@@ -190,8 +190,40 @@ class PacientesController extends AppController
 
         }
         $sexos = $this->sexos;
+        $disabled_inputs = true;
+        $useForm = true;
 
-        $this->set(compact('paciente','action','title','sexos'));
+        $query = $this->request->getQuery();
+
+        if(!empty($query['tipo']) && $query['tipo'] === 'new'){
+            $disabled_inputs = false;
+            $useForm = false;
+        }
+
+        if(!empty($query['paciente_cpf']) || !empty($query['paciente_nome'])){
+            $condition_find = [
+                    'Anamneses.status' => 'created',
+                    'OR' => [
+                        'Pacientes.nome like' => '%'.$query['paciente_nome'].'%',
+                        'Pacientes.cpf' => $this->Helpers->stringToNumber($query['paciente_cpf']),
+                    ]
+                ];
+
+            $anamnese = $this->Anamneses->find('all',[
+                'contain' => ['Pacientes'],
+                'conditions' => $condition_find
+            ])->first();
+            if(!empty($anamnese)){
+                $paciente = $anamnese->paciente;
+                $disabled_inputs = false;
+            }else{
+                $this->Flash->error('Paciente Não Encontrado',['key' => 'filterpaciente']);
+            }
+
+
+        }
+
+        $this->set(compact('paciente','action','title','sexos','disabled_inputs','anamnese','useForm','query'));
     }
 
     public function naoVazios($campos)

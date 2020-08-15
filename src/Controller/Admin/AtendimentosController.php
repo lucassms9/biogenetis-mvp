@@ -61,8 +61,9 @@
             $sexos = $this->sexos;
 
             $exames_tipos = $this->EntradaExames->find('list');
+            $useForm = true;
 
-            $this->set(compact('action','title','pedido','tab_current','sexos','paciente','anamnese','pagamento','exames_tipos'));
+            $this->set(compact('action','title','pedido','tab_current','sexos','paciente','anamnese','pagamento','exames_tipos','useForm'));
 
         }
 

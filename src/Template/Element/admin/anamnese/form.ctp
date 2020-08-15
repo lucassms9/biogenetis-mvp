@@ -1,5 +1,5 @@
 
-<?php if ($disabled):?>
+<?php if ($useForm):?>
 <?= $this->Form->create($anamnese) ?>
 <?php endif;?>
 

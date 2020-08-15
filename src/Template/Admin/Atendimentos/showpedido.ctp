@@ -26,7 +26,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?= $tab_current === 'etiquetas' ? 'active' :  ''; ?>" data-toggle="tab" href="#etiquetas" role="tab" aria-selected="false">
+                                <a class="nav-link <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" data-toggle="tab" href="#etiqueta" role="tab" aria-selected="false">
                                     <i class="fas fa-barcode"></i> <span class="d-none d-md-inline-block">Gerar Etiquetas</span>
                                 </a>
                             </li>
@@ -53,8 +53,7 @@
                                     'pedido' => $pedido
                                 ]);?>
                             </div>
-                            <div class="tab-pane <?= $tab_current === 'etiquetas' ? 'active' :  ''; ?>" id="etiquetas" role="tabpanel">
-                                <h2>Etiquetas</h2>
+                            <div class="tab-pane <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" id="etiqueta" role="tabpanel">
                                 <?php echo $this->element('admin/etiquetas/generate');?>
                             </div>
                         </div>
@@ -65,3 +64,6 @@
         </div>
     </div>
 </div>
+
+
+<script type="text/javascript" src="<?= $this->Url->build('/', true) ?>js/atendimento/pedido.js"></script>

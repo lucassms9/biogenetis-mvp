@@ -33,8 +33,10 @@ class EntradaExamesTable extends Table
         parent::initialize($config);
 
         $this->setTable('entrada_exames');
-        $this->setDisplayField('id');
+        $this->setDisplayField('nome');
         $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
         $this->hasMany('Exames', [
             'foreignKey' => 'entrada_exame_id',

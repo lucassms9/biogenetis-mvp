@@ -21,6 +21,7 @@
             $this->loadModel('Pedidos');
             $this->loadModel('Vouchers');
             $this->loadModel('ExtratoSaldo');
+            $this->loadModel('EntradaExames');
 
         }
 
@@ -50,6 +51,8 @@
                 'contain' => ['Anamneses.Pacientes','EntradaExames','Vouchers'],
             ]);
 
+            // debug($pedido);
+
             $paciente = $pedido->anamnese->paciente;
             $anamnese = $pedido->anamnese;
 
@@ -57,7 +60,9 @@
 
             $sexos = $this->sexos;
 
-            $this->set(compact('action','title','pedido','tab_current','sexos','paciente','anamnese','pagamento'));
+            $exames_tipos = $this->EntradaExames->find('list');
+
+            $this->set(compact('action','title','pedido','tab_current','sexos','paciente','anamnese','pagamento','exames_tipos'));
 
         }
 
@@ -66,7 +71,7 @@
             $req = $this->request->getData();
             // debug($req);
             // die;
-            if(!empty($req['voucher_cod']) && !empty($req['pedido_id']) ){
+            if(!empty($req['voucher_cod']) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id'])){
 
                 $id_valid = $this->Vouchers->find('all',[
                     'conditions' => ['codigo' => $req['voucher_cod'], 'used' => 0]
@@ -77,12 +82,16 @@
                         'contain' => ['EntradaExames']
                     ]);
                     $pedido->voucher_id = $id_valid->id;
+                    $pedido->entrada_exame_id = $req['entrada_exame_id'];
+                    $pedido->status = 'EmTriagem';
                     $this->Pedidos->save($pedido);
+
+                    $entrada_exame = $this->EntradaExames->get($req['entrada_exame_id']);
 
                     $save_extrato = $this->ExtratoSaldo->newEntity([
                         'voucher_id' => $id_valid->id,
                         'type' => 'D',
-                        'valor' => $pedido->entrada_exame->valor_laboratorio_conveniado,
+                        'valor' => $entrada_exame->valor_laboratorio_conveniado,
                         'created_by' => $this->Auth->user()->id,
                     ]);
                     $save_extrato = $this->ExtratoSaldo->save($save_extrato);
@@ -92,7 +101,7 @@
                     $this->Flash->error(__('Voucher Inválido!'));
                 }
             } else {
-                $this->Flash->error(__('Voucher Inválido!'));
+                $this->Flash->error(__('Inserir dados de pagamento e voucher!'));
 
             }
             return $this->redirect(['action' => 'showpedido/'.$req['pedido_id'].'/pagamento']);

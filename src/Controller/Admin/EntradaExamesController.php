@@ -22,6 +22,23 @@ class EntradaExamesController extends AppController
         ];
     }
 
+    public function getExame($id = null)
+    {
+        $retorno = [
+            'error' => 0,
+            'entrada_exame' => []
+        ];
+
+        $entradaExame = $this->EntradaExames->get($id, [
+            'contain' => ['Exames'],
+        ])->toArray();
+        if($entradaExame){
+            $retorno['entrada_exame'] = $entradaExame;
+        }
+        echo json_encode($retorno);
+        exit;
+    }
+
     /**
      * Index method
      *

@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
@@ -12,6 +12,36 @@ use App\Controller\AppController;
  */
 class PedidosController extends AppController
 {
+
+    public function checkBarCode($pedido_id = null)
+    {
+        $pedido = $this->Pedidos->get($pedido_id, [
+            'contain' => ['Anamneses.Pacientes','EntradaExames'],
+        ]);
+
+        $retorno = [
+            'error' => 1,
+            'barcode' => ''
+        ];
+
+        if($pedido && $pedido->entrada_exame && $pedido->anamnese){
+            $barcode = [
+                'tipo_exame' => $pedido->entrada_exame->tipo_exame,
+                'paciente_nome' => $pedido->anamnese->paciente->nome,
+                'paciente_nome' => $pedido->anamnese->paciente->nome,
+                'paciente_data_nasc' => $pedido->anamnese->paciente->data_nascimento->i18nFormat('dd/MM/yyyy'),
+                'data_sistema' => $pedido->created->i18nFormat('dd/MM/yyyy'),
+                'codigo_pedido' => $pedido->codigo_pedido,
+            ];
+
+            $retorno['error'] = 1;
+            $retorno['barcode'] = $barcode;
+        }
+
+        echo json_encode($retorno);
+        exit;
+    }
+
     /**
      * Index method
      *

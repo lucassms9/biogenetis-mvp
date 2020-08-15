@@ -103,4 +103,8 @@ class PedidosTable extends Table
 
         return $rules;
     }
+
+    public function geraCodPedido(){
+        return '';
+    }
 }

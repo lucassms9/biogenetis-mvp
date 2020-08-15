@@ -221,7 +221,7 @@ a {
 .custom-style-check{
     margin-right: 10px;
 }
-.row{
+.mt20{
     margin-top: 20px !important;
 }
 .footer{
@@ -236,4 +236,19 @@ a {
 input[type="checkbox"]:disabled {
     background-color: #3051D3 !important;
     opacity: 1 !important;
+}
+
+.bar-code_data{
+    writing-mode: tb-rl;
+    font-size: 20px;
+    text-align: center;
+    padding: 1px;
+}
+
+
+.bar-code-content-center{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
 }

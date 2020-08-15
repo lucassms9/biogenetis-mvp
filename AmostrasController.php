@@ -813,16 +813,15 @@ class AmostrasController extends AppController
         if($file_extesion == 'csv'){
             $file = fopen(AMOSTRAS . $file['name'], 'r');
                 while ($line = fgetcsv($file)) {
-
-                if( strpos($line[0], $frase_key) !== FALSE ){
+                if(strpos($line[0], $frase_key)){
                     $type_file = 2;
                 }
 
-                // if(is_numeric($line) ){
-                //     if($line[1] > $value){
-                //         $value = $line[1];
-                //     }
-                // }
+                if(is_numeric($line[1])){
+                    if($line[1] > $value){
+                        $value = $line[1];
+                    }
+                }
             }
 
             $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
@@ -833,7 +832,7 @@ class AmostrasController extends AppController
             $file = fopen(AMOSTRAS . $file['name'], 'r');
 
             while ($line = fgets($file)) {
-                if( strpos($line[0], $frase_key) !== FALSE ){
+                if(strpos($line, $frase_key)){
                     $type_file = 2;
                 }
                 if(is_numeric($line[1])){
@@ -848,9 +847,6 @@ class AmostrasController extends AppController
             $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
 
             return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'txt', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
-        }else{
-            $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
-            return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'xls', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
         }
     }
 

@@ -81,7 +81,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->date('data_primeiros_sintomas')
-            ->notEmpty('data_primeiros_sintomas','Campo Obrigatório');
+            ->allowEmptyString('data_primeiros_sintomas');
 
         $validator
             ->boolean('sintoma_febre')

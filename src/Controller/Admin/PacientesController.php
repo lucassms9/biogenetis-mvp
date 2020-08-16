@@ -153,6 +153,7 @@ class PacientesController extends AppController
                         $anamnese = $this->Anamneses->save($anamnese);
                         // debug($anamnese);
                         // die;
+
                         if($anamnese){
                             //criacao de pedido
                             $dadaos_pedido = [

@@ -130,7 +130,7 @@
             <?php echo $this->Form->control('sintoma_outros',['label' => 'OUTROS, ESPECIFICAR:','type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
         </div>
         <div class="col-md-6">
-            <input type="text" class="form-control" name="sintoma_outros_observacao" <?= $disabled ? 'disabled' : '' ?> >
+            <input type="text" class="form-control" id="sintoma_outros_observacao" name="sintoma_outros_observacao" <?= $disabled ? 'disabled' : '' ?> >
         </div>
     </div>
 </div>
@@ -155,7 +155,7 @@
     <div class="row mt20">
         <div style="display: flex;" class="col-md-3">
             <?php echo $this->Form->control('clinico_febre',['label' => 'FEBRE - TEMPERATURA DE:','type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
-                    <input style="width: 20%;margin: 0 12px;" type="text" class="form-control" name="clinico_febre_temp" <?= $disabled ? 'disabled' : '' ?>>
+                    <input style="width: 20%;margin: 0 12px;" id="clinico_febre_temp" type="text" class="form-control" name="clinico_febre_temp" <?= $disabled ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-3">
             <?php echo $this->Form->control('clinico_exsudato',['label' => 'EXSUDATO FARÍNGEO','type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
@@ -184,7 +184,7 @@
         </div>
         <div style="display: flex;" class="col-md-8">
             <?php echo $this->Form->control('clinico_outros',['label' => 'OUTROS, ESPECIFICAR:','type' => 'checkbox', 'class' => ['custom-style-check'], 'disabled' => $disabled]); ?>
-                <input style="width: 60%;margin: 0 10px" type="text" class="form-control" name="clinico_outros_observacao" <?= $disabled ? 'disabled' : '' ?>>
+                <input style="width: 60%;margin: 0 10px" type="text" id="clinico_outros_observacao" class="form-control" name="clinico_outros_observacao" <?= $disabled ? 'disabled' : '' ?>>
         </div>
     </div>
 </div>
@@ -239,7 +239,7 @@
             ['value' => 'NÃO SABE', 'text' => 'NÃO SABE'],
             ['value' => 'SIM', 'text' => 'SIM, NOME DO HOSPITAL DE INTENÇÃO'],
         ], ['style' => 'margin: 0 10px;', 'disabled' => $disabled,'required' => true]); ?>
-        <input style="width: 38%;margin: 0 10px" type="text" class="form-control" name="paciente_hospitalizado_nome_hospital" <?= $disabled ? 'disabled' : '' ?>>
+        <input style="width: 38%;margin: 0 10px" type="text" type="paciente_hospitalizado_nome_hospital" class="form-control" name="paciente_hospitalizado_nome_hospital" <?= $disabled ? 'disabled' : '' ?>>
     </div>
 </div>
 

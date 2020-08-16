@@ -37,6 +37,7 @@ class Pedido extends Entity
         'forma_pagamento' => true,
         'created' => true,
         'modified' => true,
+        'codigo_pedido' => true,
         'voucher_id' => true,
         'created_by' => true,
         'anamnese' => true,

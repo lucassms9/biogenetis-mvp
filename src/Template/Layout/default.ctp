@@ -60,6 +60,11 @@ $cakeDescription = 'Biogenetics';
     <!-- Sweet Alert-->
     <link href="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
+     <!-- alertifyjs Css -->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- alertifyjs default themes  Css -->
+    <link href="<?= $this->Url->build('/', true);?>assets/libs/alertifyjs/build/css/themes/default.min.css" rel="stylesheet" type="text/css" />
 
     <!-- JAVASCRIPT -->
     <script src="<?= $this->Url->build('/', true);?>assets/libs/jquery/jquery.min.js"></script>
@@ -131,8 +136,10 @@ $cakeDescription = 'Biogenetics';
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= $this->Url->build('/', true);?>assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 
-    <!-- Sweet Alerts js -->
-    <script src="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<!-- Sweet Alerts js -->
+<script src="<?= $this->Url->build('/', true);?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
+<script src="<?= $this->Url->build('/', true);?>assets/libs/alertifyjs/build/alertify.min.js"></script>
+
 
 <script src="<?= $this->Url->build('/', true);?>assets/js/pages/dashboard.init.js"></script>
 

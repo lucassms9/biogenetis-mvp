@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Pedidos Model
@@ -104,7 +105,15 @@ class PedidosTable extends Table
         return $rules;
     }
 
+    public function beforeSave(Event $event)
+    {
+        $entityClass = $event->getData('entity');
+        if($entityClass->isNew()){
+           $entityClass->codigo_pedido = $this->geraCodPedido();
+        }
+    }
+
     public function geraCodPedido(){
-        return '';
+        return mt_rand();
     }
 }

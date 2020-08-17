@@ -214,7 +214,7 @@ class AmostrasController extends AppController
 
             foreach($encadeamentos as $i => $encadeamentoObj){
 
-               
+
                 if(!empty($encadeamentoObj->encadeamento->origen)){
 
                     $url_request = $encadeamentoObj->encadeamento->origen->url_request;
@@ -234,7 +234,7 @@ class AmostrasController extends AppController
                 }
 
 
-                $dados = [  
+                $dados = [
                     $encadeamentoObj->exame_origen->exame->amostra_id,
                     $encadeamentoObj->exame_origen->exame->amostra->lote,
                     $encadeamentoObj->resultado,
@@ -290,7 +290,7 @@ class AmostrasController extends AppController
                 //     }
 
                 // }
-               
+
 
             }
 
@@ -381,7 +381,7 @@ class AmostrasController extends AppController
                     $IAModelName = $amostra->origen->IAModelName;
                     $DataScience = $amostra->origen->DataScience;
                 }
-               
+
 
                  $dados = [
                     $amostra->exame->amostra_id,
@@ -586,7 +586,7 @@ class AmostrasController extends AppController
         return $lote;
     }
     public function requestEndpoints($encad, $filedata, $isLastRequest)
-    {   
+    {
 
         $parse_status = [
             'Positivo' => 'Positive',
@@ -603,7 +603,7 @@ class AmostrasController extends AppController
             $result = $result['retorno'];
         }else{
             $result = $this->html_to_obj($response->getStringBody());
-        } 
+        }
 
         $status_branch = $parse_status[$encad->regra];
 
@@ -643,13 +643,13 @@ class AmostrasController extends AppController
             $total_enc = count($origem->origen->encadeamentos);
 
             $isEncadeado = $total_enc > 0 ? true : false;
-         
+
             if( (strpos($url, '168.138.139.32') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
             }else{
                 $result = $this->html_to_obj($response->getStringBody());
-            }   
+            }
 
             $status_main = $parse_status[$origem->origen->regra_encadeamento];
             $stop_loop = false;
@@ -829,7 +829,7 @@ class AmostrasController extends AppController
 
             return ['value' => $value, 'type_file' => $type_file,'file_extesion' => 'csv', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
 
-        }else if($file_extesion == 'txt'){
+        } else if($file_extesion == 'txt'){
             $file = fopen(AMOSTRAS . $file['name'], 'r');
 
             while ($line = fgets($file)) {
@@ -848,7 +848,8 @@ class AmostrasController extends AppController
             $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
 
             return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'txt', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
-        }else{
+        } else {
+            $type_file = 2;
             $equip_tipo = $type_file === 1 ? 'FTIR' : 'LCMS';
             return ['value' => $value, 'type_file' => $type_file, 'file_extesion' => 'xls', 'equip_tipo' => $equip_tipo, 'amostra_tipo' => $amostra_tipo ];
         }

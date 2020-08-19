@@ -122,7 +122,6 @@ class PacientesController extends AppController
 
             ];
 
-
             $validacao = $this->naoVazios($validar);
 
             if(!$validacao){
@@ -151,15 +150,13 @@ class PacientesController extends AppController
                         $anamnese = $this->Anamneses->newEntity();
                         $anamnese = $this->Anamneses->patchEntity($anamnese, $dados_anamnese);
                         $anamnese = $this->Anamneses->save($anamnese);
-                        // debug($anamnese);
-                        // die;
 
                         if($anamnese){
                             //criacao de pedido
                             $dadaos_pedido = [
                                 'anamnese_id' => $anamnese->id,
                                 'cliente_id' => $user->cliente->id,
-                                'forma_pagamento' => $user->cliente->tipo_cobranca,
+                                'tipo_pagamento' => $user->cliente->tipo_cobranca,
                                 'created_by' => $user->id,
                                 'exame_entrada_id' => 1
                             ];
@@ -200,6 +197,10 @@ class PacientesController extends AppController
 
         if(!empty($query['tipo']) && $query['tipo'] === 'new'){
             $disabled_inputs = false;
+
+        }
+
+        if((!empty($query['tipo']) && $query['tipo'] === 'new') || !isset($query['tipo'])){
             $useForm = false;
         }
 

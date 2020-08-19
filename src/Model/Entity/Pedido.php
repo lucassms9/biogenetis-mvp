@@ -42,6 +42,7 @@ class Pedido extends Entity
         'created_by' => true,
         'anamnese' => true,
         'status' => true,
+        'tipo_pagamento' => true,
         'amostra' => true,
         'cliente' => true,
         'entrada_exame_id' => true,

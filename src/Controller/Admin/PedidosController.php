@@ -22,6 +22,11 @@ class PedidosController extends AppController
             'M' => 'M',
             'F' => 'F'
         ];
+        $this->formas_pagamento = [
+            'Cartão de Credito' => 'Cartão de Credito',
+            'Cartão de Débito' => 'Cartão de Débito',
+            'Dinheiro' => 'Dinheiro'
+        ];
 
         $this->loadComponent('Helpers');
         $this->loadModel('Anamneses');
@@ -62,13 +67,12 @@ class PedidosController extends AppController
 
     public function getPedido($id)
     {
-        $pedido = $this->Pedidos->get($id,[
-            'contain' => ['PedidoCroqui.PedidoCroquiValores','PedidoCroqui.CroquiTipos']
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['PedidoCroqui.PedidoCroquiValores', 'PedidoCroqui.CroquiTipos']
         ]);
 
         echo json_encode($pedido);
         exit;
-
     }
 
     public function index()
@@ -102,7 +106,7 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers','PedidoCroqui'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'PedidoCroqui'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;
@@ -116,8 +120,9 @@ class PedidosController extends AppController
         $useForm = true;
         $croqui = null;
         $croqui_tipos = $this->Croquis->find('list');
+        $formas_pagamento = $this->formas_pagamento;
 
-        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm','croqui','croqui_tipos'));
+        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
     }
 
     public function pagamento($pedido_id = null)
@@ -125,37 +130,48 @@ class PedidosController extends AppController
         $req = $this->request->getData();
         // debug($req);
         // die;
-        if (!empty($req['voucher_cod']) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id'])) {
+        if ((!empty($req['voucher_cod']) || !empty($req['formas_pagamento'])) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id'])) {
 
-            $id_valid = $this->Vouchers->find('all', [
-                'conditions' => ['codigo' => $req['voucher_cod'], 'used' => 0]
-            ])->first();
+            $pedido = $this->Pedidos->get($req['pedido_id'], [
+                'contain' => ['EntradaExames']
+            ]);
 
-            if (!empty($id_valid)) {
-                $pedido = $this->Pedidos->get($req['pedido_id'], [
-                    'contain' => ['EntradaExames']
-                ]);
-                $pedido->voucher_id = $id_valid->id;
+            //pagamento sem voucher
+            if (!empty($req['formas_pagamento']) && empty($req['voucher_cod'])) {
+                $pedido->forma_pagamento = $req['formas_pagamento'];
                 $pedido->entrada_exame_id = $req['entrada_exame_id'];
                 $pedido->status = 'EmTriagem';
                 $this->Pedidos->save($pedido);
-
-                $entrada_exame = $this->EntradaExames->get($req['entrada_exame_id']);
-
-                $save_extrato = $this->ExtratoSaldo->newEntity([
-                    'voucher_id' => $id_valid->id,
-                    'type' => 'D',
-                    'valor' => $entrada_exame->valor_laboratorio_conveniado,
-                    'created_by' => $this->Auth->user()->id,
-                ]);
-                $save_extrato = $this->ExtratoSaldo->save($save_extrato);
-
-                $this->Flash->success(__('Voucher Inserido com sucesso!'));
             } else {
-                $this->Flash->error(__('Voucher Inválido!'));
+
+                $id_valid = $this->Vouchers->find('all', [
+                    'conditions' => ['codigo' => $req['voucher_cod'], 'used' => 0]
+                ])->first();
+
+                if (!empty($id_valid)) {
+                    $pedido->voucher_id = $id_valid->id;
+                    $pedido->forma_pagamento = 'Voucher';
+                    $pedido->entrada_exame_id = $req['entrada_exame_id'];
+                    $pedido->status = 'EmTriagem';
+                    $this->Pedidos->save($pedido);
+
+                    $entrada_exame = $this->EntradaExames->get($req['entrada_exame_id']);
+
+                    $save_extrato = $this->ExtratoSaldo->newEntity([
+                        'voucher_id' => $id_valid->id,
+                        'type' => 'D',
+                        'valor' => $entrada_exame->valor_laboratorio_conveniado,
+                        'created_by' => $this->Auth->user()->id,
+                    ]);
+                    $save_extrato = $this->ExtratoSaldo->save($save_extrato);
+
+                    $this->Flash->success(__('Voucher Inserido com sucesso!'));
+                } else {
+                    $this->Flash->error(__('Voucher Inválido!'));
+                }
             }
         } else {
-            $this->Flash->error(__('Inserir dados de pagamento e voucher!'));
+            $this->Flash->error(__('Inserir dados de pagamento!'));
         }
         return $this->redirect(['action' => 'showpedido/' . $req['pedido_id'] . '/pagamento']);
     }

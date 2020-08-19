@@ -28,7 +28,7 @@
                             </a>
 
 
-                            <a style="width: 290px;" href="<?= $this->Url->build('/admin/atendimentos', true);?>" class="btn btn-sm">
+                            <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=EmAtendimento', true);?>" class="btn btn-sm">
                                 <div style="padding: 10px;" class="card text-white bg-warning">
                                         <div style="display: flex;justify-content: center;">
                                             <h5 style="margin: 4px;" class="text-white">Em Atendimento</h5><i style="font-size: 20px;" class="mdi mdi-pencil"></i>
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-3">
-                        <a style="width: 290px;" href="#" class="btn btn-sm">
+                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=EmTriagem', true);?>" class="btn btn-sm">
                                 <div style="padding: 10px;" class="card text-white bg-info">
                                         <div style="display: flex;justify-content: center;">
                                             <h5 style="margin: 4px;" class="text-white">Em Triagem</h5><i style="font-size: 20px;" class="mdi mdi-progress-wrench"></i>

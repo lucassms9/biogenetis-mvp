@@ -61,6 +61,9 @@ class PedidosTable extends Table
         $this->belongsTo('Vouchers', [
             'foreignKey' => 'voucher_id',
         ]);
+        $this->hasOne('PedidoCroqui', [
+            'foreignKey' => 'pedido_id',
+        ]);
     }
 
     /**

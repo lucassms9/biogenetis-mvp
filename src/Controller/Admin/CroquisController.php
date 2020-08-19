@@ -22,11 +22,14 @@ class CroquisController extends AppController
             'SALIVA' => 'SALIVA',
             'SWAB' => 'SWAB'
         ];
-
         $this->equipamento_tipos = [
             'LCMS' => 'LCMS',
             'FTIR' => 'FTIR'
         ];
+
+        $this->loadModel('Pedidos');
+        $this->loadModel('PedidoCroqui');
+        $this->loadModel('PedidoCroquiValores');
 
     }
 
@@ -43,6 +46,81 @@ class CroquisController extends AppController
         $croquis = $this->paginate($this->Croquis);
 
         $this->set(compact('croquis','action','title'));
+    }
+    public function getCroqui($id)
+    {
+        $retorno = [
+            'error' => 1,
+            'croqui' => []
+        ];
+
+        $croqui = $this->Croquis->get($id);
+
+        if(!empty($croqui)){
+            $retorno['error'] = 0;
+            $retorno['croqui'] = $croqui;
+        }
+
+        echo json_encode($retorno);
+        exit();
+    }
+
+    public function gerador()
+    {
+        $action = 'Gerador';
+        $title = 'Croquis';
+
+        $croqui_tipos = $this->Croquis->find('list');
+        $croqui = null;
+
+
+        $pedidos_triagem = $this->Pedidos->find('all', [
+            'contain' => ['Anamneses.Pacientes'],
+            'conditions' => ['Pedidos.status' => 'EmTriagem']
+        ]);
+
+        if ($this->request->is('post')) {
+            $req = $this->request->getData();
+            $croqui_dados = [];
+
+            foreach ($req as $key => $value) {
+                if(!preg_match('/croqui_tipo_id/', $key) && !preg_match('/pedidos/', $key)){
+                    $croqui_dados[] = ['codigo' => $key, 'conteudo' => $value];
+                }
+            }
+
+            foreach ($req['pedidos'] as $key => $pedido) {
+                $pedido_croqui = $this->PedidoCroqui->newEntity();
+                $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
+                    'croqui_tipo_id' => $req['croqui_tipo_id'],
+                    'pedido_id' => $pedido
+                ]);
+
+                $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
+
+
+                //salva outros dados
+
+                foreach ($croqui_dados as $key => $croqui_dado) {
+                    $pedido_croqui_val = $this->PedidoCroquiValores->newEntity();
+                    $pedido_croqui_val = $this->PedidoCroquiValores->patchEntity($pedido_croqui_val, [
+                        'pedido_croqui_id' => $pedido_croqui->id,
+                        'conteudo' => $croqui_dado['conteudo'],
+                        'coluna_linha' => $croqui_dado['codigo']
+                    ]);
+                    $pedido_croqui_val = $this->PedidoCroquiValores->save($pedido_croqui_val);
+
+                }
+
+                $getPedido = $this->Pedidos->get($pedido);
+                $getPedido->status = 'EmDiagnostico';
+                $this->Pedidos->save($getPedido);
+            }
+
+            return $this->redirect(['action' => 'gerador']);
+        }
+
+        $this->set(compact('croqui_tipos','action','title','croqui','pedidos_triagem'));
     }
 
     /**

@@ -30,6 +30,11 @@
                                     <i class="fas fa-barcode"></i> <span class="d-none d-md-inline-block">Gerar Etiquetas</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $tab_current === 'croqui' ? 'active' :  ''; ?>" data-toggle="tab" href="#croqui" role="tab" aria-selected="false">
+                                    <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Croqui</span>
+                                </a>
+                            </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -55,6 +60,12 @@
                             </div>
                             <div class="tab-pane <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" id="etiqueta" role="tabpanel">
                                 <?php echo $this->element('admin/etiquetas/generate');?>
+                            </div>
+                            <div class="tab-pane <?= $tab_current === 'croqui' ? 'active' :  ''; ?>" id="croqui" role="tabpanel">
+                                <?php echo $this->element('admin/croqui/view', [
+                                    'disabled' => true,
+                                    'pedido' => $pedido
+                                ]);?>
                             </div>
                         </div>
 

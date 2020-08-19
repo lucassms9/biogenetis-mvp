@@ -34,5 +34,7 @@ class Croqui extends Entity
         'tipo_exame_recomendado' => true,
         'tipo_equipament_recomendado' => true,
         'equipamentos' => true,
+        'linhas' => true,
+        'colunas' => true,
     ];
 }

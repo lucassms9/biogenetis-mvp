@@ -27,7 +27,7 @@
                                 </div>
                             </a>
 
-
+                            <div class="separator-row"></div>
                             <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=EmAtendimento', true);?>" class="btn btn-sm">
                                 <div style="padding: 10px;" class="card text-white bg-warning">
                                         <div style="display: flex;justify-content: center;">

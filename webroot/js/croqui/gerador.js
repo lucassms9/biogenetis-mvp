@@ -4,7 +4,33 @@ $(document).ready(function() {
         createCroqui(this)
     });
 
+    $('#btn-form-filter').click(function(e){
+        dispatchFilter();
+    });
 });
+
+function validateForm() {
+    var inputsCroqui = $('.input-croqui');
+    var campo_vazio = false;
+
+    if(inputsCroqui.length === 0){
+        return alertify.error('você deve escolher um croqui para continuar.');
+
+    }
+
+    $.each(inputsCroqui, function (index, element) {
+        var value = $(element).val();
+        if(!value){
+            campo_vazio = true;
+        }
+    });
+
+    if(campo_vazio){
+        return alertify.error('você deve preencher todos campos do croquis.');
+    }
+
+    $('#formCroqui').submit();
+}
 
 function createCroqui(element){
     const value = $(element).children("option:selected").val();
@@ -65,7 +91,7 @@ function createTable(data) {
 
         $.each(words, function (index, word) {
             var name = word+''+row
-            colls += '<td><input class="form-control" name="'+name+'"/></td>'
+            colls += '<td><input class="form-control input-croqui" name="'+name+'"/></td>'
         });
 
         tbodies.append(

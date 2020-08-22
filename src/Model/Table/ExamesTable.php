@@ -54,6 +54,10 @@ class ExamesTable extends Table
             'foreignKey' => 'origem_id',
         ]);
 
+        $this->belongsTo('Pedidos', [
+            'foreignKey' => 'pedido_id',
+        ]);
+
         $this->belongsTo('Users', [
             'foreignKey' => 'created_by',
         ]);

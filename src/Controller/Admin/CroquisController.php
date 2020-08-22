@@ -72,11 +72,31 @@ class CroquisController extends AppController
 
         $croqui_tipos = $this->Croquis->find('list');
         $croqui = null;
+        $conditions = ['Pedidos.status' => 'EmTriagem'];
+        $query = $this->request->getQuery();
+
+        if(!empty($query['nome_paciente'])){
+           $conditions['Pacientes.nome like'] = '%'. $query['nome_paciente'] .'%';
+        }
+
+        if(!empty($query['cpf_paciente'])){
+            $conditions['Pacientes.cpf'] = $query['cpf_paciente'];
+        }
+
+        if(!empty($query['date_de'])){
+            $data_de = implode('-', array_reverse(explode('/', $query['date_de'])));
+            $conditions['cast(Pedidos.created as date) >='] = $data_de;
+        }
+
+        if(!empty($query['date_ate'])){
+            $data_ate = implode('-', array_reverse(explode('/', $query['data_ate'])));
+            $conditions['cast(Pedidos.created as date) <='] = $data_ate;
+        }
 
 
         $pedidos_triagem = $this->Pedidos->find('all', [
             'contain' => ['Anamneses.Pacientes'],
-            'conditions' => ['Pedidos.status' => 'EmTriagem']
+            'conditions' => $conditions
         ]);
 
         if ($this->request->is('post')) {
@@ -89,32 +109,32 @@ class CroquisController extends AppController
                 }
             }
 
-            foreach ($req['pedidos'] as $key => $pedido) {
+            foreach ($croqui_dados as $key => $croqui_dado) {
+
+                $getPedido = $this->Pedidos->find('all',[
+                    'conditions' => ['codigo_pedido' => $croqui_dado['conteudo']]
+                ])->first();
+
                 $pedido_croqui = $this->PedidoCroqui->newEntity();
                 $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
                     'croqui_tipo_id' => $req['croqui_tipo_id'],
-                    'pedido_id' => $pedido
+                    'pedido_id' => $getPedido->id
                 ]);
-
                 $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
 
-
-                //salva outros dados
-
-                foreach ($croqui_dados as $key => $croqui_dado) {
+                foreach ($croqui_dados as $key => $croqui_dado2) {
                     $pedido_croqui_val = $this->PedidoCroquiValores->newEntity();
                     $pedido_croqui_val = $this->PedidoCroquiValores->patchEntity($pedido_croqui_val, [
                         'pedido_croqui_id' => $pedido_croqui->id,
-                        'conteudo' => $croqui_dado['conteudo'],
-                        'coluna_linha' => $croqui_dado['codigo']
+                        'conteudo' => $croqui_dado2['conteudo'],
+                        'coluna_linha' => $croqui_dado2['codigo']
                     ]);
                     $pedido_croqui_val = $this->PedidoCroquiValores->save($pedido_croqui_val);
-
                 }
 
-                $getPedido = $this->Pedidos->get($pedido);
                 $getPedido->status = 'EmDiagnostico';
-                $this->Pedidos->save($getPedido);
+                $getPedido = $this->Pedidos->save($getPedido);
+
             }
 
             return $this->redirect(['action' => 'gerador']);

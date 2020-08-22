@@ -252,3 +252,12 @@ input[type="checkbox"]:disabled {
     align-items: center;
     justify-content: center;
 }
+
+.separator-row{
+    position: absolute;
+    height: 30px;
+    border-left: 3px solid #6f6f6f;
+    top: 108px;
+    left: 157px;
+    opacity: 0.3;
+}

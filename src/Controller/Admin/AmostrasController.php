@@ -30,8 +30,10 @@ class AmostrasController extends AppController
         $this->loadModel('AmostraErros');
         $this->loadModel('ExameOrigens');
         $this->loadModel('Origens');
+        $this->loadModel('Pedidos');
         $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
+        $this->loadComponent('Helpers');
     }
 
     public function sendEmail()
@@ -214,7 +216,7 @@ class AmostrasController extends AppController
 
             foreach($encadeamentos as $i => $encadeamentoObj){
 
-               
+
                 if(!empty($encadeamentoObj->encadeamento->origen)){
 
                     $url_request = $encadeamentoObj->encadeamento->origen->url_request;
@@ -234,7 +236,7 @@ class AmostrasController extends AppController
                 }
 
 
-                $dados = [  
+                $dados = [
                     $encadeamentoObj->exame_origen->exame->amostra_id,
                     $encadeamentoObj->exame_origen->exame->amostra->lote,
                     $encadeamentoObj->resultado,
@@ -290,7 +292,7 @@ class AmostrasController extends AppController
                 //     }
 
                 // }
-               
+
 
             }
 
@@ -381,7 +383,7 @@ class AmostrasController extends AppController
                     $IAModelName = $amostra->origen->IAModelName;
                     $DataScience = $amostra->origen->DataScience;
                 }
-               
+
 
                  $dados = [
                     $amostra->exame->amostra_id,
@@ -586,7 +588,7 @@ class AmostrasController extends AppController
         return $lote;
     }
     public function requestEndpoints($encad, $filedata, $isLastRequest)
-    {   
+    {
 
         $parse_status = [
             'Positivo' => 'Positive',
@@ -603,7 +605,7 @@ class AmostrasController extends AppController
             $result = $result['retorno'];
         }else{
             $result = $this->html_to_obj($response->getStringBody());
-        } 
+        }
 
         $status_branch = $parse_status[$encad->regra];
 
@@ -643,13 +645,13 @@ class AmostrasController extends AppController
             $total_enc = count($origem->origen->encadeamentos);
 
             $isEncadeado = $total_enc > 0 ? true : false;
-         
+
             if( (strpos($url, '168.138.139.32') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
             }else{
                 $result = $this->html_to_obj($response->getStringBody());
-            }   
+            }
 
             $status_main = $parse_status[$origem->origen->regra_encadeamento];
             $stop_loop = false;
@@ -883,30 +885,17 @@ class AmostrasController extends AppController
                              die();
                         }
 
-                        // if($handle_file['value'] < 0.018){
-                        //     $error_dados = [
-                        //         'amostra_id' => $amostra_id[0],
-                        //         'created_by' => $this->Auth->user('id'),
-                        //     ];
-                        //     $error_save = $this->AmostraErros->newEntity();
-                        //     $error_save = $this->AmostraErros->patchEntity($error_save, $error_dados);
-                        //     $error_save = $this->AmostraErros->save($error_save);
+                        $clear_name_file = $this->Helpers->stringToNumber($file['name']);
+
+                        $pedido = $this->Pedidos->find('all',[
+                            'conditions' => ['codigo_pedido like' => '%'. $clear_name_file .'%' ]
+                        ])->first();
 
 
-                        //     $countErros = $this->AmostraErros->find('all',[
-                        //     'conditions' => ['amostra_id' => $amostra_id[0]]
-                        //     ])->count();
-
-                        //     if($countErros >= 3){
-                        //         throw new BadRequestException(__('O paciente deve ser chamado para coleta de nova amostra'));
-                        //         die();
-                        //     }else{
-                        //         throw new BadRequestException(__('Amostra com valores inadequados para leitura. Favor repetir o processamento no FTIR.'));
-                        //     die();
-                        //     }
-
-
-                        // }
+                        if(empty($pedido)){
+                            throw new BadRequestException(__('Pedido não encontrado.'));
+                            die();
+                        }
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],
@@ -914,6 +903,7 @@ class AmostrasController extends AppController
                             'equip_tipo' => $handle_file['equip_tipo'],
                             'amostra_tipo' => $handle_file['amostra_tipo'],
                             'file_name' => $file['name'],
+                            'pedido_id' => $pedido->id,
                             'created_by' => $this->Auth->user('id'),
                         ];
 
@@ -922,6 +912,9 @@ class AmostrasController extends AppController
                         $exame_save = $this->Exames->save($exame_save);
 
                         if($exame_save){
+                            $exame_save = $this->Exames->get($exame_save->id,[
+                                'contain' => ['Pedidos.Anamneses.Pacientes']
+                            ]);
                             //seta as origens para disparo de request
                             $this->setOrigens($exame_save);
 

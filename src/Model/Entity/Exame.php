@@ -38,6 +38,7 @@ class Exame extends Entity
         'resultado' => true,
         'equip_tipo' => true,
         'amostra_tipo' => true,
+        'pedido_id' => true,
         'amostra' => true,
         'file_name' => true,
     ];

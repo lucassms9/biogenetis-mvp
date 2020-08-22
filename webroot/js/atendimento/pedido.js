@@ -126,6 +126,7 @@ function getCroqui(){
             dataType: 'json',
         })
         .done(function(data) {
+            console.log(data)
             if(data.error)
                 return alert('Houver algum erro.');
             if(data.pedido_croqui)

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mb-3">
     <div class="col-md-12">
         <button style="background-color: #31b1fb;border-color: #31b1fb;"  onclick="printerPage();" type="button" class="btn btn-secondary">
             <i style="margin-right: 5px;" class="mdi mdi-printer"></i>Imprimir
@@ -24,16 +24,16 @@
     </div>
     <div class="row my-3">
         <div class="col-md-6 d-flex font-weight-bold">
-            Nome: Nome paciente
+            Nome: <?= $pedido->anamnese->paciente->nome;?>
         </div>
         <div style="justify-content: flex-end;"  class="col-md-6 d-flex">
-            Data da Colheita: 20/10/1995
+            Data da Colheita: <?= $pedido->anamnese->created;?>
         </div>
     </div>
 
     <div class="row my-3">
         <div class="col-md-6 d-flex">
-            Médico: Nome do medico
+            Médico: <?= $pedido->anamnese->medico_solicitante;?>
         </div>
     </div>
 
@@ -45,7 +45,7 @@
 
     <div class="row my-3">
         <div class="col-md-6 d-flex">
-            N˚ Controle: XXXXXXUDI20062020EXS
+            N˚ Controle: <?= $pedido->codigo_pedido;?>
         </div>
         <div style="justify-content: flex-end;" class="col-md-6 d-flex">
             Data Emissão: 20/10/1995
@@ -54,7 +54,7 @@
 
     <div class="row my-3">
         <div class="col-md-6 d-flex font-weight-bold">
-            Exame: XXXXXXUDI20062020EXS
+            Exame: <?= $pedido->exame->amostra->lote;?>
         </div>
     </div>
     <hr class="borderHr"/>
@@ -67,23 +67,23 @@
 
     <div class="row my-3">
         <div class="col-md-6 d-flex">
-            Material: Swab Nasofaringe
+            Material: <?= $pedido->exame->amostra_tipo;?>
         </div>
     </div>
 
     <div class="row my-3">
         <div class="col-md-6 d-flex">
-        Método: PCR ( Reação em Cadeia da Polimerase ) Em Tempo Real
+        Método: <?= $pedido->exame->equip_tipo;?>
         </div>
     </div>
 
     <div style="background-color: #e5f1fd;margin-bottom: 90px !important;" class="row my-3">
         <div class="col-md-6 d-flex flex-column">
             <div class="d-flex">
-               <h3>RESULTADO: Não Detectado</h3>
+               <h3>RESULTADO: <?= $pedido->exame->resultado;?></h3>
             </div>
             <div class="d-flex">
-                <h5>Coronavírus SARS-COV2</h5>
+                <h5><?= $pedido->entrada_exame->nome;?></h5>
             </div>
         </div>
     </div>

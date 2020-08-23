@@ -106,7 +106,7 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'PedidoCroqui'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;

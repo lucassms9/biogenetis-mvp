@@ -115,6 +115,16 @@ function printDiv() {
     document.body.innerHTML = originalContents;
 }
 
+function printerPage() {
+    var printContents = document.getElementById('printer-laudo').innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+}
 
 function getCroqui(){
     const pedido_id = $('#pedido-id').val();

@@ -35,6 +35,11 @@
                                     <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Croqui</span>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" data-toggle="tab" href="#laudo" role="tab" aria-selected="false">
+                                    <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Laudo</span>
+                                </a>
+                            </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -66,6 +71,9 @@
                                     'disabled' => true,
                                     'pedido' => $pedido
                                 ]);?>
+                            </div>
+                            <div class="tab-pane <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" id="laudo" role="tabpanel">
+                                <?php echo $this->element('admin/pedido/laudo');?>
                             </div>
                         </div>
 

@@ -13,10 +13,12 @@
                             <table class="table mb-0">
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('nome') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('cpf') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('celular') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('codigo_pedido', 'Código do Pedido') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('status', 'Status') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('nome', 'Nome do Paciente') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('cpf','CPF do Paciente') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('celular', 'Celular do Paciente') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('created', 'Criação do Pedido') ?></th>
                                     <th scope="col" class="actions"><?= __('Ações') ?></th>
                                     </tr>
                                 </thead>
@@ -24,10 +26,12 @@
                                      <?php
                                       foreach ($pedidos as $pedido): ?>
                                         <tr>
-                                        <td><?= $this->Number->format($pedido->id) ?></td>
+                                        <td><?= h($pedido->codigo_pedido) ?></td>
+                                        <td><?= h($pedido->status) ?></td>
                                         <td><?= h($pedido->anamnese->paciente->nome) ?></td>
                                         <td><?= h($pedido->anamnese->paciente->cpf) ?></td>
                                         <td><?= h($pedido->anamnese->paciente->celular) ?></td>
+                                        <td><?= h($pedido->created) ?></td>
                                         <td class="actions">
                                         <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $pedido->id], ['escape' => false]) ?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $pedido->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $pedido->id)]) ?>

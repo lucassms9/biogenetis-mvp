@@ -36,15 +36,6 @@
                         <button type="button" style="margin-right: 5px;background-color: #0089d8;border-color: #0089d8;" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
                         <button style="margin-right: 5px;background-color: #31b1fb;border-color: #31b1fb;" type="button" id="printer-dash" class="btn btn-secondary  mt-3 mt-sm-0">Imprimir</button>
                     </div>
-                   <!--   <div style="margin-top: 28px;" class="col-md-1">
-                        <button type="submit" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
-                    </div>
-                     <div style="margin-top: 28px;" class="col-md-2">
-                        <button type="button" style="background-color: #0089d8;border-color: #0089d8;" id="reset-filter" class="btn btn-secondary  mt-3 mt-sm-0">Limpar Filtros</button>
-                    </div>
-                   <div style="margin-top: 28px;margin-left: -50px;" class="col-md-1">
-                        <button style="background-color: #31b1fb;border-color: #31b1fb;" type="button" id="printer-dash" class="btn btn-secondary  mt-3 mt-sm-0">Imprimir</button>
-                    </div> -->
                 </div>
 
                  </form>
@@ -155,7 +146,7 @@
                                         <td style="text-align: right;" id="020nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="020nf"></td>
                                         <td style="text-align: right;" id="020im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="020if"></td>  
+                                        <td style="text-align: right;" class="border-rt" id="020if"></td>
                                         <td style="text-align: right;" id="020iqm"></td>
                                         <td style="text-align: right;" class="border-rt" id="020iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="020tu"></td>
@@ -168,7 +159,7 @@
                                         <td style="text-align: right;" id="2140nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="2140nf"></td>
                                         <td style="text-align: right;" id="2140im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="2140if"></td> 
+                                        <td style="text-align: right;" class="border-rt" id="2140if"></td>
                                         <td style="text-align: right;" id="2140iqm"></td>
                                         <td style="text-align: right;" class="border-rt" id="2140iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="2140tu"></td>
@@ -181,7 +172,7 @@
                                         <td style="text-align: right;" id="4160nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="4160nf"></td>
                                         <td style="text-align: right;" id="4160im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="4160if"></td>  
+                                        <td style="text-align: right;" class="border-rt" id="4160if"></td>
                                         <td style="text-align: right;" id="4160iqm"></td>
                                         <td style="text-align: right;" class="border-rt" id="4160iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="4160tu"></td>
@@ -194,7 +185,7 @@
                                         <td style="text-align: right;" id="6180nm"></td>
                                         <td style="text-align: right;" class="border-rt" id="6180nf"></td>
                                         <td style="text-align: right;" id="6180im"></td>
-                                        <td style="text-align: right;" class="border-rt" id="6180if"></td>  
+                                        <td style="text-align: right;" class="border-rt" id="6180if"></td>
                                         <td style="text-align: right;" id="6180iqm"></td>
                                         <td style="text-align: right;" class="border-rt" id="6180iqf"></td>
                                         <td style="text-align: right;" class="border-rt" id="6180tu"></td>
@@ -219,7 +210,7 @@
                                         <td style="text-align: right;" class="border-hz" id="totalunm"></td>
                                         <td style="text-align: right;" class="border-rt border-hz" id="totalunf"></td>
                                         <td style="text-align: right;" class="border-hz" id="totaluim"></td>
-                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluif"></td> 
+                                        <td style="text-align: right;" class="border-rt border-hz" id="totaluif"></td>
                                         <td style="text-align: right;" class="border-hz" id="totaluiqm"></td>
                                         <td style="text-align: right;" class="border-rt border-hz" id="totaluiqf"></td>
                                         <td style="text-align: right;" class="border-rt border-hz" id="totalutu"></td>
@@ -232,7 +223,7 @@
                                         <td style="text-align: right;" id="totalpornm" class="td-green"></td>
                                         <td style="text-align: right;" id="totalpornf" class="td-green"></td>
                                         <td style="text-align: right;" id="totalporim" class="td-yellow"></td>
-                                        <td style="text-align: right;" id="totalporif" class="td-yellow"></td>   
+                                        <td style="text-align: right;" id="totalporif" class="td-yellow"></td>
                                         <td style="text-align: right;background: #ff8a26" id="totalporiqm" class="td-yellow"></td>
                                         <td style="text-align: right;background: #ff8a26" id="totalporiqf" class="td-yellow"></td>
                                         <td  style="vertical-align: middle; text-align: right;" colspan="2" rowspan="2" id="totalportp"></td>
@@ -241,7 +232,7 @@
                                         <td style="text-align: center;" class="td-blue-strong">% TOTAL</td>
                                         <td style="text-align: center;" id="totalmfporpos" style="text-align: center;" class="td-red" colspan="2"></td>
                                         <td style="text-align: center;" id="totalmfporneg" style="text-align: center;" class="td-green"colspan="2"></td>
-                                        <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>   
+                                        <td style="text-align: center;" id="totalmfporinc" style="text-align: center;" class="td-yellow" colspan="2"></td>
                                         <td style="text-align: center;background: #ff8a26;" id="totalmfporinq" style="text-align: center;" class="td-yellow" colspan="2"></td>
                                     </tr>
                                 </tbody>

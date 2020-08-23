@@ -62,7 +62,7 @@
                         </div>
 
                         <div class="col-3">
-                        <a style="width: 290px;" href="#" class="btn btn-sm">
+                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=Finalizado', true);?>" class="btn btn-sm">
                             <div style="padding: 10px;" class="card text-white bg-success">
                                     <div style="display: flex;justify-content: center;">
                                         <h5 style="margin: 4px;" class="text-white">Finalizados</h5><i style="font-size: 20px;" class="mdi mdi-clock-check-outline"></i>

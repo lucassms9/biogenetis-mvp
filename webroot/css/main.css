@@ -217,6 +217,14 @@ a {
     .printHeader {
        display : block;
     }
+
+    .logo-print{
+        width: 100px;
+        height: auto;
+        display: list-item;
+        list-style-image: url(../img/header-printer.png);
+        list-style-position: inside;
+    }
 }
 .custom-style-check{
     margin-right: 10px;
@@ -260,4 +268,21 @@ input[type="checkbox"]:disabled {
     top: 108px;
     left: 157px;
     opacity: 0.3;
+}
+
+.borderHr{
+    border: 3px solid #3987b3;
+}
+
+
+.title-printer{
+    text-decoration: underline;
+}
+
+.title-printer{
+    text-decoration: underline;
+    color: #3987b3;
+}
+.container-title-printer{
+    justify-content: center;
 }

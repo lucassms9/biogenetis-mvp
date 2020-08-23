@@ -8,9 +8,7 @@ use Cake\Http\Exception\BadRequestException;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use Cake\Core\Exception\Exception;
-use Cake\I18n\Time;
-use Cake\I18n\FrozenDate;
-use Cake\I18n\FrozenTime;
+use Cake\Log\Log;
 
 /**
  * Amostras Controller
@@ -573,6 +571,11 @@ class AmostrasController extends AppController
                 $integration = $this->callIntegration($exame_find);
 
                 $exame_find->resultado = $integration;
+
+                $pedido = $this->Pedidos->get($exame_find->pedido_id);
+                $pedido->status = 'Finalizado';
+                $this->Pedidos->save($pedido);
+
                 $this->Exames->save($exame_find);
 
             }
@@ -629,13 +632,15 @@ class AmostrasController extends AppController
 
         $parse_status = [
             'Positivo' => 'Positive',
-            'Negativo' => 'Negative'
+            'Negativo' => 'Negative',
+            'Invalid' => 'Invalid'
         ];
 
         foreach ($exame->exame_origens as $origem) {
 
             $url = $origem->origen->url_request;
             $filedata = AMOSTRAS . $exame->amostra_id. '.'.$exame->file_extesion;
+
 
             $http = new Client();
             $response = $http->post($url, [
@@ -652,6 +657,8 @@ class AmostrasController extends AppController
             }else{
                 $result = $this->html_to_obj($response->getStringBody());
             }
+
+            Log::debug('callIntegration - resutlado: '.$result);
 
             $status_main = $parse_status[$origem->origen->regra_encadeamento];
             $stop_loop = false;

@@ -1,52 +1,21 @@
 $(document).ready(function() {
-
-    $('#croqui-tipo-id').change(function (e) {
-        createCroqui(this)
-    });
-
-    $('#btn-form-filter').click(function(e){
-        dispatchFilter();
-    });
+    getCroqui();
 });
 
-function validateForm() {
-    var inputsCroqui = $('.input-croqui');
-    var campo_vazio = false;
+function getCroqui(){
+    const croqui_pedido_id = $('#croqui-pedido-id').val();
 
-    if(inputsCroqui.length === 0){
-        return alertify.error('você deve escolher um croqui para continuar.');
-
-    }
-
-    $.each(inputsCroqui, function (index, element) {
-        var value = $(element).val();
-        if(!value){
-            campo_vazio = true;
-        }
-    });
-
-    if(campo_vazio){
-        return alertify.error('você deve preencher todos campos do croquis.');
-    }
-
-    $('#formCroqui').submit();
-}
-
-function createCroqui(element){
-    const value = $(element).children("option:selected").val();
-    if(value){
+    if(croqui_pedido_id){
         $.ajax({
-            url: BASE_URL_ADMIN + 'croquis/getCroqui/'+value,
+            url: BASE_URL_ADMIN + 'pedidos/getCroquiPedido/'+croqui_pedido_id,
             type: 'GET',
             dataType: 'json',
         })
         .done(function(data) {
+            console.log(data)
             if(data.error)
                 return alert('Houver algum erro.');
-
-            if(data.croqui.linhas && data.croqui.colunas)
-                console.log(data.croqui.colunas)
-                console.log(data.croqui.linhas)
+            if(data)
                 createTable(data);
         });
 
@@ -54,16 +23,13 @@ function createCroqui(element){
 }
 
 function createTable(data) {
-    const croqui = data.croqui
+    const croqui = data.croqui_tipo;
+    const croquiValores =  data.pedido_croqui_valores;
 
     var theads = $('#theads');
     var tbodies = $('#tbodies');
     var words = [];
     var rows = [];
-
-    theads.html('');
-    theads.append('<th>#</th>');
-    tbodies.html('');
 
     for (let indexH = 0; indexH < croqui.colunas; indexH++) {
         if(words.length === 0){
@@ -94,8 +60,9 @@ function createTable(data) {
         var colls = ''
 
         $.each(words, function (index, word) {
-            var name = word+''+row
-            colls += '<td><input class="form-control input-croqui" name="'+name+'"/></td>'
+            var codigo = word+''+row;
+            const value = croquiValores.find(value => value.coluna_linha === codigo)
+            colls += '<td>'+value.conteudo+'</td>'
         });
 
         tbodies.append(

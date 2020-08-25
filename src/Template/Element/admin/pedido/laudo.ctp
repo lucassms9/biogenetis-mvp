@@ -6,7 +6,7 @@
     </div>
 </div>
 
-<div style="font-size: 17px;" id="printer-laudo">
+<div style="font-size: 17px; background-color:#fff;" id="printer-laudo">
     <!-- HEADER -->
     <div class="row">
         <div class="col-md-12">
@@ -133,7 +133,7 @@ não exclui completamente o diagnóstico, especialmente em pacientes assintomát
 
     <div class="row my-3">
         <div style="justify-content: center;" class="col-md-12 d-flex">
-            <img width="300px" src="<?= $this->Url->build('/', true);?>img/assinatura.png">
+            <img width="300px" src="<?= $this->Url->build('/', true);?><?= $pedido->exame->user->foto_assinatura_digital?>">
         </div>
     </div>
 

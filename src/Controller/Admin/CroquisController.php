@@ -101,6 +101,7 @@ class CroquisController extends AppController
 
         if ($this->request->is('post')) {
             $req = $this->request->getData();
+            $pedidos_encontrados = true;
             $croqui_dados = [];
 
             foreach ($req as $key => $value) {
@@ -114,6 +115,14 @@ class CroquisController extends AppController
                 $getPedido = $this->Pedidos->find('all',[
                     'conditions' => ['codigo_pedido' => $croqui_dado['conteudo']]
                 ])->first();
+
+                if(empty($getPedido)){
+                    $pedidos_encontrados = false;
+                }
+
+                if(!$pedidos_encontrados){
+                    break;
+                }
 
                 $pedido_croqui = $this->PedidoCroqui->newEntity();
                 $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
@@ -137,7 +146,12 @@ class CroquisController extends AppController
 
             }
 
-            return $this->redirect(['action' => 'gerador']);
+            if(!$pedidos_encontrados){
+                $this->Flash->error('Verifique os pedidos inseridos no croqui.');
+            }else{
+                return $this->redirect(['action' => 'gerador']);
+            }
+
         }
 
         $this->set(compact('croqui_tipos','action','title','croqui','pedidos_triagem'));

@@ -65,18 +65,28 @@
                             </li>
 
                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
-                            <li class="nav-item">
-                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/dashboard">
-                                    Dashboard
+
+                            <li class="nav-item dropdown">
+                                <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dashboard <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                    <a href="<?= $this->Url->build('/admin', true);?>/dashboard" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Dashboard</a>
+
+                                    <a href="<?= $this->Url->build('/admin', true);?>/dashboard/operacao" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Dashboard Operação</a>
+                                </div>
                             </li>
                             <?php endif;?>
 
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 4 ):?>
                             <li class="nav-item">
-                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/dashboard/operacao">
-                                    Dashboard Operação
+                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/croquis/gerador">
+                                   Criar Croqui
                                 </a>
                             </li>
+                            <?php endif;?>
 
                             <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                              <li class="nav-item dropdown">

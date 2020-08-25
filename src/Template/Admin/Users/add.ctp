@@ -9,7 +9,7 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
-                        <?= $this->Form->create($user) ?>
+                        <?= $this->Form->create($user,[ 'type' => 'file' ]) ?>
 
                         <?php
                             echo $this->Form->control('nome_completo',['class' => 'form-control']);
@@ -20,6 +20,16 @@
                             echo $this->Form->control('user_type_id',['label' =>'Perfil', 'class' => 'form-control']);
                             echo $this->Form->control('cliente_id',['class' => 'form-control']);
                         ?>
+
+                        <div style="display: none;" id="showInputs" class="row">
+                            <div class="col-md-6">
+                                <?php echo $this->Form->control('numero_crbio',['class' => 'form-control']); ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?php echo $this->Form->control('foto_assinatura_digital',['class' => 'form-control','type' => 'file']); ?>
+                            </div>
+                        </div>
+
                         <div style="margin-top: 10px" class="row">
                             <div class="col-md-2">
 
@@ -43,3 +53,4 @@
     </div>
 </div>
 
+<script type="text/javascript" src="<?= $this->Url->build('/', true) ?>js/users/add.js"></script>

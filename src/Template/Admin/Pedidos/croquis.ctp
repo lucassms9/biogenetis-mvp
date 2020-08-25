@@ -13,38 +13,30 @@
                             <table class="table mb-0">
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col"><?= $this->Paginator->sort('codigo_pedido', 'Código do Pedido') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('id', 'id') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('status', 'Status') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('nome', 'Nome do Paciente') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('cpf','CPF do Paciente') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('celular', 'Celular do Paciente') ?></th>
-                                    <th scope="col"><?= $this->Paginator->sort('created', 'Criação do Pedido') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('croqui_tipo', 'Croqui Tipo') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('created', 'Criado em:') ?></th>
                                     <th scope="col" class="actions"><?= __('Ações') ?></th>
                                     </tr>
                                 </thead>
                                  <tbody>
                                      <?php
-                                      foreach ($pedidos as $pedido): ?>
+                                      foreach ($croquis as $croqui): ?>
                                         <tr>
-                                            <td><?= h($pedido->codigo_pedido) ?></td>
-                                            <td><?= h($pedido->status) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->nome) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->cpf) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->celular) ?></td>
-                                            <td><?= h($pedido->created) ?></td>
+                                            <td><?= h($croqui->id) ?></td>
+                                            <td><?= $croqui->pedido->status === 'EmDiagnostico' ? 'Aguardando Diagnóstico' : 'Diagnóstico Realizado' ?></td>
+
+                                            <td><?= h($croqui->croqui_tipo->nome) ?></td>
+                                            <td><?= h($croqui->created) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $pedido->id], ['escape' => false]) ?>
-                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $pedido->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $pedido->id)]) ?>
-                                                <?php if($pedido->status === 'Finalizado'): ?>
-                                                    <?= $this->Html->link(__('<i class="mdi mdi-file-document-box-check"></i>'), ['action' => 'laudo', $pedido->id], ['escape' => false]) ?>
-                                                <?php endif;?>
+                                                <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'croquiviwer', $croqui->id], ['escape' => false]) ?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
-
 
                          <div class="mt-4">
                             <div class="paginator">
@@ -58,7 +50,6 @@
                             </div>
 
                         </div>
-
                     </div>
                 </div>
             </div>

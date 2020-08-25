@@ -12,7 +12,7 @@
                 <table class="table table-striped mb-0">
                     <thead>
                         <tr id="theads">
-                            <th>#</th>
+
                         </tr>
                     </thead>
                     <tbody id="tbodies">

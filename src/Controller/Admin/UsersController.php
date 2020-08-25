@@ -11,6 +11,13 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadModel('TecnicoPeritos');
+    }
+
     /**
      * Index method
      *
@@ -76,10 +83,18 @@ class UsersController extends AppController
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+            $req = $this->request->getData();
 
+            if(!empty($req['foto_assinatura_digital'])){
+                $url = 'certificados/' . $req['foto_assinatura_digital']['name'];
+                move_uploaded_file($req['foto_assinatura_digital']['tmp_name'], CERTIFICADOS . $req['foto_assinatura_digital']['name']);
+                $req['foto_assinatura_digital'] = $url;
+            }
+
+            $user = $this->Users->patchEntity($user, $req);
+            $user = $this->Users->save($user);
+            if ($user) {
+                $this->Flash->success(__('The user has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -120,8 +135,16 @@ class UsersController extends AppController
         ]);
         $conditionsType = [];
         $conditionsCliente = [];
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $request = $this->request->getData();
+
+            if(!empty($request['foto_assinatura_digital'])){
+                $url = 'certificados/' . $request['foto_assinatura_digital']['name'];
+                move_uploaded_file($request['foto_assinatura_digital']['tmp_name'], CERTIFICADOS . $request['foto_assinatura_digital']['name']);
+                $request['foto_assinatura_digital'] = $url;
+            }
+
             if(isset($request['senha']) && empty($request['senha'])){
                 unset($request['senha']);
             }

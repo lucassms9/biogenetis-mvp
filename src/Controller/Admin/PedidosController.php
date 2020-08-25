@@ -34,6 +34,7 @@ class PedidosController extends AppController
         $this->loadModel('ExtratoSaldo');
         $this->loadModel('EntradaExames');
         $this->loadModel('Croquis');
+        $this->loadModel('PedidoCroqui');
     }
 
     public function checkBarCode($pedido_id = null)
@@ -65,6 +66,15 @@ class PedidosController extends AppController
         exit;
     }
 
+    public function getCroquiPedido($id){
+        $croqui_pedido = $this->PedidoCroqui->get($id, [
+            'contain' => ['PedidoCroquiValores', 'CroquiTipos']
+        ]);
+
+        echo json_encode($croqui_pedido);
+        exit;
+    }
+
     public function getPedido($id)
     {
         $pedido = $this->Pedidos->get($id, [
@@ -73,6 +83,48 @@ class PedidosController extends AppController
 
         echo json_encode($pedido);
         exit;
+    }
+
+    public function croquiviwer($croqui_pedido_id)
+    {
+        $action = 'Detalhe';
+        $title = 'Croquis';
+        $conditions = [
+            'PedidoCroqui.id' => $croqui_pedido_id
+        ];
+
+        $croqui = $this->PedidoCroqui->find('all',[
+            'contain' => ['Pedidos.Anamneses.Pacientes'],
+            'conditions' => $conditions,
+            'group' => ['PedidoCroqui.pedido_id']
+        ])->first();
+
+        $croquis_pedidos = $this->PedidoCroqui->find('all',[
+            'contain' => ['Pedidos.Anamneses.Pacientes'],
+            'conditions' => ['PedidoCroqui.pedido_id' => $croqui->pedido_id]
+        ])->toArray();
+
+        $croqui_tipos = $this->Croquis->find('list');
+
+        $croqui_tipo_id = $croqui->croqui_tipo_id;
+
+        $this->set(compact('action', 'title', 'croqui','croqui_tipos','croqui_tipo_id','croquis_pedidos'));
+    }
+
+    public function croquis()
+    {
+        $action = 'Ver Todos';
+        $title = 'Croquis';
+
+        $conditions = [];
+
+        $croquis = $this->paginate($this->PedidoCroqui, [
+            'contain' => ['Pedidos.Anamneses.Pacientes', 'CroquiTipos'],
+            'conditions' => $conditions,
+            'group' => ['PedidoCroqui.pedido_id']
+        ]);
+
+        $this->set(compact('action', 'title', 'croquis'));
     }
 
     public function index()
@@ -97,6 +149,14 @@ class PedidosController extends AppController
         $this->set(compact('action', 'title', 'pedidos'));
     }
 
+    public function laudo($id)
+    {
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+        ]);
+
+        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
+    }
 
     public function showpedido($id, $tab_current = 'paciente')
     {
@@ -106,7 +166,7 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;
@@ -115,6 +175,7 @@ class PedidosController extends AppController
         $pagamento = $pedido->entrada_exame;
 
         $sexos = $this->sexos;
+        $croqui_tipo_id = $pedido->pedido_croqui->croqui_tipo_id;
 
         $exames_tipos = $this->EntradaExames->find('list');
         $useForm = true;
@@ -122,7 +183,7 @@ class PedidosController extends AppController
         $croqui_tipos = $this->Croquis->find('list');
         $formas_pagamento = $this->formas_pagamento;
 
-        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
+        $this->set(compact('action', 'title', 'croqui_tipo_id','pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
     }
 
     public function pagamento($pedido_id = null)

@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-3">
-                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=EmTriagem', true);?>" class="btn btn-sm">
+                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/croquis/gerador', true);?>" class="btn btn-sm">
                                 <div style="padding: 10px;" class="card text-white bg-info">
                                         <div style="display: flex;justify-content: center;">
                                             <h5 style="margin: 4px;" class="text-white">Em Triagem</h5><i style="font-size: 20px;" class="mdi mdi-progress-wrench"></i>
@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="col-3">
-                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=EmDiagnostico', true);?>" class="btn btn-sm">
+                        <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos/croquis', true);?>" class="btn btn-sm">
                                         <div style="padding: 10px; background-color:#4399f0" class="card text-white">
                                                 <div style="display: flex;justify-content: center;">
                                                     <h5 style="margin: 4px;" class="text-white">Em Diagnóstico</h5><i style="font-size: 20px;" class="mdi mdi-medical-bag"></i>

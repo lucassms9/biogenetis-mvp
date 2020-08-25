@@ -214,6 +214,9 @@ a {
 }
 
 @media print {
+    body{
+        background-color:#fff !important;
+    }
     .printHeader {
        display : block;
     }

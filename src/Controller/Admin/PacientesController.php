@@ -174,9 +174,9 @@ class PacientesController extends AppController
                     }
 
                     if($save_ok){
-                        $this->Flash->success(__('The paciente has been saved.'));
+                        $this->Flash->success(__('Anamnese Criada com sucesso.'));
 
-                        return $this->redirect(['action' => 'index']);
+                        return $this->redirect(['controller' => 'pedidos', 'action' => 'index', 'status' => 'EmAtendimento' ]);
                     }else{
                         $this->Flash->error(__('Erro ao salvar dados!'));
                     }
@@ -238,12 +238,17 @@ class PacientesController extends AppController
     public function createdPaciente($req, $paciente)
     {
 
+        $find_paciente = $this->Pacientes->find('all',[
+            'conditions' => ['cpf' => $req['cpf']]
+        ])->first();
 
-        $paciente = $this->Pacientes->patchEntity($paciente, $req);
-        $paciente = $this->Pacientes->save($paciente);
-
-        return $paciente;
-
+        if(!empty($find_paciente)){
+            return $find_paciente;
+        } else {
+            $paciente = $this->Pacientes->patchEntity($paciente, $req);
+            $paciente = $this->Pacientes->save($paciente);
+            return $paciente;
+        }
     }
 
     /**

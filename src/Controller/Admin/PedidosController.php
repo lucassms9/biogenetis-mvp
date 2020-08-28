@@ -175,7 +175,7 @@ class PedidosController extends AppController
         $pagamento = $pedido->entrada_exame;
 
         $sexos = $this->sexos;
-        $croqui_tipo_id = $pedido->pedido_croqui->croqui_tipo_id;
+        $croqui_tipo_id = @$pedido->pedido_croqui->croqui_tipo_id;
 
         $exames_tipos = $this->EntradaExames->find('list');
         $useForm = true;

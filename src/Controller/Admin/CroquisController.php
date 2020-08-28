@@ -149,7 +149,8 @@ class CroquisController extends AppController
             if(!$pedidos_encontrados){
                 $this->Flash->error('Verifique os pedidos inseridos no croqui.');
             }else{
-                return $this->redirect(['action' => 'gerador']);
+                $this->Flash->success('Croqui Criado com sucesso!');
+                return $this->redirect(['controller' => 'pedidos', 'action' => 'croquis']);
             }
 
         }

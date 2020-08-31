@@ -11,7 +11,7 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Origen[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class OrigensController extends AppController
-{   
+{
 
        /**
      * Initialize method
@@ -85,7 +85,7 @@ class OrigensController extends AppController
     }
 
     public function saveEncademanto()
-    {   
+    {
         $retorno = [];
         $req = $this->request->getQuery();
         $newItem = 0;
@@ -114,9 +114,9 @@ class OrigensController extends AppController
 
         if($encad) {
             if($newItem){
-                $encad = $this->Encadeamentos->find()->last();    
+                $encad = $this->Encadeamentos->find()->last();
             }
-            
+
             $retorno = ['error' => 0, 'encad' => $encad, 'newItem' => $newItem];
         }else{
             $retorno = ['error' => 1, 'encad' => [], 'newItem' => $newItem];
@@ -126,7 +126,7 @@ class OrigensController extends AppController
         exit();
 
     }
-        
+
 
     public function origensApi(){
         $endpoints = $this->Origens->find('all')->toArray();
@@ -150,7 +150,7 @@ class OrigensController extends AppController
         ]);
 
         if ($this->request->is('post')) {
-          
+
             $encads = [];
 
             foreach ($this->request->getData('url_encad') as $key => $url_encadid) {
@@ -182,7 +182,7 @@ class OrigensController extends AppController
                     $new_encad = $this->Encadeamentos->save($new_encad);
                 }
             }
-            
+
 
             $endpoint_main = $this->Origens->get($id);
             $endpoint_main->regra_encadeamento = $this->request->getData('regra_main');
@@ -192,7 +192,7 @@ class OrigensController extends AppController
             $this->Flash->success(__('Dados salvos com sucesso.'));
 
             return $this->redirect(['action' => 'index']);
-           
+
 
         }
 
@@ -202,7 +202,7 @@ class OrigensController extends AppController
         $regras = [
             'Positivo' => 'Positivo',
             'Negativo' => 'Negativo',
-            'Inadequado' => 'Inadequado',
+            'Indeterminado' => 'Indeterminado',
             'Restante' => 'Restante'
         ];
 
@@ -223,7 +223,7 @@ class OrigensController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index()
-    {   
+    {
         $action = 'Ver Todos';
         $title = 'Endpoints';
 
@@ -257,7 +257,7 @@ class OrigensController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
-    {      
+    {
         $action = 'Cadastrar';
         $title = 'Endpoints';
 
@@ -296,10 +296,10 @@ class OrigensController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
-    {   
+    {
         $action = 'Editar Dados';
         $title = 'Endpoints';
-        
+
         $amostra_tipos = [
             'SWAB' => 'SWAB',
             'SALIVA' => 'SALIVA'

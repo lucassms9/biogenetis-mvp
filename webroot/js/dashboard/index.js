@@ -94,11 +94,11 @@ function amountTableAge(data) {
    var totalNM = 0
    var totalNF = 0
    var totalIM = 0
-   var totalIF = 0  
+   var totalIF = 0
 
    var totalIQM = 0
    var totalIQF = 0
-   
+
    var totalTT = 0
 
     $.each(data, function (index, idade) {
@@ -120,13 +120,6 @@ function amountTableAge(data) {
         }
         if(idade.Indeterminado.F){
             totalIF += idade.Indeterminado.F;
-        } 
-
-        if(idade.Inadequado.M){
-            totalIQM += idade.Inadequado.M;
-        }
-        if(idade.Inadequado.F){
-            totalIQF += idade.Inadequado.F;
         }
 
         if(index == '0-20'){
@@ -137,9 +130,8 @@ function amountTableAge(data) {
             $('#020im').text(idade.Indeterminado.M);
             $('#020if').text(idade.Indeterminado.F);
 
-            $('#020iqm').text(idade.Inadequado.M);
-            $('#020iqf').text(idade.Inadequado.F);
-            total020 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F
+            total020 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F;
+
             $('#020tu').text(total020);
 
         }
@@ -151,9 +143,7 @@ function amountTableAge(data) {
             $('#2140im').text(idade.Indeterminado.M);
             $('#2140if').text(idade.Indeterminado.F);
 
-            $('#2140iqm').text(idade.Inadequado.M);
-            $('#2140iqf').text(idade.Inadequado.F);
-            total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F + idade.Inadequado.M + idade.Inadequado.F
+            total2140 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F;
             $('#2140tu').text(total2140);
 
         }
@@ -164,10 +154,8 @@ function amountTableAge(data) {
             $('#4160nm').text(idade.Negativo.M);
             $('#4160nf').text(idade.Negativo.F);
             $('#4160im').text(idade.Indeterminado.M);
-            $('#4160if').text(idade.Indeterminado.F);   
-            $('#4160iqm').text(idade.Inadequado.M);
-            $('#4160iqf').text(idade.Inadequado.F);
-            total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F + idade.Inadequado.M + idade.Inadequado.F
+            $('#4160if').text(idade.Indeterminado.F);
+            total4160 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F;
             $('#4160tu').text(total4160);
 
         }
@@ -179,11 +167,8 @@ function amountTableAge(data) {
             $('#6180nf').text(idade.Negativo.F);
             $('#6180im').text(idade.Indeterminado.M);
             $('#6180if').text(idade.Indeterminado.F);
-            
-            $('#6180iqm').text(idade.Inadequado.M);
-            $('#6180iqf').text(idade.Inadequado.F);
 
-            total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F + idade.Inadequado.M + idade.Inadequado.F
+            total6180 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F;
             $('#6180tu').text(total6180);
 
         }
@@ -196,11 +181,7 @@ function amountTableAge(data) {
             $('#81im').text(idade.Indeterminado.M);
             $('#81if').text(idade.Indeterminado.F);
 
-            $('#81iqm').text(idade.Inadequado.M);
-            $('#81iqf').text(idade.Inadequado.F);
-
-
-            total81 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F + idade.Inadequado.M + idade.Inadequado.F
+            total81 = idade.Positivo.M + idade.Positivo.F + idade.Negativo.M + idade.Negativo.F + idade.Indeterminado.M + idade.Indeterminado.F;
             $('#81tu').text(total81);
         }
 
@@ -208,7 +189,7 @@ function amountTableAge(data) {
 
 console.log(totalIQM)
 
-    totalTT = totalPM + totalPF + totalNM + totalNF + totalIM + totalIF + totalIQM + totalIQF;
+    totalTT = totalPM + totalPF + totalNM + totalNF + totalIM + totalIF;
 
     if(totalTT == 0){
          $('#totalupm').text(0);
@@ -248,9 +229,6 @@ console.log(totalIQM)
     $('#totaluim').text(totalIM);
     $('#totaluif').text(totalIF);
 
-    $('#totaluiqm').text(totalIQM);
-    $('#totaluiqf').text(totalIQF);
-
     $('#totalutu').text(totalTT);
 
     $('#020tp').text(((total020 / totalTT) * 100).toFixed(2) + '%' );
@@ -267,18 +245,12 @@ console.log(totalIQM)
     $('#totalporim').text(((totalIM / totalTT) * 100).toFixed(2) + '%'  );
     $('#totalporif').text(((totalIF / totalTT) * 100).toFixed(2) + '%'  );
 
-    console.log(((totalIQM / totalTT) * 100).toFixed(2) + '%')
-
-    $('#totalporiqm').text(((totalIQM / totalTT) * 100).toFixed(2) + '%'  );
-    $('#totalporiqf').text(((totalIQF / totalTT) * 100).toFixed(2) + '%'  );
-
-    $('#totalportp').text(( ((totalIQM / totalTT) * 100) + ((totalIQF / totalTT) * 100) + ((totalPM / totalTT) * 100) + ((totalPF / totalTT) * 100) + ((totalNM / totalTT) * 100) + ((totalNF / totalTT) * 100) + ((totalIM / totalTT) * 100) + ((totalIF / totalTT) * 100) ).toFixed(2) + '%'  );
+    $('#totalportp').text(( ((totalPM / totalTT) * 100) + ((totalPF / totalTT) * 100) + ((totalNM / totalTT) * 100) + ((totalNF / totalTT) * 100) + ((totalIM / totalTT) * 100) + ((totalIF / totalTT) * 100) ).toFixed(2) + '%'  );
 
 
     $('#totalmfporpos').text( (((totalPM + totalPF) / totalTT) * 100).toFixed(2)  + '%'  );
     $('#totalmfporneg').text( (((totalNM + totalNF) / totalTT) * 100).toFixed(2)  + '%'  );
     $('#totalmfporinc').text( (((totalIM + totalIF) / totalTT) * 100).toFixed(2)  + '%'  );
-    $('#totalmfporinq').text( (((totalIQM + totalIQF) / totalTT) * 100).toFixed(2)  + '%'  );
 
 
        var arrJCrossOut = $('.crossOut');
@@ -331,14 +303,11 @@ function runExamesIdade(data) {
        var positivos = [];
        var negativos = [];
        var Indeterminado = [];
-       var Inadequado = [];
 
         $.each(data.result, function (index, idade) {
 
             positivos.push(idade.Positivo);
             negativos.push(idade.Negativo);
-            Inadequado.push(idade.Inadequado);
-            Inadequado.push(idade.Indeterminado);
 
             idades.push(index);
 
@@ -347,7 +316,7 @@ function runExamesIdade(data) {
             body.push({
                 name: 'Positivo',
                 data: positivos
-            }); 
+            });
 
 
             body.push({
@@ -358,11 +327,6 @@ function runExamesIdade(data) {
             body.push({
                 name: 'Indeterminado',
                 data: Indeterminado
-            });
-            
-            body.push({
-                name: 'Inadequado',
-                data: Inadequado
             });
 
         renderExamesIdade(body, idades)
@@ -385,14 +349,12 @@ function runExamesGener(data) {
        var positivos = [];
        var negativos = [];
        var Indeterminado = [];
-       var Inadequado = [];
 
        // console.log(data)
         $.each(data, function (index, gener) {
             positivos.push(gener.Positivo);
             negativos.push(gener.Negativo);
             Indeterminado.push(gener.Indeterminado);
-            Inadequado.push(gener.Inadequado);
 
             geners.push(index);
 
@@ -411,12 +373,7 @@ function runExamesGener(data) {
             body.push({
                 name: 'Indeterminado',
                 data: Indeterminado
-            }); 
-            body.push({
-                name: 'Inadequado',
-                data: Inadequado
             });
-
 
         renderExamesGener(body, geners)
     });
@@ -442,9 +399,9 @@ if ($('#pie_chart').length) {
             height: 300,
             type: 'pie',
         },
-        series: [dados.Positivo, dados.Negativo, dados.Indeterminado,dados.Inadequado],
-        labels: ["Positivo", "Negativo", "Indeterminado", "Inadequado"],
-        colors: ['#f06543', '#3ddc97', '#e4cc37','#ff8a26'],
+        series: [dados.Positivo, dados.Negativo, dados.Indeterminado],
+        labels: ["Positivo", "Negativo", "Indeterminado"],
+        colors: ['#f06543', '#3ddc97', '#e4cc37'],
         legend: {
             show: true,
             position: 'bottom',
@@ -493,14 +450,12 @@ function runExamesUF(data) {
        var positivos = [];
        var negativos = [];
        var Indeterminado = [];
-       var Inadequado = [];
 
         $.each(data, function (index, uf) {
 
             positivos.push(uf.Positivo);
             negativos.push(uf.Negativo);
             Indeterminado.push(uf.Indeterminado);
-            Inadequado.push(uf.Inadequado);
 
             ufR.push(index);
 
@@ -519,10 +474,6 @@ function runExamesUF(data) {
             body.push({
                 name: 'Indeterminado',
                 data: Indeterminado
-            }); 
-            body.push({
-                name: 'Inadequado',
-                data: Inadequado
             });
 
         renderExamesUF(body,ufR)

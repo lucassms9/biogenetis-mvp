@@ -720,7 +720,7 @@ class AmostrasController extends AppController
         if( ($positivo + $negativo + $inadequado) > 0 ){
             //so vai gravar inadequado se todos retornos forem inadequados
             if( ($inadequado == ($positivo + $negativo + $inadequado))){
-                $result = 'Inadequado';
+                $result = 'Indeterminado';
             }else{
                 if( ($positivo > $negativo) && ($positivo + $negativo) > 0){
                     $result = 'Positivo';

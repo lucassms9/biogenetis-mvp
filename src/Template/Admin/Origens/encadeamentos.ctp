@@ -1,7 +1,7 @@
 <style>
     .custom-style-check{
         margin-right: 10px;
-    }    
+    }
 </style>
 
 <?php echo $this->element('admin/home/index');?>
@@ -26,14 +26,14 @@
                                 <select style="width: 160px;margin: 0 15px;" name="regra_main" class="form-control" id="regra-main">
                                     <option value="">Escolha</option>
                                     <option <?= $origen->regra_encadeamento == 'Positivo' ? 'selected' : ''?> value="Positivo">Positivo</option>
-                                    <option <?= $origen->regra_encadeamento == 'Negativo' ? 'selected' : ''?> value="Negativo">Negativo</option> 
-                                    <option <?= $origen->regra_encadeamento == 'Inadequado' ? 'selected' : ''?> value="Inadequado">Inadequado</option>
+                                    <option <?= $origen->regra_encadeamento == 'Negativo' ? 'selected' : ''?> value="Negativo">Negativo</option>
+                                    <option <?= $origen->regra_encadeamento == 'Indeterminado' ? 'selected' : ''?> value="Indeterminado">Indeterminado</option>
                                 </select>
 
                             </div>
                         </div>
-                      
-                    
+
+
                         <div class="row">
                             <div style="display: flex;" class="col-md-12">
                                 <h2 style="margin-right: 10px">Encadeamentos</h2>
@@ -54,17 +54,17 @@
                                 </div>
                                 <div style="margin-top: 30px;" class="col-md-3">
                                     <div class="buttons">
-                                        
+
 
                                         <?php
                                             $style_custom = 'display:none';
-                                            $item = $key + 1; 
+                                            $item = $key + 1;
 
                                             if($item == $total){
                                                 $style_custom = '';
                                             }
 
-                                        
+
                                         ?>
 
                                         <?= $this->Form->button(__('Remover'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light btn-remove', 'onclick' => 'removeEnpoint('.$encade->id.')', 'type' => 'button', 'style'=> $style_custom]) ?>
@@ -74,7 +74,7 @@
                             </div>
                         <?php endforeach; ?>
 
-                        
+
 
                         <div id="content_inputs">
                             <?php if($nextOrder > 0):?>
@@ -96,12 +96,12 @@
                             </div> -->
                         <?php endif;?>
                         </div>
-                        
+
                          <hr>
 
 
                         <div style="margin-top: 10px" class="row">
-                          
+
                                 <div style="display: flex;">
                                     <?= $this->Html->link(
                                     $this->Form->button(__('Voltar'),
@@ -113,7 +113,7 @@
                                 </div>
 
                                 <div class="col-md-1">
-                                    
+
                                 </div>
                             </div>
                         </div>

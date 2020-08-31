@@ -83,7 +83,6 @@ class DashboardController extends AppController
 			'Positivo' => 0,
 			'Negativo' => 0,
 			'Indeterminado' => 0,
-			'Inadequado' => 0,
 		];
 
 
@@ -98,7 +97,7 @@ class DashboardController extends AppController
 		$exames = $this->Exames->find('all',[
 			'contain' => ['Amostras','Users'],
 			'conditions' => $conditions,
-			'group' => ['Exames.id']
+			// 'group' => ['Exames.id']
 		])->toList();
 
 		foreach ($exames as $key => $exame) {
@@ -108,9 +107,7 @@ class DashboardController extends AppController
 				$result['Positivo']++;
 			}elseif($exame->resultado == 'Negativo'){
 				$result['Negativo']++;
-			}elseif($exame->resultado == 'Inadequado'){
-				$result['Inadequado']++;
-			}
+            }
 		}
 
 		echo json_encode($result);
@@ -181,7 +178,6 @@ class DashboardController extends AppController
 
 	        $indeterminado = 0;
 	        $positivo = 0;
-	        $inadequado = 0;
 	        $negativo = 0;
 
 	        foreach ($amostras as $key => $amostra) {
@@ -192,8 +188,6 @@ class DashboardController extends AppController
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
 					$negativo++;
-				}elseif($amostra->resultado == 'Inadequado'){
-					$inadequado++;
 				}
 	        }
 
@@ -201,7 +195,6 @@ class DashboardController extends AppController
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
 					'Indeterminado' => $indeterminado,
-					'Inadequado' => $inadequado,
 	        	];
 
         }
@@ -264,7 +257,6 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions
 	        ]);
 	        $Indeterminado = 0;
-	        $inadequado = 0;
 	        $positivo = 0;
 	        $negativo = 0;
 
@@ -276,8 +268,6 @@ class DashboardController extends AppController
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
 					$negativo++;
-				}elseif($amostra->resultado == 'Inadequado'){
-					$inadequado++;
 				}
 	        }
 
@@ -285,7 +275,6 @@ class DashboardController extends AppController
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
 					'Indeterminado' => $Indeterminado,
-					'Inadequado' => $inadequado,
 	        	];
 
         }
@@ -364,10 +353,6 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
-		$Inadequado = 0;
-		$InadequadoM = 0;
-		$InadequadoF = 0;
-
 
 		if(!empty($amostras20)){
 	        foreach ($amostras20 as $key => $amostra20) {
@@ -393,22 +378,14 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
-				}elseif($amostra20->resultado == 'Inadequado'){
-					$Inadequado++;
-					if($amostra20->amostra->sexo == 'M'){
-						$InadequadoM++;
-					}else{
-						$InadequadoF++;
-					}
 				}
 	        }
 
-	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
-						'Inadequado' => $Inadequado,
 		        	];
 		     }
 	 	}
@@ -416,7 +393,6 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
 						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
-						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
         //> 20 && <= 40
@@ -430,9 +406,6 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
-		$Inadequado = 0;
-		$InadequadoM = 0;
-		$InadequadoF = 0;
 
         $conditions40['Amostras.idade >'] = 20;
         $conditions40['Amostras.idade <='] = 40;
@@ -464,22 +437,14 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
-				}elseif($amostra40->resultado == 'Inadequado'){
-					$Inadequado++;
-					if($amostra40->amostra->sexo == 'M'){
-						$InadequadoM++;
-					}else{
-						$InadequadoF++;
-					}
 				}
 	        }
 
-	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
-						'Inadequado' => $Inadequado,
 		        	];
 		    }
 	 	}
@@ -487,7 +452,6 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
 		  //> 41 && <= 60
@@ -501,9 +465,6 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
-		$Inadequado = 0;
-		$InadequadoM = 0;
-		$InadequadoF = 0;
 
         $conditions60['Amostras.idade >'] = 41;
         $conditions60['Amostras.idade <='] = 60;
@@ -535,22 +496,14 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
-				}elseif($amostra60->resultado == 'Inadequado'){
-					$Inadequado++;
-					if($amostra60->amostra->sexo == 'M'){
-						$InadequadoM++;
-					}else{
-						$InadequadoF++;
-					}
 				}
 	        }
 
-	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['41-60'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
-						'Inadequado' => $Inadequado,
 		        	];
 		    }
 
@@ -560,7 +513,6 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
 						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
-						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
          //> 40 && <= 80
@@ -574,9 +526,6 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
-		$Inadequado = 0;
-		$InadequadoM = 0;
-		$InadequadoF = 0;
 
         $conditions80['Amostras.idade >'] = 61;
         $conditions80['Amostras.idade <='] = 80;
@@ -613,12 +562,11 @@ class DashboardController extends AppController
 				}
 	        }
 
-	         if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	         if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		      	$result['61-80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
-						'Inadequado' => $Inadequado,
 
 		        ];
 	    	}
@@ -628,7 +576,6 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        ];
 
 	    $Indeterminado = 0;
@@ -640,9 +587,6 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
-		$Inadequado = 0;
-		$InadequadoM = 0;
-		$InadequadoF = 0;
 
          // > 80
         $conditions81['Amostras.idade >'] = 80;
@@ -674,22 +618,14 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
-				}elseif($amostra81->resultado == 'Inadequado'){
-					$Inadequado++;
-					if($amostra81->amostra->sexo == 'M'){
-						$InadequadoM++;
-					}else{
-						$InadequadoF++;
-					}
 				}
 	        }
 
-	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		        $result['> 80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
-						'Inadequado' => $Inadequado,
 		        ];
 			}
         }
@@ -697,7 +633,6 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
-						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        ];
 
 		 $resulfinal = [

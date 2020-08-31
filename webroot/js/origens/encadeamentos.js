@@ -2,7 +2,7 @@
 var idIncrement = 0;
 var createProgrees = 0;
 var endpoints = [];
-var statusGet = ['Positivo', 'Negativo', 'Inadequado','Restante'];
+var statusGet = ['Positivo', 'Negativo', 'Indeterminado','Restante'];
 var order = 0;
 
 var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
@@ -13,7 +13,7 @@ var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
 								'<option value="">Escolha</option>'+
 								'{OPTIONS_ENDPOINT}'+
 							'</select>'+
-						'</div>'+                                
+						'</div>'+
 					'</div>'+
                     '<div class="col-md-2">'+
 						'<div class="input select">'+
@@ -22,13 +22,13 @@ var templete = '<div id="{ID_ENPOINT}" style="margin-top: 15px;" class="row">'+
 								'<option value="">Escolha</option>'+
 								'{OPTIONS_STATUS}'+
 							'</select>'+
-						'</div>'+                                
-                    '</div>'+  
+						'</div>'+
+                    '</div>'+
                     '<div class="col-md-2">'+
 						'<div class="input text">'+
 							'<label for="ordem">Ordem</label>'+
 							'<input isValidate="validate" type="text" name="ordem[]" value="{VALUE_ORDEM}" class="form-control" id="ordem-{ID_ENPOINT}">'+
-						'</div>'+                                
+						'</div>'+
 					'</div>'+
 					 '<div style="margin-top: 30px;" class="col-md-3">'+
                         '<div class="buttons">'+
@@ -64,7 +64,7 @@ function saveEncadMain(argument) {
     .done(function(data) {
 
 		console.log(data)
-	
+
     });
 
 }
@@ -90,7 +90,7 @@ function saveDataEncads() {
         if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
             if($(element).val() == ''){
                 validate = false;
-            }   
+            }
         }
 
         });
@@ -106,7 +106,7 @@ function saveDataEncads() {
               });
 
         return;
-    }       
+    }
 
     if(restante){
     	Swal.fire({
@@ -160,7 +160,7 @@ function saveEnpoint(id) {
 
 		}
 
-		
+
     });
 
 	console.log(endpoint_parent)
@@ -259,11 +259,11 @@ function addEnpoint() {
         if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
             if($(element).val() == ''){
                 validate = false;
-            }   
+            }
         }
         })
     });
-    
+
 
     if(!validate){
     	 Swal.fire({

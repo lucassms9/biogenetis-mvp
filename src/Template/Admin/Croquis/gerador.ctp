@@ -55,6 +55,7 @@
                                     <table class="table table-striped mb-0">
                                         <thead>
                                             <tr>
+                                                <th>#</th>
                                                 <th>Codigo do Pedido</th>
                                                 <th>Nome do Paciente</th>
                                                 <th>CPF do Paciente</th>
@@ -64,6 +65,9 @@
                                         <tbody>
                                             <?php foreach ($pedidos_triagem as $key => $pedido):?>
                                                 <tr>
+                                                    <th scope="row">
+                                                       <input type="checkbox" onchange="changeCheckPedido(this)" name="pedidos[]" value="<?=$pedido->codigo_pedido?>" />
+                                                    </th>
                                                     <td><?= $pedido->codigo_pedido; ?></td>
                                                     <td><?= $pedido->anamnese->paciente->nome; ?></td>
                                                     <td><?= $pedido->anamnese->paciente->cpf; ?></td>

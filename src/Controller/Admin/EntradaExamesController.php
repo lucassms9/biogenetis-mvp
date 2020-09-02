@@ -15,7 +15,7 @@ class EntradaExamesController extends AppController
     public function initialize()
     {
         parent::initialize();
-
+        $this->loadModel('EntradaExames');
         $this->exame_tipos = [
             'SALIVA' => 'SALIVA',
             'SWAB' => 'SWAB'

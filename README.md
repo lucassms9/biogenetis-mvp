@@ -8,7 +8,7 @@
 
 ### Ajustes
 
-- colocar menu gerar croqui - ok
-- ajustar criacao de croqui - ok
-- ajustar listagem de croqui e no detalhe trazer pedidos vinculado ao croqui (conforme lisgatem de pedido)
-- listagem de pedido finalizado colocar botao para imprimir laudo - ok
+Montagem Croqui:
+Devs: colocar select em cada pedido para gerar o croqui com os pedidos selecionados, devemos ter a opção de inclusão manual de paciente/amostra
+
+Devs: incluir fluxo para impressão de etiquetas em massa

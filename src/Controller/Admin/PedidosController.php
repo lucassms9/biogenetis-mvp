@@ -99,9 +99,10 @@ class PedidosController extends AppController
             'group' => ['PedidoCroqui.pedido_id']
         ])->first();
 
+
         $croquis_pedidos = $this->PedidoCroqui->find('all',[
             'contain' => ['Pedidos.Anamneses.Pacientes'],
-            'conditions' => ['PedidoCroqui.pedido_id' => $croqui->pedido_id]
+            'conditions' => ['PedidoCroqui.codigo_croqui' => $croqui->codigo_croqui]
         ])->toArray();
 
         $croqui_tipos = $this->Croquis->find('list');
@@ -116,12 +117,13 @@ class PedidosController extends AppController
         $action = 'Ver Todos';
         $title = 'Croquis';
 
-        $conditions = [];
+        $conditions = [
+            'Pedidos.status' => 'EmDiagnostico'
+        ];
 
         $croquis = $this->paginate($this->PedidoCroqui, [
             'contain' => ['Pedidos.Anamneses.Pacientes', 'CroquiTipos'],
             'conditions' => $conditions,
-            'group' => ['PedidoCroqui.pedido_id']
         ]);
 
         $this->set(compact('action', 'title', 'croquis'));
@@ -166,7 +168,7 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users','PedidoCroqui'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;

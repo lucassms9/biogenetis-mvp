@@ -43,7 +43,11 @@ class CroquisController extends AppController
         $action = 'Ver Todos';
         $title = 'Croquis';
 
-        $croquis = $this->paginate($this->Croquis);
+        $conditions = [];
+
+        $croquis = $this->paginate($this->Croquis,[
+            'conditions' => $conditions
+        ]);
 
         $this->set(compact('croquis','action','title'));
     }
@@ -109,6 +113,7 @@ class CroquisController extends AppController
                     $croqui_dados[] = ['codigo' => $key, 'conteudo' => $value];
                 }
             }
+            $date_init = date('YmdHi');
 
             foreach ($croqui_dados as $key => $croqui_dado) {
 
@@ -127,7 +132,8 @@ class CroquisController extends AppController
                 $pedido_croqui = $this->PedidoCroqui->newEntity();
                 $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
                     'croqui_tipo_id' => $req['croqui_tipo_id'],
-                    'pedido_id' => $getPedido->id
+                    'pedido_id' => $getPedido->id,
+                    'codigo_croqui' => $this->Auth->user('cliente_id') . $date_init
                 ]);
                 $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
 

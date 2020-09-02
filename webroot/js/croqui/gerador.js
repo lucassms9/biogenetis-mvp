@@ -9,6 +9,47 @@ $(document).ready(function() {
     });
 });
 
+function changeCheckPedido(element){
+    var element = $(element);
+    var valor = element.val();
+    var elementInputsHandle = [];
+
+    var elementInputs = $('.input-croqui');
+    console.log(elementInputs)
+    if(elementInputs.length === 0)  {
+        element.prop('checked', false);
+        return alertify.error('você deve escolher um croqui para continuar.');
+    }
+
+    elementInputs.each(function(val, element){
+        elementInputsHandle.unshift(element);
+    });
+
+    if(element.is(":checked")){
+        var inputHandle = '';
+
+        $.each(elementInputsHandle, function (index, element) {
+            var valInput = $(element).val();
+            console.log(valInput)
+            if(valInput == ''){
+                inputHandle = $(element);
+            }
+        });
+        inputHandle.val(valor);
+
+    }else{
+        $.each(elementInputsHandle, function (index, element) {
+            var valInput = $(element).val();
+            if(valInput == valor){
+                inputHandle = $(element);
+            }
+        });
+
+        inputHandle.val('');
+    }
+
+}
+
 function validateForm() {
     var inputsCroqui = $('.input-croqui');
     var campo_vazio = false;

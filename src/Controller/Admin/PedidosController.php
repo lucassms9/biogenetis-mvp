@@ -324,4 +324,69 @@ class PedidosController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function etiquetas()
+    {
+        $action = 'Gerar Etiquetas';
+        $title = 'Pedidos';
+
+        $conditions = [];
+
+        if ($this->request->is('post')) {
+            $req = $this->request->getData();
+            debug($req);
+            die;
+        }
+
+        $query = $this->request->getQuery();
+        $rows = [];
+
+        if (!empty($query['status'])) {
+            $conditions['Pedidos.status'] = $query['status'];
+        }
+
+        $pedidos = $this->paginate($this->Pedidos, [
+            'contain' => ['Anamneses.Pacientes'],
+            'conditions' => $conditions
+        ]);
+
+        $this->set(compact('action', 'title', 'pedidos'));
+    }
+
+    public function renderEtiquetas()
+    {
+        $action = 'Gerar Etiquetas';
+        $title = 'Pedidos';
+
+        $conditions = [];
+
+        if ($this->request->is('post')) {
+            $req = $this->request->getData();
+            $conditions['Pedidos.id in'] = $req['pedidos'];
+
+            $pedidos = $this->Pedidos->find('all', [
+                'contain' => ['Anamneses.Pacientes', 'EntradaExames'],
+                'conditions' => $conditions
+            ])->toArray();
+
+            $barcodes = [];
+
+            foreach ($pedidos as $key => $pedido) {
+                if ($pedido && $pedido->entrada_exame && $pedido->anamnese) {
+                    $barcodes[] = [
+                        'tipo_exame' => $pedido->entrada_exame->tipo_exame,
+                        'paciente_nome' => $pedido->anamnese->paciente->nome,
+                        'paciente_nome' => $pedido->anamnese->paciente->nome,
+                        'paciente_data_nasc' => $pedido->anamnese->paciente->data_nascimento->i18nFormat('dd/MM/yyyy'),
+                        'data_sistema' => $pedido->created->i18nFormat('dd/MM/yyyy'),
+                        'codigo_pedido' => $pedido->codigo_pedido,
+                    ];
+                }
+            }
+
+        }
+
+        $this->set(compact('barcodes'));
+    }
+
 }

@@ -385,7 +385,7 @@ class AmostrasController extends AppController
 
                  $dados = [
                     $amostra->exame->amostra_id,
-                    $amostra->exame->amostra->lote,
+                    @$amostra->exame->amostra->lote,
                     $amostra->resultado,
                     $amostra->origen->nome_origem,
                     $amostra->origen->url_request,
@@ -572,9 +572,9 @@ class AmostrasController extends AppController
 
                 $exame_find->resultado = $integration;
 
-                $pedido = $this->Pedidos->get($exame_find->pedido_id);
-                $pedido->status = 'Finalizado';
-                $this->Pedidos->save($pedido);
+                // $pedido = $this->Pedidos->get($exame_find->pedido_id);
+                // $pedido->status = 'Finalizado';
+                // $this->Pedidos->save($pedido);
 
                 $this->Exames->save($exame_find);
 
@@ -603,14 +603,14 @@ class AmostrasController extends AppController
           'Userfile' => fopen($filedata, 'r'),
         ]);
 
-        if( (strpos($encad->origen->url_request, '168.138.139.32') !== false) ){
+        if( (strpos($encad->origen->url_request, '172.21.1.2') !== false) ){
             $result = $response->getJson();
             $result = $result['retorno'];
         }else{
             $result = $this->html_to_obj($response->getStringBody());
         }
 
-        $status_branch = $parse_status[$encad->regra];
+        $status_branch = @$parse_status[$encad->regra];
 
         if($isLastRequest){
             $result = ['stop_loop' => true, 'result' => $result];
@@ -651,10 +651,10 @@ class AmostrasController extends AppController
 
             $isEncadeado = $total_enc > 0 ? true : false;
 
-            if( (strpos($url, '168.138.139.32') !== false) ){
+            if( (strpos($url, '172.21.1.2') !== false) ){
                 $result = $response->getJson();
                 $result = $result['retorno'];
-            }else{
+            } else {
                 $result = $this->html_to_obj($response->getStringBody());
             }
 
@@ -666,7 +666,7 @@ class AmostrasController extends AppController
             $sum_request = 0;
             $origem_saved = '';
 
-             $encadeamentoResul = $this->EncadeamentoResultados->newEntity();
+            $encadeamentoResul = $this->EncadeamentoResultados->newEntity();
             $dados_save = [
                 'exame_origem_id' => $origem->id,
                 'encadeamento_id' => null,
@@ -675,10 +675,10 @@ class AmostrasController extends AppController
             $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
             $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
 
+
+
             //tratamento encadeamentos
             if((strpos($result, $status_main)) === false && $isEncadeado ){
-
-
                 foreach ($origem->origen->encadeamentos as $key => $encadeamento) {
                     $sum_request++;
 
@@ -703,6 +703,7 @@ class AmostrasController extends AppController
                     $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
 
                 }
+
                 if (!empty($origem_saved)) {
                     $get_exame = $this->Exames->get($exame->id);
                     $get_exame->origem_id = $origem_saved;
@@ -717,7 +718,7 @@ class AmostrasController extends AppController
                 $integration = 'Negativo';
                 $negativo++;
             }else{
-                $integration = 'Inadequado';
+                $integration = 'Indeterminado';
                 $inadequado++;
             }
 
@@ -729,8 +730,8 @@ class AmostrasController extends AppController
         if( ($positivo + $negativo + $inadequado) > 0 ){
             //so vai gravar inadequado se todos retornos forem inadequados
             if( ($inadequado == ($positivo + $negativo + $inadequado))){
-                $result = 'Inadequado';
-            }else{
+                $result = 'Indeterminado';
+            } else {
                 if( ($positivo > $negativo) && ($positivo + $negativo) > 0){
                     $result = 'Positivo';
                 }else if($positivo < $negativo && ($positivo + $negativo) > 0){
@@ -888,21 +889,21 @@ class AmostrasController extends AppController
                         $handle_file = $this->getBetterRestul($file_extesion, $file);
 
                         if(!empty($amostraExist)){
-                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
-                             die();
+                            throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
+                            die();
                         }
 
                         $clear_name_file = $this->Helpers->stringToNumber($file['name']);
 
-                        $pedido = $this->Pedidos->find('all',[
-                            'conditions' => ['codigo_pedido like' => '%'. $clear_name_file .'%' ]
-                        ])->first();
+                        // $pedido = $this->Pedidos->find('all',[
+                        //     'conditions' => ['codigo_pedido like' => '%'. $clear_name_file .'%' ]
+                        // ])->first();
 
 
-                        if(empty($pedido)){
-                            throw new BadRequestException(__('Pedido não encontrado.'));
-                            die();
-                        }
+                        // if(empty($pedido)){
+                        //     throw new BadRequestException(__('Pedido não encontrado.'));
+                        //     die();
+                        // }
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],
@@ -910,7 +911,8 @@ class AmostrasController extends AppController
                             'equip_tipo' => $handle_file['equip_tipo'],
                             'amostra_tipo' => $handle_file['amostra_tipo'],
                             'file_name' => $file['name'],
-                            'pedido_id' => $pedido->id,
+                            // 'pedido_id' => @$pedido->id,
+                            'pedido_id' => 0,
                             'created_by' => $this->Auth->user('id'),
                         ];
 

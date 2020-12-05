@@ -194,7 +194,7 @@ class PacientesController extends AppController
         $useForm = true;
 
         $query = $this->request->getQuery();
-
+        $anamnese = null;
         if(!empty($query['tipo']) && $query['tipo'] === 'new'){
             $disabled_inputs = false;
 

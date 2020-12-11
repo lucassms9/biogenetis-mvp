@@ -38,6 +38,10 @@ ssh blogkotaki@40.71.43.226
 
 scp * root@152.67.55.26:/var/www/html/src/Controller/Admin/.
 
+
+scp -rp .gitattributes root@152.67.55.26:/var/www/html/.
+scp -rp .gitignore root@152.67.55.26:/var/www/html/.
+
 scp -i blogkotaki server.cer blogkotaki@40.71.43.226:/opt/bitnami/apache2/conf/bitnami/certs
 scp -i blogkotaki server.key blogkotaki@40.71.43.226:/opt/bitnami/apache2/conf/bitnami/certs
 

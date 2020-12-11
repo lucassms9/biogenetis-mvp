@@ -236,7 +236,7 @@ class AmostrasController extends AppController
 
                 $dados = [
                     $encadeamentoObj->exame_origen->exame->amostra_id,
-                    $encadeamentoObj->exame_origen->exame->amostra->lote,
+                    @$encadeamentoObj->exame_origen->exame->amostra->lote,
                     $encadeamentoObj->resultado,
                     $encadeamentoObj->exame_origen->origen->nome_origem,
                     $url_request,

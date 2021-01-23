@@ -53,9 +53,38 @@ var options_uf = '<option value="">Escolha</option>'+
  '<option value="TO">Tocantins</option>';
 
 
+// var options_sexos = '<option value="">Escolha</option>'+
+//                         '<option {M} value="M">M</option>'+
+//                         '<option {F} value="F">F</option>';
 
-
-
+// var options_uf = '<option value="">Escolha</option>'+
+// '<option {AC} value="AC">Acre</option>'+
+//  '<option {AL} value="AL">Alagoas</option>'+
+//  '<option {AM} value="AM">Amapá</option>'+
+//  '<option {AP} value="AP">Amazonas</option>'+
+//  '<option {BA} value="BA">Bahia</option>'+
+//  '<option {CE} value="CE">Ceará</option>'+
+//  '<option {DF} value="DF">Distrito Federal</option>'+
+//  '<option {ES} value="ES">Espírito Santo</option>'+
+//  '<option {GO} value="GO">Goiás</option>'+
+//  '<option {MA} value="MA">Maranhão</option>'+
+//  '<option {MG} value="MG">Minas Gerais</option>'+
+//  '<option {MS} value="MS">Mato Grosso do Sul</option>'+
+//  '<option {MT} value="MT">Mato Grosso</option>'+
+//  '<option {PA} value="PA">Pará</option>'+
+//  '<option {PB} value="PB">Paraíba</option>'+
+//  '<option {PE} value="PE">Pernambuco</option>'+
+//  '<option {PI} value="PI">Piauí</option>'+
+//  '<option {PR} value="PR">Paraná</option>'+
+//  '<option {RJ} value="RJ">Rio de Janeiro</option>'+
+//  '<option {RN} value="RN">Rio Grande do Norte</option>'+
+//  '<option {RO} value="RO">Rondônia</option>'+
+//  '<option {RR} value="RR">Roraima</option>'+
+//  '<option {RS} value="RS">Rio Grande do Sul</option>'+
+//  '<option {SC} value="SC">Santa Catarina</option>'+
+//  '<option {SE} value="SE">Sergipe</option>'+
+//  '<option {SP} value="SP">São Paulo</option>'+
+//  '<option {TO} value="TO">Tocantins</option>';
 
 function addInput(){
 
@@ -80,10 +109,9 @@ function submitForm() {
     validacoes
     */
      var validate = true;
-
+     var isOk = false;
     $("#sendData").each(function(){
 
-       
     //<-- Should return all input elements in that specific form.
 
     $(this).find(':input').each(function(val, element){
@@ -91,9 +119,10 @@ function submitForm() {
         console.log($(element).val())
 
         if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
+            isOk = true
             if($(element).val() == ''){
                 validate = false;
-            }   
+            }
         }
         })
     });
@@ -110,6 +139,18 @@ function submitForm() {
         return;
     }
 
+    if( !isOk ){
+        Swal.fire({
+                title: "Atenção",
+                text: "É necessário ter pelo menos uma amostra válida para continuar.",
+                icon: "warning",
+                confirmButtonColor: "#004ba7",
+                confirmButtonText: "Entendi"
+              });
+
+        return;
+    }
+
 
     Swal.fire({
     title: 'Enviando Dados',
@@ -117,10 +158,10 @@ function submitForm() {
     timer: '',
     onBeforeOpen:function () {
         Swal.showLoading()
-       
+
     },
     onClose: function () {
-     
+
     }
     }).then(function (result) {
     if (
@@ -131,12 +172,18 @@ function submitForm() {
     }
     })
 
+
 	$('#sendData').submit();
 }
 
 function amountForm(file) {
     file = JSON.parse(file);
    console.log(file)
+    // var ufHandle = '{'+file.pedido.anamnese.paciente.uf+'}';
+    // var sexoHandle = '{'+file.pedido.anamnese.paciente.sexo+'}';
+
+    // var new_options_uf = options_uf.replace(ufHandle,'selected');
+    // var new_options_sexo = options_sexos.replace(sexoHandle,'selected');
 
     var html  = '';
 

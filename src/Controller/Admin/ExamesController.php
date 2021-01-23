@@ -10,7 +10,7 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Exame[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ExamesController extends AppController
-{   
+{
 
 
     public function initialize()
@@ -20,13 +20,13 @@ class ExamesController extends AppController
         $this->loadModel('Exames');
     }
 
+
     public function import()
     {
          if ($this->request->is('post')) {
 
-            try {   
+            try {
 
-                
                 if(!empty($this->request->getData('file'))){
                     $files = $this->request->getData('file');
 
@@ -43,7 +43,7 @@ class ExamesController extends AppController
 
                              $this->Exames->save($exame_save);
                         }
-                      
+
                     }
 
                 }
@@ -54,13 +54,13 @@ class ExamesController extends AppController
     }
 
     public function relatorio()
-    {   
+    {
 
         $action = 'Relatório';
         $title = 'Amostras';
 
          if ($this->request->is('post')) {
-            
+
 
             return $this->redirect(['controller' => 'amostras', 'action' => 'index', 'amostra_id' => $this->request->getData('amostra_id'),'data_init' => $this->request->getData('data_init'), 'data_fim' => $this->request->getData('data_fim'), 'lote' =>  $this->request->getData('lote') ]);
 
@@ -115,23 +115,23 @@ class ExamesController extends AppController
             //     $html .= '<td>' . $exame['amostra']['sexo'] . '</td>';
             //     $html .= '<td>' . $exame['user']['cliente']['nome'] . '</td>';
             //     $html .= '<td>' . $exame['resultado'] . '</td>';
-            //     $html .= '</tr>'; 
+            //     $html .= '</tr>';
 
-            // } 
-            
-            // $html .= '</table>'; 
-           
-            // $arquivo = 'relatorios_amostras_'.date('Y-m-d-H-i-s'); 
+            // }
+
+            // $html .= '</table>';
+
+            // $arquivo = 'relatorios_amostras_'.date('Y-m-d-H-i-s');
 
             // header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
             // header("Content-Disposition: attachment; filename=$arquivo.xls");  //File name extension was wrong
             // header("Expires: 0");
             // header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            // header("Cache-Control: private",false); 
-            
+            // header("Cache-Control: private",false);
+
             // echo utf8_decode($html);
-            // exit; 
-            
+            // exit;
+
 
          }
 

@@ -24,5 +24,12 @@ class Origen extends Entity
     protected $_accessible = [
         'nome_origem' => true,
         'url_request' => true,
+        'ativo' => true,
+        'equip_tipo' => true,
+        'regra_encadeamento' => true,
+        'amostra_tipo' => true,
+        'IAModelType' => true,
+        'IAModelName' => true,
+        'DataScience' => true,
     ];
 }

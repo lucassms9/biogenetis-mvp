@@ -20,7 +20,7 @@
 
             <!-- LOGO -->
             <div  class="navbar-brand-box">
-             
+
                 <a href="<?= $this->Url->build('/admin', true);?>" class="logo logo-light">
                     <!-- <span class="logo-sm"> -->
                         <!-- <img src="assets/images/logo-sm-light.png" alt="" height="22"> -->
@@ -47,24 +47,48 @@
                                 </a>
                             </li>
 
-
-                             <li class="nav-item">
-                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/exames/relatorio">
-                                    Relatórios
+                            <li class="nav-item dropdown">
+                                <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Relatórios <div class="arrow-down"></div>
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                    <a href="<?= $this->Url->build('/admin', true);?>/exames/relatorio" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Amostras</a>
+
+                                        <a href="<?= $this->Url->build('/admin', true);?>/amostras/resultados" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Resultados Gerais</a>
+
+                                         <a href="<?= $this->Url->build('/admin', true);?>/amostras/encadeamentos" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Encadeamentos</a>
+
+                                </div>
                             </li>
 
-
                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
+
+                            <li class="nav-item dropdown">
+                                <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dashboard <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                    <a href="<?= $this->Url->build('/admin', true);?>/dashboard" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Dashboard</a>
+
+                                    <a href="<?= $this->Url->build('/admin', true);?>/dashboard/operacao" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Dashboard Operação</a>
+                                </div>
+                            </li>
+                            <?php endif;?>
+
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 4 ):?>
                             <li class="nav-item">
-                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/dashboard">
-                                    Dashboard
+                                <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true);?>/croquis/gerador">
+                                   Criar Croqui
                                 </a>
                             </li>
                             <?php endif;?>
 
-
-                              <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                              <li class="nav-item dropdown">
                                 <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Usuários <div class="arrow-down"></div>
@@ -77,9 +101,23 @@
                                         <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Ver Todos</a>
                                     </div>
                             </li>
+
+                             <li class="nav-item dropdown">
+                                <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Endpoints <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                    <a href="<?= $this->Url->build('/admin', true);?>/origens/add" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-plus"></i></div> Novo</a>
+
+                                        <a href="<?= $this->Url->build('/admin', true);?>/origens" class="dropdown-item">
+                                        <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Ver Todos</a>
+                                    </div>
+                            </li>
+
                             <?php endif;?>
 
-                             
+
                         </ul>
                     </div>
                 </nav>
@@ -87,5 +125,5 @@
         </div>
     </div>
 
-    
+
 </header>

@@ -33,6 +33,12 @@ class OrigensTable extends Table
         $this->setTable('origens');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('Encadeamentos', [
+            'className' => 'Encadeamentos',
+            'foreignKey' => 'origem_parent_id',
+        ]);
+
     }
 
     /**

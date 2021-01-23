@@ -3,3 +3,10 @@ msgstr "Erro ao salvar usuário. Por favor, tente novamente."
 
 msgid "The user has been saved."
 msgstr "Usuário salvo com sucesso"
+
+msgid "This field cannot be left empty"
+msgstr "Compo Obrigatório"
+
+msgid "The paciente could not be saved. Please, try again."
+msgstr "Erro ao tentar salvar os dados do paciente. tente novamente."
+

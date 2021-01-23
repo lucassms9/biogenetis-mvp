@@ -30,7 +30,7 @@ $(document).ready(function(){
     $("#formFiles").dropzone({
         autoProcessQueue: false,
         maxFiles: 2000,
-        url: "/admin/exames/import",
+        url: "/admin/amostras/import",
         init: function () {
 
             var myDropzone = this;
@@ -69,7 +69,7 @@ $(document).ready(function(){
                 location.reload();
             });
 
-            console.log(response);
+            // console.log(response);
         }
     });
 

@@ -1,0 +1,169 @@
+$(window).scroll(function (event) {
+    var scroll = $(window).scrollTop();
+    if(scroll > 40){
+        $('.dz-details').css("z-index", "0");
+        $('.dz-image').css("z-index", "0");
+        $('.dz-error-message').css("z-index", "0");
+        $('.dz-error-mark').css("z-index", "0");
+    }else{
+        $('.dz-details').css("z-index", "20");
+        $('.dz-image').css("z-index", "10");
+        $('.dz-error-message').css("z-index", "1000");
+        $('.dz-error-mark').css("z-index", "500");
+    }
+});
+
+
+
+var templete = '<div class="input file"><label for="file">Escolha um arquivo</label><input type="file" name="file[]" class="files"></div>';
+var qtd_files = 0;
+var qtd_files_removed = 0;
+
+var options_sexos = '<option value="">Escolha</option>'+
+                        '<option {M} value="M">M</option>'+
+                        '<option {F} value="F">F</option>';
+
+var options_uf = '<option value="">Escolha</option>'+
+'<option {AC} value="AC">Acre</option>'+
+ '<option {AL} value="AL">Alagoas</option>'+
+ '<option {AM} value="AM">Amapá</option>'+
+ '<option {AP} value="AP">Amazonas</option>'+
+ '<option {BA} value="BA">Bahia</option>'+
+ '<option {CE} value="CE">Ceará</option>'+
+ '<option {DF} value="DF">Distrito Federal</option>'+
+ '<option {ES} value="ES">Espírito Santo</option>'+
+ '<option {GO} value="GO">Goiás</option>'+
+ '<option {MA} value="MA">Maranhão</option>'+
+ '<option {MG} value="MG">Minas Gerais</option>'+
+ '<option {MS} value="MS">Mato Grosso do Sul</option>'+
+ '<option {MT} value="MT">Mato Grosso</option>'+
+ '<option {PA} value="PA">Pará</option>'+
+ '<option {PB} value="PB">Paraíba</option>'+
+ '<option {PE} value="PE">Pernambuco</option>'+
+ '<option {PI} value="PI">Piauí</option>'+
+ '<option {PR} value="PR">Paraná</option>'+
+ '<option {RJ} value="RJ">Rio de Janeiro</option>'+
+ '<option {RN} value="RN">Rio Grande do Norte</option>'+
+ '<option {RO} value="RO">Rondônia</option>'+
+ '<option {RR} value="RR">Roraima</option>'+
+ '<option {RS} value="RS">Rio Grande do Sul</option>'+
+ '<option {SC} value="SC">Santa Catarina</option>'+
+ '<option {SE} value="SE">Sergipe</option>'+
+ '<option {SP} value="SP">São Paulo</option>'+
+ '<option {TO} value="TO">Tocantins</option>';
+
+function addInput(){
+
+    var html  = '';
+
+     html += '<div class="input file">';
+     html += '<label for="file">Arquivo [' + qtd_files + '] *</label>';
+     html += '<input type="file" name="file[]" class="files" onchange="maisImagens()">';
+     html += '</div>';
+     html += '</div>';
+
+    $("#files-input").append( html );
+
+    qtd_files++;
+
+}
+
+
+function submitForm() {
+    if (qtd_files === 0){
+        return alertify.error('Escolha ao menos uma amostra!');
+    }
+    Swal.fire({
+    title: 'Enviando Dados',
+    html: 'Por favor aguarde, estamos processando os dados',
+    timer: '',
+    onBeforeOpen:function () {
+        Swal.showLoading()
+
+    },
+    onClose: function () {
+
+    }
+    }).then(function (result) {
+    if (
+        // Read more about handling dismissals
+        result.dismiss === Swal.DismissReason.timer
+    ) {
+        console.log('I was closed by the timer')
+    }
+    })
+
+
+	$('#sendData').submit();
+}
+
+function amountForm(file) {
+    file = JSON.parse(file);
+   console.log(file)
+   var ufHandle = '{'+file.pedido.anamnese.paciente.uf+'}';
+   var sexoHandle = '{'+file.pedido.anamnese.paciente.sexo+'}';
+
+    var new_options_uf = options_uf.replace(ufHandle,'selected');
+    var new_options_sexo = options_sexos.replace(sexoHandle,'selected');
+
+    var html  = '';
+
+    html += '<tr id="'+file.amostra_id+'">';
+    html += '<th scope="row">'+file.amostra_id+' ';
+    html += '<input class="form-control" type="hidden" name="amostraid[]" value="'+file.amostra_id+'" />';
+    html += '</th>';
+    html += '<td><select isValidate="validate" name="uf[]" class="form-control">'+new_options_uf+'</select></td>';
+    html += '<td><input isValidate="validate" class="form-control" value="50" name="idade[]" /></td>';
+    html += '<td><select isValidate="validate" name="sexo[]" class="form-control">'+new_options_sexo+'</select></td>';
+    html += '</tr>';
+
+    $("#input-files").append( html );
+
+    qtd_files++;
+
+    $('#total-files').val(qtd_files);
+
+}
+
+function removeTr(fileId) {
+    var newFileId = fileId.split('.')[0];
+    $('#'+newFileId).remove();
+    qtd_files_removed++;
+    $('#files-removed').val(qtd_files_removed);
+}
+
+Dropzone.autoDiscover = false;
+Dropzone.prototype.defaultOptions.dictRemoveFile = "Remover";
+Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drop files here to upload";
+Dropzone.prototype.defaultOptions.dictFallbackMessage = "Your browser does not support drag'n'drop file uploads.";
+Dropzone.prototype.defaultOptions.dictFallbackText = "Please use the fallback form below to upload your files like in the olden days.";
+Dropzone.prototype.defaultOptions.dictFileTooBig = "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.";
+Dropzone.prototype.defaultOptions.dictInvalidFileType = "You can't upload files of this type.";
+Dropzone.prototype.defaultOptions.dictResponseError = "Server responded with {{statusCode}} code.";
+Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancelar";
+Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure you want to cancel this upload?";
+Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
+
+$(document).ready(function(){
+
+    $("#formFiles").dropzone({
+        maxFiles: 2000,
+        addRemoveLinks: true,
+        url: BASE_URL_ADMIN+"amostras/import",
+        success: function (file, response) {
+            amountForm(response)
+        },
+        error: function(file, message) {
+            console.log(message)
+            $(file.previewElement).addClass("dz-error").find('.dz-error-message').text(message.message);
+        },
+        removedfile: function(file) {
+            removeTr(file.name);
+            file.previewElement.remove();
+        }
+    });
+
+});
+
+
+

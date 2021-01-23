@@ -174,7 +174,6 @@ class Connection implements ConnectionInterface
             }
             $driver = new $className($config);
         }
-
         if (!$driver->enabled()) {
             throw new MissingExtensionException(['driver' => get_class($driver)]);
         }
@@ -730,12 +729,12 @@ class Connection implements ConnectionInterface
      * });
      * ```
      */
-    public function transactional(callable $callback)
+    public function transactional(callable $transaction)
     {
         $this->begin();
 
         try {
-            $result = $callback($this);
+            $result = $transaction($this);
         } catch (Exception $e) {
             $this->rollback(false);
             throw $e;
@@ -778,13 +777,13 @@ class Connection implements ConnectionInterface
      * });
      * ```
      */
-    public function disableConstraints(callable $callback)
+    public function disableConstraints(callable $operation)
     {
-        return $this->getDisconnectRetry()->run(function () use ($callback) {
+        return $this->getDisconnectRetry()->run(function () use ($operation) {
             $this->disableForeignKeys();
 
             try {
-                $result = $callback($this);
+                $result = $operation($this);
             } catch (Exception $e) {
                 $this->enableForeignKeys();
                 throw $e;

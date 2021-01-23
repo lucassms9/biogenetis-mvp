@@ -141,11 +141,11 @@ a {
     width: 100%  !important;
 }
 .page-content-wrapper {
-    margin-top: 65px;
+    margin-top: 82px;
 }
 /*login*/
 .bg-pattern {
-    background-image: none !important; 
+    background-image: none !important;
 }
 .bg-primary{
     background-color: #f7f6f6 !important;
@@ -207,14 +207,85 @@ a {
 }
 
 .crossOut .child{
-    position:absolute; 
+    position:absolute;
     display:block;
-    height:1px; 
+    height:1px;
     background: #fff;
 }
 
 @media print {
+    body{
+        background-color:#fff !important;
+    }
     .printHeader {
        display : block;
     }
+
+    .logo-print{
+        width: 100px;
+        height: auto;
+        display: list-item;
+        list-style-image: url(../img/header-printer.png);
+        list-style-position: inside;
+    }
+}
+.custom-style-check{
+    margin-right: 10px;
+}
+.mt20{
+    margin-top: 20px !important;
+}
+.footer{
+    height: auto !important;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f7f7f7 !important;
+    opacity: 1 !important;
+}
+
+input[type="checkbox"]:disabled {
+    background-color: #3051D3 !important;
+    opacity: 1 !important;
+}
+
+.bar-code_data{
+    writing-mode: tb-rl;
+    font-size: 20px;
+    text-align: center;
+    padding: 1px;
+}
+
+
+.bar-code-content-center{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.separator-row{
+    position: absolute;
+    height: 30px;
+    border-left: 3px solid #6f6f6f;
+    top: 108px;
+    left: 157px;
+    opacity: 0.3;
+}
+
+.borderHr{
+    border: 3px solid #3987b3;
+}
+
+
+.title-printer{
+    text-decoration: underline;
+}
+
+.title-printer{
+    text-decoration: underline;
+    color: #3987b3;
+}
+.container-title-printer{
+    justify-content: center;
 }

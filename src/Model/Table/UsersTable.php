@@ -47,7 +47,6 @@ class UsersTable extends Table
         ]);
         $this->belongsTo('Clientes', [
             'foreignKey' => 'cliente_id',
-            'joinType' => 'INNER',
         ]);
     }
 
@@ -97,4 +96,6 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+
 }

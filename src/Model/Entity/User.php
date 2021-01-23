@@ -39,10 +39,13 @@ class User extends Entity
         'modified' => true,
         'user_type' => true,
         'cliente' => true,
+        'numero_crbio' => true,
+        'certificado_digital' => true,
+        'foto_assinatura_digital' => true,
     ];
 
     protected function _setSenha($value)
-    {   
+    {
 
         if (!empty($value)) {
             return md5($value);

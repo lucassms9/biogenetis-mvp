@@ -1,24 +1,32 @@
 # Biogenetics Applications
-	Esse sistema é um MVP, construido exclusivamente para a biogenetics. 
+	Esse sistema é um MVP, construido exclusivamente para a biogenetics.
 
 ## Requisitos
 
 ## Configuração
-configurar o
-
 
 
 ### Ajustes
 
+Montagem Croqui:
+Devs: colocar select em cada pedido para gerar o croqui com os pedidos selecionados, devemos ter a opção de inclusão manual de paciente/amostra
 
-- Quando você removeu todos os arquivos não aconteceu o refresh da tela, ou seja, os campos para preenchimento de UF, Idade e Sexo ficaram duplicados; - ok
+Devs: incluir fluxo para impressão de etiquetas em massa
 
-- Imagem dos arquivos ainda está sobrepondo a barra azul e menu; - ok
 
-- Mudar o texto Plataforma de Inteligência Artificial Biogenetics para Inteligência Artificial Biogenetics-ok
+yum-config-manager --disable ol7_developer_php74
+yum-config-manager --enable ol7_developer_php72
 
-- Trocar tudo que é Inconclusivo por Indeterminado; - ok
 
-- Dashboard – Juntar todos os botões; - ok
+espero q vc nao fique bravo...
+atualizei o php aqui...
+como eu vi que o yum.repos.d estava configurado, eu so fiz o downgrade mesmo
 
-- Na Matriz do Dashboard colocar uma linha diagonal entre Idade\Sexo;
+rodei esses comandos aqui:
+
+yum-config-manager --disable ol7_developer_php74
+yum-config-manager --enable ol7_developer_php72
+
+yum downgrade php\*
+yum update
+

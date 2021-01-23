@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Pacientes Model
  *
- * @property \App\Model\Table\ExamesTable&\Cake\ORM\Association\HasMany $Exames
+ * @property &\Cake\ORM\Association\HasMany $Anamneses
  *
  * @method \App\Model\Entity\Paciente get($primaryKey, $options = [])
  * @method \App\Model\Entity\Paciente newEntity($data = null, array $options = [])
@@ -36,7 +36,7 @@ class PacientesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Exames', [
+        $this->hasMany('Anamneses', [
             'foreignKey' => 'paciente_id',
         ]);
     }
@@ -51,13 +51,96 @@ class PacientesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmptyString('id', null, 'create')
+            ->notEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('nome')
             ->maxLength('nome', 255)
-            ->allowEmptyString('nome');
+            ->notEmptyString('nome');
+
+        $validator
+            ->scalar('cpf')
+            ->maxLength('cpf', 255)
+            ->notEmptyString('cpf');
+
+        $validator
+            ->scalar('rg')
+            ->maxLength('rg', 255)
+            ->notEmptyString('rg');
+
+        $validator
+            ->email('email')
+            ->notEmptyString('email');
+
+        $validator
+            ->scalar('celular')
+            ->maxLength('celular', 255)
+            ->notEmptyString('celular');
+
+        $validator
+            ->scalar('telefone')
+            ->maxLength('telefone', 255)
+            ->notEmptyString('telefone');
+
+        $validator
+            ->scalar('sexo')
+            ->maxLength('sexo', 255)
+            ->notEmptyString('sexo');
+
+        $validator
+            ->date('data_nascimento')
+            ->notEmptyDate('data_nascimento');
+
+        $validator
+            ->scalar('endereco')
+            ->maxLength('endereco', 255)
+            ->notEmptyString('endereco');
+
+        $validator
+            ->scalar('bairro')
+            ->maxLength('bairro', 255)
+            ->notEmptyString('bairro');
+
+        $validator
+            ->scalar('cep')
+            ->maxLength('cep', 255)
+            ->notEmptyString('cep');
+
+        $validator
+            ->scalar('cidade')
+            ->maxLength('cidade', 255)
+            ->notEmptyString('cidade');
+
+        $validator
+            ->scalar('uf')
+            ->maxLength('uf', 255)
+            ->notEmptyString('uf');
+
+        $validator
+            ->scalar('foto_perfil_url')
+            ->maxLength('foto_perfil_url', 255)
+            ->allowEmptyString('foto_perfil_url');
+
+        $validator
+            ->scalar('foto_doc_url')
+            ->maxLength('foto_doc_url', 255)
+            ->allowEmptyString('foto_doc_url');
+
+        $validator
+            ->scalar('nome_da_mae')
+            ->maxLength('nome_da_mae', 255)
+            ->notEmptyString('nome_da_mae');
+
+        $validator
+            ->scalar('nacionalidade')
+            ->maxLength('nacionalidade', 255)
+            ->notEmptyString('nacionalidade');
+
+        $validator
+            ->scalar('pais_residencia')
+            ->maxLength('pais_residencia', 255)
+            ->notEmptyString('pais_residencia');
 
         return $validator;
     }
@@ -71,6 +154,10 @@ class PacientesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add(
+            $rules->isUnique(['email']),
+            ['errorField' => 'email', 'message' => 'E-mail ja existente']
+        );
         $rules->add($rules->isUnique(['id']));
 
         return $rules;

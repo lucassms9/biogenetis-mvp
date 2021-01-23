@@ -41,6 +41,8 @@ class SecurityComponent extends Component
 {
     /**
      * Default message used for exceptions thrown
+     *
+     * @var string
      */
     const DEFAULT_EXCEPTION_MESSAGE = 'The request has been black-holed';
 
@@ -357,6 +359,9 @@ class SecurityComponent extends Component
         }
         if (!isset($check['_Token']['fields'])) {
             throw new AuthSecurityException(sprintf($message, '_Token.fields'));
+        }
+        if (!is_string($check['_Token']['fields'])) {
+            throw new AuthSecurityException("'_Token.fields' was invalid.");
         }
         if (!isset($check['_Token']['unlocked'])) {
             throw new AuthSecurityException(sprintf($message, '_Token.unlocked'));

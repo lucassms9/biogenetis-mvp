@@ -9,16 +9,17 @@ use App\Controller\AppController;
 class DashboardController extends AppController
 {
 
-
 	public function initialize()
     {
         parent::initialize();
         $this->loadModel('Exames');
         $this->loadModel('Amostras');
+        $this->loadModel('Anamneses');
+        $this->loadModel('Pedidos');
     }
 
 	public function index()
-	{	
+	{
 		$action = 'Geral';
         $title = 'Dashboard';
 
@@ -43,16 +44,21 @@ class DashboardController extends AppController
         foreach ($ufs_lista as $row)
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
 
-		
-		$this->set(compact('user','ufs','action','title'));
+        // - Campo Equipamento: LCMS ou FTIR;
+        // - Campo Amostra: Saliva ou Swab
+        $equipamentos_options = ['LCMS' => 'LCMS','FTIR' => 'FTIR'];
+        $amostras_options = ['SALIVA' => 'Saliva','SWAB' => 'Swab'];
+
+		$this->set(compact('user','ufs','action','title','equipamentos_options','amostras_options'));
 	}
 
 	public function getExamesGlobal()
-	{	
+	{
 
-		$query = $this->request->getQuery();
+        $query = $this->request->getQuery();
+
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -62,9 +68,14 @@ class DashboardController extends AppController
 			$conditions_query['cast(Amostras.created as date) <='] = $data2;
 		}
 		if(!empty($query['estado'])){
-			$conditions_query['Amostras.uf'] = $query['estado'];
+			$conditions_query['Exames.uf'] = $query['estado'];
 		}
-
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+		}
 
         $conditions = [];
 
@@ -74,8 +85,9 @@ class DashboardController extends AppController
 			'Positivo' => 0,
 			'Negativo' => 0,
 			'Indeterminado' => 0,
+			'Inadequado' => 0,
 		];
-		
+
 
 		if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -88,7 +100,6 @@ class DashboardController extends AppController
 		$exames = $this->Exames->find('all',[
 			'contain' => ['Amostras','Users'],
 			'conditions' => $conditions,
-			'group' => ['Exames.id']
 		])->toList();
 
 		foreach ($exames as $key => $exame) {
@@ -98,6 +109,8 @@ class DashboardController extends AppController
 				$result['Positivo']++;
 			}elseif($exame->resultado == 'Negativo'){
 				$result['Negativo']++;
+			}elseif($exame->resultado == 'Inadequado'){
+				$result['Inadequado']++;
 			}
 		}
 
@@ -108,11 +121,10 @@ class DashboardController extends AppController
 
 	public function getExamesByUf()
 	{
-		
 
 		$query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -125,8 +137,13 @@ class DashboardController extends AppController
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
 
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+		}
 
-       
 		$conditions_uf = [];
 
         $conditions_uf = array_merge($conditions_uf,$conditions_query);
@@ -138,9 +155,9 @@ class DashboardController extends AppController
 
         $result = [];
 
-      
+
         $conditions = [];
-       
+
 
         if($this->Auth->user('user_type_id') == 3){
 			$conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -163,38 +180,40 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions
 	        ])->toArray();
 
-	        $Indeterminado = 0;
+	        $indeterminado = 0;
 	        $positivo = 0;
+	        $inadequado = 0;
 	        $negativo = 0;
 
 	        foreach ($amostras as $key => $amostra) {
 
 	        	if($amostra->resultado == 'Indeterminado'){
-					$Indeterminado++;
+					$indeterminado++;
 				}elseif($amostra->resultado == 'Positivo'){
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
 					$negativo++;
+				}elseif($amostra->resultado == 'Inadequado'){
+					$inadequado++;
 				}
 	        }
 
 	        $result[$uf] = [
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
-					'Indeterminado' => $Indeterminado,
+					'Indeterminado' => $indeterminado,
+					'Inadequado' => $inadequado,
 	        	];
 
         }
 
-
 			echo json_encode($result);
 	        die();
-        
 
 	}
 
 	public function getExamesByGener()
-	{	
+	{
 
 
 		$sexo_lista = $this->Amostras->find('all', ['fields' => ['DISTINCT Amostras.sexo'], 'order' => ['Amostras.sexo' => 'ASC']]);
@@ -203,7 +222,7 @@ class DashboardController extends AppController
 
         $query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -216,6 +235,12 @@ class DashboardController extends AppController
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
 
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+        }
 
         $conditions = [];
 
@@ -240,6 +265,7 @@ class DashboardController extends AppController
 	        	'conditions' => $conditions
 	        ]);
 	        $Indeterminado = 0;
+	        $inadequado = 0;
 	        $positivo = 0;
 	        $negativo = 0;
 
@@ -251,6 +277,8 @@ class DashboardController extends AppController
 					$positivo++;
 				}elseif($amostra->resultado == 'Negativo'){
 					$negativo++;
+				}elseif($amostra->resultado == 'Inadequado'){
+					$inadequado++;
 				}
 	        }
 
@@ -258,20 +286,21 @@ class DashboardController extends AppController
 	        		'Positivo' => $positivo,
 					'Negativo' => $negativo,
 					'Indeterminado' => $Indeterminado,
+					'Inadequado' => $inadequado,
 	        	];
 
         }
 
-			echo json_encode($result);
-	        die();
+		echo json_encode($result);
+	    die();
 	}
 
 	public function getExamesByAge()
 	{
-		
+
 		$query = $this->request->getQuery();
 		$conditions_query = [];
-		
+
 		if(!empty($query['date_init'])){
 			$data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
 			$conditions_query['cast(Amostras.created as date) >='] =  $data1;
@@ -283,6 +312,13 @@ class DashboardController extends AppController
 		if(!empty($query['estado'])){
 			$conditions_query['Amostras.uf'] = $query['estado'];
 		}
+
+        if(!empty($query['equipamentos'])){
+			$conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
+        }
+        if(!empty($query['amostras'])){
+			$conditions_query['Exames.amostra_tipo'] = $query['amostras'];
+        }
 
         $result = [];
         $result2 = [];
@@ -329,6 +365,9 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
+		$Inadequado = 0;
+		$InadequadoM = 0;
+		$InadequadoF = 0;
 
 
 		if(!empty($amostras20)){
@@ -355,14 +394,22 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
+				}elseif($amostra20->resultado == 'Inadequado'){
+					$Inadequado++;
+					if($amostra20->amostra->sexo == 'M'){
+						$InadequadoM++;
+					}else{
+						$InadequadoF++;
+					}
 				}
 	        }
 
-	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['0-20'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
+						'Inadequado' => $Inadequado,
 		        	];
 		     }
 	 	}
@@ -370,6 +417,7 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
 						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
+						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
         //> 20 && <= 40
@@ -383,6 +431,9 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
+		$Inadequado = 0;
+		$InadequadoM = 0;
+		$InadequadoF = 0;
 
         $conditions40['Amostras.idade >'] = 20;
         $conditions40['Amostras.idade <='] = 40;
@@ -414,14 +465,22 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
+				}elseif($amostra40->resultado == 'Inadequado'){
+					$Inadequado++;
+					if($amostra40->amostra->sexo == 'M'){
+						$InadequadoM++;
+					}else{
+						$InadequadoF++;
+					}
 				}
 	        }
 
-	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['21-40'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
+						'Inadequado' => $Inadequado,
 		        	];
 		    }
 	 	}
@@ -429,6 +488,7 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
 		  //> 41 && <= 60
@@ -442,6 +502,9 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
+		$Inadequado = 0;
+		$InadequadoM = 0;
+		$InadequadoF = 0;
 
         $conditions60['Amostras.idade >'] = 41;
         $conditions60['Amostras.idade <='] = 60;
@@ -473,14 +536,22 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
+				}elseif($amostra60->resultado == 'Inadequado'){
+					$Inadequado++;
+					if($amostra60->amostra->sexo == 'M'){
+						$InadequadoM++;
+					}else{
+						$InadequadoF++;
+					}
 				}
 	        }
 
-	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 	        		$result['41-60'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
+						'Inadequado' => $Inadequado,
 		        	];
 		    }
 
@@ -490,6 +561,7 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $negativoM, 'F' => $negativoF],
 						'Indeterminado' => ['M' => $IndeterminadoM, 'F' => $IndeterminadoF],
+						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        	];
 
          //> 40 && <= 80
@@ -503,6 +575,9 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
+		$Inadequado = 0;
+		$InadequadoM = 0;
+		$InadequadoF = 0;
 
         $conditions80['Amostras.idade >'] = 61;
         $conditions80['Amostras.idade <='] = 80;
@@ -539,19 +614,22 @@ class DashboardController extends AppController
 				}
 	        }
 
-	         if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	         if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		      	$result['61-80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
+						'Inadequado' => $Inadequado,
+
 		        ];
 	    	}
-	    	
+
     	}
     	$result2['61-80'] = [
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        ];
 
 	    $Indeterminado = 0;
@@ -563,6 +641,9 @@ class DashboardController extends AppController
 		$negativo = 0;
 		$negativoM = 0;
 		$negativoF = 0;
+		$Inadequado = 0;
+		$InadequadoM = 0;
+		$InadequadoF = 0;
 
          // > 80
         $conditions81['Amostras.idade >'] = 80;
@@ -594,14 +675,22 @@ class DashboardController extends AppController
 					}else{
 						$negativoF++;
 					}
+				}elseif($amostra81->resultado == 'Inadequado'){
+					$Inadequado++;
+					if($amostra81->amostra->sexo == 'M'){
+						$InadequadoM++;
+					}else{
+						$InadequadoF++;
+					}
 				}
 	        }
 
-	        if($Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
+	        if($Inadequado || $Indeterminado > 0 || $positivo > 0 || $negativo > 0 ){
 		        $result['> 80'] = [
 		        		'Positivo' => $positivo,
 						'Negativo' => $negativo,
 						'Indeterminado' => $Indeterminado,
+						'Inadequado' => $Inadequado,
 		        ];
 			}
         }
@@ -609,16 +698,52 @@ class DashboardController extends AppController
 		        		'Positivo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Negativo' => ['M' => $positivoM, 'F' => $positivoF],
 						'Indeterminado' => ['M' => $positivoM, 'F' => $positivoF],
+						'Inadequado' => ['M' => $InadequadoM, 'F' => $InadequadoF],
 		        ];
 
 		 $resulfinal = [
 		 	'result' => $result,
 		 	'result_table' => $result2
-		 ];       
+		 ];
         echo json_encode($resulfinal);
         die();
 
 	}
 
+    public function operacao()
+    {
+        $action = 'Geral';
+        $title = 'Dashboard';
+
+        $aguardando_atendimento = $this->Anamneses->find('all', [
+            'conditions' => ['status' => 'created']
+        ])->count();
+
+        $atendimento = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmAtendimento']
+        ])->count();
+
+        $triagem = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmTriagem']
+        ])->count();
+
+        $diagnostico = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'EmDiagnostico']
+        ])->count();
+
+        $finalizados = $this->Pedidos->find('all', [
+            'conditions' => ['status' => 'Finalizado']
+        ])->count();
+
+        $result = [
+            'aguardando_atendimento' => $aguardando_atendimento,
+            'atendimento' => $atendimento,
+            'triagem' => $triagem,
+            'diagnostico' => $diagnostico,
+            'finalizados' => $finalizados,
+        ];
+
+        $this->set(compact('action', 'title','result'));
+    }
 
 }

@@ -8,7 +8,6 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
-
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">
@@ -23,24 +22,25 @@
                                     </tr>
                                 </thead>
                                  <tbody>
-                                     <?php
-                                      foreach ($pedidos as $pedido): ?>
+                                 <?php
+                                      foreach ($pedidos_list as $b): ?>
                                         <tr>
-                                            <td><?= h($pedido->codigo_pedido) ?></td>
-                                            <td><?= h($pedido->status) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->nome) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->cpf) ?></td>
-                                            <td><?= h($pedido->anamnese->paciente->celular) ?></td>
-                                            <td><?= h($pedido->created) ?></td>
+                                            <td><?= h($b['codigo_pedido']) ?></td>
+                                            <td><?= h($b['status'])?></td>
+                                            <td><?= h($b['nome']) ?></td>
+                                            <td><?= h($b['cpf']) ?></td>
+                                            <td><?= h($b['celular']) ?></td>
+                                            <td><?= h($b['created']) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $pedido->id], ['escape' => false]) ?>
-                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $pedido->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $pedido->id)]) ?>
-                                                <?php if($pedido->status === 'Finalizado'): ?>
-                                                    <?= $this->Html->link(__('<i class="mdi mdi-file-document-box-check"></i>'), ['action' => 'laudo', $pedido->id], ['escape' => false]) ?>
+                                                <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $b['id']], ['escape' => false]) ?>
+                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $b['id'] ], ['escape' => false, 'confirm' => __('Deseja deletar?',  $b['id'])]) ?>
+                                                <?php if( $b['status'] === 'Finalizado'): ?>
+                                                    <?= $this->Html->link(__('<i class="mdi mdi-file-document-box-check"></i>'), ['action' => 'laudo',  $b['id'] ], ['escape' => false]) ?>
                                                 <?php endif;?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
+                                     
                                 </tbody>
                             </table>
                         </div>

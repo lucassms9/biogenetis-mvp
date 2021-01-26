@@ -6,7 +6,7 @@
         <?php echo $this->Form->control('nome',['class' => 'form-control', 'title' => 'teste','disabled' => $disabled]); ?>
     </div>
     <div class="col-md-3">
-        <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF', 'disabled' => $disabled]); ?>
+        <?php echo $this->Form->control('cpf',['id' => 'cpf', 'class'=> 'form-control cpf','label' => 'CPF', 'disabled' => $disabled]); ?>
     </div>
     <div class="col-md-3">
         <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG', 'disabled' => $disabled]); ?>

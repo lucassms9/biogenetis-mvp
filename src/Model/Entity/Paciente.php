@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Paciente Entity
  *
  * @property int $id
+ * @property string|null $hash
  * @property string|null $nome
  * @property string|null $cpf
  * @property string|null $rg
@@ -40,7 +41,8 @@ class Paciente extends Entity
      * @var array
      */
     protected $_accessible = [
-        'nome' => true,
+        'hash' => true
+     /*  , 'nome' => true,
         'cpf' => true,
         'rg' => true,
         'email' => true,
@@ -58,6 +60,6 @@ class Paciente extends Entity
         'nome_da_mae' => true,
         'nacionalidade' => true,
         'pais_residencia' => true,
-        'exames' => true,
+        'exames' => true,*/
     ];
 }

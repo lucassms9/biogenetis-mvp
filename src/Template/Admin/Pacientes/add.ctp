@@ -9,19 +9,18 @@
         <div class="card">
             <div class="card-body">
                 <form id="getPaciente" method="get">
-                <div class="row">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <?= $this->Form->control('paciente_nome',['label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => !empty($query['paciente_nome'])? !empty($query['paciente_nome']) : '' ]);?>
+                        </div>
+                        <div class="col-md-3">
+                            <?= $this->Form->control('paciente_cpf',['label' =>'CPF do Paciente', 'class' => 'form-control cpf', 'value' => !empty($query['paciente_cpf']) ? $query['paciente_cpf'] : '']);?>
+                        </div>
+                        <div style="margin-top: 29px" class="col-md-3">
+                        <input name="tipo" type="hidden" value="" id="tipofiltro" />
+                        <button style="margin-right: 5px;" type="button" onclick="submitGetPaciente('find')" class="btn btn-primary  mt-3 mt-sm-0">Buscar</button>
 
-                    <div class="col-md-4">
-                        <?= $this->Form->control('paciente_nome',['label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => !empty($query['paciente_nome'])? !empty($query['paciente_nome']) : '' ]);?>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $this->Form->control('paciente_cpf',['label' =>'CPF do Paciente', 'class' => 'form-control', 'value' => !empty($query['paciente_cpf']) ? $query['paciente_cpf'] : '']);?>
-                    </div>
-                    <div style="margin-top: 29px" class="col-md-3">
-                    <input name="tipo" type="hidden" value="" id="tipofiltro" />
-                    <button style="margin-right: 5px;" type="button" onclick="submitGetPaciente('find')" class="btn btn-primary  mt-3 mt-sm-0">Buscar</button>
-
-                    <button style="margin-right: 5px;background-color: #0089d8;border-color: #0089d8;" onclick="submitGetPaciente('new')"  type="button" class="btn btn-primary  mt-3 mt-sm-0">Novo Cadastro</button>
+                        <button style="margin-right: 5px;background-color: #0089d8;border-color: #0089d8;" onclick="submitGetPaciente('new')"  type="button" class="btn btn-primary  mt-3 mt-sm-0">Novo Cadastro</button>
                     </div>
                 </form>
             </div>
@@ -46,7 +45,6 @@
                         <hr/>
 
                         <h2>Amamnese</h2>
-
                         <?php echo $this->element('admin/anamnese/form',[
                             'disabled' => $disabled_inputs
                         ]);?>

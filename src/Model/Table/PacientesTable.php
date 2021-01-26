@@ -53,7 +53,11 @@ class PacientesTable extends Table
             ->integer('id')
             ->notEmptyString('id', null, 'create')
             ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
-
+        $validator
+            ->scalar('hash')
+            ->maxLength('hash', 255)
+            ->notEmptyString('hash');
+            /*
         $validator
             ->scalar('nome')
             ->maxLength('nome', 255)
@@ -141,7 +145,7 @@ class PacientesTable extends Table
             ->scalar('pais_residencia')
             ->maxLength('pais_residencia', 255)
             ->notEmptyString('pais_residencia');
-
+*/
         return $validator;
     }
 

@@ -1,7 +1,8 @@
 <?php
 namespace App\Controller\Admin;
-
+use Cake\Http\Client;
 use App\Controller\AppController;
+use App\Component\PacientesDataComponent;
 
 /**
  * Pacientes Controller
@@ -22,6 +23,7 @@ class PacientesController extends AppController
             'F' => 'F'
         ];
 
+        $this->loadComponent('PacientesData');
         $this->loadComponent('Helpers');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
@@ -36,7 +38,7 @@ class PacientesController extends AppController
     public function index()
     {
 
-        $action = 'Ver Todos';
+        $action = 'Ver Todos 2';
         $title = 'Pacientes';
 
         $pacientes = $this->paginate($this->Pacientes);
@@ -114,7 +116,6 @@ class PacientesController extends AppController
                 'analgesico_antitermico_antiinflamatorio' => $req['analgesico_antitermico_antiinflamatorio'],
                 'paciente_hospitalizado' => $req['paciente_hospitalizado'],
                 'paciente_hospitalizado_nome_hospital' => $req['paciente_hospitalizado_nome_hospital'],
-
                 'paciente_ventilacao_mecanica' => $req['paciente_ventilacao_mecanica'],
                 'paciente_situacao_notificacao' => $req['paciente_situacao_notificacao'],
                 'paciente_historico_viagem_14_dias' => $req['paciente_historico_viagem_14_dias'],
@@ -123,19 +124,16 @@ class PacientesController extends AppController
             ];
 
             $validacao = $this->naoVazios($validar);
-
             if(!$validacao){
-
                 $this->Flash->error(
                     __('Preencha todos os campos obrigatórios.') .
                     "<div id=\"flash_erros\" style=\"display:none\">" . json_encode($validacao['erros']) . "</div>",
                     ['escape' => false]
                 );
-
             } else {
-
+               
                 $result = $this->createdPaciente($req, $paciente);
-                if ($result) {
+                if (strlen($result->hash) > 5) {
                     $save_ok = true;
                     if(true){
 
@@ -165,9 +163,12 @@ class PacientesController extends AppController
                             $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
                             $pedido = $this->Pedidos->save($pedido);
                             if(!$pedido){
+                                echo "PEDDDDDDD";
                                 $save_ok = false;
                             }
                         }else{
+                            var_dump($anamnese);
+                            echo "TEEEEEEEEEDDDDDDD";
                             $save_ok = false;
                         }
 
@@ -175,13 +176,14 @@ class PacientesController extends AppController
 
                     if($save_ok){
                         $this->Flash->success(__('Anamnese Criada com sucesso.'));
-
                         return $this->redirect(['controller' => 'pedidos', 'action' => 'index', 'status' => 'EmAtendimento' ]);
                     }else{
-                        $this->Flash->error(__('Erro ao salvar dados!'));
+                        var_dump($result);
+                        die;
+                        $this->Flash->error(__('Erro ao salvar dados #32!'));
                     }
                 }else{
-                     $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
+                     $this->Flash->error(__('The paciente could not be saved. Please, try again.'  . $resp_code ));
                 }
 
             }
@@ -204,27 +206,47 @@ class PacientesController extends AppController
             $useForm = false;
         }
 
-        if(!empty($query['paciente_cpf']) || !empty($query['paciente_nome'])){
-            $condition_find = [
-                    'Anamneses.status' => 'created',
-                    'OR' => [
-                        'Pacientes.nome like' => '%'.$query['paciente_nome'].'%',
-                        'Pacientes.cpf' => $this->Helpers->stringToNumber($query['paciente_cpf']),
-                    ]
-                ];
+        
 
-            $anamnese = $this->Anamneses->find('all',[
-                'contain' => ['Pacientes'],
-                'conditions' => $condition_find
-            ])->first();
-            if(!empty($anamnese)){
-                $paciente = $anamnese->paciente;
-                $disabled_inputs = false;
+        if(!empty($query['paciente_cpf']) || !empty($query['paciente_nome'])){
+            $paciente_data = $this->PacientesData->getByFilter($query['paciente_nome'], $query['paciente_cpf']);
+            if($paciente_data){
+              $json_paciente = json_decode($paciente_data);
+              $condition_find = [
+                    'Anamneses.status' => 'created',
+                    'Pacientes.hash' => $json_paciente->hash,
+                ];
+                $anamnese = $this->Anamneses->find('all',[
+                    'contain' => ['Pacientes'],
+                    'conditions' => $condition_find
+                ])->first();
+                if(!empty($anamnese)){
+                    $paciente = $anamnese->paciente;
+                    $paciente->set('nome',  $json_paciente->nome);
+                    $paciente->set('cpf',  $json_paciente->cpf);
+                    $paciente->set('rg', $json_paciente->rg);
+                    $paciente->set('sexo', $json_paciente->sexo);
+                    $paciente->set('email', $json_paciente->email);
+                    $paciente->set('celular',  $json_paciente->celular);
+                    $paciente->set('telefone',$json_paciente->telefone);
+                    $paciente->set('data_nascimento',$json_paciente->data_nascimento);
+                    $paciente->set('cep',$json_paciente->cep);
+                    $paciente->set('endereco',$json_paciente->endereco);
+                    $paciente->set('bairro',$json_paciente->bairro);
+                    $paciente->set('cidade',$json_paciente->cidade);
+                    $paciente->set('uf',$json_paciente->uf);
+                    $paciente->set('nome_da_mae',$json_paciente->nome_da_mae);
+                    $paciente->set('nacionalidade',$json_paciente->nacionalidade);
+                    $paciente->set('pais_residencia',$json_paciente->pais_residencia);
+                    $paciente->set('foto_perfil_url',$json_paciente->foto_perfil_url);
+                    $paciente->set('foto_doc_url',$json_paciente->foto_doc_url);
+                    $disabled_inputs = false;
+                }else{
+                    $this->Flash->error('Paciente Não Encontrado',['key' => 'filterpaciente']);
+                }
             }else{
                 $this->Flash->error('Paciente Não Encontrado',['key' => 'filterpaciente']);
             }
-
-
         }
 
         $this->set(compact('paciente','action','title','sexos','disabled_inputs','anamnese','useForm','query'));
@@ -237,14 +259,48 @@ class PacientesController extends AppController
 
     public function createdPaciente($req, $paciente)
     {
-
+/*
         $find_paciente = $this->Pacientes->find('all',[
             'conditions' => ['cpf' => $req['cpf']]
         ])->first();
-
-        if(!empty($find_paciente)){
-            return $find_paciente;
+        */
+        $resPaciente  = $this->PacientesData->getCheckCPF($req['cpf']);
+        if(!empty($resPaciente)){
+            $user_data =  json_decode($resPaciente);
+            $find_paciente = $this->Pacientes->find('all',[
+                'conditions' => ['hash' => $user_data->hash]
+            ])->first();
+            $user_data->id =  $find_paciente->id;
+            return  $user_data;
         } else {
+            $API_ROOT = env('USER_ENDPOINT');
+            $data = array(   "nome"        =>  $req['nome']
+                            , "cpf"         =>  $req['cpf']
+                            , "rg"          =>  $req['rg']
+                            , "email"       =>  $req['email']
+                            , "celular"     =>  $req['celular']
+                            , "telefone"    =>  $req['telefone']
+                            , "sexo"        =>  $req['sexo']
+                            , "data_nascimento" =>  $req['data_nascimento']
+                            , "endereco"        =>  $req['endereco']
+                            , "bairro"          =>  $req['bairro']
+                            , "cep"             =>  $req['cep']
+                            , "cidade"          =>  $req['cidade']
+                            , "uf"              =>  $req['uf']
+                            , "foto_perfil_url"   =>  $req['foto_perfil_url']
+                            , "foto_doc_url"      =>  $req['foto_doc_url']
+                            , "nome_da_mae"       =>  $req['nome_da_mae']
+                            , "nacionalidade"     =>  $req['nacionalidade']
+                            , "pais_residencia"   =>  $req['pais_residencia']
+                        );
+            $json = json_encode($data);
+            $http = new Client(); 
+            $response = $http->post($API_ROOT . 'paciente/create', $json, [
+            'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)] ]);
+            $resp_code = $response->getStatusCode();
+            $jst_r  = json_decode($response->body);
+            $req['hash'] = $jst_r->hash;
+
             $paciente = $this->Pacientes->patchEntity($paciente, $req);
             $paciente = $this->Pacientes->save($paciente);
             return $paciente;

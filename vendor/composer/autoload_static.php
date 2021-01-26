@@ -75,6 +75,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
             'Seld\\PharUtils\\' => 15,
             'Seld\\JsonLint\\' => 14,
         ),
+        'R' => 
+        array (
+            'Rest\\' => 5,
+        ),
         'P' => 
         array (
             'Psy\\' => 4,
@@ -95,6 +99,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
         array (
             'JsonSchema\\' => 11,
             'Jasny\\Twig\\' => 11,
+        ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
         ),
         'D' => 
         array (
@@ -226,6 +234,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
         array (
             0 => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint',
         ),
+        'Rest\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sprintcube/cakephp-rest/src',
+        ),
         'Psy\\' => 
         array (
             0 => __DIR__ . '/..' . '/psy/psysh/src',
@@ -273,6 +285,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
         'Jasny\\Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/jasny/twig-extensions/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

@@ -233,7 +233,8 @@
             "cache",
             "extension",
             "twig"
-        ]
+        ],
+        "abandoned": "twig/cache-extension"
     },
     {
         "name": "aura/intl",
@@ -1148,6 +1149,58 @@
         "keywords": [
             "constructor",
             "instantiate"
+        ]
+    },
+    {
+        "name": "firebase/php-jwt",
+        "version": "v5.2.0",
+        "version_normalized": "5.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/firebase/php-jwt.git",
+            "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/firebase/php-jwt/zipball/feb0e820b8436873675fd3aca04f3728eb2185cb",
+            "reference": "feb0e820b8436873675fd3aca04f3728eb2185cb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": ">=4.8 <=9"
+        },
+        "time": "2020-03-25T18:49:23+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Firebase\\JWT\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Neuman Vong",
+                "email": "neuman+pear@twilio.com",
+                "role": "Developer"
+            },
+            {
+                "name": "Anant Narayanan",
+                "email": "anant@php.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+        "homepage": "https://github.com/firebase/php-jwt",
+        "keywords": [
+            "jwt",
+            "php"
         ]
     },
     {
@@ -2250,7 +2303,8 @@
         "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
         "keywords": [
             "tokenizer"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "phpunit/phpunit",
@@ -3434,6 +3488,68 @@
         "description": "PHAR file format utilities, for when PHP phars you up",
         "keywords": [
             "phar"
+        ]
+    },
+    {
+        "name": "sprintcube/cakephp-rest",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sprintcube/cakephp-rest.git",
+            "reference": "2538246e7a397c990e4710ba43e9eb8f1f291d66"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sprintcube/cakephp-rest/zipball/2538246e7a397c990e4710ba43e9eb8f1f291d66",
+            "reference": "2538246e7a397c990e4710ba43e9eb8f1f291d66",
+            "shasum": ""
+        },
+        "require": {
+            "cakephp/cakephp": "^3.4.0",
+            "firebase/php-jwt": "^5.0",
+            "php": ">=5.6.0"
+        },
+        "require-dev": {
+            "cakephp/cakephp-codesniffer": "^3.0",
+            "phpunit/phpunit": "^5.7|^6.0"
+        },
+        "time": "2018-08-20T06:16:58+00:00",
+        "type": "cakephp-plugin",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Rest\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "SprintCube",
+                "homepage": "https://www.sprintcube.com",
+                "role": "Author"
+            },
+            {
+                "name": "Community",
+                "homepage": "https://github.com/sprintcube/cakephp-rest/graphs/contributors"
+            },
+            {
+                "name": "Narendra Vaghela",
+                "homepage": "https://www.narendravaghela.com",
+                "role": "Author"
+            }
+        ],
+        "description": "Rest API plugin for CakePHP 3",
+        "keywords": [
+            "CakePHP Rest",
+            "CakePHP Rest Api",
+            "REST API",
+            "api",
+            "cakephp",
+            "rest"
         ]
     },
     {
@@ -4678,12 +4794,12 @@
         "version_normalized": "1.9.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/webmozart/assert.git",
+            "url": "https://github.com/webmozarts/assert.git",
             "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+            "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
             "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
             "shasum": ""
         },

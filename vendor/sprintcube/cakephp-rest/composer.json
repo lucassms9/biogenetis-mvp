@@ -1,0 +1,59 @@
+{
+    "name": "sprintcube/cakephp-rest",
+    "description": "Rest API plugin for CakePHP 3",
+    "type": "cakephp-plugin",
+    "keywords": ["CakePHP", "Rest", "Api", "Rest Api", "CakePHP Rest", "CakePHP Rest Api"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Narendra Vaghela",
+            "homepage": "https://www.narendravaghela.com",
+            "role": "Author"
+        },
+        {
+            "name": "SprintCube",
+            "homepage": "https://www.sprintcube.com",
+            "role": "Author"
+        },
+        {
+            "name": "Community",
+            "homepage": "https://github.com/sprintcube/cakephp-rest/graphs/contributors"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/sprintcube/cakephp-rest",
+        "issues": "https://github.com/sprintcube/cakephp-rest/issues"
+    },
+    "require": {
+        "php": ">=5.6.0",
+        "cakephp/cakephp": "^3.4.0",
+        "firebase/php-jwt": "^5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7|^6.0",
+        "cakephp/cakephp-codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rest\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rest\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": "App\\Console\\Installer::postInstall",
+        "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump",
+        "check": [
+            "@test",
+            "@cs-check"
+        ],
+        "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests",
+        "test": "phpunit --colors=always"
+    }
+}

@@ -26,6 +26,7 @@ class PacientesDataComponent extends Component
         $resp_decoded = $this->Helpers->doDecrypt($response->body);
         return  $resp_decoded;
     }
+
     public function getCheckCPF($string)
     {
         $API_ROOT = env('USER_ENDPOINT');
@@ -33,6 +34,17 @@ class PacientesDataComponent extends Component
         $body = json_encode($cpf);
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/check',  $body, [
+            'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
+        ]);
+        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        return  $resp_decoded;
+    }
+    public function getCheckCPFOrEmail($cpf, $email)
+    {
+        $req = array("cpf" => $cpf, 'email' => $email);
+        $body = json_encode($req);
+        $http = new Client();
+        $response = $http->post($this->API_ROOT . 'paciente/checkEmailOrCpf/',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
         $resp_decoded = $this->Helpers->doDecrypt($response->body);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
 use Cake\Core\Configure;
@@ -20,6 +22,7 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
 
 /**
  * Application setup class.
@@ -34,6 +37,8 @@ class Application extends BaseApplication
      */
     public function bootstrap()
     {
+
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
@@ -50,8 +55,19 @@ class Application extends BaseApplication
         }
 
         $this->addPlugin('Cewi/Excel');
+        $this->addPlugin('Rest', ['bootstrap' => true]);
         // $this->addPlugin(\CakeDC\OracleDriver\Plugin::class, ['bootstrap' => true]);
         // Load more plugins here
+
+        $csrf = new CsrfProtectionMiddleware();
+
+        // Token check will be skipped when callback returns `true`.
+        $csrf->whitelistCallback(function ($request) {
+            // Skip token check for API URLs.
+            if ($request->getParam('prefix') === 'Api') {
+                return true;
+            }
+        });
     }
 
     /**
@@ -79,6 +95,10 @@ class Application extends BaseApplication
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this));
+
+        // $middlewareQueue->add(new CsrfProtectionMiddleware([
+        //     'httpOnly' => false
+        // ]));
 
         return $middlewareQueue;
     }

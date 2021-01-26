@@ -7,6 +7,7 @@ return [
         'Cewi/Excel' => $baseDir . '/vendor/Cewi/Excel/',
         'DebugKit' => $baseDir . '/vendor/cakephp/debug_kit/',
         'Migrations' => $baseDir . '/vendor/cakephp/migrations/',
+        'Rest' => $baseDir . '/vendor/sprintcube/cakephp-rest/',
         'WyriHaximus/TwigView' => $baseDir . '/vendor/wyrihaximus/twig-view/'
     ]
 ];

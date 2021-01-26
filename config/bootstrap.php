@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -194,6 +195,7 @@ Type::build('timestamp')
 
 
 // Plugin::load('CakeDC/OracleDriver', ['bootstrap' => true]);
+
 
 /*
  * Custom Inflector rules, can be set to correctly pluralize or singularize

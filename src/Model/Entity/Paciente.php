@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -41,8 +42,10 @@ class Paciente extends Entity
      * @var array
      */
     protected $_accessible = [
-        'hash' => true
-     /*  , 'nome' => true,
+        'hash' => true,
+        'senha' => true,
+        'token_mobile' => true,
+        /*  , 'nome' => true,
         'cpf' => true,
         'rg' => true,
         'email' => true,

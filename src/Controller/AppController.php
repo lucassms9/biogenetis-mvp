@@ -70,6 +70,8 @@ class AppController extends Controller
             'storage' => 'Session'
         ]);
 
+
+
         if (
             $this->Auth->user() &&
             $this->request->getParam('controller') == 'Pages' || $this->request->getParam('controller') == 'Admin'

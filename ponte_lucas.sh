@@ -7,10 +7,13 @@ read -p "Servidor Ponte  =" Ponte
 echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
 
 //TUNEL BANCO
-ssh -N -L 9999:172.21.2.2:3306 root@152.67.55.26
+ssh -N -L 9999:172.21.2.2:3306 opc@152.67.55.26
 
 //maquina do wagner
-ssh -N -L 9999:172.21.1.2:3019 root@152.67.55.26
+ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
+
+//novo user
+ssh opc@152.67.55.26
 
 BANCO
 database: dbweb

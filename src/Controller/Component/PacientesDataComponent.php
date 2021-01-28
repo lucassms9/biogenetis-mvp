@@ -23,7 +23,7 @@ class PacientesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'paciente/listbyhash',  $string, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($string)]
         ]);
-        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
 
@@ -36,7 +36,7 @@ class PacientesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'paciente/check',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
     public function getCheckCPFOrEmail($cpf, $email)
@@ -47,19 +47,18 @@ class PacientesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'paciente/checkEmailOrCpf/',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
     public function getByHash($string)
     {
-        $API_ROOT = env('USER_ENDPOINT');
         $hash = array("hash" => $string);
         $body = json_encode($hash);
         $http = new Client();
-        $response = $http->post($API_ROOT . 'paciente/getbyhash',  $body, [
+        $response = $http->post($this->API_ROOT . 'paciente/getbyhash',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
     public function getByFilter($nome, $cpf)
@@ -71,7 +70,7 @@ class PacientesDataComponent extends Component
         $response = $http->post($API_ROOT . 'paciente/filter',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $resp_decoded = $this->Helpers->doDecrypt($response->body);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
     public function returnPaciente($hash, $pacientes)

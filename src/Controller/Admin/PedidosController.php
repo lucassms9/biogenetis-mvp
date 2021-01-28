@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Component\PacientesDataComponent;
+
 /**
  * Pedidos Controller
  *
@@ -16,7 +17,7 @@ class PedidosController extends AppController
     public function initialize()
     {
         parent::initialize();
-
+        $this->Auth->allow(['laudoViwer']);
         $this->sexos = [
             'M' => 'M',
             'F' => 'F'
@@ -66,7 +67,8 @@ class PedidosController extends AppController
         exit;
     }
 
-    public function getCroquiPedido($id){
+    public function getCroquiPedido($id)
+    {
         $croqui_pedido = $this->PedidoCroqui->get($id, [
             'contain' => ['PedidoCroquiValores', 'CroquiTipos']
         ]);
@@ -85,6 +87,8 @@ class PedidosController extends AppController
         exit;
     }
 
+
+
     public function croquiviwer($croqui_pedido_id)
     {
         $action = 'Detalhe';
@@ -93,14 +97,14 @@ class PedidosController extends AppController
             'PedidoCroqui.id' => $croqui_pedido_id
         ];
 
-        $croqui = $this->PedidoCroqui->find('all',[
+        $croqui = $this->PedidoCroqui->find('all', [
             'contain' => ['Pedidos.Anamneses.Pacientes'],
             'conditions' => $conditions,
             'group' => ['PedidoCroqui.pedido_id']
         ])->first();
 
 
-        $croquis_pedidos = $this->PedidoCroqui->find('all',[
+        $croquis_pedidos = $this->PedidoCroqui->find('all', [
             'contain' => ['Pedidos.Anamneses.Pacientes'],
             'conditions' => ['PedidoCroqui.codigo_croqui' => $croqui->codigo_croqui]
         ])->toArray();
@@ -109,7 +113,7 @@ class PedidosController extends AppController
 
         $croqui_tipo_id = $croqui->croqui_tipo_id;
 
-        $this->set(compact('action', 'title', 'croqui','croqui_tipos','croqui_tipo_id','croquis_pedidos'));
+        $this->set(compact('action', 'title', 'croqui', 'croqui_tipos', 'croqui_tipo_id', 'croquis_pedidos'));
     }
 
     public function croquis()
@@ -143,32 +147,28 @@ class PedidosController extends AppController
         if (!empty($query['status'])) {
             $conditions['Pedidos.status'] = $query['status'];
         }
-        
+
         $pedidos = $this->paginate($this->Pedidos, [
             'contain' => ['Anamneses.Pacientes'],
             'conditions' => $conditions
         ]);
         $arr = array('hashs' => []);
-        foreach ($pedidos as $pedido){
-            array_push($arr['hashs'],$pedido->anamnese->paciente->hash);
+        foreach ($pedidos as $pedido) {
+            array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
         }
         $body = json_encode($arr);
-        $pacientes_data = json_decode($this->PacientesData->getPacientes($body),true);
-        $pedidos_list =[];
-        foreach ($pedidos as $pedido){
-            $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash,$pacientes_data);
-            array_push($pedidos_list,array( "hash"   => $pedido->anamnese->paciente->hash
-                                          , "id"     => $pedido->id 
-                                          , "codigo_pedido" => $pedido->codigo_pedido
-                                          , "status" => $pedido->status 
-                                          , "cpf"    => $user_info['cpf']
-                                          , "nome"    => $user_info['nome']
-                                          , "celular"    => $user_info['celular']
-                                          , "created" => $pedido->created
-                                        )
-                       );
+        $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
+        $pedidos_list = [];
+        foreach ($pedidos as $pedido) {
+            $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
+            array_push(
+                $pedidos_list,
+                array(
+                    "hash"   => $pedido->anamnese->paciente->hash, "id"     => $pedido->id, "codigo_pedido" => $pedido->codigo_pedido, "status" => $pedido->status, "cpf"    => $user_info['cpf'], "nome"    => $user_info['nome'], "celular"    => $user_info['celular'], "created" => $pedido->created
+                )
+            );
         }
-        $this->set(compact('action', 'title', 'pedidos','pedidos_list'));
+        $this->set(compact('action', 'title', 'pedidos', 'pedidos_list'));
     }
 
     public function laudo($id)
@@ -176,6 +176,24 @@ class PedidosController extends AppController
         $pedido = $this->Pedidos->get($id, [
             'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
         ]);
+
+        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
+    }
+
+    public function laudoViwer($id)
+    {
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+        ]);
+
+        //buscando o paciente
+        $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+        $res = json_decode($resPaciente);
+        $pedido->anamnese->paciente = $res;
+
+
+
+        $this->viewBuilder()->setLayout('laudo');
 
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
     }
@@ -188,31 +206,31 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users','PedidoCroqui'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users', 'PedidoCroqui'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;
         $paciente_dados  = json_decode($this->PacientesData->getByHash($paciente->hash));
 
-        
+
         $paciente->set('nome',  $paciente_dados->nome);
         $paciente->set('cpf',  $paciente_dados->cpf);
         $paciente->set('rg', $paciente_dados->rg);
         $paciente->set('sexo', $paciente_dados->sexo);
         $paciente->set('email', $paciente_dados->email);
         $paciente->set('celular',  $paciente_dados->celular);
-        $paciente->set('telefone',$paciente_dados->telefone);
-        $paciente->set('data_nascimento',$paciente_dados->data_nascimento);
-        $paciente->set('cep',$paciente_dados->cep);
-        $paciente->set('endereco',$paciente_dados->endereco);
-        $paciente->set('bairro',$paciente_dados->bairro);
-        $paciente->set('cidade',$paciente_dados->cidade);
-        $paciente->set('uf',$paciente_dados->uf);
-        $paciente->set('nome_da_mae',$paciente_dados->nome_da_mae);
-        $paciente->set('nacionalidade',$paciente_dados->nacionalidade);
-        $paciente->set('pais_residencia',$paciente_dados->pais_residencia);
-        $paciente->set('foto_perfil_url',$paciente_dados->foto_perfil_url);
-        $paciente->set('foto_doc_url',$paciente_dados->foto_doc_url);
+        $paciente->set('telefone', $paciente_dados->telefone);
+        $paciente->set('data_nascimento', $paciente_dados->data_nascimento);
+        $paciente->set('cep', $paciente_dados->cep);
+        $paciente->set('endereco', $paciente_dados->endereco);
+        $paciente->set('bairro', $paciente_dados->bairro);
+        $paciente->set('cidade', $paciente_dados->cidade);
+        $paciente->set('uf', $paciente_dados->uf);
+        $paciente->set('nome_da_mae', $paciente_dados->nome_da_mae);
+        $paciente->set('nacionalidade', $paciente_dados->nacionalidade);
+        $paciente->set('pais_residencia', $paciente_dados->pais_residencia);
+        $paciente->set('foto_perfil_url', $paciente_dados->foto_perfil_url);
+        $paciente->set('foto_doc_url', $paciente_dados->foto_doc_url);
         $anamnese = $pedido->anamnese;
 
         $pagamento = $pedido->entrada_exame;
@@ -226,7 +244,7 @@ class PedidosController extends AppController
         $croqui_tipos = $this->Croquis->find('list');
         $formas_pagamento = $this->formas_pagamento;
 
-        $this->set(compact('action', 'title', 'croqui_tipo_id','pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento','paciente_dados'));
+        $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados'));
     }
 
     public function pagamento($pedido_id = null)
@@ -424,10 +442,8 @@ class PedidosController extends AppController
                     ];
                 }
             }
-
         }
 
         $this->set(compact('barcodes'));
     }
-
 }

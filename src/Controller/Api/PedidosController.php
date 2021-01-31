@@ -6,6 +6,7 @@ use Rest\Controller\RestController;
 use Cake\Http\Client;
 use Exception;
 use Firebase\JWT\JWT;
+use Cake\Routing\Router;
 
 
 /**
@@ -48,20 +49,28 @@ class PedidosController extends RestController
 
         $payload = $this->payload;
 
+
         $pedidos = $this->Pedidos->find('all', [
-            'contain' => ['Exames', 'Anamneses.Pacientes'],
+            'contain' => ['Exames', 'Anamneses.Pacientes', 'Clientes', 'EntradaExames'],
             'conditions' => ['Anamneses.paciente_id' => $payload->id]
         ])->toList();
+
+
 
         $handle = [];
 
         foreach ($pedidos as $key => $pedido) {
+            // debug($pedido->entrada_exame->nome);
+            // die;
             $handle[] = [
+                'clinica_nome' => $pedido->cliente->nome_fantasia ?? '-',
+                'exame_nome' => $pedido->entrada_exame->nome ?? '-',
                 'id' => $pedido['id'],
                 'codigo' => $pedido['codigo_pedido'],
                 'status' => $pedido['status'],
                 'amostra_tipo' => $pedido['exame']['amostra_tipo'] ?? '-',
                 'resultado' => $pedido['exame']['resultado'] ?? '-',
+                'url_exame' => Router::url('/admin/pedidos/laudo-viwer/' . $pedido['id'], true)
             ];
         }
 

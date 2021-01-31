@@ -27,6 +27,9 @@ class PacientesController extends RestController
         $this->body = $this->Request->getBody();
         $this->API_ROOT = env('USER_ENDPOINT');
         $this->loadModel('Pacientes');
+        $this->loadModel('Anamneses');
+        $this->loadModel('Clientes');
+        $this->loadModel('Pedidos');
 
         $authorization = $this->request->getHeaderLine('Authorization');
         $authorization = explode(' ', $authorization);
@@ -79,6 +82,49 @@ class PacientesController extends RestController
         }
 
         $result['paciente'] = $res;
+
+        $this->set(compact('result'));
+    }
+
+    public function createAnamnese()
+    {
+        $result = [];
+
+        $body = $this->body;
+        $payload = $this->payload;
+
+        $body['paciente_id'] = $payload->id;
+        $anamnese = $this->Anamneses->newEntity();
+        $anamnese = $this->Anamneses->patchEntity($anamnese, $body);
+        $anamnese = $this->Anamneses->save($anamnese);
+
+        if (empty($anamnese)) {
+            throw new Exception('Erro ao criar anamnese');
+        }
+
+        $cliente = $this->Clientes->find('All', [
+            'conditions' => ['id' => $body['cliente_id']]
+        ])->first();
+
+        $body['tipo_pagamento'] = $cliente->tipo_cobranca;
+
+        //criacao de pedido
+        $dadaos_pedido = [
+            'anamnese_id' => $anamnese->id,
+            'cliente_id' => $cliente->id,
+            'tipo_pagamento' => $cliente->tipo_cobranca,
+            'created_by' => $body['paciente_id'],
+            'exame_entrada_id' => 1
+        ];
+
+        $pedido = $this->Pedidos->newEntity();
+        $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
+        $pedido = $this->Pedidos->save($pedido);
+
+        if (empty($pedido)) {
+            throw new Exception('Erro ao criar pedido');
+        }
+        $result['pedido'] = $pedido;
 
         $this->set(compact('result'));
     }

@@ -26,6 +26,7 @@ class ClientesController extends RestController
         $this->body = $this->Request->getBody();
         $this->API_ROOT = env('USER_ENDPOINT');
         $this->loadModel('Clientes');
+        $this->loadModel('EntradaExames');
     }
 
     public function index()
@@ -52,6 +53,17 @@ class ClientesController extends RestController
         }
 
         $result['clientes'] = $handle;
+
+        $this->set(compact('result'));
+    }
+
+    public function getAllServices()
+    {
+        $exams = $this->EntradaExames->find('all', [
+            'conditions' => []
+        ])->toList();
+
+        $result['servicos'] = $exams;
 
         $this->set(compact('result'));
     }

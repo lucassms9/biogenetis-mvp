@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -111,15 +112,25 @@ class PedidosTable extends Table
         return $rules;
     }
 
+    public function beforeFind(Event $event, $query, $options, $primary)
+    {
+        if (isset($_SESSION['Auth']['User']['user_type_id']) && $_SESSION['Auth']['User']['user_type_id'] !== 1) {
+
+            $query->where(['Pedidos.cliente_id' => $_SESSION['Auth']['User']['cliente_id']]);
+        }
+        return $query;
+    }
+
     public function beforeSave(Event $event)
     {
         $entityClass = $event->getData('entity');
-        if($entityClass->isNew()){
-           $entityClass->codigo_pedido = $this->geraCodPedido();
+        if ($entityClass->isNew()) {
+            $entityClass->codigo_pedido = $this->geraCodPedido();
         }
     }
 
-    public function geraCodPedido(){
+    public function geraCodPedido()
+    {
         return mt_rand();
     }
 }

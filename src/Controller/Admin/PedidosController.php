@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 use App\Component\PacientesDataComponent;
+use App\Model\Entity\Paciente;
 
 /**
  * Pedidos Controller
@@ -49,12 +50,18 @@ class PedidosController extends AppController
             'barcode' => ''
         ];
 
+        $pacienteData = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+        $pacienteData = json_decode($pacienteData);
+
+        $pedido->anamnese->paciente = $pacienteData;
+
         if ($pedido && $pedido->entrada_exame && $pedido->anamnese) {
+
             $barcode = [
                 'tipo_exame' => $pedido->entrada_exame->tipo_exame,
                 'paciente_nome' => $pedido->anamnese->paciente->nome,
                 'paciente_nome' => $pedido->anamnese->paciente->nome,
-                'paciente_data_nasc' => $pedido->anamnese->paciente->data_nascimento->i18nFormat('dd/MM/yyyy'),
+                'paciente_data_nasc' => date("d/m/Y", strtotime($pedido->anamnese->paciente->data_nascimento)),
                 'data_sistema' => $pedido->created->i18nFormat('dd/MM/yyyy'),
                 'codigo_pedido' => $pedido->codigo_pedido,
             ];
@@ -109,6 +116,26 @@ class PedidosController extends AppController
             'conditions' => ['PedidoCroqui.codigo_croqui' => $croqui->codigo_croqui]
         ])->toArray();
 
+        $arr = array('hashs' => []);
+
+        foreach ($croquis_pedidos as $croquis_pedido) {
+            array_push($arr['hashs'], $croquis_pedido->pedido->anamnese->paciente->hash);
+        }
+
+
+        $body = json_encode($arr);
+        $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
+        $pedidos_list = [];
+
+        foreach ($croquis_pedidos as $key => $croquis_pedido) {
+            $finded =  array_filter($pacientes_data, function ($paciente) use ($croquis_pedido) {
+                return $paciente['hash'] == $croquis_pedido->pedido->anamnese->paciente->hash;
+            });
+            $paciente = new Paciente($finded[0]);
+
+            $croquis_pedido->pedido->anamnese->paciente = $paciente;
+        }
+
         $croqui_tipos = $this->Croquis->find('list');
 
         $croqui_tipo_id = $croqui->croqui_tipo_id;
@@ -128,6 +155,7 @@ class PedidosController extends AppController
         $croquis = $this->paginate($this->PedidoCroqui, [
             'contain' => ['Pedidos.Anamneses.Pacientes', 'CroquiTipos'],
             'conditions' => $conditions,
+            'group' => ['Pedidos.id']
         ]);
 
         $this->set(compact('action', 'title', 'croquis'));
@@ -153,13 +181,16 @@ class PedidosController extends AppController
             'conditions' => $conditions
         ]);
         $arr = array('hashs' => []);
+
         foreach ($pedidos as $pedido) {
             array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
         }
+
         $body = json_encode($arr);
         $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
         $pedidos_list = [];
         foreach ($pedidos as $pedido) {
+
             $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
             array_push(
                 $pedidos_list,
@@ -177,6 +208,11 @@ class PedidosController extends AppController
             'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
         ]);
 
+        $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+        $res = json_decode($resPaciente, true);
+
+        $pedido->anamnese->paciente = new Paciente($res);
+
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
     }
 
@@ -188,10 +224,9 @@ class PedidosController extends AppController
 
         //buscando o paciente
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-        $res = json_decode($resPaciente);
-        $pedido->anamnese->paciente = $res;
+        $res = json_decode($resPaciente, true);
 
-
+        $pedido->anamnese->paciente = new Paciente($res);
 
         $this->viewBuilder()->setLayout('laudo');
 

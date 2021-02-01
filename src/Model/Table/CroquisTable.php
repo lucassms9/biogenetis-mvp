@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -35,7 +36,7 @@ class CroquisTable extends Table
         $this->setTable('croquis');
         $this->setDisplayField('nome');
         $this->setPrimaryKey('id');
-
+        $this->addBehavior('Timestamp');
         $this->hasMany('Equipamentos', [
             'foreignKey' => 'croqui_id',
         ]);

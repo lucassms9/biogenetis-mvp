@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -96,6 +97,7 @@ class Anamnese extends Entity
      * @var array
      */
     protected $_accessible = [
+        'cliente_id' => true,
         'paciente_id' => true,
         'tipo_pagamento' => true,
         'gestante' => true,

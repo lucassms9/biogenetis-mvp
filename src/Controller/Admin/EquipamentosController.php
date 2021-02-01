@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
@@ -38,7 +39,8 @@ class EquipamentosController extends AppController
         ];
         $equipamentos = $this->paginate($this->Equipamentos);
 
-        $this->set(compact('equipamentos','action', 'title'));
+        $showActions = true;
+        $this->set(compact('equipamentos', 'action', 'title', 'showActions'));
     }
 
     /**
@@ -79,7 +81,7 @@ class EquipamentosController extends AppController
         }
         $croquis = $this->Equipamentos->Croquis->find('list', ['limit' => 200]);
         $exame_tipos = $this->exame_tipos;
-        $this->set(compact('equipamento', 'croquis','exame_tipos', 'action','title'));
+        $this->set(compact('equipamento', 'croquis', 'exame_tipos', 'action', 'title'));
     }
 
     /**
@@ -110,7 +112,7 @@ class EquipamentosController extends AppController
 
         $exame_tipos = $this->exame_tipos;
 
-        $this->set(compact('equipamento', 'croquis','exame_tipos','title', 'action'));
+        $this->set(compact('equipamento', 'croquis', 'exame_tipos', 'title', 'action'));
     }
 
     /**

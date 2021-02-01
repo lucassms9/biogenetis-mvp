@@ -40,12 +40,25 @@ class PacientesController extends AppController
     public function index()
     {
 
-        $action = 'Ver Todos 2';
+        $action = 'Ver Todos';
         $title = 'Pacientes';
+
+        $conditions = [];
+
+        if ($this->Auth->user('user_type_id') != 1) {
+            $conditions['Anamneses.cliente_id'] = $this->Auth->user('cliente_id');
+        }
+
+        $this->paginate = [
+            'contain' => ['Anamneses'],
+            'conditions' => $conditions,
+            'group' => ['Anamneses.paciente_id']
+        ];
 
         $pacientes = $this->paginate($this->Pacientes);
 
-        $this->set(compact('pacientes', 'action', 'title'));
+        $pacientesData = $this->PacientesData;
+        $this->set(compact('pacientes', 'action', 'title', 'pacientesData'));
     }
 
     /**
@@ -216,6 +229,9 @@ class PacientesController extends AppController
                     'contain' => ['Pacientes'],
                     'conditions' => $condition_find
                 ])->first();
+
+
+
                 if (!empty($anamnese)) {
                     $paciente = $anamnese->paciente;
                     $paciente->set('nome',  $json_paciente->nome);
@@ -225,7 +241,10 @@ class PacientesController extends AppController
                     $paciente->set('email', $json_paciente->email);
                     $paciente->set('celular',  $json_paciente->celular);
                     $paciente->set('telefone', $json_paciente->telefone);
-                    $paciente->set('data_nascimento', $json_paciente->data_nascimento);
+                    $paciente->set(
+                        'data_nascimento',
+                        date("d/m/Y", strtotime($json_paciente->data_nascimento))
+                    );
                     $paciente->set('cep', $json_paciente->cep);
                     $paciente->set('endereco', $json_paciente->endereco);
                     $paciente->set('bairro', $json_paciente->bairro);

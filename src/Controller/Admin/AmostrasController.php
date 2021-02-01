@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use App\Model\Entity\Paciente;
 use Cake\Http\Client;
 use DOMDocument;
 use Cake\Http\Exception\BadRequestException;
@@ -33,6 +34,7 @@ class AmostrasController extends AppController
         $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
         $this->loadComponent('Helpers');
+        $this->loadComponent('PacientesData');
     }
 
     public function sendEmail()
@@ -317,17 +319,21 @@ class AmostrasController extends AppController
                 'Exames.resultado <>' => 'null'
             ];
 
-            if (!empty($this->request->getQuery('lote'))) {
-                $conditions['Amostras.lote'] = $this->request->getQuery('lote');
+            if ($this->Auth->user('user_type_id') != 1) {
+                $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
 
-            if (!empty($this->request->getQuery('data_init'))) {
-                $data_de = $this->request->getQuery('data_init');
+            if (!empty($this->request->getData('lote'))) {
+                $conditions['Amostras.lote'] = $this->request->getData('lote');
+            }
+
+            if (!empty($this->request->getData('data_init'))) {
+                $data_de = $this->request->getData('data_init');
                 $conditions['cast(Amostras.created as date) >='] = $data_de;
             }
 
-            if (!empty($this->request->getQuery('data_fim'))) {
-                $data_ate = $this->request->getQuery('data_fim');
+            if (!empty($this->request->getData('data_fim'))) {
+                $data_ate = $this->request->getData('data_fim');
                 $conditions['cast(Amostras.created as date) >='] = $data_ate;
             }
 
@@ -363,6 +369,7 @@ class AmostrasController extends AppController
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
             foreach ($amostras as $i => $amostra) {
+
                 if ($amostra->exame->origen) {
                     $url_encad = $amostra->exame->origen->url_request;
                     $equip_tipo =  $amostra->exame->origen->equip_tipo;
@@ -524,7 +531,6 @@ class AmostrasController extends AppController
 
             $itemFor = $this->request->getData('totalFiles') - $this->request->getData('filesRemoved');
 
-
             foreach ($this->request->getData('amostraid') as $key => $amostraid) {
                 $amostras[$key] = ['amostra_id' => $amostraid];
             }
@@ -543,16 +549,19 @@ class AmostrasController extends AppController
             }
 
             foreach ($amostras as $key => $amostra) {
+
                 $amostra_save = $this->Amostras->newEntity();
                 $amostra_save = $this->Amostras->patchEntity($amostra_save, [
                     'code_amostra' => $amostra['amostra_id'],
-                    'uf' => $amostra['uf'],
-                    'idade' => $amostra['idade'],
-                    'sexo' => strtoupper($amostra['sexo']),
+                    'uf' => @$amostra['uf'],
+                    'idade' => @$amostra['idade'],
+                    'sexo' => strtoupper(@$amostra['sexo']),
                     'lote' => $this->generateLote($date_init)
                 ]);
 
                 $amostra_save = $this->Amostras->save($amostra_save);
+
+
                 // FAZ COMUNICAO COM O SERVICO DE IA
                 // SALVA O RETORNO EM RESULTADO
 
@@ -565,9 +574,11 @@ class AmostrasController extends AppController
 
                 $exame_find->resultado = $integration;
 
-                // $pedido = $this->Pedidos->get($exame_find->pedido_id);
-                // $pedido->status = 'Finalizado';
-                // $this->Pedidos->save($pedido);
+                if (!empty($exame_find->pedido_id)) {
+                    $pedido = $this->Pedidos->get($exame_find->pedido_id);
+                    $pedido->status = 'Finalizado';
+                    $this->Pedidos->save($pedido);
+                }
 
                 $this->Exames->save($exame_find);
             }
@@ -868,7 +879,12 @@ class AmostrasController extends AppController
                         $file_extesion = $amostra_id[1];
 
                         $amostraExist = $this->Exames->find('all', [
-                            'conditions' => ['amostra_id' => $amostra_id[0], 'resultado <>' => 'null']
+                            'contain' => ['Users.Clientes'],
+                            'conditions' => [
+                                'amostra_id' => $amostra_id[0],
+                                'Clientes.id' => $this->Auth->user('cliente_id'),
+                                'resultado <>' => 'null'
+                            ]
                         ])->first();
 
                         $handle_file = $this->getBetterRestul($file_extesion, $file);
@@ -880,15 +896,14 @@ class AmostrasController extends AppController
 
                         $clear_name_file = $this->Helpers->stringToNumber($file['name']);
 
-                        // $pedido = $this->Pedidos->find('all',[
-                        //     'conditions' => ['codigo_pedido like' => '%'. $clear_name_file .'%' ]
-                        // ])->first();
+                        $pedido = $this->Pedidos->find('all', [
+                            'conditions' =>
+                            [
+                                'codigo_pedido like' => '%' . $clear_name_file . '%',
+                                'cliente_id' => $this->Auth->user('cliente_id')
+                            ]
+                        ])->first();
 
-
-                        // if(empty($pedido)){
-                        //     throw new BadRequestException(__('Pedido não encontrado.'));
-                        //     die();
-                        // }
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],
@@ -896,10 +911,13 @@ class AmostrasController extends AppController
                             'equip_tipo' => $handle_file['equip_tipo'],
                             'amostra_tipo' => $handle_file['amostra_tipo'],
                             'file_name' => $file['name'],
-                            // 'pedido_id' => @$pedido->id,
                             'pedido_id' => 0,
                             'created_by' => $this->Auth->user('id'),
                         ];
+
+                        if (!empty($pedido)) {
+                            $exame['pedido_id'] = $pedido->id;
+                        }
 
                         $exame_save = $this->Exames->newEntity();
                         $exame_save = $this->Exames->patchEntity($exame_save, $exame);
@@ -911,7 +929,11 @@ class AmostrasController extends AppController
                             ]);
                             //seta as origens para disparo de request
                             $this->setOrigens($exame_save);
+                            // $paciente = new Paciente($finded[0]);
+                            $resPaciente = $this->PacientesData->getByHash($exame_save->pedido->anamnese->paciente->hash);
+                            $res = json_decode($resPaciente, true);
 
+                            $exame_save->pedido->anamnese->paciente = new Paciente($res);
                             echo json_encode($exame_save);
                             exit;
                         } else {
@@ -948,17 +970,7 @@ class AmostrasController extends AppController
             'Exames.resultado <>' => 'null'
         ];
 
-        // $this->paginate = [
-        //     'limit' => $limitDefault,
-        //     'contain' => ['Exames.Users']
-        // ];
-
-
-        if ($this->Auth->user('user_type_id') == 3) {
-            $conditions['Exames.created_by'] = $this->Auth->user('id');
-        }
-
-        if ($this->Auth->user('user_type_id') == 2) {
+        if ($this->Auth->user('user_type_id') != 1) {
             $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
         }
 
@@ -981,10 +993,18 @@ class AmostrasController extends AppController
         }
 
 
-        $amostras = $this->Amostras->find('all', [
+        $this->paginate = [
+            // 'limit' => '100',
             'contain' => ['Exames.Users'],
             'conditions' => $conditions
-        ])->toList();
+        ];
+
+        $amostras = $this->paginate($this->Amostras);
+        // debug($amostras)
+        // $amostras = $this->Amostras->find('all', [
+        //     'contain' => ['Exames.Users'],
+        //     'conditions' => $conditions
+        // ])->toList();
 
         $this->set(compact('amostras', 'action', 'title'));
     }

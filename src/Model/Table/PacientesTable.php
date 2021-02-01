@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -31,12 +32,17 @@ class PacientesTable extends Table
     public function initialize(array $config)
     {
         parent::initialize($config);
-
+        $this->addBehavior('Timestamp');
         $this->setTable('pacientes');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->hasMany('Anamneses', [
+            'foreignKey' => 'paciente_id',
+        ]);
+
+        $this->hasOne('Anamneses', [
+            'className' => 'Anamneses',
             'foreignKey' => 'paciente_id',
         ]);
     }
@@ -57,7 +63,7 @@ class PacientesTable extends Table
             ->scalar('hash')
             ->maxLength('hash', 255)
             ->notEmptyString('hash');
-            /*
+        /*
         $validator
             ->scalar('nome')
             ->maxLength('nome', 255)

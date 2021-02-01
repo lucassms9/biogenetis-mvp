@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
@@ -30,7 +31,6 @@ class CroquisController extends AppController
         $this->loadModel('Pedidos');
         $this->loadModel('PedidoCroqui');
         $this->loadModel('PedidoCroquiValores');
-
     }
 
     /**
@@ -45,11 +45,11 @@ class CroquisController extends AppController
 
         $conditions = [];
 
-        $croquis = $this->paginate($this->Croquis,[
+        $croquis = $this->paginate($this->Croquis, [
             'conditions' => $conditions
         ]);
-
-        $this->set(compact('croquis','action','title'));
+        $showActions = true;
+        $this->set(compact('croquis', 'action', 'title', 'showActions'));
     }
     public function getCroqui($id)
     {
@@ -60,7 +60,7 @@ class CroquisController extends AppController
 
         $croqui = $this->Croquis->get($id);
 
-        if(!empty($croqui)){
+        if (!empty($croqui)) {
             $retorno['error'] = 0;
             $retorno['croqui'] = $croqui;
         }
@@ -79,20 +79,20 @@ class CroquisController extends AppController
         $conditions = ['Pedidos.status' => 'EmTriagem'];
         $query = $this->request->getQuery();
 
-        if(!empty($query['nome_paciente'])){
-           $conditions['Pacientes.nome like'] = '%'. $query['nome_paciente'] .'%';
+        if (!empty($query['nome_paciente'])) {
+            $conditions['Pacientes.nome like'] = '%' . $query['nome_paciente'] . '%';
         }
 
-        if(!empty($query['cpf_paciente'])){
+        if (!empty($query['cpf_paciente'])) {
             $conditions['Pacientes.cpf'] = $query['cpf_paciente'];
         }
 
-        if(!empty($query['date_de'])){
+        if (!empty($query['date_de'])) {
             $data_de = implode('-', array_reverse(explode('/', $query['date_de'])));
             $conditions['cast(Pedidos.created as date) >='] = $data_de;
         }
 
-        if(!empty($query['date_ate'])){
+        if (!empty($query['date_ate'])) {
             $data_ate = implode('-', array_reverse(explode('/', $query['data_ate'])));
             $conditions['cast(Pedidos.created as date) <='] = $data_ate;
         }
@@ -109,7 +109,7 @@ class CroquisController extends AppController
             $croqui_dados = [];
 
             foreach ($req as $key => $value) {
-                if(!preg_match('/croqui_tipo_id/', $key) && !preg_match('/pedidos/', $key)){
+                if (!preg_match('/croqui_tipo_id/', $key) && !preg_match('/pedidos/', $key)) {
                     $croqui_dados[] = ['codigo' => $key, 'conteudo' => $value];
                 }
             }
@@ -117,15 +117,15 @@ class CroquisController extends AppController
 
             foreach ($croqui_dados as $key => $croqui_dado) {
 
-                $getPedido = $this->Pedidos->find('all',[
+                $getPedido = $this->Pedidos->find('all', [
                     'conditions' => ['codigo_pedido' => $croqui_dado['conteudo']]
                 ])->first();
 
-                if(empty($getPedido)){
+                if (empty($getPedido)) {
                     $pedidos_encontrados = false;
                 }
 
-                if(!$pedidos_encontrados){
+                if (!$pedidos_encontrados) {
                     break;
                 }
 
@@ -149,19 +149,17 @@ class CroquisController extends AppController
 
                 $getPedido->status = 'EmDiagnostico';
                 $getPedido = $this->Pedidos->save($getPedido);
-
             }
 
-            if(!$pedidos_encontrados){
+            if (!$pedidos_encontrados) {
                 $this->Flash->error('Verifique os pedidos inseridos no croqui.');
-            }else{
+            } else {
                 $this->Flash->success('Croqui Criado com sucesso!');
                 return $this->redirect(['controller' => 'pedidos', 'action' => 'croquis']);
             }
-
         }
 
-        $this->set(compact('croqui_tipos','action','title','croqui','pedidos_triagem'));
+        $this->set(compact('croqui_tipos', 'action', 'title', 'croqui', 'pedidos_triagem'));
     }
 
     /**
@@ -204,7 +202,7 @@ class CroquisController extends AppController
         $equipamento_tipos = $this->equipamento_tipos;
         $exame_tipos = $this->exame_tipos;
 
-        $this->set(compact('croqui','action','title','equipamento_tipos','exame_tipos'));
+        $this->set(compact('croqui', 'action', 'title', 'equipamento_tipos', 'exame_tipos'));
     }
 
     /**
@@ -234,7 +232,7 @@ class CroquisController extends AppController
         $equipamento_tipos = $this->equipamento_tipos;
         $exame_tipos = $this->exame_tipos;
 
-        $this->set(compact('croqui','action','title','equipamento_tipos','exame_tipos'));
+        $this->set(compact('croqui', 'action', 'title', 'equipamento_tipos', 'exame_tipos'));
     }
 
     /**

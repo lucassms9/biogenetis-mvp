@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+
 /**
  * Users Controller
  *
@@ -23,11 +25,12 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null
      */
-    public function home(){
+    public function home()
+    {
         $action = 'Home';
         $title = 'Biogenetics';
 
-        $this->set(compact('action','title'));
+        $this->set(compact('action', 'title'));
     }
 
     public function index()
@@ -39,20 +42,21 @@ class UsersController extends AppController
         $conditions = [];
 
         $this->paginate = [
-            'contain' => ['Clientes','UserTypes'],
+            'contain' => ['Clientes', 'UserTypes'],
         ];
 
 
-        if($this->Auth->user('user_type_id') == 2){
+        if ($this->Auth->user('user_type_id') == 2) {
             $conditions['cliente_id'] = $this->Auth->user('cliente_id');
         }
 
 
-        $users = $this->paginate($this->Users,[
+        $users = $this->paginate($this->Users, [
             'conditions' => $conditions
         ]);
 
-        $this->set(compact('users','action','title'));
+        $showActions = true;
+        $this->set(compact('users', 'action', 'title', 'showActions'));
     }
 
     /**
@@ -85,7 +89,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $req = $this->request->getData();
 
-            if(!empty($req['foto_assinatura_digital'])){
+            if (!empty($req['foto_assinatura_digital'])) {
                 $url = 'certificados/' . $req['foto_assinatura_digital']['name'];
                 move_uploaded_file($req['foto_assinatura_digital']['tmp_name'], CERTIFICADOS . $req['foto_assinatura_digital']['name']);
                 $req['foto_assinatura_digital'] = $url;
@@ -103,19 +107,19 @@ class UsersController extends AppController
         $conditionsCliente = [];
 
 
-        if($this->Auth->user('user_type_id') == 2){
-            $conditionsType['UserTypes.id in'] = ['2','3'];
+        if ($this->Auth->user('user_type_id') == 2) {
+            $conditionsType['UserTypes.id in'] = ['2', '3'];
         }
 
-        if($this->Auth->user('user_type_id') == 2){
+        if ($this->Auth->user('user_type_id') == 2) {
             $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
         }
 
-        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
+        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200, 'conditions' => $conditionsType]);
 
         $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
 
-        $this->set(compact('user', 'userTypes', 'clientes', 'action','title'));
+        $this->set(compact('user', 'userTypes', 'clientes', 'action', 'title'));
     }
 
     /**
@@ -139,13 +143,13 @@ class UsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $request = $this->request->getData();
 
-            if(!empty($request['foto_assinatura_digital'])){
+            if (!empty($request['foto_assinatura_digital'])) {
                 $url = 'certificados/' . $request['foto_assinatura_digital']['name'];
                 move_uploaded_file($request['foto_assinatura_digital']['tmp_name'], CERTIFICADOS . $request['foto_assinatura_digital']['name']);
                 $request['foto_assinatura_digital'] = $url;
             }
 
-            if(isset($request['senha']) && empty($request['senha'])){
+            if (isset($request['senha']) && empty($request['senha'])) {
                 unset($request['senha']);
             }
 
@@ -157,18 +161,18 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-         if($this->Auth->user('user_type_id') == 2){
-            $conditionsType['UserTypes.id in'] = ['2','3'];
+        if ($this->Auth->user('user_type_id') == 2) {
+            $conditionsType['UserTypes.id in'] = ['2', '3'];
         }
 
-        if($this->Auth->user('user_type_id') == 2){
+        if ($this->Auth->user('user_type_id') == 2) {
             $conditionsCliente['Clientes.id'] = $this->Auth->user('cliente_id');
         }
 
-        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200,'conditions' => $conditionsType]);
+        $userTypes = $this->Users->UserTypes->find('list', ['limit' => 200, 'conditions' => $conditionsType]);
 
         $clientes = $this->Users->Clientes->find('list', ['limit' => 200, 'conditions' => $conditionsCliente]);
-        $this->set(compact('user', 'userTypes', 'clientes','action','title'));
+        $this->set(compact('user', 'userTypes', 'clientes', 'action', 'title'));
     }
 
     /**
@@ -201,15 +205,15 @@ class UsersController extends AppController
 
         $user = $this->Users->newEntity();
 
-        if( $this->Auth->user() ){
-             return $this->redirect( $this->Auth->redirectUrl() );
+        if ($this->Auth->user()) {
+            return $this->redirect($this->Auth->redirectUrl());
         }
 
         if ($this->request->is('post')) {
 
             $unidades = array();
 
-            $user = $this->Users->find('all',[
+            $user = $this->Users->find('all', [
                 'contain' => ['Clientes'],
                 'conditions' => [
                     'email' => $this->request->getData('email'),
@@ -217,35 +221,37 @@ class UsersController extends AppController
 
                 ]
             ])->first();
-            $permissoes = array('tecnico' => false,
-                                    'manager' => false,
-                                    'adm' => false,
-                                    );
+            $permissoes = array(
+                'tecnico' => false,
+                'manager' => false,
+                'adm' => false,
+            );
 
-            if(!empty($user)){
-                    switch ($user->user_type_id) {
-                        case 3:
-                            $permissoes['tecnico'] = true;
-                            break;
-                        case 2:
-                            $permissoes['manager'] = true;
-                            break;
-                        case 1:
-                            $permissoes['adm'] =  $permissoes['tecnico'] = $permissoes['manager'] = true;
-                            break;
-                        default: break;
-                    }
+            if (!empty($user)) {
+                switch ($user->user_type_id) {
+                    case 3:
+                        $permissoes['tecnico'] = true;
+                        break;
+                    case 2:
+                        $permissoes['manager'] = true;
+                        break;
+                    case 1:
+                        $permissoes['adm'] =  $permissoes['tecnico'] = $permissoes['manager'] = true;
+                        break;
+                    default:
+                        break;
+                }
 
                 $user['permissoes'] = $permissoes;
 
                 $this->Auth->setUser($user);
 
-                if($user->user_type_id == 3){
-                    return $this->redirect(['controller' =>'amostras', 'action' => 'index']);
+                if ($user->user_type_id == 3) {
+                    return $this->redirect(['controller' => 'amostras', 'action' => 'index']);
                 }
 
                 return $this->redirect($this->Auth->redirectUrl());
-            }else{
+            } else {
                 $this->Flash->error(__('E-mail ou senha incorretos'));
             }
             // $this->request->getData('email') = $this->request->getData('email');
@@ -254,7 +260,5 @@ class UsersController extends AppController
         $this->set(compact('user'));
 
         $this->viewBuilder()->setLayout('login');
-
     }
-
 }

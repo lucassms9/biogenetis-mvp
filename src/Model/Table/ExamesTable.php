@@ -1,10 +1,13 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+
 
 /**
  * Exames Model
@@ -98,5 +101,13 @@ class ExamesTable extends Table
     {
 
         return $rules;
+    }
+
+    public function beforeFind(Event $event, Query $query, $options, $primary)
+    {
+
+
+
+        return $query;
     }
 }

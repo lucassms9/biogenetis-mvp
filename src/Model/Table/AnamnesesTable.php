@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
 
 /**
  * Anamneses Model
@@ -35,7 +37,7 @@ class AnamnesesTable extends Table
         $this->setTable('anamneses');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
+        $this->addBehavior('Timestamp');
         $this->belongsTo('Pacientes', [
             'foreignKey' => 'paciente_id',
         ]);
@@ -293,15 +295,15 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_ventilacao_mecanica')
-            ->notEmpty('paciente_ventilacao_mecanica','Campo Obrigatório');
+            ->notEmpty('paciente_ventilacao_mecanica', 'Campo Obrigatório');
 
         $validator
             ->scalar('paciente_situacao_notificacao')
-            ->notEmpty('paciente_situacao_notificacao','Campo Obrigatório');
+            ->notEmpty('paciente_situacao_notificacao', 'Campo Obrigatório');
 
         $validator
             ->scalar('paciente_historico_viagem_14_dias')
-            ->notEmpty('paciente_historico_viagem_14_dias','Campo Obrigatório');
+            ->notEmpty('paciente_historico_viagem_14_dias', 'Campo Obrigatório');
 
         $validator
             ->date('paciente_historico_viagem_14_dias_data_chegada')
@@ -309,7 +311,7 @@ class AnamnesesTable extends Table
 
         $validator
             ->scalar('paciente_coleta_de_amostra')
-            ->notEmpty('paciente_coleta_de_amostra','Campo Obrigatório');
+            ->notEmpty('paciente_coleta_de_amostra', 'Campo Obrigatório');
 
         $validator
             ->scalar('paciente_his_deslocamento_14_dias')
@@ -370,5 +372,14 @@ class AnamnesesTable extends Table
         $rules->add($rules->existsIn(['paciente_id'], 'Pacientes'));
 
         return $rules;
+    }
+
+    public function beforeFind(Event $event, Query $query, $options, $primary)
+    {
+        if (isset($_SESSION['Auth']['User']['user_type_id']) && $_SESSION['Auth']['User']['user_type_id'] !== 1) {
+
+            $query->where(['Anamneses.cliente_id' => $_SESSION['Auth']['User']['cliente_id']]);
+        }
+        return $query;
     }
 }

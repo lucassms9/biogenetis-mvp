@@ -94,6 +94,7 @@ class PacientesController extends RestController
         $payload = $this->payload;
 
         $body['paciente_id'] = $payload->id;
+        $body['status'] = 'completed';
         $anamnese = $this->Anamneses->newEntity();
         $anamnese = $this->Anamneses->patchEntity($anamnese, $body);
         $anamnese = $this->Anamneses->save($anamnese);
@@ -105,8 +106,6 @@ class PacientesController extends RestController
         $cliente = $this->Clientes->find('All', [
             'conditions' => ['id' => $body['cliente_id']]
         ])->first();
-
-        $body['tipo_pagamento'] = $cliente->tipo_cobranca;
 
         //criacao de pedido
         $dadaos_pedido = [

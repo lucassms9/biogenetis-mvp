@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
@@ -33,8 +34,9 @@ class ProdutosController extends AppController
         $title = 'Produtos';
 
         $produtos = $this->paginate($this->Produtos);
+        $showActions = true;
 
-        $this->set(compact('produtos','action','title'));
+        $this->set(compact('produtos', 'action', 'title', 'showActions'));
     }
 
     /**
@@ -75,7 +77,7 @@ class ProdutosController extends AppController
         }
         $exame_tipos = $this->exame_tipos;
 
-        $this->set(compact('produto', 'action', 'title','exame_tipos'));
+        $this->set(compact('produto', 'action', 'title', 'exame_tipos'));
     }
 
     /**
@@ -105,7 +107,7 @@ class ProdutosController extends AppController
 
         $exame_tipos = $this->exame_tipos;
 
-        $this->set(compact('produto','action', 'title','exame_tipos'));
+        $this->set(compact('produto', 'action', 'title', 'exame_tipos'));
     }
 
     /**

@@ -39,6 +39,7 @@ class Application extends BaseApplication
     {
 
 
+
         // Call parent to load bootstrap from files.
         parent::bootstrap();
 
@@ -46,13 +47,18 @@ class Application extends BaseApplication
             $this->bootstrapCli();
         }
 
+
+
         /*
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
             $this->addPlugin(\DebugKit\Plugin::class);
+            Configure::write('DebugKit.forceEnable', true);
+            $this->addPlugin('DebugKit');
         }
+
 
         $this->addPlugin('Cewi/Excel');
         $this->addPlugin('Rest', ['bootstrap' => true]);

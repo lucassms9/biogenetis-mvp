@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -35,7 +36,7 @@ class ClientesTable extends Table
         $this->setTable('clientes');
         $this->setDisplayField('nome_fantasia');
         $this->setPrimaryKey('id');
-
+        $this->addBehavior('Timestamp');
         $this->hasMany('Users', [
             'foreignKey' => 'cliente_id',
         ]);

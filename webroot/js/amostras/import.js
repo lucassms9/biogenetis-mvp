@@ -227,8 +227,18 @@ $(document).ready(function(){
 
     $("#formFiles").dropzone({
         maxFiles: 2000,
-        addRemoveLinks: true,
+        addRemoveLinks: true, 
         url: BASE_URL_ADMIN+"amostras/import",
+        accept: function(file, done) {
+            let fileExt = file.name.split('.');
+            let ext = fileExt[fileExt.length -1];
+            if (ext !== "csv" && ext !== "xls" &&  ext !== "xlsx" ) {
+                $(file.previewElement).addClass("dz-error").find('.dz-error-message').text('Arquivo inválido');
+                done("Arquivo inválido");
+            }else {
+                done();
+            }
+        },
         success: function (file, response) {
             amountForm(response)
         },

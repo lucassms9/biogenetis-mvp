@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Controller\AppController;
 
+use App\Component\ExamesDataComponent;
 /**
  * Dashboard Controller
  */
@@ -19,6 +20,7 @@ class DashboardController extends AppController
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
         $this->loadModel('PedidoCroqui');
+        $this->loadComponent('ExamesData');
     }
 
     public function index()
@@ -106,7 +108,9 @@ class DashboardController extends AppController
             'contain' => ['Amostras', 'Users'],
             'conditions' => $conditions,
         ])->toList();
-
+        $exames = $this->ExamesData->getExamesResult($exames);
+        
+    
         foreach ($exames as $key => $exame) {
             if ($exame->resultado == 'Indeterminado') {
                 $result['Indeterminado']++;
@@ -191,6 +195,7 @@ class DashboardController extends AppController
             $inadequado = 0;
             $negativo = 0;
 
+            $amostras = $this->ExamesData->getExamesResult($amostras);
             foreach ($amostras as $key => $amostra) {
 
                 if ($amostra->resultado == 'Indeterminado') {
@@ -267,12 +272,14 @@ class DashboardController extends AppController
             $amostras = $this->Exames->find('all', [
                 'contain' => ['Amostras', 'Users'],
                 'conditions' => $conditions
-            ]);
+            ])->toList();
+            
             $Indeterminado = 0;
             $inadequado = 0;
             $positivo = 0;
             $negativo = 0;
 
+            $amostras = $this->ExamesData->getExamesResult($amostras);
             foreach ($amostras as $key => $amostra) {
 
                 if ($amostra->resultado == 'Indeterminado') {
@@ -360,6 +367,7 @@ class DashboardController extends AppController
             'conditions' => $conditions20
         ])->toArray();
 
+        $amostras20 = $this->ExamesData->getExamesResult($amostras20);
         $Indeterminado = 0;
         $IndeterminadoM = 0;
         $IndeterminadoF = 0;
@@ -446,6 +454,7 @@ class DashboardController extends AppController
             'conditions' => $conditions40
         ])->toArray();
 
+        $amostras40 = $this->ExamesData->getExamesResult($amostras40);
         if (!empty($amostras40)) {
             foreach ($amostras40 as $key => $amostra40) {
 
@@ -518,6 +527,7 @@ class DashboardController extends AppController
             'conditions' => $conditions60
         ])->toArray();
 
+        $amostras60 = $this->ExamesData->getExamesResult($amostras60);
         if (!empty($amostras60)) {
             foreach ($amostras60 as $key => $amostra60) {
 
@@ -591,6 +601,7 @@ class DashboardController extends AppController
             'conditions' => $conditions80
         ])->toArray();
 
+        $amostras80 = $this->ExamesData->getExamesResult($amostras80);
 
         if (!empty($amostras80)) {
 

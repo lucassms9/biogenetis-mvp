@@ -63,11 +63,10 @@ class PacientesDataComponent extends Component
     }
     public function getByFilter($nome, $cpf)
     {
-        $API_ROOT = env('USER_ENDPOINT');
         $hash = array("nome" => $nome, "cpf" => $cpf);
         $body = json_encode($hash);
         $http = new Client();
-        $response = $http->post($API_ROOT . 'paciente/filter',  $body, [
+        $response = $http->post($this->API_ROOT  . 'paciente/filter',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
         $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());

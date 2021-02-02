@@ -22,6 +22,7 @@ class ClientesController extends AppController
             'Particular' => 'Particular',
             'Convênio' => 'Convênio'
         ];
+        $this->loadModel('ExtratoSaldo');
     }
 
     /**
@@ -135,6 +136,43 @@ class ClientesController extends AppController
         $cobranca_tipos = $this->cobranca_tipos;
 
         $this->set(compact('cliente', 'action', 'title', 'cobranca_tipos'));
+    }
+
+
+    public function saldo($id = null)
+    {
+        $action = 'Saldo';
+        $title = 'Clientes';
+
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $req = $this->request->getData();
+
+            if (!empty($req['novo_saldo']) && $req['novo_saldo'] > 0) {
+
+                $dataSave = [
+                    'cliente_id' => $id,
+                    'type' => 'C',
+                    'valor' => $req['novo_saldo'],
+                    'created_by' => $this->Auth->user('id')
+                ];
+
+                $extratoSaldo = $this->ExtratoSaldo->newEntity();
+                $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
+                $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
+
+                return $this->redirect(['action' => 'saldos/' . $id]);
+                $this->Flash->success(__('Dados salvos com sucesso'));
+            }
+        }
+
+        $cliente = $this->Clientes->get($id, [
+            'contain' => [],
+        ]);
+
+        $saldo = $cliente->getSaldo();
+
+        $this->set(compact('action', 'title', 'saldo'));
     }
 
     /**

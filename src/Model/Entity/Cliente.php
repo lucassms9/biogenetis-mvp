@@ -3,6 +3,7 @@
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Cliente Entity
@@ -60,4 +61,27 @@ class Cliente extends Entity
         'img_header_url' => true,
         'img_footer_url' => true,
     ];
+
+    public function getSaldo()
+    {
+
+        $extraSaldo = TableRegistry::getTableLocator()->get('ExtratoSaldo');
+
+        $extratos = $extraSaldo->find('all', [
+            'conditions' => ['cliente_id' => $this->id]
+        ])->toList();
+
+        $debitos = 0;
+        $creditos = 0;
+
+        foreach ($extratos as $key => $extrato) {
+            if ($extrato['type'] === 'D') {
+                $debitos += $extrato->valor;
+            } else {
+                $creditos += $extrato->valor;
+            }
+        }
+
+        return $creditos - $debitos;
+    }
 }

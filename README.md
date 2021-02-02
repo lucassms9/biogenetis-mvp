@@ -8,36 +8,12 @@
 
 ### Ajustes
 
-Ajustes/Melhorias na plataforma atual
-
-Usuário admin clinica, tratar para visualizar os dados apenas das clinicas em questão;
-
-(Menus) pode ver apenas:
-   - amostra
-   - relatorio
-   - resultados gerais
-   - criar croqui
-   - usuarios
-   - criacao de croqui
-   - colocar menu para acessar listagem de pedidos
-
-- ajustar submissão de amostra para permitir subir subir amostras do próprio laboratorio;
-- tirar avatar header;
-
-- ajustar telas de diagnostico para vincular os pedidos e manter o envio sem pedido também;
-- tirar envio por email de relatorio;
-- tirar coluna de UF, idade e sexo dos relatorios;
-- verificar paginacao de resultados (após submissão);
-
 
 - alterar controle de voucher por quantidade de submissão;
 
 - na geracao do croqui, exibir o codigo do croqui, será um numero sequencial dentro do perfil do cliente logado;
 
-
 ## NOVOS PONTOS
-
-- destacar botao para inicar exame - ok
 
 - tirar campos da anamnese
   - selecione sitomas apresentados
@@ -62,9 +38,30 @@ step 2 da anamnese
  - se o usuario selecionar sim em "estece em algum unidade nos ultimos 14 dias"
   - pedir nome da unidade e abrir cidade estado
 
+## pontos ok
 
+Ajustes/Melhorias na plataforma atual
 
+Usuário admin clinica, tratar para visualizar os dados apenas das clinicas em questão;
 
+(Menus) pode ver apenas:
+   - amostra
+   - relatorio
+   - resultados gerais
+   - criar croqui
+   - usuarios
+   - criacao de croqui
+   - colocar menu para acessar listagem de pedidos
+
+- ajustar submissão de amostra para permitir subir subir amostras do próprio laboratorio;
+- tirar avatar header;
+
+- ajustar telas de diagnostico para vincular os pedidos e manter o envio sem pedido também;
+- tirar envio por email de relatorio;
+- tirar coluna de UF, idade e sexo dos relatorios;
+- verificar paginacao de resultados (após submissão);
+
+- destacar botao para inicar exame - ok
 
 alterar aguardando atendimento para novo cadastro - ok
 

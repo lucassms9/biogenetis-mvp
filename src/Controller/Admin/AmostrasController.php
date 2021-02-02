@@ -31,6 +31,8 @@ class AmostrasController extends AppController
         $this->loadModel('AmostraErros');
         $this->loadModel('ExameOrigens');
         $this->loadModel('Origens');
+        $this->loadModel('Clientes');
+        $this->loadModel('ExtratoSaldo');
         $this->loadModel('Pedidos');
         $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
@@ -585,6 +587,18 @@ class AmostrasController extends AppController
                 }
 
                 $this->Exames->save($exame_find);
+
+                //gravando saldo
+                $dataSave = [
+                    'cliente_id' => $this->Auth->user('cliente_id'),
+                    'type' => 'D',
+                    'valor' => 1,
+                    'created_by' => $this->Auth->user('id')
+                ];
+
+                $extratoSaldo = $this->ExtratoSaldo->newEntity();
+                $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
+                $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
             }
 
             return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);
@@ -665,7 +679,7 @@ class AmostrasController extends AppController
 
             Log::debug('callIntegration - resutlado: ' . $result);
 
-            $status_main = $parse_status[$origem->origen->regra_encadeamento];
+            $status_main = @$parse_status[$origem->origen->regra_encadeamento] ?? 'Invalid';
             $stop_loop = false;
 
             $sum_request = 0;
@@ -906,6 +920,18 @@ class AmostrasController extends AppController
 
                         if (!empty($amostraExist)) {
                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
+                            die();
+                        }
+
+                        $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
+                            'contain' => [],
+                        ]);
+
+                        $saldo = $cliente->getSaldo();
+
+
+                        if (isset($saldo) && $saldo <= 0) {
+                            throw new BadRequestException(__('Seu Saldo para exames esgotou!'));
                             die();
                         }
 

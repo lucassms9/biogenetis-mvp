@@ -8,26 +8,30 @@ class HelpersComponent extends Component
 {
 
 
+
     public function stringToNumber($string)
     {
-    	return preg_replace('/\D/', '', $string);
+        return preg_replace('/\D/', '', $string);
     }
-    public function doEncrypt($string){   
+    public function doEncrypt($string)
+    {
         $encryptionMethod = env('CRYPT_METHOD');
         $secret = env('CRYPT_SECRET');
         $iv = env('CRYPT_IV');
-        $encryptedMessage = openssl_encrypt($string, $encryptionMethod, $secret,0,$iv);
-    	return $encryptedMessage;
+        $encryptedMessage = openssl_encrypt($string, $encryptionMethod, $secret, 0, $iv);
+        return $encryptedMessage;
     }
 
-    public function doDecrypt($string){
+    public function doDecrypt($string)
+    {
         $encryptionMethod = env('CRYPT_METHOD');
         $secret = env('CRYPT_SECRET');
         $iv = env('CRYPT_IV');
-        $decryptedMessage = openssl_decrypt($string, $encryptionMethod, $secret,0,$iv);
-    	return $decryptedMessage;
+        $decryptedMessage = openssl_decrypt($string, $encryptionMethod, $secret, 0, $iv);
+        return $decryptedMessage;
     }
-    function generateRandomString($length = 10) {
+    function generateRandomString($length = 10)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';

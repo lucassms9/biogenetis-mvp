@@ -37,17 +37,15 @@ Usuário admin clinica, tratar para visualizar os dados apenas das clinicas em q
 
 ## NOVOS PONTOS
 
-- destacar botao para inicar exame
+- destacar botao para inicar exame - ok
 
 - tirar campos da anamnese
   - selecione sitomas apresentados
-
   - batimentos das asas nasais
   - saturacao de o2 < 95%
   - sinais de cianose
   - ganflios linfaticos aumentados
   - alterar gestao conjutival para irritacao nos olhos
-
   - tirar mialgia/artralgia
       - colocar
         - dor mmuscular
@@ -64,7 +62,11 @@ step 2 da anamnese
  - se o usuario selecionar sim em "estece em algum unidade nos ultimos 14 dias"
   - pedir nome da unidade e abrir cidade estado
 
-alterar aguardando atendimento para novo cadastro
+
+
+
+
+alterar aguardando atendimento para novo cadastro - ok
 
 na aba de pagamento
 trazer o nome do exame ja setado
@@ -72,5 +74,6 @@ e exibir o nome do exame, valor e forma de pagamento
 deixar campo de valor de exame aberto
 
 no codigo de barra trazer nome do exame COVID
+
 deixar header e footer do laudo gerenciavel
 

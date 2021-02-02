@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="">
-                <img width="100%" src="<?= $this->Url->build('/', true); ?>img/header-printer.png">
+                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= $header_laudo; ?>">
             </div>
         </div>
     </div>
@@ -132,7 +132,7 @@
     <footer>
         <div class="row">
             <div class="col-md-12">
-                <img width="100%" src="<?= $this->Url->build('/', true); ?>img/footer-printer.png">
+                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= $footer_laudo; ?>">
             </div>
         </div>
     </footer>

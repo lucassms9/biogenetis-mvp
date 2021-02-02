@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -38,6 +39,7 @@ class Pedido extends Entity
         'created' => true,
         'modified' => true,
         'codigo_pedido' => true,
+        'valor_exame' => true,
         'voucher_id' => true,
         'created_by' => true,
         'anamnese' => true,

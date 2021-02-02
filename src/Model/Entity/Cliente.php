@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -56,5 +57,7 @@ class Cliente extends Entity
         'tipo_cobranca' => true,
         'ativo' => true,
         'users' => true,
+        'img_header_url' => true,
+        'img_footer_url' => true,
     ];
 }

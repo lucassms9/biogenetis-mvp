@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\AppController;
 use App\Component\PacientesDataComponent;
 use App\Model\Entity\Paciente;
+use App\Component\ExamesDataComponent;
 
 /**
  * Pedidos Controller
@@ -37,6 +38,7 @@ class PedidosController extends AppController
         $this->loadModel('EntradaExames');
         $this->loadModel('Croquis');
         $this->loadModel('PedidoCroqui');
+        $this->loadComponent('ExamesData');
     }
 
     public function checkBarCode($pedido_id = null)
@@ -224,13 +226,15 @@ class PedidosController extends AppController
 
         //buscando o paciente
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+        
+        
+        $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+
         $res = json_decode($resPaciente, true);
 
         $pedido->anamnese->paciente = new Paciente($res);
-
         $this->viewBuilder()->setLayout('laudo');
-
-        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
+        $this->set(compact( 'pedido'));
     }
 
     public function showpedido($id, $tab_current = 'paciente')

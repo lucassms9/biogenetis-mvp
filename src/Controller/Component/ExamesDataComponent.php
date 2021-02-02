@@ -61,6 +61,10 @@ class ExamesDataComponent extends Component
             for($i = 0; $i< sizeof($exames);$i++){
                 array_push($arr_hashs,$exames[$i]->hash);
             }
+        }else{
+            array_push($arr_hashs,$exames->hash);
+
+
         }
         $data = array("hashs" =>$arr_hashs);
         $body = json_encode($data);
@@ -71,15 +75,26 @@ class ExamesDataComponent extends Component
        
         
        if(is_array($result_hashs)){
-            for($i = 0; $i< sizeof($exames);$i++){
+            if(is_array($exames)){
+                for($i = 0; $i< sizeof($exames);$i++){
+                    for($z = 0; $z< sizeof($result_hashs);$z++){
+                        if($result_hashs[$z]->hash == $exames[$i]->hash){
+                            $exames[$i]->resultado = $result_hashs[$z]->body; 
+                            array_splice( $result_hashs,$z,1);
+                            break 1;
+                        }
+                    }
+                }
+            }else{
                 for($z = 0; $z< sizeof($result_hashs);$z++){
-                    if($result_hashs[$z]->hash == $exames[$i]->hash){
-                        $exames[$i]->resultado = $result_hashs[$z]->body; 
+                    if($result_hashs[$z]->hash == $exames->hash){
+                        $exames->resultado = $result_hashs[$z]->body; 
                         array_splice( $result_hashs,$z,1);
                         break 1;
                     }
                 }
             }
+            
         }
         return $exames;
     }

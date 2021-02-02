@@ -137,10 +137,12 @@ class DashboardController extends AppController
             $data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
             $conditions_query['cast(Amostras.created as date) >='] =  $data1;
         }
+        
         if (!empty($query['date_end'])) {
             $data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
             $conditions_query['cast(Amostras.created as date) <='] = $data2;
         }
+
         if (!empty($query['estado'])) {
             $conditions_query['Amostras.uf'] = $query['estado'];
         }
@@ -148,12 +150,12 @@ class DashboardController extends AppController
         if (!empty($query['equipamentos'])) {
             $conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
         }
+
         if (!empty($query['amostras'])) {
             $conditions_query['Exames.amostra_tipo'] = $query['amostras'];
         }
 
         $conditions_uf = [];
-
         $conditions_uf = array_merge($conditions_uf, $conditions_query);
 
         $ufs_lista = $this->Amostras->find('all', [
@@ -161,13 +163,10 @@ class DashboardController extends AppController
             'conditions' => $conditions_uf,
             'order' => ['Amostras.uf' => 'ASC']
         ]);
+
         $ufs = [];
-
         $result = [];
-
-
         $conditions = [];
-
 
         if ($this->Auth->user('user_type_id') == 3) {
             $conditions['Exames.created_by'] = $this->Auth->user('id');
@@ -236,10 +235,14 @@ class DashboardController extends AppController
             $data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
             $conditions_query['cast(Amostras.created as date) >='] =  $data1;
         }
+
+
         if (!empty($query['date_end'])) {
             $data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
             $conditions_query['cast(Amostras.created as date) <='] = $data2;
         }
+
+
         if (!empty($query['estado'])) {
             $conditions_query['Amostras.uf'] = $query['estado'];
         }
@@ -247,6 +250,8 @@ class DashboardController extends AppController
         if (!empty($query['equipamentos'])) {
             $conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
         }
+
+
         if (!empty($query['amostras'])) {
             $conditions_query['Exames.amostra_tipo'] = $query['amostras'];
         }
@@ -669,6 +674,7 @@ class DashboardController extends AppController
         ])->toArray();
 
         if (!empty($amostras81)) {
+            $amostras81 = $this->ExamesData->getExamesResult($amostras81);
             foreach ($amostras81 as $key => $amostra81) {
 
                 if ($amostra81->resultado == 'Indeterminado') {

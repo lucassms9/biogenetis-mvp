@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -41,5 +42,6 @@ class Exame extends Entity
         'pedido_id' => true,
         'amostra' => true,
         'file_name' => true,
+        'hash' => true,
     ];
 }

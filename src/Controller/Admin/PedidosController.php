@@ -226,15 +226,15 @@ class PedidosController extends AppController
 
         //buscando o paciente
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-        
-        
+
+
         $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
 
         $res = json_decode($resPaciente, true);
 
         $pedido->anamnese->paciente = new Paciente($res);
         $this->viewBuilder()->setLayout('laudo');
-        $this->set(compact( 'pedido'));
+        $this->set(compact('pedido'));
     }
 
     public function showpedido($id, $tab_current = 'paciente')

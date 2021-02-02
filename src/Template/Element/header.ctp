@@ -5,7 +5,7 @@
 
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="rounded-circle header-profile-user" src="https://lh3.googleusercontent.com/proxy/G_h5u0Gl2wVt2vyO6cWg4nNQRFiAa-CRsO5IPmbhbzXz-oxkfZAslrxdXYck-kC3jpuO1FatRU7BHbi6VDTTh3mWRDPlHPxZDwSxEC69FRXl-k2uPrRu7JI" alt="Header Avatar">
+                        <!-- <img class="rounded-circle header-profile-user" src="https://lh3.googleusercontent.com/proxy/G_h5u0Gl2wVt2vyO6cWg4nNQRFiAa-CRsO5IPmbhbzXz-oxkfZAslrxdXYck-kC3jpuO1FatRU7BHbi6VDTTh3mWRDPlHPxZDwSxEC69FRXl-k2uPrRu7JI" alt="Header Avatar"> -->
                         <span class="fontboldonly d-none d-sm-inline-block ml-1"><?= $_SESSION['Auth']['User']['nome_completo'] ?></span>
                         <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                     </button>

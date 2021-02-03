@@ -76,15 +76,8 @@ class PacientesDataComponent extends Component
     }
     public function returnPaciente($hash, $pacientes)
     {
-
         for ($i = 0; $i < sizeof($pacientes); $i++) {
-
-            debug($pacientes[$i]['hash']);
-            debug($this->Helpers->doDecrypt($hash));
-            debug($hash);
-            die;
-
-            if ($this->Helpers->doDecrypt($pacientes[$i]['hash']) == $hash) {
+            if ($pacientes[$i]['hash'] == $hash) {
                 return $pacientes[$i];
                 exit;
             }

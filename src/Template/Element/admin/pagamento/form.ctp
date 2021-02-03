@@ -1,7 +1,7 @@
 <?= $this->Form->create($pagamento, ['url' => ['action' => 'pagamento']]) ?>
 <div class="row">
     <div class="col-md-3">
-        <?php echo $this->Form->control('entrada_exame_id', ['class' => 'form-control', 'label' => 'Nome do Exame', 'readonly' => 'true', 'options' => $exames_tipos, 'empty' => 'Escolha', 'default' => $pedido->entrada_exame_id]); ?>
+        <?php echo $this->Form->control('entrada_exame_id', ['class' => 'form-control', 'label' => 'Nome do Exame', 'readonly' => isset($pedido->valor_exame) ? 'true' : 'false', 'options' => $exames_tipos, 'empty' => 'Escolha', 'default' => $pedido->entrada_exame_id]); ?>
     </div>
 
     <div class="col-md-3">

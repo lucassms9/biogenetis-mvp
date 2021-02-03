@@ -113,7 +113,7 @@ class PacientesController extends RestController
             'cliente_id' => $cliente->id,
             'tipo_pagamento' => $cliente->tipo_cobranca,
             'created_by' => $body['paciente_id'],
-            'exame_entrada_id' => 1
+            'entrada_exame_id' => 1
         ];
 
         $pedido = $this->Pedidos->newEntity();

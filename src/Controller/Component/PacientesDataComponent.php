@@ -30,7 +30,7 @@ class PacientesDataComponent extends Component
     public function getCheckCPF($string)
     {
         $API_ROOT = env('USER_ENDPOINT');
-        $cpf = array("cpf" => $string);
+        $cpf = array("cpf" => $this->Helpers->doEncrypt($string));
         $body = json_encode($cpf);
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/check',  $body, [
@@ -63,7 +63,7 @@ class PacientesDataComponent extends Component
     }
     public function getByFilter($nome, $cpf)
     {
-        $hash = array("nome" => $nome, "cpf" => $cpf);
+        $hash = array("nome" => $this->Helpers->doEncrypt($nome), "cpf" => $this->Helpers->doEncrypt($cpf));
         $body = json_encode($hash);
         $http = new Client();
         $response = $http->post($this->API_ROOT  . 'paciente/filter',  $body, [

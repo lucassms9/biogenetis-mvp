@@ -146,7 +146,6 @@ class PacientesController extends AppController
                     ['escape' => false]
                 );
             } else {
-
                 $result = $this->createdPaciente($req, $paciente);
                 if (strlen($result->hash) > 5) {
                     $save_ok = true;
@@ -178,12 +177,9 @@ class PacientesController extends AppController
                             $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
                             $pedido = $this->Pedidos->save($pedido);
                             if (!$pedido) {
-                                echo "PEDDDDDDD";
                                 $save_ok = false;
                             }
                         } else {
-                            var_dump($anamnese);
-                            echo "TEEEEEEEEEDDDDDDD";
                             $save_ok = false;
                         }
                     }
@@ -197,7 +193,7 @@ class PacientesController extends AppController
                         $this->Flash->error(__('Erro ao salvar dados #32!'));
                     }
                 } else {
-                    $this->Flash->error(__('The paciente could not be saved. Please, try again.'  . $resp_code));
+                    $this->Flash->error(__('The paciente could not be saved. Please, try again.'  ));
                 }
             }
         }
@@ -281,13 +277,21 @@ class PacientesController extends AppController
         */
 
         $resPaciente  = $this->PacientesData->getCheckCPF($req['cpf']);
-
         if (!empty($resPaciente)) {
             $user_data =  json_decode($resPaciente);
             $find_paciente = $this->Pacientes->find('all', [
                 'conditions' => ['hash' => $user_data->hash]
             ])->first();
-            $user_data->id =  $find_paciente->id;
+            if(!empty($find_paciente)){
+                $user_data->id =  $find_paciente->id;
+            }else{
+                $jst_r  = json_decode($resPaciente);
+                $req['hash'] = $jst_r->hash;
+
+                $paciente = $this->Pacientes->patchEntity($paciente, $req);
+                $paciente = $this->Pacientes->save($paciente);
+                $user_data->id =  $paciente->id;
+            }
             return  $user_data;
         } else {
             $API_ROOT = env('USER_ENDPOINT');
@@ -299,7 +303,6 @@ class PacientesController extends AppController
             $response = $http->post($API_ROOT . 'paciente/create', $json, [
                 'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
             ]);
-            $resp_code = $response->getStatusCode();
             $jst_r  = json_decode($response->body);
             $req['hash'] = $jst_r->hash;
 

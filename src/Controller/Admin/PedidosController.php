@@ -187,7 +187,6 @@ class PedidosController extends AppController
         foreach ($pedidos as $pedido) {
             array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
         }
-
         $body = json_encode($arr);
         $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
         $pedidos_list = [];

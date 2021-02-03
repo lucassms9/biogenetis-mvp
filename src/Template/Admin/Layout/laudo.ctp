@@ -110,7 +110,7 @@ $cakeDescription = 'Biogenetics';
 
     <div class="main-content">
 
-        <div class="page-content">
+        <div style="padding:0 15px" class="page-content">
             <?= $this->fetch('content') ?>
             <?= $this->element('footer') ?>
         </div>

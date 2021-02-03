@@ -30,7 +30,7 @@ class PacientesDataComponent extends Component
     public function getCheckCPF($string)
     {
         $API_ROOT = env('USER_ENDPOINT');
-        $cpf = array("cpf" => $string);
+        $cpf = array("cpf" => $this->Helpers->doEncrypt($string));
         $body = json_encode($cpf);
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/check',  $body, [
@@ -41,8 +41,10 @@ class PacientesDataComponent extends Component
     }
     public function getCheckCPFOrEmail($cpf, $email)
     {
-        $req = array("cpf" => $cpf, 'email' => $email);
+        $req = array("cpf" => $this->Helpers->doEncrypt($cpf), 'email' => $this->Helpers->doEncrypt($email));
+
         $body = json_encode($req);
+
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/checkEmailOrCpf/',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
@@ -63,7 +65,7 @@ class PacientesDataComponent extends Component
     }
     public function getByFilter($nome, $cpf)
     {
-        $hash = array("nome" => $nome, "cpf" => $cpf);
+        $hash = array("nome" => $this->Helpers->doEncrypt($nome), "cpf" => $this->Helpers->doEncrypt($cpf));
         $body = json_encode($hash);
         $http = new Client();
         $response = $http->post($this->API_ROOT  . 'paciente/filter',  $body, [
@@ -74,8 +76,15 @@ class PacientesDataComponent extends Component
     }
     public function returnPaciente($hash, $pacientes)
     {
+
         for ($i = 0; $i < sizeof($pacientes); $i++) {
-            if ($pacientes[$i]['hash'] == $hash) {
+
+            debug($pacientes[$i]['hash']);
+            debug($this->Helpers->doDecrypt($hash));
+            debug($hash);
+            die;
+
+            if ($this->Helpers->doDecrypt($pacientes[$i]['hash']) == $hash) {
                 return $pacientes[$i];
                 exit;
             }

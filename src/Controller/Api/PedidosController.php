@@ -60,7 +60,9 @@ class PedidosController extends RestController
 
         foreach ($pedidos as $key => $pedido) {
 
-            $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            if (!empty($pedido->exame)) {
+                $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            }
 
             $handle[] = [
                 'clinica_nome' => $pedido->cliente->nome_fantasia ?? '-',

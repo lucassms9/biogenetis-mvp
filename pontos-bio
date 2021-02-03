@@ -1,0 +1,54 @@
+- colocar profissao no cadastro
+- exibir termo de uso na tela de edicao de dados no perfil
+- filtro em laudos
+- incluir opcao de abrir whatsapp dos laboratorios
+- compartilhar arquivo do laudos
+- gerar qrCode para acessar o laudo
+
+
+
+
+- alterar menu de anamnese para servicos
+  - exibir exames
+    - exibir laboratorios e exames para selecao e iniciar o fluxo de anamnese
+
+- alterar ordem de menus
+ - servicos
+ - laboratorios
+ - laudos
+- mais
+
+
+
+- alterar termo de anamnese para "informacoes clinicas"
+
+anamnese
+- alterar Data dos primeiros sintomas de data para dias
+  - com teclado numerico de 0 a 9
+
+retirar campos
+PACIENTE FOI HOSPITALIZADO?
+DATA DA INTERNAÇÃO
+DATA DA ALTA HOSPITALAR
+DATA DO ISOLAMENTO
+
+PACIENTE FOI SUBMETIDO A VENTILAÇÃO MECÂNICA?
+SITUAÇÃO DE SAÚDE DO PACIENTE NO MOMENTO DA NOTIFICAÇÃO
+FOI REALIZADA COLETA DE AMOSTRA DO PACIENTE?
+
+
+
+
+alterar como coletar o campo
+DESCRITIVO DO HISTÓRICO DE DESLOCAMENTO NOS 14 DIAS ANTERIORES AO INÍCIO DOS SINTOMAS:
+
+perguntar se é brasil ou exterior
+
+se for no brasil, escolher cidade - estado
+senao escolher pais
+
+
+
+
+
+em mais, colocar SAC da biogenetics (email, phone)

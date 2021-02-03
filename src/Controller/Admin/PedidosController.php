@@ -33,6 +33,7 @@ class PedidosController extends AppController
         $this->loadComponent('Helpers');
         $this->loadComponent('PacientesData');
         $this->loadModel('Anamneses');
+        $this->loadModel('Clientes');
         $this->loadModel('Vouchers');
         $this->loadModel('ExtratoSaldo');
         $this->loadModel('EntradaExames');
@@ -61,7 +62,7 @@ class PedidosController extends AppController
 
             $barcode = [
                 'tipo_exame' => $pedido->entrada_exame->tipo_exame,
-                'paciente_nome' => $pedido->anamnese->paciente->nome,
+                'nome_exame' => $pedido->entrada_exame->nome,
                 'paciente_nome' => $pedido->anamnese->paciente->nome,
                 'paciente_data_nasc' => date("d/m/Y", strtotime($pedido->anamnese->paciente->data_nascimento)),
                 'data_sistema' => $pedido->created->i18nFormat('dd/MM/yyyy'),
@@ -214,7 +215,14 @@ class PedidosController extends AppController
 
         $pedido->anamnese->paciente = new Paciente($res);
 
-        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento'));
+        $cliente = $this->Clientes->find('all', [
+            'conditions' => ['id' => $this->Auth->user('cliente_id')]
+        ])->first();
+
+        $footer_laudo = @$cliente->img_footer_url;
+        $header_laudo = @$cliente->img_header_url;
+
+        $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'header_laudo', 'footer_laudo'));
     }
 
     public function laudoViwer($id)
@@ -225,15 +233,23 @@ class PedidosController extends AppController
 
         //buscando o paciente
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-        
-        
+
+
         $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
 
         $res = json_decode($resPaciente, true);
 
         $pedido->anamnese->paciente = new Paciente($res);
+
+        $cliente = $this->Clientes->find('all', [
+            'conditions' => ['id' => $this->Auth->user('cliente_id')]
+        ])->first();
+
+        $footer_laudo = @$cliente->img_footer_url;
+        $header_laudo = @$cliente->img_header_url;
+
         $this->viewBuilder()->setLayout('laudo');
-        $this->set(compact( 'pedido'));
+        $this->set(compact('pedido', 'footer_laudo', 'header_laudo'));
     }
 
     public function showpedido($id, $tab_current = 'paciente')
@@ -288,47 +304,53 @@ class PedidosController extends AppController
     public function pagamento($pedido_id = null)
     {
         $req = $this->request->getData();
-        // debug($req);
-        // die;
-        if ((!empty($req['voucher_cod']) || !empty($req['formas_pagamento'])) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id'])) {
+
+
+        if (!empty($req['formas_pagamento']) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id']) && !empty($req['valor_exame'])) {
 
             $pedido = $this->Pedidos->get($req['pedido_id'], [
                 'contain' => ['EntradaExames']
             ]);
 
             //pagamento sem voucher
-            if (!empty($req['formas_pagamento']) && empty($req['voucher_cod'])) {
+            if (!empty($req['formas_pagamento'])) {
+
                 $pedido->forma_pagamento = $req['formas_pagamento'];
                 $pedido->entrada_exame_id = $req['entrada_exame_id'];
+
+                $handle_valor = (float) $req['valor_exame'];
+
+                $pedido->valor_exame = $handle_valor;
                 $pedido->status = 'EmTriagem';
                 $this->Pedidos->save($pedido);
-            } else {
 
-                $id_valid = $this->Vouchers->find('all', [
-                    'conditions' => ['codigo' => $req['voucher_cod'], 'used' => 0]
-                ])->first();
+                // } else {
 
-                if (!empty($id_valid)) {
-                    $pedido->voucher_id = $id_valid->id;
-                    $pedido->forma_pagamento = 'Voucher';
-                    $pedido->entrada_exame_id = $req['entrada_exame_id'];
-                    $pedido->status = 'EmTriagem';
-                    $this->Pedidos->save($pedido);
+                //     $id_valid = $this->Vouchers->find('all', [
+                //         'conditions' => ['codigo' => $req['voucher_cod'], 'used' => 0]
+                //     ])->first();
 
-                    $entrada_exame = $this->EntradaExames->get($req['entrada_exame_id']);
+                //     if (!empty($id_valid)) {
+                //         $pedido->voucher_id = $id_valid->id;
+                //         $pedido->forma_pagamento = 'Voucher';
+                //         $pedido->entrada_exame_id = $req['entrada_exame_id'];
+                //         $pedido->status = 'EmTriagem';
+                //         $this->Pedidos->save($pedido);
 
-                    $save_extrato = $this->ExtratoSaldo->newEntity([
-                        'voucher_id' => $id_valid->id,
-                        'type' => 'D',
-                        'valor' => $entrada_exame->valor_laboratorio_conveniado,
-                        'created_by' => $this->Auth->user()->id,
-                    ]);
-                    $save_extrato = $this->ExtratoSaldo->save($save_extrato);
+                //         $entrada_exame = $this->EntradaExames->get($req['entrada_exame_id']);
 
-                    $this->Flash->success(__('Voucher Inserido com sucesso!'));
-                } else {
-                    $this->Flash->error(__('Voucher Inválido!'));
-                }
+                //         $save_extrato = $this->ExtratoSaldo->newEntity([
+                //             'voucher_id' => $id_valid->id,
+                //             'type' => 'D',
+                //             'valor' => $entrada_exame->valor_laboratorio_conveniado,
+                //             'created_by' => $this->Auth->user()->id,
+                //         ]);
+                //         $save_extrato = $this->ExtratoSaldo->save($save_extrato);
+
+                //         $this->Flash->success(__('Voucher Inserido com sucesso!'));
+                //     } else {
+                //         $this->Flash->error(__('Voucher Inválido!'));
+                //     }
             }
         } else {
             $this->Flash->error(__('Inserir dados de pagamento!'));

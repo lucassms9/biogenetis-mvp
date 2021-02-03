@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -29,5 +30,6 @@ class EncadeamentoResultado extends Entity
         'exame_origem_id' => true,
         'encadeamento_id' => true,
         'resultado' => true,
+        'hash' => true,
     ];
 }

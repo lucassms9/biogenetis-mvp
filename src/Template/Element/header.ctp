@@ -5,7 +5,7 @@
 
                 <div class="dropdown d-inline-block">
                     <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="rounded-circle header-profile-user" src="https://lh3.googleusercontent.com/proxy/G_h5u0Gl2wVt2vyO6cWg4nNQRFiAa-CRsO5IPmbhbzXz-oxkfZAslrxdXYck-kC3jpuO1FatRU7BHbi6VDTTh3mWRDPlHPxZDwSxEC69FRXl-k2uPrRu7JI" alt="Header Avatar">
+                        <!-- <img class="rounded-circle header-profile-user" src="https://lh3.googleusercontent.com/proxy/G_h5u0Gl2wVt2vyO6cWg4nNQRFiAa-CRsO5IPmbhbzXz-oxkfZAslrxdXYck-kC3jpuO1FatRU7BHbi6VDTTh3mWRDPlHPxZDwSxEC69FRXl-k2uPrRu7JI" alt="Header Avatar"> -->
                         <span class="fontboldonly d-none d-sm-inline-block ml-1"><?= $_SESSION['Auth']['User']['nome_completo'] ?></span>
                         <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
                     </button>
@@ -89,13 +89,13 @@
                             </li>
 
 
-                            <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 4) : ?>
+                            <!-- <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 4) : ?>
                                 <li class="nav-item">
                                     <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true); ?>/croquis/gerador">
                                         Criar Croqui
                                     </a>
                                 </li>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
 
                             <?php if ($_SESSION['Auth']['User']['user_type_id'] != 3) : ?>
                                 <li class="nav-item dropdown">
@@ -103,7 +103,7 @@
                                         Mais Opções <div class="arrow-down"></div>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="topnav-components">
-                                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 3) : ?>
+                                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
 
                                             <a href="<?= $this->Url->build('/admin', true); ?>/clientes/" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Clientes
@@ -112,6 +112,11 @@
                                         <a href="<?= $this->Url->build('/admin', true); ?>/users/" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Usuários
                                         </a>
+
+                                        <a href="<?= $this->Url->build('/admin', true); ?>/croquis/gerador" class="dropdown-item">
+                                            <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Criar Croqui
+                                        </a>
+
                                         <?php if ($_SESSION['Auth']['User']['user_type_id'] === 3) : ?>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/origens" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Endpoints

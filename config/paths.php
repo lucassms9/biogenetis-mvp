@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -55,6 +56,7 @@ define('CONFIG', ROOT . DS . 'config' . DS);
  */
 define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 
+define('CLIENTES_IMGS', ROOT . DS . 'webroot' . DS . 'clientes_imgs' . DS);
 define('CERTIFICADOS', ROOT . DS . 'webroot' . DS . 'certificados' . DS);
 define('AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras' . DS);
 define('XLS_AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras_excel' . DS);

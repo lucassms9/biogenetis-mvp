@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -27,11 +28,10 @@ class ExtratoSaldo extends Entity
      * @var array
      */
     protected $_accessible = [
-        'voucher_id' => true,
+        'cliente_id' => true,
         'type' => true,
         'valor' => true,
         'created' => true,
         'created_by' => true,
-        'voucher' => true,
     ];
 }

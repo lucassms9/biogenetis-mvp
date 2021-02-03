@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -40,8 +41,8 @@ class ExtratoSaldoTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Vouchers', [
-            'foreignKey' => 'voucher_id',
+        $this->belongsTo('Clientes', [
+            'foreignKey' => 'cliente_id',
         ]);
     }
 
@@ -81,7 +82,7 @@ class ExtratoSaldoTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['voucher_id'], 'Vouchers'));
+        $rules->add($rules->existsIn(['cliente_id'], 'Clientes'));
 
         return $rules;
     }

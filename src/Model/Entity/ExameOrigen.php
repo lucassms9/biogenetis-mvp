@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -31,5 +32,6 @@ class ExameOrigen extends Entity
         'resultado' => true,
         'data_request' => true,
         'origem' => true,
+        'hash' => true,
     ];
 }

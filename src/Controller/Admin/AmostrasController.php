@@ -12,7 +12,7 @@ use PHPExcel_IOFactory;
 use Cake\Core\Exception\Exception;
 use Cake\Log\Log;
 
-use App\Component\ExamesDataComponent;
+
 /**
  * Amostras Controller
  *
@@ -31,6 +31,8 @@ class AmostrasController extends AppController
         $this->loadModel('AmostraErros');
         $this->loadModel('ExameOrigens');
         $this->loadModel('Origens');
+        $this->loadModel('Clientes');
+        $this->loadModel('ExtratoSaldo');
         $this->loadModel('Pedidos');
         $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
@@ -575,8 +577,8 @@ class AmostrasController extends AppController
                 $integration = $this->callIntegration($exame_find);
 
                 $exame_find->resultado = '';
-                
-                $this->ExamesData->save($exame_find->hash,$integration);
+
+                $this->ExamesData->save($exame_find->hash, $integration);
 
                 if (!empty($exame_find->pedido_id)) {
                     $pedido = $this->Pedidos->get($exame_find->pedido_id);
@@ -585,6 +587,18 @@ class AmostrasController extends AppController
                 }
 
                 $this->Exames->save($exame_find);
+
+                //gravando saldo
+                $dataSave = [
+                    'cliente_id' => $this->Auth->user('cliente_id'),
+                    'type' => 'D',
+                    'valor' => 1,
+                    'created_by' => $this->Auth->user('id')
+                ];
+
+                $extratoSaldo = $this->ExtratoSaldo->newEntity();
+                $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
+                $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
             }
 
             return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);
@@ -665,7 +679,7 @@ class AmostrasController extends AppController
 
             Log::debug('callIntegration - resutlado: ' . $result);
 
-            $status_main = $parse_status[$origem->origen->regra_encadeamento];
+            $status_main = @$parse_status[$origem->origen->regra_encadeamento] ?? 'Invalid';
             $stop_loop = false;
 
             $sum_request = 0;
@@ -676,12 +690,12 @@ class AmostrasController extends AppController
                 'exame_origem_id' => $origem->id,
                 'encadeamento_id' => null,
                 'resultado' => '-',
-                'hash' => $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30) )
+                'hash' => $this->Helpers->doEncrypt($origem->id . 'FTC' . $this->Helpers->generateRandomString(30))
             ];
             $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
             $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
 
-            $this->ExamesData->saveEncadeamento($encadeamentoResul->hash,$result);
+            $this->ExamesData->saveEncadeamento($encadeamentoResul->hash, $result);
             //tratamento encadeamentos
             if ((strpos($result, $status_main)) === false && $isEncadeado) {
                 foreach ($origem->origen->encadeamentos as $key => $encadeamento) {
@@ -703,11 +717,11 @@ class AmostrasController extends AppController
                         'exame_origem_id' => $origem->id,
                         'encadeamento_id' => $encadeamento->id,
                         'resultado' => '-',
-                        'hash' =>  $this->Helpers->doEncrypt($origem->id. 'CKC' . $this->Helpers->generateRandomString(30) )
+                        'hash' =>  $this->Helpers->doEncrypt($origem->id . 'CKC' . $this->Helpers->generateRandomString(30))
                     ];
                     $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
                     $encadeamentoResul = $this->EncadeamentoResultados->save($encadeamentoResul);
-                    $this->ExamesData->saveEncadeamento( $encadeamentoResul->hash,$result);
+                    $this->ExamesData->saveEncadeamento($encadeamentoResul->hash, $result);
                 }
 
                 if (!empty($origem_saved)) {
@@ -802,12 +816,14 @@ class AmostrasController extends AppController
             $dados = [
                 'exame_id' => $exame->id,
                 'origem_id' => $origem->id,
-                'hash' =>  $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30) )
+                'hash' =>  $this->Helpers->doEncrypt($origem->id . 'FTC' . $this->Helpers->generateRandomString(30))
             ];
             $newOriginExame = $this->ExameOrigens->newEntity();
             $newOriginExame = $this->ExameOrigens->patchEntity($newOriginExame, $dados);
             $newOriginExame = $this->ExameOrigens->save($newOriginExame);
-            $this->ExameOrigens->saveOrigem( $newOriginExame->hash,'');
+
+
+            $this->ExamesData->saveOrigem($newOriginExame->hash, '');
         }
 
         return true;
@@ -878,13 +894,13 @@ class AmostrasController extends AppController
         $title = 'Amostras';
         if ($this->request->is('post')) {
             try {
-                if (!empty($this->request->getData('file')) ) {
+                if (!empty($this->request->getData('file'))) {
                     $file = $this->request->getData('file');
-                    $filext =  explode(".",$file['name']);
-                    
-                    if($filext[sizeof($filext)-1] !== "csv" && $filext[sizeof($filext)-1]  !== "xls" && $filext[sizeof($filext)-1] !== "xls"){
+                    $filext =  explode(".", $file['name']);
+
+                    if ($filext[sizeof($filext) - 1] !== "csv" && $filext[sizeof($filext) - 1]  !== "xls" && $filext[sizeof($filext) - 1] !== "xls") {
                         throw new BadRequestException(__('Extensão inválida.'));
-                    }                    
+                    }
                     if ($file['size'] > 0) {
                         move_uploaded_file($file['tmp_name'], AMOSTRAS . $file['name']);
 
@@ -904,6 +920,18 @@ class AmostrasController extends AppController
 
                         if (!empty($amostraExist)) {
                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
+                            die();
+                        }
+
+                        $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
+                            'contain' => [],
+                        ]);
+
+                        $saldo = $cliente->getSaldo();
+
+
+                        if (isset($saldo) && $saldo <= 0) {
+                            throw new BadRequestException(__('Seu Saldo para exames esgotou!'));
                             die();
                         }
 
@@ -935,19 +963,19 @@ class AmostrasController extends AppController
                         $exame_save = $this->Exames->newEntity();
                         $exame_save = $this->Exames->patchEntity($exame_save, $exame);
                         $exame_save = $this->Exames->save($exame_save);
-                        $exame_save->hash =   $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30) );
+                        $exame_save->hash =   $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30));
                         $exame_save = $this->Exames->save($exame_save);
 
-                        $this->ExamesData->save($exame_save->hash,'-');
+                        $this->ExamesData->save($exame_save->hash, '-');
                         if ($exame_save) {
                             $exame_save = $this->Exames->get($exame_save->id, [
                                 'contain' => ['Pedidos.Anamneses.Pacientes']
                             ]);
                             //seta as origens para disparo de request
                             $this->setOrigens($exame_save);
-                            if($exame_save->pedido){
+                            if ($exame_save->pedido) {
                                 $resPaciente = $this->PacientesData->getByHash($exame_save->pedido->anamnese->paciente->hash);
-                                if($res = json_decode($resPaciente, true)){
+                                if ($res = json_decode($resPaciente, true)) {
                                     $exame_save->pedido->anamnese->paciente = new Paciente($res);
                                 }
                             }
@@ -1023,21 +1051,21 @@ class AmostrasController extends AppController
         //     'conditions' => $conditions
         // ])->toList();
         $arr_hashs = [];
-        if(is_array($amostras)){
-            for($i = 0; $i< sizeof($amostras);$i++){
-                array_push($arr_hashs,$amostras[$i]->exame->hash);
+        if (is_array($amostras)) {
+            for ($i = 0; $i < sizeof($amostras); $i++) {
+                array_push($arr_hashs, $amostras[$i]->exame->hash);
             }
-        }else{
-            array_push($arr_hashs,$amostras->exame->hash);
+        } else {
+            array_push($arr_hashs, $amostras->exame->hash);
         }
-        
+
         $result_hashs = $this->ExamesData->get($arr_hashs);
-       if(is_array($result_hashs)){
-            for($i = 0; $i< sizeof($amostras);$i++){
-                for($z = 0; $z< sizeof($result_hashs);$z++){
-                    if($result_hashs[$z]->hash == $amostras[$i]->exame->hash){
-                        $amostras[$i]->exame->resultado = $result_hashs[$z]->body; 
-                        array_splice( $result_hashs,$z,1);
+        if (is_array($result_hashs)) {
+            for ($i = 0; $i < sizeof($amostras); $i++) {
+                for ($z = 0; $z < sizeof($result_hashs); $z++) {
+                    if ($result_hashs[$z]->hash == $amostras[$i]->exame->hash) {
+                        $amostras[$i]->exame->resultado = $result_hashs[$z]->body;
+                        array_splice($result_hashs, $z, 1);
                         break 1;
                     }
                 }

@@ -24,6 +24,7 @@ class PedidosController extends RestController
     {
         $this->loadComponent('Request');
         $this->loadComponent('PacientesData');
+        $this->loadComponent('ExamesData');
         $this->loadComponent('Email');
 
         $this->body = $this->Request->getBody();
@@ -55,13 +56,14 @@ class PedidosController extends RestController
             'conditions' => ['Anamneses.paciente_id' => $payload->id]
         ])->toList();
 
-
-
         $handle = [];
 
         foreach ($pedidos as $key => $pedido) {
-            // debug($pedido->entrada_exame->nome);
-            // die;
+
+            if (!empty($pedido->exame)) {
+                $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            }
+
             $handle[] = [
                 'clinica_nome' => $pedido->cliente->nome_fantasia ?? '-',
                 'exame_nome' => $pedido->entrada_exame->nome ?? '-',

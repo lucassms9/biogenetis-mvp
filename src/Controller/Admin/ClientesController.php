@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
@@ -21,6 +22,7 @@ class ClientesController extends AppController
             'Particular' => 'Particular',
             'Convênio' => 'Convênio'
         ];
+        $this->loadModel('ExtratoSaldo');
     }
 
     /**
@@ -35,7 +37,8 @@ class ClientesController extends AppController
 
         $clientes = $this->paginate($this->Clientes);
 
-        $this->set(compact('clientes','action','title'));
+        $showActions = true;
+        $this->set(compact('clientes', 'action', 'title', 'showActions'));
     }
 
     /**
@@ -77,8 +80,7 @@ class ClientesController extends AppController
 
         $cobranca_tipos = $this->cobranca_tipos;
 
-        $this->set(compact('cliente','action','title','cobranca_tipos'));
-
+        $this->set(compact('cliente', 'action', 'title', 'cobranca_tipos'));
     }
 
     /**
@@ -98,7 +100,29 @@ class ClientesController extends AppController
             'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $cliente = $this->Clientes->patchEntity($cliente, $this->request->getData());
+            $req = $this->request->getData();
+
+            if (!empty($req['img_header_url'])) {
+                $ext = explode('/', $req['img_header_url']['type']);
+                $name = md5($req['img_header_url']['name']) . '.' . $ext[1];
+
+                $url = 'clientes_imgs/' . $name;
+
+                move_uploaded_file($req['img_header_url']['tmp_name'], CLIENTES_IMGS . $name);
+                $req['img_header_url'] = $url;
+            }
+
+            if (!empty($req['img_footer_url'])) {
+                $ext = explode('/', $req['img_footer_url']['type']);
+                $name = md5($req['img_footer_url']['name']) . '.' . $ext[1];
+
+                $url = 'clientes_imgs/' . $name;
+
+                move_uploaded_file($req['img_footer_url']['tmp_name'], CLIENTES_IMGS . $name);
+                $req['img_footer_url'] = $url;
+            }
+
+            $cliente = $this->Clientes->patchEntity($cliente, $req);
             if ($this->Clientes->save($cliente)) {
                 $this->Flash->success(__('The cliente has been saved.'));
 
@@ -111,7 +135,44 @@ class ClientesController extends AppController
 
         $cobranca_tipos = $this->cobranca_tipos;
 
-        $this->set(compact('cliente','action','title','cobranca_tipos'));
+        $this->set(compact('cliente', 'action', 'title', 'cobranca_tipos'));
+    }
+
+
+    public function saldo($id = null)
+    {
+        $action = 'Saldo';
+        $title = 'Clientes';
+
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $req = $this->request->getData();
+
+            if (!empty($req['novo_saldo']) && $req['novo_saldo'] > 0) {
+
+                $dataSave = [
+                    'cliente_id' => $id,
+                    'type' => 'C',
+                    'valor' => $req['novo_saldo'],
+                    'created_by' => $this->Auth->user('id')
+                ];
+
+                $extratoSaldo = $this->ExtratoSaldo->newEntity();
+                $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
+                $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
+
+                return $this->redirect(['action' => 'saldos/' . $id]);
+                $this->Flash->success(__('Dados salvos com sucesso'));
+            }
+        }
+
+        $cliente = $this->Clientes->get($id, [
+            'contain' => [],
+        ]);
+
+        $saldo = $cliente->getSaldo();
+
+        $this->set(compact('action', 'title', 'saldo'));
     }
 
     /**

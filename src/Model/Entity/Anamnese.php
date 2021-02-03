@@ -97,6 +97,35 @@ class Anamnese extends Entity
      * @var array
      */
     protected $_accessible = [
+        'viagem_exteriorobs_pais' => true,
+        'viagem_exterior' => true,
+        'viagem_brasil_estado' => true,
+        'viagem_brasil_cidade' => true,
+        'viagem_brasil' => true,
+        'sintoma_falta_de_apetite' => true,
+        'sintoma_expectoracao' => true,
+
+        'sintoma_dor_no_corpo' => true,
+        'sintoma_doecas_associadas' => true,
+        'sintoma_corisa_congestao_nasal' => true,
+        'sintoma_cansaco_falta_de_ar' => true,
+        'paciente_unidade_saude_14_dias_estado' => true,
+        'paciente_unidade_saude_14_dias_cidade' => true,
+        'paciente_historico_viagem_14_dias' => true,
+        'clinico_rinite' => true,
+        'clinico_obesidade' => true,
+        'clinico_neoplasia_cancer' => true,
+        'clinico_insuficiencia_renal' => true,
+        'clinico_dpoc_enfisema' => true,
+        'clinico_doencas_reumatologicas' => true,
+        'clinico_doencas_hepaticas' => true,
+        'clinico_diabetes' => true,
+        'clinico_cardiovascular' => true,
+        'clinico_asma' => true,
+        'clinico_apneia_do_sone' => true,
+        'clinico_alteracao_colesterol' => true,
+
+
         'cliente_id' => true,
         'paciente_id' => true,
         'tipo_pagamento' => true,

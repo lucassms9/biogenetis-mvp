@@ -19,7 +19,7 @@ class PedidosController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['laudoWeb']);
+        $this->Auth->allow(['laudoViwer']);
         $this->sexos = [
             'M' => 'M',
             'F' => 'F'
@@ -222,12 +222,10 @@ class PedidosController extends AppController
         $footer_laudo = @$cliente->img_footer_url;
         $header_laudo = @$cliente->img_header_url;
 
-
-
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'header_laudo', 'footer_laudo'));
     }
 
-    public function laudoWeb($id)
+    public function laudoViwer($id)
     {
         $pedido = $this->Pedidos->get($id, [
             'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
@@ -244,13 +242,11 @@ class PedidosController extends AppController
         $pedido->anamnese->paciente = new Paciente($res);
 
         $cliente = $this->Clientes->find('all', [
-            'conditions' => ['id' => $pedido->cliente_id]
+            'conditions' => ['id' => $this->Auth->user('cliente_id')]
         ])->first();
 
         $footer_laudo = @$cliente->img_footer_url;
         $header_laudo = @$cliente->img_header_url;
-
-
 
         $this->viewBuilder()->setLayout('laudo');
         $this->set(compact('pedido', 'footer_laudo', 'header_laudo'));
@@ -308,7 +304,6 @@ class PedidosController extends AppController
     public function pagamento($pedido_id = null)
     {
         $req = $this->request->getData();
-
 
 
         if (!empty($req['formas_pagamento']) && !empty($req['pedido_id']) && !empty($req['entrada_exame_id']) && !empty($req['valor_exame'])) {

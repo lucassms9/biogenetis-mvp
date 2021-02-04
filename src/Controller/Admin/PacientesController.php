@@ -30,6 +30,7 @@ class PacientesController extends AppController
         $this->loadComponent('Ibge');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
+        $this->API_ROOT = env('USER_ENDPOINT');
     }
 
 
@@ -57,7 +58,6 @@ class PacientesController extends AppController
         ];
 
         $pacientes = $this->paginate($this->Pacientes);
-
         $pacientesData = $this->PacientesData;
         $this->set(compact('pacientes', 'action', 'title', 'pacientesData'));
     }
@@ -372,12 +372,25 @@ class PacientesController extends AppController
     {
         $action = 'Editar';
         $title = 'Clientes';
-
         $paciente = $this->Pacientes->get($id, [
             'contain' => [],
         ]);
+        $pacientes_data = json_decode($this->PacientesData->getByHash($paciente->hash));
         if ($this->request->is(['patch', 'post', 'put'])) {
             $paciente = $this->Pacientes->patchEntity($paciente, $this->request->getData());
+           /*
+                $body["nacionalidade"] = "BRASILEIRA";
+                $body["pais_residencia"] = "BRASIL";
+            */
+            $json = $this->request->getData();
+            $json['hash'] =  $paciente->hash;
+            $json = json_encode( $json);
+            $http = new Client();
+            $response = $http->post($this->API_ROOT . 'paciente/update', $json, [
+                'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
+            ]);
+            $jst_r  = json_decode($response->getStringBody());
+
             if ($this->Pacientes->save($paciente)) {
                 $this->Flash->success(__('The paciente has been saved.'));
 
@@ -386,9 +399,26 @@ class PacientesController extends AppController
             $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
         }
         $sexos = $this->sexos;
-
+        $paciente->nome = $pacientes_data->nome ;
+        $paciente->cpf = $pacientes_data->cpf ;
+        $paciente->rg = $pacientes_data->rg ;
+        $paciente->sexo = $pacientes_data->sexo ;
+        $paciente->email = $pacientes_data->email ;
+        $paciente->celular = $pacientes_data->celular ;
+        $paciente->telefone = $pacientes_data->telefone ;
+        $paciente->data_nascimento = $pacientes_data->data_nascimento ;
+        $paciente->cep = $pacientes_data->cep ;
+        $paciente->endereco = $pacientes_data->endereco ;
+        $paciente->bairro = $pacientes_data->bairro ;
+        $paciente->cidade = $pacientes_data->cidade ;
+        $paciente->uf = $pacientes_data->uf ;
+        $paciente->nome_da_mae = $pacientes_data->nome_da_mae ;
+        $paciente->nacionalidade = $pacientes_data->nacionalidade ;
+        $paciente->pais_residencia = $pacientes_data->pais_residencia ;
+        $paciente->profissao = $pacientes_data->profissao ;
         $this->set(compact('paciente', 'action', 'title', 'sexos'));
     }
+
 
     /**
      * Delete method

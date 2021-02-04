@@ -32,18 +32,18 @@
 
                                         $pacienteData = json_decode($pacienteData);
 
-                                        $paciente = $pacienteData;
+                                        $paciente_result = $pacienteData;
 
                                         ?>
                                         <tr>
                                             <td><?= $this->Number->format($paciente->id) ?></td>
-                                            <td><?= h($paciente->nome) ?></td>
-                                            <td><?= h($paciente->cpf) ?></td>
-                                            <td><?= h($paciente->rg) ?></td>
-                                            <td><?= h($paciente->email) ?></td>
-                                            <td><?= h($paciente->celular) ?></td>
-                                            <td><?= h($paciente->telefone) ?></td>
-                                            <td><?= h($paciente->sexo) ?></td>
+                                            <td><?= h($paciente_result->nome) ?></td>
+                                            <td><?= h($paciente_result->cpf) ?></td>
+                                            <td><?= h($paciente_result->rg) ?></td>
+                                            <td><?= h($paciente_result->email) ?></td>
+                                            <td><?= h($paciente_result->celular) ?></td>
+                                            <td><?= h($paciente_result->telefone) ?></td>
+                                            <td><?= h($paciente_result->sexo) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $paciente->id], ['escape' => false]) ?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $paciente->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $paciente->id)]) ?>

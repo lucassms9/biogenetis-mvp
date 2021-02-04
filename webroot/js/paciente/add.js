@@ -1,13 +1,72 @@
+function getCitiesViagem(uf){
+    // return console.log(uf)
+
+    if(!uf) return false;
+
+    $.ajax({
+        url: BASE_URL_ADMIN + 'pacientes/getCities/'+uf,
+        type: 'GET',
+        dataType: 'json',
+    })
+    .done(function(data) {
+        $('#viagem-brasil-cidade').html('<option value="">Escolha</option>');
+
+        $('#viagem-brasil-cidade').append('')
+        $.each(data, function (index, city) {
+            console.log(city)
+
+            var handle = '<option value="'+city.id+'">'+city.nome+'</option>'
+
+            $('#viagem-brasil-cidade').append(handle)
+        });
+
+
+    });
+
+}
+function getCitiesUnidade(uf){
+    // return console.log(uf)
+
+    if(!uf) return false;
+
+    $.ajax({
+        url: BASE_URL_ADMIN + 'pacientes/getCities/'+uf,
+        type: 'GET',
+        dataType: 'json',
+    })
+    .done(function(data) {
+        $('#paciente-unidade-saude-14-dias-cidade').html('<option value="">Escolha</option>');
+
+        $('#paciente-unidade-saude-14-dias-cidade').append('')
+        $.each(data, function (index, city) {
+            var handle = '<option value="'+city.id+'">'+city.nome+'</option>'
+            $('#paciente-unidade-saude-14-dias-cidade').append(handle)
+        });
+
+
+    });
+
+}
 
 $(document).ready(function() {
+    $('#viagem-brasil-estado').change(function (e) {
+        e.preventDefault();
+        getCitiesViagem(this.value);
+    });
+
+    $('#paciente-unidade-saude-14-dias-estado').change(function (e) {
+        e.preventDefault();
+        getCitiesUnidade(this.value);
+    });
+
     $('#submitformpaciente').click(function (e) {
         e.preventDefault();
         submitformpaciente()
     });
-   
+
     $('.cpf').keydown(function(e){
-        if($(this).val().length > 13 
-            && e.keyCode !== 46 
+        if($(this).val().length > 13
+            && e.keyCode !== 46
             && e.keyCode !== 8 ){
             $(this).val(mCPF(this.value));
             e.preventDefault();
@@ -45,19 +104,19 @@ function isValidCPF(cpf) {
         cpf == "66666666666" ||
         cpf == "77777777777" ||
         cpf == "88888888888" ||
-        cpf == "99999999999" 
+        cpf == "99999999999"
     ) {
         return false
     }
     var soma = 0
     var resto
-    for (var i = 1; i <= 9; i++) 
+    for (var i = 1; i <= 9; i++)
         soma = soma + parseInt(cpf.substring(i-1, i)) * (11 - i)
     resto = (soma * 10) % 11
     if ((resto == 10) || (resto == 11))  resto = 0
     if (resto != parseInt(cpf.substring(9, 10)) ) return false
     soma = 0
-    for (var i = 1; i <= 10; i++) 
+    for (var i = 1; i <= 10; i++)
         soma = soma + parseInt(cpf.substring(i-1, i)) * (12 - i)
     resto = (soma * 10) % 11
     if ((resto == 10) || (resto == 11))  resto = 0
@@ -91,92 +150,31 @@ function submitformpaciente() {
         alertify.error("CPF Inválido");
         return
     }
-    var sintomas_outros = $('#sintoma-outros').is(":checked");
-    var sintomas_outros_desc = $('#sintoma_outros_observacao').val();  
-
-    if(sintomas_outros && !sintomas_outros_desc){
-        
-        alertify.error("você precisa especificar o sintoma.");
-         $('#sintoma_outros_observacao').focus();
-
-        return
-    }
-
-    var sintomas_febre = $('#clinico-febre').is(":checked");
-    var sintomas_febre_desc = $('#clinico_febre_temp').val();
-
-
-    if(sintomas_febre && !sintomas_febre_desc){
-        alertify.error('você precisa especificar a febre.');
-        return $('#clinico_febre_temp').focus();
-    }
 
     var clinico_outros = $('#clinico-outros').is(":checked");
     var clinico_outros_desc = $('#clinico_outros_observacao').val();
-
 
     if(clinico_outros && !clinico_outros_desc){
         alertify.error('você precisa especificar o sintoma.');
         return $('#clinico_outros_observacao').focus();
     }
 
-    var paciente_anti_inflamatorio = $('input[name="analgesico_antitermico_antiinflamatorio"]:checked');
-    if(paciente_anti_inflamatorio.length === 0){
-          alertify.error("você precisa informar se o paciente utilizou analgésico, antitérmico ou anti-inflamatório.");
-        return $('input[name="analgesico_antitermico_antiinflamatorio"]').focus();
+
+    var viagem_brasil = $('input[name="viagem_brasil"]:checked');
+    var viagem_brasil_estado = $('#viagem-brasil-estado option:selected').val();
+
+    if(viagem_brasil.length > 0 && !viagem_brasil_estado){
+         alertify.error('você precisa informar o estado e cidade da viagem no brasil do paciente');
+        return $('input[name="viagem_brasil_estado"]').focus();
     }
 
-    var paciente_hospitalizado = $('input[name="paciente_hospitalizado"]:checked');
-    var paciente_hospitalizado_nome_hospital = $('input[name="paciente_hospitalizado_nome_hospital"]');
-    if(paciente_hospitalizado.length === 0){
-         alertify.error('você precisa informar se o paciente foi hospitalizado');
-        return $('input[name="paciente_hospitalizado"]').focus();
+    var viagem_exterior = $('input[name="viagem_exterior"]:checked');
+    var viagem_exteriorobs_pais = $('input[name="viagem_exteriorobs_pais"]').val();
+    if(viagem_exterior.length > 0 && !viagem_exteriorobs_pais){
+         alertify.error('você precisa informar o país da viagem no exterior do paciente');
+        return $('input[name="viagem_brasil_estado"]').focus();
     }
 
-    if(paciente_hospitalizado.val() === 'SIM' && !paciente_hospitalizado_nome_hospital.val()){
-         alertify.error('você precisa informar o nome do hospital.');
-        return paciente_hospitalizado_nome_hospital.focus();
-    }
-
-
-    var paciente_ventilacao_mecanica = $('input[name="paciente_ventilacao_mecanica"]:checked');
-    if(paciente_ventilacao_mecanica.length === 0){
-         alertify.error('você precisa informar se o paciente foi submetido a ventilação mecânica');
-        return $('input[name="paciente_ventilacao_mecanica"]').focus();
-    }
-
-    var paciente_situacao_notificacao = $('input[name="paciente_situacao_notificacao"]:checked');
-    if(paciente_situacao_notificacao.length === 0){
-         alertify.error('você precisa informar a situação de saúde do paciente no momento da notificação');
-        return $('input[name="paciente_situacao_notificacao"]').focus();
-    }
-
-
-    var paciente_historico_viagem_14_dias = $('input[name="paciente_historico_viagem_14_dias"]:checked');
-    var paciente_historico_viagem_14_dias_data_chegada = $('input[name="paciente_historico_viagem_14_dias_data_chegada"]');
-    if(paciente_historico_viagem_14_dias.length === 0){
-         alertify.error('você precisa informar se o paciente tem histórico de viagem para fora do brasil até 14 dias antes do início dos sintomas');
-        return $('input[name="paciente_hospitalizado"]').focus();
-    }
-
-    if(paciente_hospitalizado.val() === 'SIM' && !paciente_historico_viagem_14_dias_data_chegada.val()){
-         alertify.error('você precisa informar data de chegada no brasil.');
-        return paciente_historico_viagem_14_dias_data_chegada.focus();
-    }
-
-
-
-    var paciente_coleta_de_amostra = $('input[name="paciente_coleta_de_amostra"]:checked');
-    if(paciente_coleta_de_amostra.length === 0){
-         alertify.error('você precisa informar se foi realizada coleta de amostra do paciente');
-        return $('input[name="paciente_coleta_de_amostra"]').focus();
-    }
-
-    var paciente_his_deslocamento_14_dias = $('input[name="paciente_his_deslocamento_14_dias"]');
-    if(!paciente_his_deslocamento_14_dias){
-         alertify.error('você precisa informar o histórico de deslocamento nos 14 dias anteriores ao início dos sintomas');
-        return $('input[name="paciente_his_deslocamento_14_dias"]').focus();
-    }
 
 
     var paciente_contato_pessoa_com_suspeita_covid = $('input[name="paciente_contato_pessoa_com_suspeita_covid"]:checked');
@@ -213,22 +211,26 @@ function submitformpaciente() {
         return $('input[name="paciente_unidade_saude_14_dias"]').focus();
     }
 
-    if(paciente_unidade_saude_14_dias.val() === 'SIM' && !paciente_unidade_saude_14_dias_local.val()){
-         alertify.error('você precisa informar nome, endereço e contato.');
+    if(paciente_unidade_saude_14_dias.val() === 'SIM'){
+
+    var paciente_unidade_saude_14_dias_local = $('input[name="paciente_unidade_saude_14_dias_local"]');
+
+    if(!paciente_unidade_saude_14_dias_local.val()){
+        alertify.error('você precisa informar o nome da unidade de saúde');
         return paciente_unidade_saude_14_dias_local.focus();
+   }
+
+
+
+    var paciente_unidade_saude_14_dias_estado = $('#paciente-unidade-saude-14-dias-estado option:selected').val();
+
+    var paciente_unidade_saude_14_dias_cidade = $('#paciente-unidade-saude-14-dias-cidade option:selected').val();
+
+    if(!paciente_unidade_saude_14_dias_estado || !paciente_unidade_saude_14_dias_cidade){
+         alertify.error('você precisa informar o estado e cidade da unidade de saúde');
+        return $('#paciente-unidade-saude-14-dias-estado').focus();
     }
 
-
-    var paciente_ocupacao = $('input[name="paciente_ocupacao"]:checked');
-    var paciente_ocupacao_outros = $('input[name="paciente_ocupacao_outros"]');
-    if(paciente_ocupacao.length === 0){
-         alertify.error('você precisa informar a ocupação do paciente');
-        return $('input[name="paciente_ocupacao"]').focus();
-    }
-
-    if(paciente_ocupacao.val() === 'OUTROS' && !paciente_ocupacao_outros.val()){
-         alertify.error('você precisa informar a ocupação.');
-        return paciente_ocupacao_outros.focus();
     }
 
 

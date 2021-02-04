@@ -27,6 +27,7 @@ class PacientesController extends AppController
 
         $this->loadComponent('PacientesData');
         $this->loadComponent('Helpers');
+        $this->loadComponent('Ibge');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
     }
@@ -116,6 +117,15 @@ class PacientesController extends AppController
                 $req['paciente_historico_viagem_14_dias_data_chegada'] = implode('-', array_reverse(explode('/', $req['paciente_historico_viagem_14_dias_data_chegada'])));
             }
 
+
+            if(!empty($req['paciente_unidade_saude_14_dias_cidade'])){
+                $req['paciente_unidade_saude_14_dias_cidade'] = $this->getCityById($req['paciente_unidade_saude_14_dias_cidade'])->nome;
+            }
+
+            if(!empty($req['viagem_brasil_cidade'])){
+                $req['viagem_brasil_cidade'] = $this->getCityById($req['viagem_brasil_cidade'])->nome;
+            }
+
             $validar = [
                 'nome' => $req['nome'],
                 'cpf' => $req['cpf'],
@@ -126,15 +136,15 @@ class PacientesController extends AppController
                 'celular' => $req['celular'],
                 'pais_residencia' => $req['pais_residencia'],
                 'nacionalidade' => $req['nacionalidade'],
-                'data_primeiros_sintomas' => $req['data_primeiros_sintomas'],
-                'gestante' => $req['gestante'],
-                'analgesico_antitermico_antiinflamatorio' => $req['analgesico_antitermico_antiinflamatorio'],
-                'paciente_hospitalizado' => $req['paciente_hospitalizado'],
-                'paciente_hospitalizado_nome_hospital' => $req['paciente_hospitalizado_nome_hospital'],
-                'paciente_ventilacao_mecanica' => $req['paciente_ventilacao_mecanica'],
-                'paciente_situacao_notificacao' => $req['paciente_situacao_notificacao'],
-                'paciente_historico_viagem_14_dias' => $req['paciente_historico_viagem_14_dias'],
-                'paciente_historico_viagem_14_dias_data_chegada' => $req['paciente_historico_viagem_14_dias_data_chegada'],
+                // 'data_primeiros_sintomas' => $req['data_primeiros_sintomas'],
+                // 'gestante' => $req['gestante'],
+                // 'analgesico_antitermico_antiinflamatorio' => $req['analgesico_antitermico_antiinflamatorio'],
+                // 'paciente_hospitalizado' => $req['paciente_hospitalizado'],
+                // 'paciente_hospitalizado_nome_hospital' => $req['paciente_hospitalizado_nome_hospital'],
+                // 'paciente_ventilacao_mecanica' => $req['paciente_ventilacao_mecanica'],
+                // 'paciente_situacao_notificacao' => $req['paciente_situacao_notificacao'],
+                // 'paciente_historico_viagem_14_dias' => $req['paciente_historico_viagem_14_dias'],
+                // 'paciente_historico_viagem_14_dias_data_chegada' => $req['paciente_historico_viagem_14_dias_data_chegada'],
 
             ];
 
@@ -260,7 +270,46 @@ class PacientesController extends AppController
             }
         }
 
-        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query'));
+        $estados_find = $this->getStates();
+        $estados = [];
+
+        foreach ($estados_find as $key => $estado) {
+           $estados[$estado->sigla] = $estado->sigla;
+        }
+
+        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query','estados'));
+    }
+
+    public function getCityById($id)
+    {
+        $city = $this->Ibge->getCityById($id);
+        return $city;
+        echo json_encode($city);
+        die;
+
+    }
+    public function getStateById($id)
+    {
+        $state = $this->Ibge->getStateById($id);
+        echo json_encode($state);
+        die;
+    }
+
+    public function getStates()
+    {
+        $states = $this->Ibge->getStates();
+
+        return $states;
+        echo json_encode($states);
+        die;
+    }
+
+    public function getCities($uf)
+    {
+        $cities = $this->Ibge->getCity($uf);
+
+        echo json_encode($cities);
+        die;
     }
 
     public function naoVazios($campos)

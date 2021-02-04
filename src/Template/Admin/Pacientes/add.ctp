@@ -44,7 +44,7 @@
                         ]);?>
                         <hr/>
 
-                        <h2>Amamnese</h2>
+                        <h2>Anamnese</h2>
                         <?php echo $this->element('admin/anamnese/form',[
                             'disabled' => $disabled_inputs
                         ]);?>

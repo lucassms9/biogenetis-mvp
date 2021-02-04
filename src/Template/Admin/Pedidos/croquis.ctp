@@ -13,7 +13,7 @@
                             <table class="table mb-0">
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col"><?= $this->Paginator->sort('id', 'id') ?></th>
+                                    <th scope="col"><?= $this->Paginator->sort('id', 'Código') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('status', 'Status') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('croqui_tipo', 'Croqui Tipo') ?></th>
                                     <th scope="col"><?= $this->Paginator->sort('created', 'Criado em:') ?></th>

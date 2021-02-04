@@ -11,7 +11,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="">
-                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= $header_laudo; ?>">
+                <?php if(!empty($header_laudo)):?>
+                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= @$header_laudo; ?>">
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -142,7 +144,9 @@
     <footer>
         <div class="row">
             <div class="col-md-12">
-                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= $footer_laudo; ?>">
+                <?php if(!empty($footer_laudo)):?>
+                    <img width="100%" src="<?= $this->Url->build('/', true); ?><?= @$footer_laudo; ?>">
+                <?php endif; ?>
             </div>
         </div>
     </footer>

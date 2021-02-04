@@ -20,7 +20,7 @@ class PedidosController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['laudoViwer']);
+        $this->Auth->allow(['laudoWeb']);
         $this->sexos = [
             'M' => 'M',
             'F' => 'F'
@@ -32,6 +32,7 @@ class PedidosController extends AppController
         ];
 
         $this->loadComponent('Helpers');
+        $this->loadComponent('Ibge');
         $this->loadComponent('PacientesData');
         $this->loadModel('Anamneses');
         $this->loadModel('Clientes');
@@ -227,7 +228,7 @@ class PedidosController extends AppController
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'header_laudo', 'footer_laudo'));
     }
 
-    public function laudoViwer($id)
+    public function laudoWeb($id)
     {
         $pedido = $this->Pedidos->get($id, [
             'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
@@ -244,7 +245,7 @@ class PedidosController extends AppController
         $pedido->anamnese->paciente = new Paciente($res);
 
         $cliente = $this->Clientes->find('all', [
-            'conditions' => ['id' => $this->Auth->user('cliente_id')]
+            'conditions' => ['id' => $pedido->cliente_id]
         ])->first();
 
         $footer_laudo = @$cliente->img_footer_url;
@@ -300,7 +301,52 @@ class PedidosController extends AppController
         $croqui_tipos = $this->Croquis->find('list');
         $formas_pagamento = $this->formas_pagamento;
 
-        $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados'));
+        $cidades_viagem = [];
+        $cidades_unidade = [];
+
+        if(!empty($anamnese->viagem_brasil_estado)){
+            $cidades_find = $this->getCities($anamnese->viagem_brasil_estado);
+
+            foreach ($cidades_find as $key => $cidade) {
+                $cidades_viagem[$cidade->nome] = $cidade->nome;
+            }
+        }
+
+        if(!empty($anamnese->paciente_unidade_saude_14_dias_estado)){
+            $cidades_find = $this->getCities($anamnese->paciente_unidade_saude_14_dias_estado);
+
+            foreach ($cidades_find as $key => $cidade) {
+                $cidades_unidade[$cidade->nome] = $cidade->nome;
+            }
+        }
+
+        $estados_find = $this->getStates();
+        $estados = [];
+
+
+        foreach ($estados_find as $key => $estado) {
+           $estados[$estado->sigla] = $estado->sigla;
+        }
+
+        $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));
+    }
+
+    public function getCities($uf)
+    {
+        $cities = $this->Ibge->getCity($uf);
+        return $cities;
+        echo json_encode($cities);
+        die;
+    }
+
+
+    public function getStates()
+    {
+        $states = $this->Ibge->getStates();
+
+        return $states;
+        echo json_encode($states);
+        die;
     }
 
     public function pagamento($pedido_id = null)

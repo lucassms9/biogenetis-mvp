@@ -156,7 +156,11 @@ class PacientesController extends AppController
                     ['escape' => false]
                 );
             } else {
+                $req['cpf'] = $this->Helpers->stringToNumber($req['cpf']);
+                $req['celular'] = $this->Helpers->stringToNumber($req['celular']);
+
                 $result = $this->createdPaciente($req, $paciente);
+
                 if (strlen($result->hash) > 5) {
                     $save_ok = true;
                     if (true) {
@@ -272,12 +276,14 @@ class PacientesController extends AppController
 
         $estados_find = $this->getStates();
         $estados = [];
+        $cidades_viagem = [];
+        $cidades_unidade = [];
 
         foreach ($estados_find as $key => $estado) {
            $estados[$estado->sigla] = $estado->sigla;
         }
 
-        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query','estados'));
+        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query','estados','cidades_unidade','cidades_viagem'));
     }
 
     public function getCityById($id)

@@ -6,6 +6,7 @@ use App\Controller\AppController;
 use App\Component\PacientesDataComponent;
 use App\Model\Entity\Paciente;
 use App\Component\ExamesDataComponent;
+use Exception;
 
 /**
  * Pedidos Controller
@@ -192,14 +193,15 @@ class PedidosController extends AppController
         $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
         $pedidos_list = [];
         foreach ($pedidos as $pedido) {
-
-            $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
-            array_push(
-                $pedidos_list,
-                array(
-                    "hash"   => $pedido->anamnese->paciente->hash, "id"     => $pedido->id, "codigo_pedido" => $pedido->codigo_pedido, "status" => $pedido->status, "cpf"    => $user_info['cpf'], "nome"    => $user_info['nome'], "celular"    => $user_info['celular'], "created" => $pedido->created
-                )
-            );
+            if(isset($pedido->anamnese) && isset($pedido->anamnese->paciente)){
+                $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
+                array_push(
+                    $pedidos_list,
+                    array(
+                        "hash"   => $pedido->anamnese->paciente->hash, "id"     => $pedido->id, "codigo_pedido" => $pedido->codigo_pedido, "status" => $pedido->status, "cpf"    => $user_info['cpf'], "nome"    => $user_info['nome'], "celular"    => $user_info['celular'], "created" => $pedido->created
+                    )
+                );
+            }
         }
         $this->set(compact('action', 'title', 'pedidos', 'pedidos_list'));
     }

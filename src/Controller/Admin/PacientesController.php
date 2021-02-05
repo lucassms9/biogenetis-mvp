@@ -172,6 +172,7 @@ class PacientesController extends AppController
 
                         $dados_anamnese = $req;
                         $dados_anamnese['status'] = 'completed';
+                        $dados_anamnese['cliente_id'] = $user->cliente->id;
 
                         $anamnese = $this->Anamneses->newEntity();
                         $anamnese = $this->Anamneses->patchEntity($anamnese, $dados_anamnese);
@@ -184,12 +185,18 @@ class PacientesController extends AppController
                                 'cliente_id' => $user->cliente->id,
                                 'tipo_pagamento' => $user->cliente->tipo_cobranca,
                                 'created_by' => $user->id,
-                                'exame_entrada_id' => 1
+                                'entrada_exame_id' => 1,
+                                'status' => 'EmAtendimento',
                             ];
 
                             $pedido = $this->Pedidos->newEntity();
                             $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
+
+
+                            // $pedido = $pedido->getErrors();
                             $pedido = $this->Pedidos->save($pedido);
+
+
                             if (!$pedido) {
                                 $save_ok = false;
                             }
@@ -202,8 +209,7 @@ class PacientesController extends AppController
                         $this->Flash->success(__('Anamnese Criada com sucesso.'));
                         return $this->redirect(['controller' => 'pedidos', 'action' => 'index', 'status' => 'EmAtendimento']);
                     } else {
-                        var_dump($result);
-                        die;
+
                         $this->Flash->error(__('Erro ao salvar dados #32!'));
                     }
                 } else {

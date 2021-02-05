@@ -93,8 +93,14 @@ class PacientesController extends RestController
         $body = $this->body;
         $payload = $this->payload;
 
+        $cliente = $this->Clientes->find('All', [
+            'conditions' => ['id' => $body['cliente_id']]
+        ])->first();
+
         $body['paciente_id'] = $payload->id;
         $body['status'] = 'completed';
+        $body['cliente_id'] = $cliente->id;
+
         $anamnese = $this->Anamneses->newEntity();
         $anamnese = $this->Anamneses->patchEntity($anamnese, $body);
         $anamnese = $this->Anamneses->save($anamnese);
@@ -103,9 +109,7 @@ class PacientesController extends RestController
             throw new Exception('Erro ao criar anamnese');
         }
 
-        $cliente = $this->Clientes->find('All', [
-            'conditions' => ['id' => $body['cliente_id']]
-        ])->first();
+
 
         //criacao de pedido
         $dadaos_pedido = [
@@ -113,7 +117,8 @@ class PacientesController extends RestController
             'cliente_id' => $cliente->id,
             'tipo_pagamento' => $cliente->tipo_cobranca,
             'created_by' => $body['paciente_id'],
-            'entrada_exame_id' => 1
+            'entrada_exame_id' => 1,
+            'status' => 'EmAtendimento',
         ];
 
         $pedido = $this->Pedidos->newEntity();

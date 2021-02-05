@@ -6,14 +6,30 @@ read -p "Servidor Ponte  =" Ponte
 
 echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
 
+
+
+// acessar maquina via bastion
+ssh -i ssh-key-2020-08-12.key opc@172.21.1.4
+ssh -i ssh-key-2020-08-12.key ubuntu@172.21.1.4
+
+
 //TUNEL BANCO
+banco app
 ssh -N -L 9999:172.21.2.2:3306 opc@152.67.55.26
+
+banco server01 - pacientes
+ssh -N -L 9999:172.21.2.3:3306 opc@152.67.55.26
+
 
 //maquina do wagner
 ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
 
+
+ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
+
 //novo user
 ssh opc@152.67.55.26
+scp  opc@152.67.55.26:/var/www/html/* .github
 
 BANCO
 database: dbweb

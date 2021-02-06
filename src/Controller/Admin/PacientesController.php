@@ -28,6 +28,7 @@ class PacientesController extends AppController
         $this->loadComponent('PacientesData');
         $this->loadComponent('Helpers');
         $this->loadComponent('Ibge');
+        $this->loadComponent('GeoNames');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
         $this->API_ROOT = env('USER_ENDPOINT');
@@ -118,14 +119,13 @@ class PacientesController extends AppController
             }
 
 
-            if(!empty($req['paciente_unidade_saude_14_dias_cidade'])){
-                $req['paciente_unidade_saude_14_dias_cidade'] = $this->getCityById($req['paciente_unidade_saude_14_dias_cidade'])->nome;
+            if(!empty($req['paciente_unidade_saude_14_dias_estado'])){
+                $req['paciente_unidade_saude_14_dias_estado'] = $this->getStateById($req['paciente_unidade_saude_14_dias_estado']);
             }
 
-            if(!empty($req['viagem_brasil_cidade'])){
-                $req['viagem_brasil_cidade'] = $this->getCityById($req['viagem_brasil_cidade'])->nome;
+            if(!empty($req['viagem_brasil_estado'])){
+                $req['viagem_brasil_estado'] = $this->getStateById($req['viagem_brasil_estado']);
             }
-
             $validar = [
                 'nome' => $req['nome'],
                 'cpf' => $req['cpf'],
@@ -285,8 +285,9 @@ class PacientesController extends AppController
         $cidades_viagem = [];
         $cidades_unidade = [];
 
+
         foreach ($estados_find as $key => $estado) {
-           $estados[$estado->sigla] = $estado->sigla;
+           $estados[$estado['id']] = $estado['sigla'];
         }
 
         $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query','estados','cidades_unidade','cidades_viagem'));
@@ -302,14 +303,13 @@ class PacientesController extends AppController
     }
     public function getStateById($id)
     {
-        $state = $this->Ibge->getStateById($id);
-        echo json_encode($state);
-        die;
+        $state = $this->GeoNames->getStateById($id);
+        return $state;
     }
 
     public function getStates()
     {
-        $states = $this->Ibge->getStates();
+        $states = $this->GeoNames->getStates();
 
         return $states;
         echo json_encode($states);
@@ -318,7 +318,7 @@ class PacientesController extends AppController
 
     public function getCities($uf)
     {
-        $cities = $this->Ibge->getCity($uf);
+        $cities = $this->GeoNames->getCity($uf);
 
         echo json_encode($cities);
         die;

@@ -923,6 +923,18 @@ class AmostrasController extends AppController
                             die();
                         }
 
+                        $amostraExist2 = $this->Exames->find('all', [
+                            'contain' => ['Users.Clientes'],
+                            'conditions' => [
+                                'amostra_id' => $amostra_id[0],
+                                'Clientes.id' => $this->Auth->user('cliente_id'),
+                            ]
+                        ])->first();
+
+                        if(!empty($amostraExist2)){
+                            $this->Exames->delete($amostraExist2);
+                        }
+
                         $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
                             'contain' => [],
                         ]);
@@ -944,7 +956,6 @@ class AmostrasController extends AppController
                                 'cliente_id' => $this->Auth->user('cliente_id')
                             ]
                         ])->first();
-
 
                         $exame = [
                             'amostra_id' => $amostra_id[0],

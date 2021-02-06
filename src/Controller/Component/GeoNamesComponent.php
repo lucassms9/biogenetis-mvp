@@ -5,7 +5,7 @@ namespace App\Controller\Component;
 use Cake\Controller\Component;
 use Cake\Http\Client;
 
-class IbgeComponent extends Component
+class GeoNamesComponent extends Component
 {
 
     public function initialize(array $config)
@@ -21,27 +21,49 @@ class IbgeComponent extends Component
             'headers' => ['Content-Type' => 'application/json', ]
         ]);
 
-        return json_decode($response->getStringBody());
+        $handles = json_decode($response->getStringBody());
+
+        $states = [];
+
+        foreach ($handles->geonames as $key => $item) {
+
+            $states[] = [
+                'sigla' => $item->name,
+                'id' => $item->geonameId
+            ];
+        }
+        return $states;
     }
 
     public function getCity($uf)
     {
 
-        $response = $this->client->get('https://servicodados.ibge.gov.br/api/v1/localidades/estados/'.$uf.'/municipios?orderBy=nome', [
+        $response = $this->client->get('http://www.geonames.org/childrenJSON?geonameId='.$uf, [
             'headers' => ['Content-Type' => 'application/json', ]
         ]);
+        $handles = json_decode($response->getStringBody());
 
-        return json_decode($response->getStringBody());
+        $cites = [];
+
+        foreach ($handles->geonames as $key => $item) {
+            $cites[] = [
+                'id' => $item->name,
+                'nome' => $item->name,
+            ];
+        }
+
+        return $cites;
     }
 
     public function getStateById($id)
     {
 
-        $response = $this->client->get('https://servicodados.ibge.gov.br/api/v1/localidades/estados/'.$id, [
+        $response = $this->client->get('http://www.geonames.org/childrenJSON?geonameId='.$id, [
             'headers' => ['Content-Type' => 'application/json', ]
         ]);
+        $handles = json_decode($response->getStringBody());
 
-        return json_decode($response->getStringBody());
+        return $handles->geonames[0]->adminCodes1->ISO3166_2;
     }
     public function getCityById($id)
     {

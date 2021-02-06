@@ -10,19 +10,7 @@
 </div>
 
 <?php echo $this->Form->control('pedido_id', ['class' => 'form-control', 'type' => 'hidden', 'value' => $pedido->id]); ?>
-<?php if ($pedido->tipo_pagamento === 'Convênio') : ?>
-    <!-- <div class="row">
-        <div class="col-md-3">
-            <?php echo $this->Form->control('voucher_cod', ['class' => 'form-control', 'label' => empty($pedido->voucher_id) ? 'Inserir Voucher' : 'Voucher', 'value' => !empty($pedido->voucher_id) ? $pedido->voucher->codigo : '', 'disabled' => !empty($pedido->voucher_id) ? 'true' : 'false']); ?>
-        </div>
-    </div> -->
-<?php else : ?>
-    <div class="row">
-        <div class="col-md-3">
-            <?php echo $this->Form->control('formas_pagamento', ['class' => 'form-control', 'label' => 'Forma de Pagamento', 'disabled' => !empty($pedido->forma_pagamento) ? 'true' : 'false', 'options' => $formas_pagamento, 'default' => @$pedido->forma_pagamento, 'empty' => 'Escolha']); ?>
-        </div>
-    </div>
-<?php endif; ?>
+
 <div class="row">
     <div class="col-md-3">
         <?php echo $this->Form->control('formas_pagamento', ['class' => 'form-control', 'label' => 'Forma de Pagamento', 'disabled' => !empty($pedido->forma_pagamento) ? 'true' : 'false', 'options' => $formas_pagamento, 'default' => @$pedido->forma_pagamento, 'empty' => 'Escolha']); ?>

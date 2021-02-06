@@ -139,7 +139,7 @@ class ClientesController extends AppController
     }
 
 
-    public function saldo($id = null)
+    public function saldos($id = null)
     {
         $action = 'Saldo';
         $title = 'Clientes';

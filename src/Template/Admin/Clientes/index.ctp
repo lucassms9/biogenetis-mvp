@@ -34,7 +34,7 @@
                                             <td><?= h($cliente->uf) ?></td>
                                             <td><?= h($cliente->ativo) ?></td>
                                             <td class="actions">
-                                                <?= $this->Html->link(__('<i class="mdi mdi-cogs"></i>'), ['action' => 'saldo', $cliente->id], ['escape' => false]) ?>
+                                                <?= $this->Html->link(__('<i class="mdi mdi-cogs"></i>'), ['action' => 'saldos', $cliente->id], ['escape' => false]) ?>
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $cliente->id], ['escape' => false]) ?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $cliente->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $cliente->id)]) ?>
                                             </td>

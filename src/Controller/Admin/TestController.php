@@ -26,8 +26,12 @@ class TestController extends AppController
      */
     public function index()
     {
+
+
         $ch = curl_init();
 
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_URL,$this->API_ROOT."getpaciente");
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS,"");

@@ -17,19 +17,19 @@ class ExamesDataComponent extends Component
 
     public function save($hash, $content)
     {
-        return true;
+
         $data = array("hash" => $hash, "content" => $content);
         $body = json_encode($data);
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'exame/save',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
+
         return $response;
     }
 
     public function get($hash)
     {
-        return true;
         //problema local -> Verificar se as propriedades .env são carregadas em requisições ajax corretamente
         $data = array("hashs" => $hash);
         $body = json_encode($data);
@@ -44,7 +44,6 @@ class ExamesDataComponent extends Component
 
     public function saveEncadeamento($hash, $content)
     {
-        return true;
         $data = array("hash" => $hash, "content" => $content);
         $body = json_encode($data);
         $http = new Client();
@@ -57,7 +56,6 @@ class ExamesDataComponent extends Component
 
     public function getEncadeamento($hash)
     {
-        return true;
         $data = array("hashs" => $hash);
         $body = json_encode($data);
         $http = new Client();
@@ -70,7 +68,6 @@ class ExamesDataComponent extends Component
 
     public function getExamesResult($exames)
     {
-        return true;
         $arr_hashs = [];
         if (is_array($exames)) {
             for ($i = 0; $i < sizeof($exames); $i++) {
@@ -116,7 +113,6 @@ class ExamesDataComponent extends Component
 
     public function saveOrigem($hash, $content)
     {
-        return true;
         $data = array("hash" => $hash, "content" => $content);
         $body = json_encode($data);
         $http = new Client();

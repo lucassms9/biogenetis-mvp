@@ -966,7 +966,9 @@ class AmostrasController extends AppController
                         $exame_save->hash =   $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30));
                         $exame_save = $this->Exames->save($exame_save);
 
-                        $this->ExamesData->save($exame_save->hash, '-');
+
+                        $res = $this->ExamesData->save($exame_save->hash, '-');
+
                         if ($exame_save) {
                             $exame_save = $this->Exames->get($exame_save->id, [
                                 'contain' => ['Pedidos.Anamneses.Pacientes']

@@ -40,13 +40,13 @@
 
                     <div class="collapse navbar-collapse" id="topnav-menu-content">
                         <ul class="navbar-nav">
-
+                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
                             <li class="nav-item">
                                 <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true); ?>/amostras/import">
                                     Amostras
                                 </a>
                             </li>
-
+                            <?php endif; ?>
                             <li class="nav-item dropdown">
                                 <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Relatórios <div class="arrow-down"></div>

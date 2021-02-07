@@ -299,7 +299,7 @@ class AmostrasController extends AppController
 
             }
 
-            $arquivo = 'resultado_geral_' . date('Y-m-d-H-i-s');
+            $arquivo = 'encadeamentos_' . date('Y-m-d-H-i-s');
 
             // Redirect output to a client’s web browser (Excel5)
             header("Content-Type: application/vnd.ms-excel");
@@ -372,6 +372,9 @@ class AmostrasController extends AppController
             for ($i = 0; $i <= $qtd_colunas; $i++)
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
+
+            $amostras = $this->ExamesData->getExamesResult($amostras);
+
             foreach ($amostras as $i => $amostra) {
 
                 if ($amostra->exame->origen) {
@@ -389,7 +392,6 @@ class AmostrasController extends AppController
                     $IAModelName = $amostra->origen->IAModelName;
                     $DataScience = $amostra->origen->DataScience;
                 }
-
 
                 $dados = [
                     $amostra->exame->amostra_id,
@@ -576,7 +578,7 @@ class AmostrasController extends AppController
 
                 $integration = $this->callIntegration($exame_find);
 
-                $exame_find->resultado = '';
+                $exame_find->resultado = '1';
 
                 $this->ExamesData->save($exame_find->hash, $integration);
 

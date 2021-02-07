@@ -75,7 +75,7 @@ class DashboardController extends AppController
             $conditions_query['cast(Amostras.created as date) <='] = $data2;
         }
         if (!empty($query['estado'])) {
-            $conditions_query['Exames.uf'] = $query['estado'];
+            $conditions_query['Amostras.uf'] = $query['estado'];
         }
         if (!empty($query['equipamentos'])) {
             $conditions_query['Exames.equip_tipo'] = $query['equipamentos'];
@@ -109,8 +109,8 @@ class DashboardController extends AppController
             'conditions' => $conditions,
         ])->toList();
         $exames = $this->ExamesData->getExamesResult($exames);
-        
-    
+
+
         foreach ($exames as $key => $exame) {
             if ($exame->resultado == 'Indeterminado') {
                 $result['Indeterminado']++;
@@ -137,7 +137,7 @@ class DashboardController extends AppController
             $data1 = implode('-', array_reverse(explode('/', $query['date_init'])));
             $conditions_query['cast(Amostras.created as date) >='] =  $data1;
         }
-        
+
         if (!empty($query['date_end'])) {
             $data2 = implode('-', array_reverse(explode('/', $query['date_end'])));
             $conditions_query['cast(Amostras.created as date) <='] = $data2;
@@ -159,6 +159,7 @@ class DashboardController extends AppController
         $conditions_uf = array_merge($conditions_uf, $conditions_query);
 
         $ufs_lista = $this->Amostras->find('all', [
+            'contain' => ['Exames'],
             'fields' => ['DISTINCT Amostras.uf'],
             'conditions' => $conditions_uf,
             'order' => ['Amostras.uf' => 'ASC']
@@ -175,7 +176,6 @@ class DashboardController extends AppController
         if ($this->Auth->user('user_type_id') == 2) {
             $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
         }
-
 
         foreach ($ufs_lista as $row)
             $ufs[$row['DISTINCT Amostras']['uf']] = $row['DISTINCT Amostras']['uf'];
@@ -278,7 +278,7 @@ class DashboardController extends AppController
                 'contain' => ['Amostras', 'Users'],
                 'conditions' => $conditions
             ])->toList();
-            
+
             $Indeterminado = 0;
             $inadequado = 0;
             $positivo = 0;

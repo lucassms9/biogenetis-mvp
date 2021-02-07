@@ -9,13 +9,13 @@ echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
 
 
 // acessar maquina via bastion
-app: ssh -i ssh-key-2020-08-12.key opc@172.21.0.3
+app: ssh -i .ssh/ssh-key-2020-08-12.key opc@172.21.0.3
 
-pacientes: ssh -i ssh-key-2020-08-12.key ubuntu@172.21.1.4
+pacientes: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.4
 
-exames: ssh -i ssh-key-2020-08-12.key ubuntu@172.21.1.5
+exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.5
 
-
+~
 //TUNEL BANCO
 banco app
 ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26

@@ -26,6 +26,24 @@ class PacientesDataComponent extends Component
         $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
+    
+    
+    public function getByCpfOrNameCroqui($hashs,$cpf,$nome)
+    {
+        
+        $req = array("hashs" => $hashs, "cpf" => $this->Helpers->doEncrypt($cpf), 'nome' => $this->Helpers->doEncrypt($nome));
+      
+        $body = json_encode($req);
+        $http = new Client();
+        $response = $http->post($this->API_ROOT . 'paciente/cpforemail',  $body, [
+            'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
+        ]);
+        $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
+        return  $resp_decoded;
+    }
+
+
+    
 
     public function getCheckCPF($string){
         $string =  $this->Helpers->stringToNumber($string);

@@ -31,6 +31,7 @@ class CroquisController extends AppController
         $this->loadModel('Pedidos');
         $this->loadModel('PedidoCroqui');
         $this->loadModel('PedidoCroquiValores');
+        $this->loadComponent('PacientesData');
     }
 
     /**
@@ -79,6 +80,36 @@ class CroquisController extends AppController
         $conditions = ['Pedidos.status' => 'EmTriagem'];
         $query = $this->request->getQuery();
 
+        if (!empty($query['nome_paciente']) ||  !empty($query['cpf_paciente'])){
+            //Busca hashs possíveis
+            $pre_query = $this->Pedidos->find('all', [
+                'contain' => ['Anamneses.Pacientes'],
+                'conditions' => $conditions
+            ])->toList();
+            $arrayfilter  = [];
+            foreach ($pre_query as $key => $pedido){
+                array_push($arrayfilter,  $pedido->anamnese->paciente->hash);
+            }
+            var_dump($arrayfilter);
+            $filter_nome = '';
+            if(!empty($query['nome_paciente']) ){
+                $filter_nome = $query['nome_paciente'];
+            }
+
+            $filter_cpf = '';
+            if(!empty($query['cpf_paciente']) ){
+                $filter_cpf = $query['cpf_paciente'];
+            }
+            
+            $users_found = json_decode($this->PacientesData->getByCpfOrNameCroqui($arrayfilter,$filter_cpf,$filter_nome), true);
+            $arr_user_hashs = [];
+            foreach ($users_found as $key => $usersfound ){
+                array_push( $arr_user_hashs, $usersfound['hash']);
+            }
+            $conditions['Pacientes.hash in'] = $arr_user_hashs;
+        }
+
+/*
         if (!empty($query['nome_paciente'])) {
             $conditions['Pacientes.nome like'] = '%' . $query['nome_paciente'] . '%';
         }
@@ -86,7 +117,7 @@ class CroquisController extends AppController
         if (!empty($query['cpf_paciente'])) {
             $conditions['Pacientes.cpf'] = $query['cpf_paciente'];
         }
-
+*/
         if (!empty($query['date_de'])) {
             $data_de = implode('-', array_reverse(explode('/', $query['date_de'])));
             $conditions['cast(Pedidos.created as date) >='] = $data_de;
@@ -101,8 +132,30 @@ class CroquisController extends AppController
         $pedidos_triagem = $this->Pedidos->find('all', [
             'contain' => ['Anamneses.Pacientes'],
             'conditions' => $conditions
-        ]);
+        ])->toList();
+        $arr = array('hashs' => []);
+        foreach ($pedidos_triagem as $key => $pedido){
+            array_push($arr['hashs'],  $pedido->anamnese->paciente->hash);
+        }
+        
+        $body = json_encode($arr);
+        $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
+        
+        for($i = 0; $i < sizeof($pedidos_triagem );$i++){
+            for($z = 0; $z < sizeof($pacientes_data);$z++){
+                if($pacientes_data[$z]['hash'] == $pedidos_triagem[$i]->anamnese->paciente->hash){
+                    $pedidos_triagem[$i]->anamnese->paciente->nome = $pacientes_data[$z]['nome'];
+                    $pedidos_triagem[$i]->anamnese->paciente->cpf = $pacientes_data[$z]['cpf'];
+                    array_splice($pacientes_data,$z,1);
+                    break 1;
+                }
 
+            }
+        }
+
+        
+
+      
         if ($this->request->is('post')) {
             $req = $this->request->getData();
             $pedidos_encontrados = true;

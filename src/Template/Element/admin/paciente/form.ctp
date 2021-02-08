@@ -2,12 +2,13 @@
 <?= $this->Form->create($paciente,['id' => 'formnovopaciente']) ?>
 <?php endif;?>
 <div class="row mt20">
+    <div class="col-md-3">
+        <?php echo $this->Form->control('cpf',['id' => 'cpf','data-value' => 'new', 'class'=> 'form-control cpf','label' => 'CPF', 'disabled' => $disabled]); ?>
+    </div>
     <div class="col-md-4">
         <?php echo $this->Form->control('nome',['class' => 'form-control', 'title' => 'teste','disabled' => $disabled]); ?>
     </div>
-    <div class="col-md-3">
-        <?php echo $this->Form->control('cpf',['id' => 'cpf', 'class'=> 'form-control cpf','label' => 'CPF', 'disabled' => $disabled]); ?>
-    </div>
+    
     <div class="col-md-3">
         <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG', 'disabled' => $disabled]); ?>
     </div>

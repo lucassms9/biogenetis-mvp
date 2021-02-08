@@ -48,6 +48,20 @@ function getCitiesUnidade(uf){
 
 }
 
+function checkCpf(cpf){
+    $.ajax({
+        url: BASE_URL_ADMIN + 'pacientes/getCpf/'+ cpf,
+        type: 'GET',
+        dataType: 'json',
+    })
+    .done(function(data) {
+        console.log(data);
+        if(data != false){
+            alertify.error('CPF já está cadastrado utilize o formulário de pesquisa');
+        }else{
+        }
+    });
+}
 $(document).ready(function() {
     $('#viagem-brasil-estado').change(function (e) {
         e.preventDefault();
@@ -67,7 +81,8 @@ $(document).ready(function() {
     $('.cpf').keydown(function(e){
         if($(this).val().length > 13
             && e.keyCode !== 46
-            && e.keyCode !== 8 ){
+            && e.keyCode !== 8 
+            && e.keyCode !== 9 ){
             $(this).val(mCPF(this.value));
             e.preventDefault();
             return;
@@ -79,6 +94,11 @@ $(document).ready(function() {
         let vCPF = $(this).val();
         if(vCPF.length > 0 && !isValidCPF(vCPF)){
             alertify.error('CPF Inválido');
+        }else{
+            console.log($(this).attr('data-value'));
+            if($(this).attr('data-value') == 'new'){
+                checkCpf(vCPF);
+            }
         }
     });
 });

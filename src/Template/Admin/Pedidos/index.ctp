@@ -33,14 +33,18 @@
                                             <td><?= h($b['created']) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'showpedido', $b['id']], ['escape' => false]) ?>
+
+                                                <?php if( $b['status'] === 'EmAtendimento'): ?>
+
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $b['id'] ], ['escape' => false, 'confirm' => __('Deseja deletar?',  $b['id'])]) ?>
+                                                <?php endif;?>
                                                 <?php if( $b['status'] === 'Finalizado'): ?>
                                                     <?= $this->Html->link(__('<i class="mdi mdi-file-document-box-check"></i>'), ['action' => 'laudo',  $b['id'] ], ['escape' => false]) ?>
                                                 <?php endif;?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
-                                     
+
                                 </tbody>
                             </table>
                         </div>

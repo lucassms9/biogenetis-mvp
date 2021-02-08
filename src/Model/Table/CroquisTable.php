@@ -59,17 +59,24 @@ class CroquisTable extends Table
             ->allowEmptyString('descricao');
 
         $validator
+            ->scalar('nome')
+            ->notEmptyString('nome');
+
+        $validator
             ->scalar('foto_url')
             ->maxLength('foto_url', 255)
             ->allowEmptyString('foto_url');
 
         $validator
             ->integer('qtde_posi_placa')
-            ->allowEmptyString('qtde_posi_placa');
+            ->notEmptyString('qtde_posi_placa');
 
         $validator
             ->scalar('tipo_exame_recomendado')
-            ->allowEmptyString('tipo_exame_recomendado');
+            ->notEmptyString('tipo_exame_recomendado');
+        $validator
+            ->scalar('tipo_equipament_recomendado')
+            ->notEmptyString('tipo_equipament_recomendado');
 
         return $validator;
     }

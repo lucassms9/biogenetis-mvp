@@ -57,7 +57,30 @@ function checkCpf(cpf){
     .done(function(data) {
         console.log(data);
         if(data != false){
-            alertify.error('CPF já está cadastrado utilize o formulário de pesquisa');
+           console.log(data);
+           let vData = JSON.parse(data);
+           $("#nome_paciente").val(vData.nome);
+           $("#rg_paciente").val(vData.rg);
+           $("#sexo_paciente").val(vData.sexo);
+           $("#email_paciente").val(vData.email);
+           $("#celular_paciente").val(vData.celular);
+           $("#telefone_paciente").val(vData.telefone);
+           $("#data_nascimento").val(vData.data_nascimento);
+           $("#cep_paciente").val(vData.cep);
+
+           
+           $("#endereco_paciente").val(vData.endereco);
+           $("#bairro_paciente").val(vData.bairro);
+           $("#cidade_paciente").val(vData.cidade);
+           $("#uf_paciente").val(vData.uf);
+           $("#nome_da_mae_paciente").val(vData.nome_da_mae);
+           $("#nacionalidade_paciente").val(vData.nacionalidade);
+           $("#pais_residencia_paciente").val(vData.pais_residencia);
+
+
+
+                  
+           
         }else{
         }
     });

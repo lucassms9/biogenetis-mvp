@@ -43,6 +43,7 @@
 
                             </div>
 
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
                             <div class="col-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/croquis/gerador', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px;" class="card text-white bg-info">
@@ -55,7 +56,8 @@
                                     </div>
                                 </a>
                             </div>
-
+                            <?php endif; ?>
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
                             <div class="col-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos/croquis', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px; background-color:#4399f0" class="card text-white">
@@ -68,7 +70,7 @@
                                     </div>
                                 </a>
                             </div>
-
+                            <?php endif; ?>
                             <div class="col-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos?status=Finalizado', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px;" class="card text-white bg-success">

@@ -247,7 +247,7 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
 
                 if ($user->user_type_id == 3) {
-                    return $this->redirect(['controller' => 'amostras', 'action' => 'index']);
+                    // return $this->redirect(['controller' => 'amostras', 'action' => 'index']);
                 }
 
                 return $this->redirect($this->Auth->redirectUrl());

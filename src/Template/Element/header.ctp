@@ -1,3 +1,6 @@
+<?php
+    $perfil_base = [3,4,5];
+?>
 <header id="page-topbar">
     <div class="navbar-header">
         <div class="container-fluid">
@@ -47,6 +50,9 @@
                                 </a>
                             </li>
                             <?php endif; ?>
+
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
+
                             <li class="nav-item dropdown">
                                 <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Relatórios <div class="arrow-down"></div>
@@ -69,7 +75,7 @@
 
                                 </div>
                             </li>
-
+                            <?php endif; ?>
 
 
                             <li class="nav-item dropdown">
@@ -77,7 +83,7 @@
                                     Dashboard <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-components">
-                                    <?php if ($_SESSION['Auth']['User']['user_type_id'] != 3) : ?>
+                                    <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)): ?>
                                         <a href="<?= $this->Url->build('/admin', true); ?>/dashboard" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Dashboard
                                         </a>
@@ -89,15 +95,7 @@
                             </li>
 
 
-                            <!-- <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 4) : ?>
-                                <li class="nav-item">
-                                    <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true); ?>/croquis/gerador">
-                                        Criar Croqui
-                                    </a>
-                                </li>
-                            <?php endif; ?> -->
-
-                            <?php if ($_SESSION['Auth']['User']['user_type_id'] != 3) : ?>
+                            <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)) : ?>
                                 <li class="nav-item dropdown">
                                     <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Mais Opções <div class="arrow-down"></div>
@@ -113,9 +111,9 @@
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Usuários
                                         </a>
 
-                                        <a href="<?= $this->Url->build('/admin', true); ?>/croquis/gerador" class="dropdown-item">
+                                        <!-- <a href="<?= $this->Url->build('/admin', true); ?>/croquis/gerador" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Criar Croqui
-                                        </a>
+                                        </a> -->
 
                                         <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/origens" class="dropdown-item">
@@ -130,7 +128,7 @@
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Croquis
                                         </a>
 
-                                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 3) : ?>
+                                        <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)) : ?>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/entradaexames" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames
                                             </a>

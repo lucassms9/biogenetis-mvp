@@ -43,7 +43,7 @@ class PedidosController extends AppController
         $this->loadModel('PedidoCroqui');
         $this->loadComponent('ExamesData');
 
-        
+
     }
 
     public function checkBarCode($pedido_id = null)
@@ -138,7 +138,8 @@ class PedidosController extends AppController
             $finded =  array_filter($pacientes_data, function ($paciente) use ($croquis_pedido) {
                 return $paciente['hash'] == $croquis_pedido->pedido->anamnese->paciente->hash;
             });
-            $paciente = new Paciente($finded[0]);
+            $handle = @$finded[0] ?? [];
+            $paciente = new Paciente($handle);
 
             $croquis_pedido->pedido->anamnese->paciente = $paciente;
         }
@@ -191,10 +192,10 @@ class PedidosController extends AppController
 
         foreach ($pedidos as $pedido) {
             if(isset($pedido->anamnese)){
-                
+
             array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
             }else{
-               
+
             }
         }
         $body = json_encode($arr);

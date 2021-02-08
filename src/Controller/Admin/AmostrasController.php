@@ -191,7 +191,7 @@ class AmostrasController extends AppController
                 'conditions' => $conditions,
                 'order' => ['EncadeamentoResultados.id' => 'ASC']
             ])->toList();
-
+            $encadeamentos = $this->ExamesData->getEncadeamento($encadeamentos);    
             $qtd_colunas = 11;
 
             $nome_colunas = [
@@ -320,7 +320,7 @@ class AmostrasController extends AppController
 
         if ($this->request->is('post')) {
             $conditions = [
-                'Exames.resultado <>' => 'null'
+                'Exames.resultado =' => '1'
             ];
 
             if ($this->Auth->user('user_type_id') != 1) {
@@ -374,7 +374,6 @@ class AmostrasController extends AppController
 
 
             $amostras = $this->ExamesData->getExamesResult($amostras);
-
             foreach ($amostras as $i => $amostra) {
 
                 if ($amostra->exame->origen) {
@@ -587,7 +586,7 @@ class AmostrasController extends AppController
                     $pedido->status = 'Finalizado';
                     $this->Pedidos->save($pedido);
                 }
-
+                $exame_find->result = 1;
                 $this->Exames->save($exame_find);
 
                 //gravando saldo
@@ -691,7 +690,7 @@ class AmostrasController extends AppController
             $dados_save = [
                 'exame_origem_id' => $origem->id,
                 'encadeamento_id' => null,
-                'resultado' => '-',
+                'resultado' => '1',
                 'hash' => $this->Helpers->doEncrypt($origem->id . 'FTC' . $this->Helpers->generateRandomString(30))
             ];
             $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
@@ -718,7 +717,7 @@ class AmostrasController extends AppController
                     $dados_save = [
                         'exame_origem_id' => $origem->id,
                         'encadeamento_id' => $encadeamento->id,
-                        'resultado' => '-',
+                        'resultado' => '1',
                         'hash' =>  $this->Helpers->doEncrypt($origem->id . 'CKC' . $this->Helpers->generateRandomString(30))
                     ];
                     $encadeamentoResul = $this->EncadeamentoResultados->patchEntity($encadeamentoResul, $dados_save);
@@ -745,8 +744,9 @@ class AmostrasController extends AppController
             }
 
             $origem->data_request = date('Y-m-d H:i:s');
-            $origem->resultado = $result;
+            $origem->resultado = '1';
 
+            $this->ExamesData->saveOrigem($origem->hash, $integration);
             $this->ExameOrigens->save($origem);
         }
 
@@ -818,6 +818,7 @@ class AmostrasController extends AppController
             $dados = [
                 'exame_id' => $exame->id,
                 'origem_id' => $origem->id,
+                'resultado' => '0',
                 'hash' =>  $this->Helpers->doEncrypt($origem->id . 'FTC' . $this->Helpers->generateRandomString(30))
             ];
             $newOriginExame = $this->ExameOrigens->newEntity();
@@ -980,7 +981,7 @@ class AmostrasController extends AppController
                         $exame_save = $this->Exames->save($exame_save);
 
 
-                        $res = $this->ExamesData->save($exame_save->hash, '-');
+                        $res = $this->ExamesData->save($exame_save->hash, '');
 
                         if ($exame_save) {
                             $exame_save = $this->Exames->get($exame_save->id, [
@@ -1073,7 +1074,6 @@ class AmostrasController extends AppController
         } else {
             array_push($arr_hashs, $amostras->exame->hash);
         }
-
         $result_hashs = $this->ExamesData->get($arr_hashs);
         if (is_array($result_hashs)) {
             for ($i = 0; $i < sizeof($amostras); $i++) {

@@ -42,6 +42,8 @@ class PedidosController extends AppController
         $this->loadModel('Croquis');
         $this->loadModel('PedidoCroqui');
         $this->loadComponent('ExamesData');
+
+        
     }
 
     public function checkBarCode($pedido_id = null)
@@ -188,7 +190,12 @@ class PedidosController extends AppController
         $arr = array('hashs' => []);
 
         foreach ($pedidos as $pedido) {
+            if(isset($pedido->anamnese)){
+                
             array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
+            }else{
+               
+            }
         }
         $body = json_encode($arr);
         $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);

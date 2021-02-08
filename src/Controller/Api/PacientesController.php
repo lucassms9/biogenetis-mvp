@@ -30,7 +30,7 @@ class PacientesController extends RestController
         $this->loadModel('Anamneses');
         $this->loadModel('Clientes');
         $this->loadModel('Pedidos');
-
+/*
         $authorization = $this->request->getHeaderLine('Authorization');
         $authorization = explode(' ', $authorization);
         $token = $authorization[1];
@@ -38,6 +38,7 @@ class PacientesController extends RestController
         $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
 
         $this->payload = $payload;
+        */
     }
 
     public function edit()
@@ -132,4 +133,6 @@ class PacientesController extends RestController
 
         $this->set(compact('result'));
     }
+
+  
 }

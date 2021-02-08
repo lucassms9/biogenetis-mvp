@@ -237,6 +237,7 @@ class PacientesController extends AppController
             $paciente_data = $this->PacientesData->getByFilter($query['paciente_nome'], $query['paciente_cpf']);
             if ($paciente_data) {
                 $json_paciente = json_decode($paciente_data);
+                /* alteração necessária */
                 $condition_find = [
                     'Anamneses.status' => 'created',
                     'Pacientes.hash' => $json_paciente->hash,
@@ -321,6 +322,15 @@ class PacientesController extends AppController
         $cities = $this->GeoNames->getCity($uf);
 
         echo json_encode($cities);
+        die;
+    }
+
+    
+    public function getCpf($cpf)
+    {
+        $cpf_check = $this->PacientesData->getCheckCPF($cpf);
+
+        echo json_encode($cpf_check);
         die;
     }
 

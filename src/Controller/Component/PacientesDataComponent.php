@@ -27,9 +27,8 @@ class PacientesDataComponent extends Component
         return  $resp_decoded;
     }
 
-    public function getCheckCPF($string)
-    {
-        $API_ROOT = env('USER_ENDPOINT');
+    public function getCheckCPF($string){
+        $string =  $this->Helpers->stringToNumber($string);
         $cpf = array("cpf" => $this->Helpers->doEncrypt($string));
         $body = json_encode($cpf);
         $http = new Client();
@@ -65,7 +64,8 @@ class PacientesDataComponent extends Component
     }
     public function getByFilter($nome, $cpf)
     {
-        $hash = array("nome" => $this->Helpers->doEncrypt($nome), "cpf" => $this->Helpers->doEncrypt($cpf));
+        $cpf_tratado =  $this->Helpers->stringToNumber($cpf);
+        $hash = array("nome" => $this->Helpers->doEncrypt($nome), "cpf" => $this->Helpers->doEncrypt($cpf_tratado));
         $body = json_encode($hash);
         $http = new Client();
         $response = $http->post($this->API_ROOT  . 'paciente/filter',  $body, [

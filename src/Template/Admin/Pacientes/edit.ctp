@@ -10,12 +10,13 @@
                     <div class="card-body">
                         <?= $this->Form->create($paciente) ?>
                         <div class="row">
+                             <div class="col-md-3">
+                                <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF']); ?>
+                            </div>
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('nome',['class' => 'form-control']); ?>
                             </div>
-                            <div class="col-md-3">
-                                <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF']); ?>
-                            </div>
+                           
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG']); ?>
                             </div>

@@ -191,7 +191,7 @@ class AmostrasController extends AppController
                 'conditions' => $conditions,
                 'order' => ['EncadeamentoResultados.id' => 'ASC']
             ])->toList();
-            $encadeamentos = $this->ExamesData->getEncadeamento($encadeamentos);    
+            $encadeamentos = $this->ExamesData->getEncadeamento($encadeamentos);
             $qtd_colunas = 11;
 
             $nome_colunas = [
@@ -1074,7 +1074,9 @@ class AmostrasController extends AppController
         } else {
             array_push($arr_hashs, $amostras->exame->hash);
         }
+
         $result_hashs = $this->ExamesData->get($arr_hashs);
+
         if (is_array($result_hashs)) {
             for ($i = 0; $i < sizeof($amostras); $i++) {
                 for ($z = 0; $z < sizeof($result_hashs); $z++) {

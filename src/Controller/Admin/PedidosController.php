@@ -224,6 +224,8 @@ class PedidosController extends AppController
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
         $res = json_decode($resPaciente, true);
 
+        $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+
         $pedido->anamnese->paciente = new Paciente($res);
 
         $cliente = $this->Clientes->find('all', [

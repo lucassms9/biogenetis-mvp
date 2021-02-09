@@ -30,15 +30,16 @@ class PacientesController extends RestController
         $this->loadModel('Anamneses');
         $this->loadModel('Clientes');
         $this->loadModel('Pedidos');
-/*
+
         $authorization = $this->request->getHeaderLine('Authorization');
+
         $authorization = explode(' ', $authorization);
         $token = $authorization[1];
         $config = include ROOT . DS . 'config' . DS . 'rest.php';
         $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
 
         $this->payload = $payload;
-        */
+
     }
 
     public function edit()
@@ -110,8 +111,6 @@ class PacientesController extends RestController
             throw new Exception('Erro ao criar anamnese');
         }
 
-
-
         //criacao de pedido
         $dadaos_pedido = [
             'anamnese_id' => $anamnese->id,
@@ -134,5 +133,5 @@ class PacientesController extends RestController
         $this->set(compact('result'));
     }
 
-  
+
 }

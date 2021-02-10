@@ -99,13 +99,13 @@
                             </div>
 
 
-                            <div class="mt-4">
+                            <!-- <div class="mt-4">
                                 <p style="font-weight: bold; font-size: 17px;">Inteligência Artificial Biogenetics</p>
                                 <p>Positivo: Lorem ipsum</p>
                                 <p>Negativo: Lorem Ipsum</p>
                                 <p>Indeterminado: Lorem Ipsum</p>
 
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

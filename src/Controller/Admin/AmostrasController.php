@@ -347,6 +347,7 @@ class AmostrasController extends AppController
                 'conditions' => $conditions
             ])->toList();
 
+
             $qtd_colunas = 12;
 
             $nome_colunas = [
@@ -374,6 +375,8 @@ class AmostrasController extends AppController
 
 
             $amostras = $this->ExamesData->getExamesResult($amostras);
+
+
             foreach ($amostras as $i => $amostra) {
 
                 if ($amostra->exame->origen) {
@@ -391,6 +394,7 @@ class AmostrasController extends AppController
                     $IAModelName = $amostra->origen->IAModelName;
                     $DataScience = $amostra->origen->DataScience;
                 }
+
 
                 $dados = [
                     $amostra->exame->amostra_id,

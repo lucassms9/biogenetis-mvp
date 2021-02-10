@@ -35,9 +35,21 @@ class ClientesController extends AppController
         $action = 'Ver Todos';
         $title = 'Clientes';
 
-        $clientes = $this->paginate($this->Clientes);
+        $conditions = [];
 
-        $showActions = true;
+        if ($this->Auth->user('user_type_id') == 2) {
+            $conditions['id'] = $this->Auth->user('cliente_id');
+        }
+
+        $clientes = $this->paginate($this->Clientes,[
+            'conditions' => $conditions
+        ]);
+
+        if ($this->Auth->user('user_type_id') == 1) {
+            $showActions = true;
+        }else{
+            $showActions = false;
+        }
         $this->set(compact('clientes', 'action', 'title', 'showActions'));
     }
 

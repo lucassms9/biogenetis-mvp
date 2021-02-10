@@ -34,9 +34,13 @@
                                             <td><?= h($cliente->uf) ?></td>
                                             <td><?= h($cliente->ativo) ?></td>
                                             <td class="actions">
+                                            <?php if($_SESSION['Auth']['User']['user_type_id'] === 1):?>
                                                 <?= $this->Html->link(__('<i class="mdi mdi-cogs"></i>'), ['action' => 'saldos', $cliente->id], ['escape' => false]) ?>
+                                                <?php endif;?>
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $cliente->id], ['escape' => false]) ?>
+                                                <?php if($_SESSION['Auth']['User']['user_type_id'] === 1):?>
                                                 <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $cliente->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $cliente->id)]) ?>
+                                                <?php endif;?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

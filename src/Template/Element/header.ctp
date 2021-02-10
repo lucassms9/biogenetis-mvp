@@ -101,7 +101,7 @@
                                         Mais Opções <div class="arrow-down"></div>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="topnav-components">
-                                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
+                                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 2) : ?>
 
                                             <a href="<?= $this->Url->build('/admin', true); ?>/clientes/" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Clientes

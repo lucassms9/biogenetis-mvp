@@ -45,7 +45,6 @@ class UsersController extends AppController
             'contain' => ['Clientes', 'UserTypes'],
         ];
 
-
         if ($this->Auth->user('user_type_id') == 2) {
             $conditions['cliente_id'] = $this->Auth->user('cliente_id');
         }
@@ -108,7 +107,7 @@ class UsersController extends AppController
 
 
         if ($this->Auth->user('user_type_id') == 2) {
-            $conditionsType['UserTypes.id in'] = ['2', '3'];
+            $conditionsType['UserTypes.id in'] = ['2', '3','4','5'];
         }
 
         if ($this->Auth->user('user_type_id') == 2) {

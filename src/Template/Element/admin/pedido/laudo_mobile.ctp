@@ -63,7 +63,7 @@
     </div>
 
     <div style="font-family: Courier New;" class="row my-3">
-        <div style="border: 1px solid;padding: 10px;" class="col-md-4 d-flex flex-column">
+        <div style="border: 1px solid;padding: 10px;margin-left: 10px;" class="col-md-4 d-flex flex-column">
             <div class="d-flex">
                 <h3 style="margin: 0;" >
                     <span>RESULTADO:</span>

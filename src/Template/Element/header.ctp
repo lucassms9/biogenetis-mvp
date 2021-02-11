@@ -1,5 +1,5 @@
 <?php
-    $perfil_base = [3,4,5];
+    $perfil_base = [3,4,5,6];
 ?>
 <header id="page-topbar">
     <div class="navbar-header">
@@ -43,7 +43,7 @@
 
                     <div class="collapse navbar-collapse" id="topnav-menu-content">
                         <ul class="navbar-nav">
-                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
+                        <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1 || $_SESSION['Auth']['User']['user_type_id'] === 6 ) : ?>
                             <li class="nav-item">
                                 <a class="nav-link fontbold" href="<?= $this->Url->build('/admin', true); ?>/amostras/import">
                                     Amostras
@@ -51,8 +51,7 @@
                             </li>
                             <?php endif; ?>
 
-                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
-
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5 && $_SESSION['Auth']['User']['user_type_id'] !== 4) : ?>
                             <li class="nav-item dropdown">
                                 <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Relatórios <div class="arrow-down"></div>
@@ -61,13 +60,10 @@
                                     <a href="<?= $this->Url->build('/admin', true); ?>/exames/relatorio" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Amostras
                                     </a>
-
+                                    <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
                                     <a href="<?= $this->Url->build('/admin', true); ?>/amostras/resultados" class="dropdown-item">
                                         <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Resultados Gerais
                                     </a>
-
-                                    <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
-
                                         <a href="<?= $this->Url->build('/admin', true); ?>/amostras/encadeamentos" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div>Encadeamentos
                                         </a>
@@ -77,7 +73,7 @@
                             </li>
                             <?php endif; ?>
 
-
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 6) : ?>
                             <li class="nav-item dropdown">
                                 <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Dashboard <div class="arrow-down"></div>
@@ -94,7 +90,7 @@
                                 </div>
                             </li>
 
-
+                            <?php endif; ?>
                             <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)) : ?>
                                 <li class="nav-item dropdown">
                                     <a style="color: #004ba7 !important;" class="fontbold nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -128,8 +124,13 @@
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Croquis
                                         </a>
 
-                                        <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)) : ?>
+                                        <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base) && $_SESSION['Auth']['User']['user_type_id'] != 2) : ?>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/entradaexames" class="dropdown-item">
+                                                <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames
+                                            </a>
+                                        <?php endif; ?>
+                                        <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)): ?>
+                                            <a href="<?= $this->Url->build('/admin', true); ?>/exames/meusexames" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames
                                             </a>
                                         <?php endif; ?>

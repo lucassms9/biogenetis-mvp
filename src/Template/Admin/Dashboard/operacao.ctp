@@ -17,6 +17,7 @@
                         <div class="row">
 
 
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 3 && $_SESSION['Auth']['User']['user_type_id'] !== 4) : ?>
                             <div class="col-md-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/pacientes/add', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px;" class="card text-white bg-danger">
@@ -42,8 +43,9 @@
                                 </a>
 
                             </div>
+                            <?php endif; ?>
 
-                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5 && $_SESSION['Auth']['User']['user_type_id'] !== 3) : ?>
                             <div class="col-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/croquis/gerador', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px;" class="card text-white bg-info">
@@ -57,7 +59,9 @@
                                 </a>
                             </div>
                             <?php endif; ?>
-                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5) : ?>
+
+
+                            <?php if ($_SESSION['Auth']['User']['user_type_id'] !== 5 && $_SESSION['Auth']['User']['user_type_id'] !== 4) : ?>
                             <div class="col-3">
                                 <a style="width: 290px;" href="<?= $this->Url->build('/admin/pedidos/croquis', true); ?>" class="btn btn-sm">
                                     <div style="padding: 10px; background-color:#4399f0" class="card text-white">

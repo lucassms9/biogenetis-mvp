@@ -20,7 +20,7 @@
                             <div class="mb-3">
                                 <i class="display-4 text-muted mdi mdi-cloud-upload-outline"></i>
                             </div>
-                            
+
                             <h4>Arraste ou escolha os arquivos</h4>
 
                         </div>
@@ -31,15 +31,15 @@
                             <h3>Preencha os campos abaixo:</h3>
                         <hr>
                         <?= $this->Form->create(null, ['id' => 'sendData', 'url' => ['action' => 'sendData'] ]) ?>
-                            
+
                          <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">
                                     <tr>
                                         <th class="head-table" scope="col">ID amostra</th>
-                                        <th class="head-table" scope="col">UF *</th>
+                                        <!-- <th class="head-table" scope="col">UF *</th>
                                         <th class="head-table" scope="col">Idade *</th>
-                                        <th class="head-table" scope="col">Sexo *</th>
+                                        <th class="head-table" scope="col">Sexo *</th> -->
                                     </tr>
                                 </thead>
                                 <tbody id="input-files">
@@ -51,7 +51,7 @@
                                 <input class="form-control" type="hidden" name="filesRemoved" id="files-removed" value="0" />
                                 <?= $this->Form->button(__('Enviar'),['type' => 'button', 'id' => 'buttonSend', 'onClick' => 'submitForm()', 'class' => 'btn btn-primary waves-effect waves-light']) ?>
                             </div>
-                        
+
                         <?= $this->Form->end() ?>
                     </div>
                 </div>

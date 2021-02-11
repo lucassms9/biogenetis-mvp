@@ -18,6 +18,8 @@ class ExamesController extends AppController
         parent::initialize();
 
         $this->loadModel('Exames');
+        $this->loadModel('Pedidos');
+        $this->loadModel('EntradaExames');
     }
 
 
@@ -152,6 +154,51 @@ class ExamesController extends AppController
         $exames = $this->paginate($this->Exames);
 
         $this->set(compact('exames'));
+    }
+    public function meusexames()
+    {
+        $action = 'Ver Todos';
+        $title = 'Meus Exames';
+
+        $conditions = [
+            'Pedidos.cliente_id' => $this->Auth->user('cliente_id'),
+            'Pedidos.status in' => ['Finalizado','EmTriagem', 'EmDiagnostico']
+        ];
+
+
+        if (!empty($this->request->getQuery('data_init'))) {
+            $data_de = $this->request->getQuery('data_init');
+            $conditions['cast(Pedidos.created as date) >='] = $data_de;
+        }
+
+        if (!empty($this->request->getQuery('data_fim'))) {
+            $data_ate = $this->request->getQuery('data_fim');
+            $conditions['cast(Pedidos.created as date) <='] = $data_ate;
+        }
+
+        $exame = $this->EntradaExames->find('all')->first();
+
+        $handle = $this->Pedidos->find('all', [
+            'contain' => ['EntradaExames'],
+            'conditions' => $conditions
+        ])->toList();
+
+        $result = [];
+
+        $valor_total = 0;
+
+        foreach ($handle as $key => $item) {
+            $valor_total += $item->valor_exame;
+        }
+
+        $result = [
+            'valor_total' => $valor_total,
+            'total_exames' => count($handle),
+            'exame' => @$exame
+        ];
+
+
+        $this->set(compact('result', 'action','title'));
     }
 
     /**

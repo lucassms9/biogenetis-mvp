@@ -10,6 +10,7 @@
                     <div class="card-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs nav-justified nav-tabs-custom" role="tablist">
+                        <?php if($_SESSION['Auth']['User']['user_type_id'] != 3 && $_SESSION['Auth']['User']['user_type_id'] != 4):?>
                             <li class="nav-item">
                                 <a class="nav-link <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" data-toggle="tab" href="#paciente" role="tab" aria-selected="true">
                                     <i class="fas fa-user-alt"></i> <span class="d-none d-md-inline-block">Paciente</span>
@@ -25,25 +26,32 @@
                                     <i class="fas fa-money-check-alt"></i> <span class="d-none d-md-inline-block">Forma de Pagamento</span>
                                 </a>
                             </li>
+                            <?php endif; ?>
                             <li class="nav-item">
                                 <a class="nav-link <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" data-toggle="tab" href="#etiqueta" role="tab" aria-selected="false">
                                     <i class="fas fa-barcode"></i> <span class="d-none d-md-inline-block">Gerar Etiquetas</span>
                                 </a>
                             </li>
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 5 && $_SESSION['Auth']['User']['user_type_id'] != 4):?>
                             <li class="nav-item">
                                 <a class="nav-link <?= $tab_current === 'croqui' ? 'active' :  ''; ?>" data-toggle="tab" href="#croqui" role="tab" aria-selected="false">
                                     <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Croqui</span>
                                 </a>
                             </li>
+                            <?php endif; ?>
+
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 4):?>
                             <li class="nav-item">
                                 <a class="nav-link <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" data-toggle="tab" href="#laudo" role="tab" aria-selected="false">
                                     <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Laudo</span>
                                 </a>
                             </li>
+                            <?php endif; ?>
                         </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content p-3">
+                        <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                             <div class="tab-pane <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" id="paciente" role="tabpanel">
                                 <h2>Paciente</h2>
                                 <?php echo $this->element('admin/paciente/form', [
@@ -63,15 +71,18 @@
                                     'pedido' => $pedido
                                 ]);?>
                             </div>
+                            <?php endif; ?>
                             <div class="tab-pane <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" id="etiqueta" role="tabpanel">
                                 <?php echo $this->element('admin/etiquetas/generate');?>
                             </div>
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 5):?>
                             <div class="tab-pane <?= $tab_current === 'croqui' ? 'active' :  ''; ?>" id="croqui" role="tabpanel">
                                 <?php echo $this->element('admin/croqui/view', [
                                     'disabled' => true,
                                     'pedido' => $pedido
                                 ]);?>
                             </div>
+                            <?php endif; ?>
                             <div class="tab-pane <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" id="laudo" role="tabpanel">
                                 <?php echo $this->element('admin/pedido/laudo');?>
                             </div>

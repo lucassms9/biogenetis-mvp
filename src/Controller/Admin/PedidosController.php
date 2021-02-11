@@ -28,7 +28,8 @@ class PedidosController extends AppController
         $this->formas_pagamento = [
             'Cartão de Credito' => 'Cartão de Credito',
             'Cartão de Débito' => 'Cartão de Débito',
-            'Dinheiro' => 'Dinheiro'
+            'Dinheiro' => 'Dinheiro',
+            'Convênio' => 'Convênio'
         ];
 
         $this->loadComponent('Helpers');
@@ -336,6 +337,10 @@ class PedidosController extends AppController
 
         foreach ($estados_find as $key => $estado) {
            $estados[$estado->sigla] = $estado->sigla;
+        }
+
+        if($_SESSION['Auth']['User']['user_type_id'] == 3 || $_SESSION['Auth']['User']['user_type_id'] == 4){
+            $tab_current = 'etiqueta';
         }
 
         $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));

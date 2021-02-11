@@ -8,6 +8,15 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
+
+                    <div class="row">
+                        <div style="text-align:center" class="col-xl-12">
+
+                            <?php if(!empty($codigo_croquiParam)): ?>
+                                <h3>Código do Croqui: <?= $codigo_croquiParam; ?></h3>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                         <?= $this->Form->create($croqui, ['id' => 'formCroqui']) ?>
                         <?php echo $this->element('admin/croqui/form', [
                             'disabled' => true,
@@ -31,9 +40,7 @@
                                         <div class="col-md-3">
                                             <?= $this->Form->control('nome_paciente', [ 'label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => @$this->request->getQuery('nome_paciente') ]);?>
                                         </div>
-                                        <div class="col-md-3">
-                                            <?= $this->Form->control('cpf_paciente', [ 'label' =>'CPF do Paciente', 'class' => 'form-control', 'value' => @$this->request->getQuery('cpf_paciente') ]);?>
-                                        </div>
+
                                         <div class="col-md-2">
                                             <?= $this->Form->control('date_de', [ 'label' =>'Data de', 'class' => 'form-control', 'value' => @$this->request->getQuery('date_de') ]);?>
                                         </div>
@@ -58,7 +65,6 @@
                                                 <th>#</th>
                                                 <th>Codigo do Pedido</th>
                                                 <th>Nome do Paciente</th>
-                                                <th>CPF do Paciente</th>
                                                 <th>Criação do Pedido</th>
                                             </tr>
                                         </thead>
@@ -70,7 +76,6 @@
                                                     </th>
                                                     <td><?= $pedido->codigo_pedido; ?></td>
                                                     <td><?= $pedido->anamnese->paciente->nome; ?></td>
-                                                    <td><?= $pedido->anamnese->paciente->cpf; ?></td>
                                                     <td><?= $pedido->created; ?></td>
                                                 </tr>
                                             <?php endforeach; ?>

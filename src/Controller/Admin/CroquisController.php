@@ -70,7 +70,7 @@ class CroquisController extends AppController
         exit();
     }
 
-    public function gerador()
+    public function gerador($codigo_croquiParam = null)
     {
         $action = 'Gerador';
         $title = 'Croquis';
@@ -100,7 +100,7 @@ class CroquisController extends AppController
             if(!empty($query['cpf_paciente']) ){
                 $filter_cpf = $query['cpf_paciente'];
             }
-            
+
             $users_found = json_decode($this->PacientesData->getByCpfOrNameCroqui($arrayfilter,$filter_cpf,$filter_nome), true);
             $arr_user_hashs = [];
             foreach ($users_found as $key => $usersfound ){
@@ -137,10 +137,10 @@ class CroquisController extends AppController
         foreach ($pedidos_triagem as $key => $pedido){
             array_push($arr['hashs'],  $pedido->anamnese->paciente->hash);
         }
-        
+
         $body = json_encode($arr);
         $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
-        
+
         for($i = 0; $i < sizeof($pedidos_triagem );$i++){
             for($z = 0; $z < sizeof($pacientes_data);$z++){
                 if($pacientes_data[$z]['hash'] == $pedidos_triagem[$i]->anamnese->paciente->hash){
@@ -153,9 +153,9 @@ class CroquisController extends AppController
             }
         }
 
-        
 
-      
+
+
         if ($this->request->is('post')) {
             $req = $this->request->getData();
             $pedidos_encontrados = true;
@@ -167,6 +167,19 @@ class CroquisController extends AppController
                 }
             }
             $date_init = date('YmdHi');
+
+            $lastItem = $this->PedidoCroqui->find('all',[
+                'order' => ['PedidoCroqui.codigo_croqui' => 'DESC'],
+                'contain' => ['Pedidos'],
+                'conditions' => ['Pedidos.cliente_id' => $this->Auth->user('cliente_id')],
+                'group' => ['PedidoCroqui.pedido_id']
+            ])->first();
+
+            $codigo_croqui = 1;
+
+            if(!empty($lastItem)){
+                $codigo_croqui = $lastItem->codigo_croqui + 1;
+            }
 
             foreach ($croqui_dados as $key => $croqui_dado) {
 
@@ -182,11 +195,12 @@ class CroquisController extends AppController
                     break;
                 }
 
+
                 $pedido_croqui = $this->PedidoCroqui->newEntity();
                 $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
                     'croqui_tipo_id' => $req['croqui_tipo_id'],
                     'pedido_id' => $getPedido->id,
-                    'codigo_croqui' => $this->Auth->user('cliente_id') . $date_init
+                    'codigo_croqui' => $codigo_croqui
                 ]);
                 $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
 
@@ -208,11 +222,11 @@ class CroquisController extends AppController
                 $this->Flash->error('Verifique os pedidos inseridos no croqui.');
             } else {
                 $this->Flash->success('Croqui Criado com sucesso!');
-                return $this->redirect(['controller' => 'pedidos', 'action' => 'croquis']);
+                return $this->redirect(['controller' => 'croquis', 'action' => 'gerador/'.$codigo_croqui]);
             }
         }
 
-        $this->set(compact('croqui_tipos', 'action', 'title', 'croqui', 'pedidos_triagem'));
+        $this->set(compact('croqui_tipos', 'action', 'title', 'croqui', 'pedidos_triagem','codigo_croquiParam'));
     }
 
     /**

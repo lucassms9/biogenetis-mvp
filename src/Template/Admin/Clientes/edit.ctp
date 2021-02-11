@@ -64,9 +64,6 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <?php echo $this->Form->control('tipo_cobranca', ['class' => 'form-control', 'options' => $cobranca_tipos, 'empty' => 'Escolha']); ?>
-                            </div>
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('img_header_url', ['class' => 'form-control', 'type' => 'file', 'label' => 'Cabeçalho Laudo']); ?>
                             </div>

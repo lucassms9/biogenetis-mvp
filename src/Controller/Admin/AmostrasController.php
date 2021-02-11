@@ -477,7 +477,7 @@ class AmostrasController extends AppController
                 'conditions' => $conditions
             ])->toList();
 
-            $qtd_colunas = 7;
+            $qtd_colunas = 4;
 
             $nome_colunas = [
                 'Id',
@@ -487,7 +487,7 @@ class AmostrasController extends AppController
                 'Resultado',
             ];
 
-            $alfabeto = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+            $alfabeto = array('A', 'B', 'C', 'D', 'E');
 
             $objPHPExcel = new PHPExcel();
 

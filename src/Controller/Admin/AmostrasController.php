@@ -499,7 +499,7 @@ class AmostrasController extends AppController
             foreach ($amostras as $i => $amostra) {
                 $dados = [
                     $amostra->id,
-                    $amostra->code_amostra,
+                    $amostra->amostra_id,
                     $amostra->created->i18nFormat('dd/MM/yyyy HH:mm'),
                     $amostra->lote,
                     $amostra->resultado,

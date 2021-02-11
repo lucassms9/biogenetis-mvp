@@ -14,142 +14,11 @@ $(window).scroll(function (event) {
 });
 
 
-
-var templete = '<div class="input file"><label for="file">Escolha um arquivo</label><input type="file" name="file[]" class="files"></div>';
 var qtd_files = 0;
 var qtd_files_removed = 0;
 
-var options_sexos = '<option value="">Escolha</option>'+
-                        '<option selected value="M">M</option>'+
-                        '<option value="F">F</option>';
-
-var options_uf = '<option value="">Escolha</option>'+
-'<option value="AC">Acre</option>'+
- '<option value="AL">Alagoas</option>'+
- '<option value="AM">Amapá</option>'+
- '<option value="AP">Amazonas</option>'+
- '<option value="BA">Bahia</option>'+
- '<option value="CE">Ceará</option>'+
- '<option value="DF">Distrito Federal</option>'+
- '<option value="ES">Espírito Santo</option>'+
- '<option value="GO">Goiás</option>'+
- '<option value="MA">Maranhão</option>'+
- '<option selected value="MG">Minas Gerais</option>'+
- '<option value="MS">Mato Grosso do Sul</option>'+
- '<option value="MT">Mato Grosso</option>'+
- '<option value="PA">Pará</option>'+
- '<option value="PB">Paraíba</option>'+
- '<option value="PE">Pernambuco</option>'+
- '<option value="PI">Piauí</option>'+
- '<option value="PR">Paraná</option>'+
- '<option value="RJ">Rio de Janeiro</option>'+
- '<option value="RN">Rio Grande do Norte</option>'+
- '<option value="RO">Rondônia</option>'+
- '<option value="RR">Roraima</option>'+
- '<option value="RS">Rio Grande do Sul</option>'+
- '<option value="SC">Santa Catarina</option>'+
- '<option value="SE">Sergipe</option>'+
- '<option value="SP">São Paulo</option>'+
- '<option value="TO">Tocantins</option>';
-
-
-// var options_sexos = '<option value="">Escolha</option>'+
-//                         '<option {M} value="M">M</option>'+
-//                         '<option {F} value="F">F</option>';
-
-// var options_uf = '<option value="">Escolha</option>'+
-// '<option {AC} value="AC">Acre</option>'+
-//  '<option {AL} value="AL">Alagoas</option>'+
-//  '<option {AM} value="AM">Amapá</option>'+
-//  '<option {AP} value="AP">Amazonas</option>'+
-//  '<option {BA} value="BA">Bahia</option>'+
-//  '<option {CE} value="CE">Ceará</option>'+
-//  '<option {DF} value="DF">Distrito Federal</option>'+
-//  '<option {ES} value="ES">Espírito Santo</option>'+
-//  '<option {GO} value="GO">Goiás</option>'+
-//  '<option {MA} value="MA">Maranhão</option>'+
-//  '<option {MG} value="MG">Minas Gerais</option>'+
-//  '<option {MS} value="MS">Mato Grosso do Sul</option>'+
-//  '<option {MT} value="MT">Mato Grosso</option>'+
-//  '<option {PA} value="PA">Pará</option>'+
-//  '<option {PB} value="PB">Paraíba</option>'+
-//  '<option {PE} value="PE">Pernambuco</option>'+
-//  '<option {PI} value="PI">Piauí</option>'+
-//  '<option {PR} value="PR">Paraná</option>'+
-//  '<option {RJ} value="RJ">Rio de Janeiro</option>'+
-//  '<option {RN} value="RN">Rio Grande do Norte</option>'+
-//  '<option {RO} value="RO">Rondônia</option>'+
-//  '<option {RR} value="RR">Roraima</option>'+
-//  '<option {RS} value="RS">Rio Grande do Sul</option>'+
-//  '<option {SC} value="SC">Santa Catarina</option>'+
-//  '<option {SE} value="SE">Sergipe</option>'+
-//  '<option {SP} value="SP">São Paulo</option>'+
-//  '<option {TO} value="TO">Tocantins</option>';
-
-function addInput(){
-
-    var html  = '';
-
-     html += '<div class="input file">';
-     html += '<label for="file">Arquivo [' + qtd_files + '] *</label>';
-     html += '<input type="file" name="file[]" class="files" onchange="maisImagens()">';
-     html += '</div>';
-     html += '</div>';
-
-    $("#files-input").append( html );
-
-    qtd_files++;
-
-}
-
 
 function submitForm() {
-
-    /*
-    validacoes
-    */
-     var validate = true;
-     var isOk = false;
-    $("#sendData").each(function(){
-
-    //<-- Should return all input elements in that specific form.
-
-    $(this).find(':input').each(function(val, element){
-        console.log($(element).attr('isValidate'))
-        console.log($(element).val())
-
-        if($(element).attr('isValidate') && $(element).attr('isValidate') == 'validate'){
-            isOk = true
-            if($(element).val() == ''){
-                validate = false;
-            }
-        }
-        })
-    });
-
-    if(!validate){
-         Swal.fire({
-                title: "Atenção",
-                text: "Você precisa preencher todos os campos!",
-                icon: "warning",
-                confirmButtonColor: "#004ba7",
-                confirmButtonText: "Entendi"
-              });
-
-        return;
-    }
-
-    if( !isOk ){
-        Swal.fire({
-                title: "Atenção",
-                text: "É necessário ter pelo menos uma amostra válida para continuar.",
-                icon: "warning",
-                confirmButtonColor: "#004ba7",
-                confirmButtonText: "Entendi"
-              });
-
-        return;
-    }
 
 
     Swal.fire({
@@ -179,11 +48,6 @@ function submitForm() {
 function amountForm(file) {
     file = JSON.parse(file);
    console.log(file)
-    // var ufHandle = '{'+file.pedido.anamnese.paciente.uf+'}';
-    // var sexoHandle = '{'+file.pedido.anamnese.paciente.sexo+'}';
-
-    // var new_options_uf = options_uf.replace(ufHandle,'selected');
-    // var new_options_sexo = options_sexos.replace(sexoHandle,'selected');
 
     var html  = '';
 
@@ -191,10 +55,6 @@ function amountForm(file) {
     html += '<th scope="row">'+file.amostra_id+' ';
     html += '<input class="form-control" type="hidden" name="amostraid[]" value="'+file.amostra_id+'" />';
     html += '</th>';
-    html += '<td><select isValidate="validate" name="uf[]" class="form-control">'+options_uf+'</select></td>';
-    html += '<td><input isValidate="validate" class="form-control" value="50" name="idade[]" /></td>';
-    html += '<td><select isValidate="validate" name="sexo[]" class="form-control">'+options_sexos+'</select></td>';
-    html += '</tr>';
 
     $("#input-files").append( html );
 
@@ -227,7 +87,7 @@ $(document).ready(function(){
 
     $("#formFiles").dropzone({
         maxFiles: 2000,
-        addRemoveLinks: true, 
+        addRemoveLinks: true,
         url: BASE_URL_ADMIN+"amostras/import",
         accept: function(file, done) {
             let fileExt = file.name.split('.');

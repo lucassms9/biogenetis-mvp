@@ -437,7 +437,9 @@ class AmostrasController extends AppController
     {
 
         if ($this->request->is('post')) {
-            $conditions = [];
+            $conditions = [
+                'Exames.resultado <>' => 'null'
+            ];
 
             ob_start(null, 0, false);
             ini_set("memory_limit", -1);
@@ -470,8 +472,8 @@ class AmostrasController extends AppController
                 $conditions['cast(Exames.created as date) >='] = $data_ate;
             }
 
-            $amostras = $this->Amostras->find('all', [
-                'contain' => 'Exames.Users',
+            $amostras = $this->Exames->find('all', [
+                'contain' => ['Users','Amostras'],
                 'conditions' => $conditions
             ])->toList();
 
@@ -482,9 +484,6 @@ class AmostrasController extends AppController
                 'Amostra ID',
                 'Data de criação',
                 'Lote',
-                'UF',
-                'Idade',
-                'Sexo',
                 'Resultado',
             ];
 
@@ -495,16 +494,15 @@ class AmostrasController extends AppController
             for ($i = 0; $i <= $qtd_colunas; $i++)
                 $objPHPExcel->setActiveSheetIndex(0)->setCellValue($alfabeto[$i] . '1', $nome_colunas[$i]);
 
+            $amostras = $this->ExamesData->getExamesResult($amostras);
+
             foreach ($amostras as $i => $amostra) {
                 $dados = [
                     $amostra->id,
                     $amostra->code_amostra,
                     $amostra->created->i18nFormat('dd/MM/yyyy HH:mm'),
                     $amostra->lote,
-                    $amostra->uf,
-                    $amostra->idade,
-                    $amostra->sexo,
-                    $amostra->exame->resultado,
+                    $amostra->resultado,
                 ];
 
                 for ($j = 0; $j <= $qtd_colunas; $j++) {

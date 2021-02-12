@@ -114,7 +114,8 @@ class ClientesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $req = $this->request->getData();
 
-            if (!empty($req['img_header_url'])) {
+
+            if ($req['img_header_url']['size'] > 0) {
                 $ext = explode('/', $req['img_header_url']['type']);
                 $name = md5($req['img_header_url']['name']) . '.' . $ext[1];
 
@@ -124,7 +125,7 @@ class ClientesController extends AppController
                 $req['img_header_url'] = $url;
             }
 
-            if (!empty($req['img_footer_url'])) {
+            if ($req['img_footer_url']['size'] > 0) {
                 $ext = explode('/', $req['img_footer_url']['type']);
                 $name = md5($req['img_footer_url']['name']) . '.' . $ext[1];
 

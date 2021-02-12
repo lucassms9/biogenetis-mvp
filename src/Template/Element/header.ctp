@@ -131,7 +131,7 @@
                                         <?php endif; ?>
                                         <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base)): ?>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/exames/meusexames" class="dropdown-item">
-                                                <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames
+                                                <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames Submetidos
                                             </a>
                                         <?php endif; ?>
                                         <a href="<?= $this->Url->build('/admin', true); ?>/equipamentos" class="dropdown-item">

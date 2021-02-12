@@ -125,7 +125,7 @@
                                         </a>
 
                                         <?php if (!in_array($_SESSION['Auth']['User']['user_type_id'],$perfil_base) && $_SESSION['Auth']['User']['user_type_id'] != 2) : ?>
-                                            <a href="<?= $this->Url->build('/admin', true); ?>/entradaexames" class="dropdown-item">
+                                            <a href="<?= $this->Url->build('/admin', true); ?>/entrada-exames" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Exames
                                             </a>
                                         <?php endif; ?>

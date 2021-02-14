@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use Cake\Http\Client;
 use App\Controller\AppController;
 use App\Component\PacientesDataComponent;
+use Exception;
 
 /**
  * Pacientes Controller
@@ -350,6 +351,21 @@ class PacientesController extends AppController
         $resPaciente  = $this->PacientesData->getCheckCPF($req['cpf']);
         if (!empty($resPaciente)) {
             $user_data =  json_decode($resPaciente);
+
+            $API_ROOT = env('USER_ENDPOINT');
+            try{
+                $data = array(
+                    "hash" =>  $user_data->hash, "nome"        =>  $req['nome'], "cpf"         =>  $req['cpf'], "rg"          =>  $req['rg'], "email"       =>  $req['email'], "celular"     =>  $req['celular'], "telefone"    =>  $req['telefone'], "sexo"        =>  $req['sexo'], "data_nascimento" =>  $req['data_nascimento'], "endereco"        =>  $req['endereco'], "bairro"          =>  $req['bairro'], "cep"             =>  $req['cep'], "cidade"          =>  $req['cidade'], "uf"              =>  $req['uf'], "foto_perfil_url"   =>  $req['foto_perfil_url'], "foto_doc_url"      =>  $req['foto_doc_url'], "nome_da_mae"       =>  $req['nome_da_mae'], "nacionalidade"     =>  $req['nacionalidade'], "pais_residencia"   =>  $req['pais_residencia']
+                );
+                $json = json_encode($data);
+                $http = new Client();
+                $response = $http->post($API_ROOT . 'paciente/update', $json, [
+                    'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
+                ]);
+            }catch(Exception $e){
+
+            }
+
             $find_paciente = $this->Pacientes->find('all', [
                 'conditions' => ['hash' => $user_data->hash]
             ])->first();
@@ -412,7 +428,6 @@ class PacientesController extends AppController
                 'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
             ]);
             $jst_r  = json_decode($response->getStringBody());
-
             if ($this->Pacientes->save($paciente)) {
                 $this->Flash->success(__('The paciente has been saved.'));
 

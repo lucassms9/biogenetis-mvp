@@ -36,22 +36,32 @@
                                     <div style="" class="card-body">
                                         <form id="formFilter" method="get">
                                         <div class="row">
-
-                                        <div class="col-md-3">
-                                            <?= $this->Form->control('nome_paciente', [ 'label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => @$this->request->getQuery('nome_paciente') ]);?>
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <?= $this->Form->control('date_de', [ 'label' =>'Data de', 'class' => 'form-control', 'value' => @$this->request->getQuery('date_de') ]);?>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <?= $this->Form->control('date_ate', [ 'label' =>'Data até', 'class' => 'form-control', 'value' => @$this->request->getQuery('date_ate') ]);?>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div style="margin-top: 28px; display:flex;" class="">
-                                                <button style="margin-right: 5px;" type="submit" id="btn-form-filter" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
+                                            <div class="col-md-3">
+                                                <?= $this->Form->control('pedido', [ 'label' =>'Número do pedido', 'class' => 'form-control', 'value' => @$this->request->getQuery('pedido') ]);?>
                                             </div>
+
+                                            <div class="col-md-5">
+                                                <?= $this->Form->control('nome_paciente', [ 'label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => @$this->request->getQuery('nome_paciente') ]);?>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <?= $this->Form->control('cpf', [ 'label' =>'CPF', 'class' => 'form-control', 'value' => @$this->request->getQuery('cpf') ]);?>
+                                            </div>
+                                           
                                         </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <?= $this->Form->control('date_de', [ 'label' =>'Data de', 'class' => ['form-control', 'datemask'], 'value' => @$this->request->getQuery('date_de') ]);?>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <?= $this->Form->control('date_ate', [ 'label' =>'Data até', 'class' => ['form-control', 'datemask'], 'value' => @$this->request->getQuery('date_ate') ]);?>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div style="margin-top: 28px; display:flex;" class="">
+                                                    <button style="margin-right: 5px;" type="submit" id="btn-form-filter" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
+                                                </div>
+                                            </div>
                                         </div>
                                         </form>
                                     </div>

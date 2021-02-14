@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+    $('.datemask').mask('99/99/9999');
     $('#croqui-tipo-id').change(function (e) {
         createCroqui(this)
     });

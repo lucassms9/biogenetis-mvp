@@ -8,6 +8,33 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
+                    <div class="row">
+                                <div class="card">
+                                    <div style="" class="card-body">
+                                        <form id="formFilter" method="get">
+                                        <div class="row">
+
+                                        <div class="col-md-4">
+                                            <?= $this->Form->control('nome_paciente', [ 'label' =>'Nome do Paciente', 'class' => 'form-control', 'value' => @$this->request->getQuery('nome_paciente') ]);?>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <?= $this->Form->control('cpf', [ 'label' =>'CPF', 'class' => 'form-control', 'value' => @$this->request->getQuery('cpf') ]);?>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <?= $this->Form->control('numero_pedido', [ 'label' =>'Número do pedido', 'class' => 'form-control', 'value' => @$this->request->getQuery('numero_pedido') ]);?>
+                                            <?= $this->Form->control('status', ['type' => 'hidden', 'label' =>'Número do pedido', 'class' => 'form-control', 'value' => @$this->request->getQuery('status') ]);?>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div style="margin-top: 28px; display:flex;" class="">
+                                                <button style="margin-right: 5px;" type="submit" id="btn-form-filter" class="btn btn-primary  mt-3 mt-sm-0">Filtrar</button>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">

@@ -18,7 +18,6 @@ class PacientesDataComponent extends Component
 
     public function getPacientes($string)
     {
-        // $API_ROOT = env('USER_ENDPOINT');
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/listbyhash',  $string, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($string)]
@@ -27,12 +26,9 @@ class PacientesDataComponent extends Component
         return  $resp_decoded;
     }
     
-    
     public function getByCpfOrNameCroqui($hashs,$cpf,$nome)
     {
-        
         $req = array("hashs" => $hashs, "cpf" => $this->Helpers->doEncrypt($cpf), 'nome' => $this->Helpers->doEncrypt($nome));
-      
         $body = json_encode($req);
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/cpforemail',  $body, [
@@ -41,9 +37,6 @@ class PacientesDataComponent extends Component
         $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
-
-
-    
 
     public function getCheckCPF($string){
         $string =  $this->Helpers->stringToNumber($string);
@@ -56,12 +49,11 @@ class PacientesDataComponent extends Component
         $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
+
     public function getCheckCPFOrEmail($cpf, $email)
     {
         $req = array("cpf" => $this->Helpers->doEncrypt($cpf), 'email' => $this->Helpers->doEncrypt($email));
-
         $body = json_encode($req);
-
         $http = new Client();
         $response = $http->post($this->API_ROOT . 'paciente/checkEmailOrCpf/',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
@@ -69,6 +61,7 @@ class PacientesDataComponent extends Component
         $resp_decoded = $this->Helpers->doDecrypt($response->getStringBody());
         return  $resp_decoded;
     }
+
     public function getByHash($string)
     {
         $hash = array("hash" => $string);

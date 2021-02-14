@@ -16,7 +16,7 @@ class HelpersComponent extends Component
     public function doEncrypt($string)
     {
         $encryptionMethod = env('CRYPT_METHOD');
-        $secret = env('CRYPT_SECRET');
+        $secret           = env('CRYPT_SECRET');
         $iv = env('CRYPT_IV');
         $encryptedMessage = openssl_encrypt($string, $encryptionMethod, $secret, 0, $iv);
         return $encryptedMessage;
@@ -25,8 +25,8 @@ class HelpersComponent extends Component
     public function doDecrypt($string)
     {
         $encryptionMethod = env('CRYPT_METHOD');
-        $secret = env('CRYPT_SECRET');
-        $iv = env('CRYPT_IV');
+        $secret           = env('CRYPT_SECRET');
+        $iv               = env('CRYPT_IV');
         $decryptedMessage = openssl_decrypt($string, $encryptionMethod, $secret, 0, $iv);
         return $decryptedMessage;
     }

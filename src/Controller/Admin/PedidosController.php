@@ -184,11 +184,55 @@ class PedidosController extends AppController
         if (!empty($query['status'])) {
             $conditions['Pedidos.status'] = $query['status'];
         }
+        
+
+        if (!empty($query['numero_pedido'])) {
+            $conditions['Pedidos.codigo_pedido in'] = $query['numero_pedido'];
+            
+        }
+
+
 
         $pedidos = $this->paginate($this->Pedidos, [
             'contain' => ['Anamneses.Pacientes'],
             'conditions' => $conditions
         ]);
+
+        $arr = array('hashs' => []);
+        
+        if (!empty($query['cpf']) || !empty($query['nome_paciente'])  ) {
+                    $cpf = '';
+                    $nome_paciente = '';
+                    foreach ($pedidos  as $key => $pedido) {
+                        if(isset($pedido->anamnese)){
+                            array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
+                        }
+                    }
+                    if(!empty($query['cpf']) ){
+                        $cpf = $query['cpf'];
+                    }
+                    if(!empty($query['nome_paciente']) ){
+                        $nome_paciente = $query['nome_paciente'];
+                    }
+                    $body = json_encode($arr);
+                    $pacientes_data = json_decode($this->PacientesData->getByCpfOrNameCroqui($body,$cpf,$nome_paciente), true);
+
+
+                    $pedidos_list = [];
+
+                    foreach ($pedidos as $key => $pedido) {
+                        $finded =  array_filter($pacientes_data, function ($paciente) use ($pedido) {
+                            return $paciente['hash'] == $pedido->anamnese->paciente->hash;
+                        });
+                        $handle = @$finded[0] ?? [];
+                        $paciente = new Paciente($handle);
+
+                        $pedido->anamnese->paciente = $paciente;
+                    }
+
+        }
+
+
         $arr = array('hashs' => []);
 
         foreach ($pedidos as $pedido) {
@@ -200,18 +244,22 @@ class PedidosController extends AppController
             }
         }
         $body = json_encode($arr);
-        $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
-        $pedidos_list = [];
-        foreach ($pedidos as $pedido) {
-            if(isset($pedido->anamnese) && isset($pedido->anamnese->paciente)){
-                $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
-                array_push(
-                    $pedidos_list,
-                    array(
-                        "hash"   => $pedido->anamnese->paciente->hash, "id"     => $pedido->id, "codigo_pedido" => $pedido->codigo_pedido, "status" => $pedido->status, "cpf"    => $user_info['cpf'], "nome"    => $user_info['nome'], "celular"    => $user_info['celular'], "created" => $pedido->created
-                    )
-                );
+        try{
+            $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
+            $pedidos_list = [];
+            foreach ($pedidos as $pedido) {
+                if(isset($pedido->anamnese) && isset($pedido->anamnese->paciente)){
+                    $user_info = $this->PacientesData->returnPaciente($pedido->anamnese->paciente->hash, $pacientes_data);
+                    array_push(
+                        $pedidos_list,
+                        array(
+                            "hash"   => $pedido->anamnese->paciente->hash, "id"     => $pedido->id, "codigo_pedido" => $pedido->codigo_pedido, "status" => $pedido->status, "cpf"    => $user_info['cpf'], "nome"    => $user_info['nome'], "celular"    => $user_info['celular'], "created" => $pedido->created
+                        )
+                    );
+                }
             }
+        }catch(Exception $e){
+
         }
         $this->set(compact('action', 'title', 'pedidos', 'pedidos_list'));
     }

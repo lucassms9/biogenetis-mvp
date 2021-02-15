@@ -1,10 +1,3 @@
-<div class="row mb-3">
-    <div class="col-md-12">
-        <button style="background-color: #31b1fb;border-color: #31b1fb;" onclick="printerPage();" type="button" class="btn btn-secondary">
-            <i style="margin-right: 5px;" class="mdi mdi-printer"></i>Imprimir
-        </button>
-    </div>
-</div>
 
 <div style="font-size: 17px; background-color:#fff;" id="printer-laudo">
     <!-- HEADER -->
@@ -23,7 +16,7 @@
         <div class="col-md-6 d-flex font-weight-bold">
             Nome: <?= $pedido->anamnese->paciente->nome; ?>
         </div>
-        <div style="justify-content: flex-end;" class="col-md-6 d-flex">
+        <div style="" class="col-md-6 d-flex">
             Data Nascimento: <?php $data ='';
                 $data = explode('-',$pedido->anamnese->paciente->data_nascimento);
                 $data = $data[2] . '/' . $data[1]. '/' . $data[0];
@@ -36,7 +29,7 @@
         <div class="col-md-6 d-flex">
             Data Entrada: <?= $pedido->anamnese->created; ?>
         </div>
-        <div style="justify-content: flex-end;" class="col-md-6 d-flex">
+        <div style="" class="col-md-6 d-flex">
             Data Emissão: <?= $pedido->exame->created; ?>
         </div>
     </div>
@@ -63,12 +56,12 @@
     </div>
 
     <div style="font-family: Courier New;" class="row my-3">
-        <div style="border: 1px solid;padding: 10px;margin-left: 10px;" class="col-md-4 d-flex flex-column">
-            <div class="d-flex">
-                <h3 style="margin: 0;" >
+        <div style="" class="col-sm-3 d-flex flex-column">
+            <div style="border: 1px solid;padding: 10px;" class="d-flex">
+                <h4 style="margin: 0;" >
                     <span>RESULTADO:</span>
                     <span style="margin-left: 15px;"><?= @$pedido->exame->resultado; ?></span>
-                </h3>
+                </h4>
             </div>
         </div>
     </div>

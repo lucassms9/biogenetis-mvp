@@ -892,7 +892,7 @@ class AmostrasController extends AppController
         }
     }
 
-    public function import()
+    public function import($pedido_fluxo = false)
     {
 
         $action = 'Cadastrar';
@@ -962,6 +962,10 @@ class AmostrasController extends AppController
                             ]
                         ])->first();
 
+                        if(empty($pedido) && $pedido_fluxo){
+                            throw new BadRequestException(__('Pedido Não encontrado, o nome do arquivo deve conter o código do pedido!'));
+                            die();
+                        }
                         $exame = [
                             'amostra_id' => $amostra_id[0],
                             'file_extesion' => $handle_file['file_extesion'],

@@ -51,7 +51,8 @@ class EntradaExamesController extends AppController
 
         $entradaExames = $this->paginate($this->EntradaExames);
 
-        $this->set(compact('entradaExames', 'action','title'));
+        $showActions = true;
+        $this->set(compact('entradaExames', 'action','title','showActions'));
     }
 
     /**

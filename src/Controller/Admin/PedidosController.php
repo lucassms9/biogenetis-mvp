@@ -354,7 +354,11 @@ class PedidosController extends AppController
         $sexos = $this->sexos;
         $croqui_tipo_id = @$pedido->pedido_croqui->croqui_tipo_id;
 
-        $exames_tipos = $this->EntradaExames->find('list');
+        if(isset($pedido->entrada_exame_id) && $pedido->entrada_exame_id > 0){
+            $exames_tipos = $this->EntradaExames->find('list',['conditions' => ['id' =>  $pedido->entrada_exame_id ]]);
+        }else{
+            $exames_tipos = $this->EntradaExames->find('list');
+        }      
         $useForm = true;
         $croqui = null;
         $croqui_tipos = $this->Croquis->find('list');
@@ -390,6 +394,8 @@ class PedidosController extends AppController
         if($_SESSION['Auth']['User']['user_type_id'] == 3 || $_SESSION['Auth']['User']['user_type_id'] == 4){
             $tab_current = 'etiqueta';
         }
+
+       
 
         $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));
     }

@@ -11,17 +11,17 @@
                         <?= $this->Form->create($paciente) ?>
                         <div class="row">
                              <div class="col-md-3">
-                                <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF']); ?>
+                                <?php echo $this->Form->control('cpf',['class'=> 'form-control','label' => 'CPF', 'disabled' => true]); ?>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('nome',['class' => 'form-control']); ?>
                             </div>
                            
                             <div class="col-md-3">
-                                <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG']); ?>
+                                <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG', 'disabled' => true]); ?>
                             </div>
                             <div class="col-md-2">
-                                <?php echo $this->Form->control('sexo',['class'=> 'form-control','options' => $sexos]); ?>
+                                <?php echo $this->Form->control('sexo',['class'=> 'form-control','options' => $sexos, 'disabled' => true]); ?>
                             </div>
                         </div>
 
@@ -36,7 +36,7 @@
                                 <?php echo $this->Form->control('telefone',['class'=> 'form-control']); ?>
                             </div>
                             <div class="col-md-3">
-                                <?php echo $this->Form->control('data_nascimento',['class'=> 'form-control','type' => 'text']); ?>
+                                <?php echo $this->Form->control('data_nascimento',['class'=> 'form-control','type' => 'text', 'disabled' => true]); ?>
                             </div>
                         </div>
 
@@ -59,10 +59,10 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('nome_da_mae',['class'=> 'form-control']);?>
+                                <?php echo $this->Form->control('nome_da_mae',['class'=> 'form-control', 'disabled' => true]);?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('nacionalidade',['class'=> 'form-control']);?>
+                                <?php echo $this->Form->control('nacionalidade',['class'=> 'form-control', 'disabled' => true]);?>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('pais_residencia',['class'=> 'form-control']);?>

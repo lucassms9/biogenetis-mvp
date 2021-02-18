@@ -237,8 +237,10 @@ class PedidosController extends AppController
 
         foreach ($pedidos as $pedido) {
             if(isset($pedido->anamnese)){
-
-            array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
+                if(isset($pedido->anamnese->paciente)){
+                    array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
+                }
+                       
             }else{
 
             }

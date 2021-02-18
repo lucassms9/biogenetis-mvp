@@ -131,7 +131,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Exames', 'action' => 'view', $exames->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Exames', 'action' => 'edit', $exames->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Exames', 'action' => 'delete', $exames->id], ['confirm' => __('Are you sure you want to delete # {0}?', $exames->id)]) ?>
+                   
                 </td>
             </tr>
             <?php endforeach; ?>

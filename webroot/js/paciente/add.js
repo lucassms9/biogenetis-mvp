@@ -59,13 +59,20 @@ function checkCpf(cpf){
         if(data != false){
            console.log(data);
            let vData = JSON.parse(data);
+           let dataNascimento = vData.data_nascimento.split('-');
+           try{
+
+            let strDataNasicmento = dataNascimento[2] + '/' + dataNascimento[1] + '/' +dataNascimento[0];
+            $("#data_nascimento").val(strDataNasicmento);
+           }catch(e){
+
+           }
            $("#nome_paciente").val(vData.nome);
            $("#rg_paciente").val(vData.rg);
            $("#sexo_paciente").val(vData.sexo);
            $("#email_paciente").val(vData.email);
            $("#celular_paciente").val(vData.celular);
            $("#telefone_paciente").val(vData.telefone);
-           $("#data_nascimento").val(vData.data_nascimento);
            $("#cep_paciente").val(vData.cep);
 
            
@@ -85,7 +92,86 @@ function checkCpf(cpf){
         }
     });
 }
+
+
+function validateBirth(e){
+    let vvalue =e;
+    let error = false;
+    vvalue = vvalue.split('/');
+    if(vvalue[0] < 1 || vvalue[0] > 30){
+        console.log(vvalue[0]);
+         error = true;
+    }
+    if(vvalue[1] < 1 || vvalue[1] > 12){
+        console.log(vvalue[1]);
+        error = true;
+    }
+    let thisyear = new Date().getFullYear()
+    if(vvalue[2] < 1 || vvalue[2] > thisyear){
+        console.log(vvalue[2]);
+        error = true;
+    }
+    if(  error == true){
+        $("#data_nascimento").val('');
+        alertify.error('Data de nascimento inválida.');
+        return false;
+    }else{
+        return true;
+    }
+}
+function mphone(v) {
+    var r = v.replace(/\D/g, "");
+    r = r.replace(/^0/, "");
+    if (r.length > 10) {
+      r = r.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3");
+    } else if (r.length > 5) {
+      r = r.replace(/^(\d\d)(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+    } else if (r.length > 2) {
+      r = r.replace(/^(\d\d)(\d{0,5})/, "($1) $2");
+    } else {
+      r = r.replace(/^(\d*)/, "($1");
+    }
+    console.log(r);
+    return r;
+  }
+
+
+function mask(o, f) {
+  setTimeout(function() {
+      console.log(o.value);
+    var v = mphone(o.value);
+    if (v != o.value) {
+      o.value = v;
+    }
+  }, 1);
+}
 $(document).ready(function() {
+    $('#celular_paciente').keyup(function(e){
+        var vthis = $(this);
+        setTimeout(function() {
+            var vp = mphone(vthis.val());
+            if (vp != vthis.val()) {
+                vthis.val(vp);
+              }
+        },1);
+    });
+
+    
+    $('#telefone_paciente').keyup(function(e){
+        var vthis = $(this);
+        setTimeout(function() {
+            var vp = mphone(vthis.val());
+            if (vp != vthis.val()) {
+                vthis.val(vp);
+              }
+        },1);
+    });
+    $("#data_nascimento").mask("00/00/0000");
+    $("#uf_paciente").mask("AA");
+
+    $("#data_nascimento").blur(function (e){
+        validateBirth($(this).val());
+    });
     $('#viagem-brasil-estado').change(function (e) {
         e.preventDefault();
         getCitiesViagem(this.value);
@@ -194,6 +280,119 @@ function submitformpaciente() {
         return
     }
 
+    var nome_paciente = $('#nome_paciente').val();
+    if(nome_paciente.length < 3){
+        $('#nome_paciente').focus();
+        alertify.error('Você precisa informar o nome do paciente');
+        return $('#nome_paciente').focus();
+    }
+
+
+    
+    var rg_paciente = $('#rg_paciente').val();
+    if(rg_paciente.length < 3){
+        $('#rg_paciente').focus();
+        alertify.error('Você precisa informar o RG');
+        return $('#rg_paciente').focus();
+    }
+
+    var sexo_paciente = $('#sexo_paciente').val();
+    if(sexo_paciente.length < 1){
+        $('#sexo_paciente').focus();
+        alertify.error('Você precisa informar o sexo');
+        return $('#sexo_paciente').focus();
+    }
+/*
+    
+    var email_paciente = $('#email_paciente').val();
+    if(email_paciente.length < 3){
+        $('#email_paciente').focus();
+        alertify.error('Você precisa informar o email');
+        return $('#email_paciente').focus();
+    }
+*/
+
+    
+    var celular_paciente = $('#celular_paciente').val();
+    if(celular_paciente.length < 3){
+        $('#celular_paciente').focus();
+        alertify.error('Você precisa informar o celular');
+        return $('#celular_paciente').focus();
+    }
+    
+    
+    var telefone_paciente = $('#telefone_paciente').val();
+    if(telefone_paciente.length < 3){
+        $('#telefone_paciente').focus();
+        alertify.error('Você precisa informar o telefone');
+        return $('#telefone_paciente').focus();
+    }
+    
+    
+    var cep_paciente = $('#cep_paciente').val();
+    if(cep_paciente.length < 3){
+        $('#cep_paciente').focus();
+        alertify.error('Você precisa informar o cep');
+        return $('#cep_paciente').focus();
+    }
+    
+
+    
+    var endereco_paciente = $('#endereco_paciente').val();
+    if(endereco_paciente.length < 3){
+        $('#endereco_paciente').focus();
+        alertify.error('Você precisa informar o endereço');
+        return $('#endereco_paciente').focus();
+    }
+    
+
+
+    
+    var bairro_paciente = $('#bairro_paciente').val();
+    if(bairro_paciente.length < 3){
+        $('#bairro_paciente').focus();
+        alertify.error('Você precisa informar o bairro');
+        return $('#bairro_paciente').focus();
+    }
+    
+
+    
+    var cidade_paciente = $('#cidade_paciente').val();
+    if(cidade_paciente.length < 3){
+        $('#cidade_paciente').focus();
+        alertify.error('Você precisa informar o cidade');
+        return $('#cidade_paciente').focus();
+    }
+    
+
+    var uf_paciente = $('#uf_paciente').val();
+    if(uf_paciente.length < 2){
+        $('#uf_paciente').focus();
+        alertify.error('Você precisa informar o UF');
+        return $('#uf_paciente').focus();
+    }
+    
+
+    var nome_da_mae_paciente = $('#nome_da_mae_paciente').val();
+    if(nome_da_mae_paciente.length < 3){
+        $('#nome_da_mae_paciente').focus();
+        alertify.error('Você precisa informar o nome da mãe');
+        return $('#nome_da_mae_paciente').focus();
+    }
+    
+    var pais_residencia_paciente = $('#pais_residencia_paciente').val();
+    if(pais_residencia_paciente.length < 3){
+        $('#pais_residencia_paciente').focus();
+        alertify.error('Você precisa informar o pais de residencia');
+        return $('#pais_residencia_paciente').focus();
+    }
+    var nacionalidade_paciente = $('#nacionalidade_paciente').val();
+    if(nacionalidade_paciente.length < 3){
+        $('#nacionalidade_paciente').focus();
+        alertify.error('Você precisa informar a nacionalidade');
+        return $('#nacionalidade_paciente').focus();
+    }
+    
     var clinico_outros = $('#clinico-outros').is(":checked");
     var clinico_outros_desc = $('#clinico_outros_observacao').val();
 
@@ -201,6 +400,9 @@ function submitformpaciente() {
         alertify.error('você precisa especificar o sintoma.');
         return $('#clinico_outros_observacao').focus();
     }
+
+
+
 
 
     var viagem_brasil = $('input[name="viagem_brasil"]:checked');

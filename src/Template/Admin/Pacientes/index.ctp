@@ -46,7 +46,6 @@
                                             <td><?= h($paciente_result->sexo) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'edit', $paciente->id], ['escape' => false]) ?>
-                                                <?= $this->Form->postLink(__('<i class="mdi mdi-trash-can"></i>'), ['action' => 'delete', $paciente->id], ['escape' => false, 'confirm' => __('Deseja deletar?', $paciente->id)]) ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

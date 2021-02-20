@@ -585,7 +585,9 @@ class AmostrasController extends AppController
                 $this->ExamesData->save($exame_find->hash, $integration);
 
                 if (!empty($exame_find->pedido_id)) {
-                    $pedido = $this->Pedidos->get($exame_find->pedido_id);
+                    $pedido = $this->Pedidos->get($exame_find->pedido_id, [
+                        'contain' => ['Anamneses']
+                    ]);
                     $pedido->status = 'Finalizado';
                     $this->Pedidos->save($pedido);
 

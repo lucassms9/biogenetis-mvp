@@ -88,6 +88,8 @@ class PacientesController extends RestController
         $this->set(compact('result'));
     }
 
+
+
     public function createAnamnese()
     {
         $result = [];

@@ -45,6 +45,7 @@ class Paciente extends Entity
         'hash' => true,
         'senha' => true,
         'token_mobile' => true,
+        'token_push' => true,
         /*  , 'nome' => true,
         'cpf' => true,
         'rg' => true,

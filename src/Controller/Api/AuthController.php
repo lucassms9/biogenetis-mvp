@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use Rest\Controller\RestController;
 use Cake\Http\Client;
+use Cake\I18n\Number;
 use Exception;
 
 /**
@@ -22,6 +23,7 @@ class AuthController extends RestController
         $this->loadComponent('Request');
         $this->loadComponent('PacientesData');
         $this->loadComponent('Email');
+        $this->loadComponent('PushNotification');
 
         $this->body = $this->Request->getBody();
         $this->API_ROOT = env('USER_ENDPOINT');
@@ -65,8 +67,36 @@ class AuthController extends RestController
         $this->Pacientes->save($paciente);
 
         $result['token'] = $token;
-        $result['paciente'] = ['nome' => $res->nome];
+        $result['paciente'] = ['nome' => $res->nome,'id' => $paciente->id];
 
+
+        $this->set(compact('result'));
+    }
+
+    public function sendPush(){
+
+
+        $push = [
+            'paciente_id' => 111,
+            'title' => 'Você tem exame concluído!',
+            'body' => 'Verifique o resultado do seu exame!'
+        ];
+        $this->PushNotification->send($push);
+
+    }
+
+    public function saveToken(){
+        $body = $this->body;
+        $payload = $this->payload;
+        $result = [];
+
+        $paciente = $this->Pacientes->get($body['userId']);
+
+        if(!empty($paciente)){
+            $paciente->token_push = $body['token'];
+            $this->Pacientes->save($paciente);
+            $this->PushNotification->subscribe($paciente->id,$body['token']);
+        }
 
         $this->set(compact('result'));
     }
@@ -119,7 +149,7 @@ class AuthController extends RestController
         $this->Pacientes->save($paciente);
 
         $result['token'] = $token;
-        $result['paciente'] = ['nome' => $body['nome']];
+        $result['paciente'] = ['nome' => $body['nome'],'id' => $paciente->id,];
 
         $this->set(compact('result'));
     }

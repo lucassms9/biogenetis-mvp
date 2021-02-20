@@ -149,7 +149,7 @@ $(document).ready(function(){
     $("#formFiles").dropzone({
         maxFiles: 2000,
         addRemoveLinks: true,
-        url: BASE_URL_ADMIN+"amostras/import",
+        url: BASE_URL_ADMIN+"amostras/import/1",
         accept: function(file, done) {
             let fileExt = file.name.split('.');
             let ext = fileExt[fileExt.length -1];

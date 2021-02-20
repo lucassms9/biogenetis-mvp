@@ -104,6 +104,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
         array (
             'Firebase\\JWT\\' => 13,
         ),
+        'E' => 
+        array (
+            'ExponentPhpSDK\\' => 15,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -289,6 +293,10 @@ class ComposerStaticInit7d38f34eae0af549bc62f6a6592a386b
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
+        'ExponentPhpSDK\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/alymosul/exponent-server-sdk-php/lib',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

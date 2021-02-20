@@ -39,6 +39,7 @@ class AmostrasController extends AppController
         $this->loadComponent('Helpers');
         $this->loadComponent('PacientesData');
         $this->loadComponent('ExamesData');
+        $this->loadComponent('PushNotification');
     }
 
     public function sendEmail()
@@ -587,9 +588,17 @@ class AmostrasController extends AppController
                     $pedido = $this->Pedidos->get($exame_find->pedido_id);
                     $pedido->status = 'Finalizado';
                     $this->Pedidos->save($pedido);
+
+                    $push = [
+                        'paciente_id' => $pedido->anamnese->paciente_id,
+                        'title' => 'Você tem exame concluído!',
+                        'body' => 'Verifique o resultado do seu exame!'
+                    ];
+                    $this->PushNotification->send($push);
                 }
                 $exame_find->result = 1;
                 $this->Exames->save($exame_find);
+
 
                 //gravando saldo
                 $dataSave = [

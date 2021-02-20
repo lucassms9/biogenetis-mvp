@@ -77,7 +77,7 @@ class AuthController extends RestController
 
 
         $push = [
-            'paciente_id' => 111,
+            'paciente_id' => 113,
             'title' => 'Você tem exame concluído!',
             'body' => 'Verifique o resultado do seu exame!'
         ];

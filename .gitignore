@@ -4,6 +4,9 @@
 /config/.env
 /logs/*
 /tmp/*
+/webroot/amostras/*
+/webroot/clientes_imgs/*
+/webroot/certificados/*
 
 # OS generated files #
 ######################

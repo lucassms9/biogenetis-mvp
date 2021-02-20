@@ -140,9 +140,9 @@
                                         <a href="<?= $this->Url->build('/admin', true); ?>/pacientes" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Pacientes
                                         </a>
-                                        <a href="<?= $this->Url->build('/admin', true); ?>/produtos" class="dropdown-item">
+                                        <!-- <a href="<?= $this->Url->build('/admin', true); ?>/produtos" class="dropdown-item">
                                             <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Gestão de Produtos
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </li>
 

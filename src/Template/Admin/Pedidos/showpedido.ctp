@@ -53,7 +53,16 @@
                         <div class="tab-content p-3">
                         <?php if($_SESSION['Auth']['User']['user_type_id'] != 3):?>
                             <div class="tab-pane <?= $tab_current === 'paciente' ? 'active' :  ''; ?>" id="paciente" role="tabpanel">
+                               <div style="display: flex;">
                                 <h2>Paciente</h2>
+
+                                <?php if($pedido->status === 'EmAtendimento'): ?>
+                                    <div style="margin-top: 8px;margin-left: 10px;">
+                                    <?= $this->Html->link(__(' Editar dados<i class="mdi mdi-pencil"></i>'), ['controller' => 'pacientes', 'action' => 'edit', $paciente->id], ['target'=>'_blank','escape' => false]) ?>
+                                </div>
+                                <?php endif;?>
+                               </div>
+
                                 <?php echo $this->element('admin/paciente/form', [
                                     'disabled' => 'disabled'
                                 ]);?>

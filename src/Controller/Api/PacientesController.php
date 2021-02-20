@@ -117,7 +117,7 @@ class PacientesController extends RestController
             'cliente_id' => $cliente->id,
             'tipo_pagamento' => $cliente->tipo_cobranca,
             'created_by' => $body['paciente_id'],
-            'entrada_exame_id' => 1,
+            'entrada_exame_id' => $body['entrada_exame_id'],
             'status' => 'EmAtendimento',
         ];
 

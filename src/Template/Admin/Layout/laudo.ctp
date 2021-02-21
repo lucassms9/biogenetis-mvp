@@ -42,14 +42,65 @@ $cakeDescription = 'Biogenetics';
     <link href="<?= $this->Url->build('/', true); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= $this->Url->build('/', true); ?>css/main.css" rel="stylesheet" type="text/css" />
 
+    <!-- Plugins css -->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- DataTables -->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Sweet Alert-->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- alertifyjs Css -->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/alertifyjs/build/css/alertify.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- alertifyjs default themes  Css -->
+    <link href="<?= $this->Url->build('/', true); ?>assets/libs/alertifyjs/build/css/themes/default.min.css" rel="stylesheet" type="text/css" />
+
     <!-- JAVASCRIPT -->
     <script src="<?= $this->Url->build('/', true); ?>assets/libs/jquery/jquery.min.js"></script>
     <script src="<?= $this->Url->build('/', true); ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<style>
-    @page { margin: 5; }
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/node-waves/waves.min.js"></script>
 
-</style>
+    <script src="https://unicons.iconscout.com/release/v2.0.1/script/monochrome/bundle.js"></script>
+
+    <!-- datepicker -->
+    <!-- Selectize -->
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/selectize/js/standalone/selectize.min.js"></script>
+
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/air-datepicker/js/datepicker.min.js"></script>
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/air-datepicker/js/i18n/datepicker.pt-BR.js"></script>
+
+    <!-- apexcharts -->
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/apexcharts/apexcharts.min.js"></script>
+
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/jquery-knob/jquery.knob.min.js"></script>
+
+    <!-- Jq vector map -->
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/jqvmap/jquery.vmap.min.js"></script>
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <script src="<?= $this->Url->build('/', true); ?>js/jquery.mask.js"></script>
+
+    <script src="<?= $this->Url->build('/', true); ?>assets/libs/jquery-barcode/jquery-barcode.js"></script>
+
+    <script>
+        var BASE_URL_ADMIN = '<?= $this->Url->build('/admin', true) ?>/';
+        var BASE_URL_API = '<?=$this->Url->build('/api', true)?>/';
+    </script>
+
+    <style>
+        @page {
+            margin: 5;
+        }
+    </style>
 
 </head>
 

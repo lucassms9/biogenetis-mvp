@@ -18,6 +18,7 @@ class UsersController extends AppController
     {
         parent::initialize();
         $this->loadModel('TecnicoPeritos');
+        $this->loadComponent('Helpers');
     }
 
     /**
@@ -95,6 +96,7 @@ class UsersController extends AppController
             }
 
             $user = $this->Users->patchEntity($user, $req);
+
             $user = $this->Users->save($user);
             if ($user) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -152,7 +154,9 @@ class UsersController extends AppController
                 unset($request['senha']);
             }
 
+            $request['cpf'] = $this->Helpers->stringToNumber($request['cpf']);
             $user = $this->Users->patchEntity($user, $request);
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 

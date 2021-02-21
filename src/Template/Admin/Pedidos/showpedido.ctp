@@ -41,11 +41,13 @@
                             <?php endif; ?>
 
                             <?php if($_SESSION['Auth']['User']['user_type_id'] != 4):?>
+                           <?php if($pedido->status === 'Finalizado' ):?>
                             <li class="nav-item">
                                 <a class="nav-link <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" data-toggle="tab" href="#laudo" role="tab" aria-selected="false">
                                     <i class="fas fa-cubes"></i> <span class="d-none d-md-inline-block">Laudo</span>
                                 </a>
                             </li>
+                            <?php endif; ?>
                             <?php endif; ?>
                         </ul>
 
@@ -84,7 +86,7 @@
                             <div class="tab-pane <?= $tab_current === 'etiqueta' ? 'active' :  ''; ?>" id="etiqueta" role="tabpanel">
                                 <?php echo $this->element('admin/etiquetas/generate');?>
                             </div>
-                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 5):?>
+                            <?php if($_SESSION['Auth']['User']['user_type_id'] != 5 ):?>
                             <div class="tab-pane <?= $tab_current === 'croqui' ? 'active' :  ''; ?>" id="croqui" role="tabpanel">
                                 <?php echo $this->element('admin/croqui/view', [
                                     'disabled' => true,
@@ -92,9 +94,11 @@
                                 ]);?>
                             </div>
                             <?php endif; ?>
+                            <?php if($pedido->status === 'Finalizado' ):?>
                             <div class="tab-pane <?= $tab_current === 'laudo' ? 'active' :  ''; ?>" id="laudo" role="tabpanel">
                                 <?php echo $this->element('admin/pedido/laudo');?>
                             </div>
+                            <?php endif; ?>
                         </div>
 
                     </div>

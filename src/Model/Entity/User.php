@@ -33,6 +33,8 @@ class User extends Entity
         'nome_completo' => true,
         'email' => true,
         'senha' => true,
+        'cpf' => true,
+        'telefone' => true,
         'user_type_id' => true,
         'cliente_id' => true,
         'created' => true,

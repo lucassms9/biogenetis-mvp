@@ -3,6 +3,12 @@
         <button style="background-color: #31b1fb;border-color: #31b1fb;" onclick="printerPage();" type="button" class="btn btn-secondary">
             <i style="margin-right: 5px;" class="mdi mdi-printer"></i>Imprimir
         </button>
+       <?php if($pedido->status === 'Finalizado'):?>
+        <button id="btn-send" style="background-color: #31b1fb;border-color: #31b1fb;" onclick="sendEmail();" type="button" class="btn btn-secondary">
+            <i style="margin-right: 5px;" class="mdi mdi-mail"></i>
+            <span id="btn-txt">Enviar por e-mail</span>
+        </button>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -12,7 +18,7 @@
         <div class="col-md-12">
             <div class="">
                 <?php if(!empty($header_laudo)):?>
-                <img width="100%" src="<?= $this->Url->build('/', true); ?><?= @$header_laudo; ?>">
+                    <img width="100%" src="<?= $header_laudo; ?>">
                 <?php endif; ?>
             </div>
         </div>
@@ -121,7 +127,7 @@
         <div class="row">
             <div class="col-md-12">
                 <?php if(!empty($footer_laudo)):?>
-                    <img width="100%" src="<?= $this->Url->build('/', true); ?><?= @$footer_laudo; ?>">
+                    <img width="100%" src="<?= $footer_laudo; ?>">
                 <?php endif; ?>
             </div>
         </div>

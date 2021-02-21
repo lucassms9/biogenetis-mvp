@@ -85,12 +85,6 @@ class PedidosController extends RestController
                 ];
 
                 $this->Email->sendEmail($dadosEmail);
-
-                $job->completed = 2;
-
-                $laudoJobs = $this->LaudoJobs->get($job->id);
-                $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, ['completed' => 2]);
-                $laudoJobs = $this->LaudoJobs->save($laudoJobs);
             }
         }
         $this->set(compact('result'));

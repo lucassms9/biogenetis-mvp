@@ -7,6 +7,7 @@
 /webroot/amostras/*
 /webroot/clientes_imgs/*
 /webroot/certificados/*
+/webroot/laudo_pdf/*
 
 # OS generated files #
 ######################

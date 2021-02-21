@@ -290,7 +290,7 @@ class PedidosController extends AppController
         $footer_laudo = @$cliente->img_footer_url;
         $header_laudo = @$cliente->img_header_url;
 
-
+        $this->laudoWeb($pedido->id, 1);
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'header_laudo', 'footer_laudo'));
     }
 
@@ -360,8 +360,6 @@ class PedidosController extends AppController
         // Render the HTML as PDF
         $dompdf->render();
 
-        // $dompdf->stream("dompdf_out.pdf",['Attachment' => (bool)$file]);
-
         if($file == 1){
             $output = $dompdf->output();
             $name_pdf = LAUDO_PDF . $pedido->id . $pedido->anamnese->paciente->id .  'laudo.pdf';
@@ -371,16 +369,23 @@ class PedidosController extends AppController
             $data_save = [
                 'completed' => 1,
                 'file' => $name_pdf,
+                'pedido_id' => $pedido->id
             ];
             $laudoJobs = $this->LaudoJobs->find('all',[
-                'conditions' => ['pedido_id' => $pedido->id, 'completed' => 0]
+                'conditions' => ['pedido_id' => $pedido->id]
             ])->first();
 
             if(!empty($laudoJobs)){
                 $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
                 $laudoJobs = $this->LaudoJobs->save($laudoJobs);
+            }else{
+                $laudoJobs = $this->LaudoJobs->newEntity();
+                $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
+                $laudoJobs = $this->LaudoJobs->save($laudoJobs);
             }
             return true;
+        }else{
+            $dompdf->stream("dompdf_out.pdf",['Attachment' => false]);
         }
     }
 
@@ -394,8 +399,8 @@ class PedidosController extends AppController
                 $this->laudoWeb($job->pedido_id, 1);
             }
         }
-
-       exit('finish');
+        echo json_encode(['success' => 1]);
+       exit();
     }
 
     public function showpedido($id, $tab_current = 'paciente')
@@ -406,7 +411,7 @@ class PedidosController extends AppController
         $conditions = [];
 
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users', 'PedidoCroqui'],
+            'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users', 'PedidoCroqui','LaudoJobs'],
         ]);
 
         $paciente = $pedido->anamnese->paciente;
@@ -479,9 +484,8 @@ class PedidosController extends AppController
             $tab_current = 'etiqueta';
         }
 
-
-
         $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));
+
     }
 
     public function getCities($uf)

@@ -96,6 +96,7 @@ $cakeDescription = 'Biogenetics';
 
     <script>
         var BASE_URL_ADMIN = '<?=$this->Url->build('/admin', true)?>/';
+        var BASE_URL_API = '<?=$this->Url->build('/api', true)?>/';
     </script>
 
 </head>

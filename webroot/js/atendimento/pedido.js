@@ -116,6 +116,34 @@ function printDiv() {
     document.body.innerHTML = originalContents;
 }
 
+function sendEmail() {
+    $('#btn-txt').text('enviado...')
+    $('#btn-send').prop('disabled',true)
+   try {
+    $.ajax({
+        url: BASE_URL_ADMIN + "pedidos/generateFile/",
+        type: "GET",
+        dataType: "json",
+    }).done(function (data) {
+        $.ajax({
+            url: BASE_URL_API + "pedidos/dispatchEmails/",
+            type: "GET",
+            dataType: "json",
+        }).done(function (data2) {
+            $('#btn-txt').text('Enviar por e-mail');
+            $('#btn-send').prop('disabled',false)
+            alertify.success('Laudo enviado com sucesso.');
+        });
+
+    });
+   } catch (error) {
+    $('#btn-txt').text('Enviar por e-mail');
+    $('#btn-send').prop('disabled',false)
+    alertify.success('Erro ao tentar enviar o laudo por e-mail, tente novamente.');
+   }
+
+}
+
 function printerPage() {
     var printContents = document.getElementById("printer-laudo").innerHTML;
     var originalContents = document.body.innerHTML;

@@ -68,6 +68,9 @@ class PedidosTable extends Table
         $this->hasOne('Exames', [
             'foreignKey' => 'pedido_id',
         ]);
+        $this->hasOne('LaudoJobs', [
+            'foreignKey' => 'pedido_id',
+        ]);
     }
 
     /**

@@ -34,6 +34,7 @@ class AmostrasController extends AppController
         $this->loadModel('Clientes');
         $this->loadModel('ExtratoSaldo');
         $this->loadModel('Pedidos');
+        $this->loadModel('LaudoJobs');
         $this->loadModel('EncadeamentoResultados');
         $this->loadComponent('Email');
         $this->loadComponent('Helpers');
@@ -586,18 +587,30 @@ class AmostrasController extends AppController
 
                 if (!empty($exame_find->pedido_id)) {
                     $pedido = $this->Pedidos->get($exame_find->pedido_id, [
-                        'contain' => ['Anamneses']
+                        'contain' => ['Anamneses.Pacientes']
                     ]);
                     $pedido->status = 'Finalizado';
                     $this->Pedidos->save($pedido);
 
-                    $push = [
-                        'paciente_id' => $pedido->anamnese->paciente_id,
-                        'title' => 'Você tem exame concluído!',
-                        'body' => 'Verifique o resultado do seu exame!'
+                    if(!empty($pedido->anamnese->paciente->token_push)){
+                        $push = [
+                            'paciente_id' => $pedido->anamnese->paciente_id,
+                            'title' => 'Você tem exame concluído!',
+                            'body' => 'Verifique o resultado do seu exame!'
+                        ];
+                        $this->PushNotification->send($push);
+                    }
+
+                    $data_save = [
+                        'completed' => 0,
+                        'file' => '',
+                        'pedido_id' => $pedido->id
                     ];
-                    $this->PushNotification->send($push);
+                    $laudoJobs = $this->LaudoJobs->newEntity();
+                    $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
+                    $laudoJobs = $this->LaudoJobs->save($laudoJobs);
                 }
+
                 $exame_find->result = 1;
                 $this->Exames->save($exame_find);
 

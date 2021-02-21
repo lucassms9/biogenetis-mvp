@@ -8,6 +8,14 @@
 
 <div class="page-content-wrapper">
     <div style="top: 20px;position: relative;" class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+        <?= $this->Html->link(__('Gerar PDFs Pendentes'), ['controller' => 'pedidos', 'action' => 'generateFile'], ['target'=>'_blank','escape' => false]) ?>
+
+        <a href="/api/pedidos/dispatch-emails" target="_blank"> | Enviar PDFs Pendentes</a>
+
+        </div>
+    </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">

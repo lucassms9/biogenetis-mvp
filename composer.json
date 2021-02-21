@@ -12,6 +12,7 @@
         "cakephp/cakephp": "3.8.*",
         "cakephp/migrations": "^2.0.0",
         "cakephp/plugin-installer": "^1.0",
+        "dompdf/dompdf": "^1.0",
         "mobiledetect/mobiledetectlib": "2.*",
         "sprintcube/cakephp-rest": "^1.0"
     },

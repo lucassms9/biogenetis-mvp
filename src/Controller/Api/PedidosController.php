@@ -7,7 +7,7 @@ use Cake\Http\Client;
 use Exception;
 use Firebase\JWT\JWT;
 use Cake\Routing\Router;
-
+use App\Model\Entity\Paciente;
 
 /**
  * Foo Controller
@@ -26,6 +26,8 @@ class PedidosController extends RestController
         $this->loadComponent('PacientesData');
         $this->loadComponent('ExamesData');
         $this->loadComponent('Email');
+        $this->loadModel('LaudoJobs');
+        $this->loadComponent('Email');
 
         $this->body = $this->Request->getBody();
         $this->API_ROOT = env('USER_ENDPOINT');
@@ -34,12 +36,67 @@ class PedidosController extends RestController
 
         $authorization = $this->request->getHeaderLine('Authorization');
         $authorization = explode(' ', $authorization);
-        $token = $authorization[1];
-        $config = include ROOT . DS . 'config' . DS . 'rest.php';
-        $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
 
-        $this->payload = $payload;
+        if(!empty($authorization[0])){
+            $token = $authorization[1];
+            $config = include ROOT . DS . 'config' . DS . 'rest.php';
+            $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
+            $this->payload = $payload;
+        }
+
     }
+
+    public function dispatchEmails()
+    {
+        $jobs = $this->LaudoJobs->find('all',[
+            'conditions' => ['completed' => 1]
+        ])->toList();
+
+        if(!empty($jobs)){
+            foreach($jobs as $job){
+                $pedido = $this->Pedidos->get($job->pedido_id, [
+                    'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+                ]);
+
+                //buscando o paciente
+                $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+
+                $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+
+                $res = json_decode($resPaciente, true);
+
+                $pedido->anamnese->paciente = new Paciente($res);
+                $nome_arquivo = $job->file;
+                $dadosEmail = array();
+                $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
+                $dadosEmail['to'] = $pedido->anamnese->paciente->email;
+                $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
+                $dadosEmail['subject'] = 'Laudo';
+
+                $dadosEmail['message'] = 'segue em anexo o laudo do seu exame';
+
+                $nome_handle = explode('/', trim($nome_arquivo));
+
+                $dadosEmail['attachments'] = [
+                    $nome_handle['7'] => [
+                        'file' => $nome_arquivo,
+
+                    ]
+                ];
+
+                $this->Email->sendEmail($dadosEmail);
+
+                $job->completed = 2;
+
+                $laudoJobs = $this->LaudoJobs->get($job->id);
+                $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, ['completed' => 2]);
+                $laudoJobs = $this->LaudoJobs->save($laudoJobs);
+            }
+        }
+        $this->set(compact('result'));
+
+    }
+
 
     public function index()
     {

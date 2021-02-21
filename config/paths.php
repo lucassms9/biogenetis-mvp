@@ -57,6 +57,7 @@ define('CONFIG', ROOT . DS . 'config' . DS);
 define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 
 define('CLIENTES_IMGS', ROOT . DS . 'webroot' . DS . 'clientes_imgs' . DS);
+define('LAUDO_PDF', ROOT . DS . 'webroot' . DS . 'laudo_pdf' . DS);
 define('CERTIFICADOS', ROOT . DS . 'webroot' . DS . 'certificados' . DS);
 define('AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras' . DS);
 define('XLS_AMOSTRAS', ROOT . DS . 'webroot' . DS . 'amostras_excel' . DS);

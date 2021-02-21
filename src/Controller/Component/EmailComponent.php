@@ -9,22 +9,20 @@ use Cake\Core\Configure;
 
 class EmailComponent extends Component
 {
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+
+
+        $this->API_ROOT = env('EXAME_ENDPOINT');
+    }
+
     public function sendEmail($dados)
     {
         try {
-             
-            $host = Configure::read('EmailSend.smtp_host');
-            $port = Configure::read('EmailSend.smtp_port');
-            $usern = Configure::read('EmailSend.smtp_user');
-            $password = Configure::read('EmailSend.smtp_password');
 
-             TransportFactory::setConfig('covid_express', [
-              'host' => $host,
-              'port' => $port,
-              'username' => $usern,
-              'password' => $password,
-              'className' => 'Smtp'
-            ]);
+
 
             // TransportFactory::setConfig('mailtrap', [
             //   'host' => $host,
@@ -34,15 +32,28 @@ class EmailComponent extends Component
             //   'className' => 'Smtp'
             // ]);
 
+            $host = Configure::read('EmailSend.smtp_host');
+            $port = Configure::read('EmailSend.smtp_port');
+            $usern = Configure::read('EmailSend.smtp_user');
+            $password = Configure::read('EmailSend.smtp_password');
+            TransportFactory::drop('covid_express');
+            TransportFactory::setConfig('covid_express', [
+              'host' => $host,
+              'port' => $port,
+              'username' => $usern,
+              'password' => $password,
+              'className' => 'Smtp'
+            ]);
+
             $email = new Email();
             $email->setTransport('covid_express');
             $email->setFrom($dados['from']);
             $email->setTo($dados['to']);
-             
+
             if(isset($dados['replyTo']) && $dados['replyTo'] != ''){
                 $email->replyTo($dados['replyTo']);
             }
-                
+
             if(isset($dados['cc']) && $dados['cc'] != ''){
                 $email->cc($dados['cc']);
             }
@@ -51,22 +62,21 @@ class EmailComponent extends Component
                 $email->emailFormat('html');
             }
 
-
             if(isset($dados['attachments']) && $dados['attachments']){
                 $email->setAttachments($dados['attachments']);
             }
 
-            $email->setSubject($dados['subject']); 
+            $email->setSubject($dados['subject']);
             $email->send($dados['message']);
 
-            if($email){ 
+            if($email){
                 return true;
             }else{
                 return false;
             }
-        } catch (Exception $e) { 
+        } catch (Exception $e) {
         }
     }
-    
-    
+
+
 }

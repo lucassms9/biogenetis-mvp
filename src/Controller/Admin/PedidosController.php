@@ -7,6 +7,8 @@ use App\Component\PacientesDataComponent;
 use App\Model\Entity\Paciente;
 use App\Component\ExamesDataComponent;
 use Exception;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 /**
  * Pedidos Controller
@@ -20,7 +22,7 @@ class PedidosController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['laudoWeb']);
+        $this->Auth->allow(['laudoWeb','generateFile']);
         $this->sexos = [
             'M' => 'M',
             'F' => 'F'
@@ -38,11 +40,13 @@ class PedidosController extends AppController
         $this->loadModel('Anamneses');
         $this->loadModel('Clientes');
         $this->loadModel('Vouchers');
+        $this->loadModel('LaudoJobs');
         $this->loadModel('ExtratoSaldo');
         $this->loadModel('EntradaExames');
         $this->loadModel('Croquis');
         $this->loadModel('PedidoCroqui');
         $this->loadComponent('ExamesData');
+        $this->loadComponent('Email');
 
 
     }
@@ -184,11 +188,11 @@ class PedidosController extends AppController
         if (!empty($query['status'])) {
             $conditions['Pedidos.status'] = $query['status'];
         }
-        
+
 
         if (!empty($query['numero_pedido'])) {
             $conditions['Pedidos.codigo_pedido in'] = $query['numero_pedido'];
-            
+
         }
 
 
@@ -199,7 +203,7 @@ class PedidosController extends AppController
         ]);
 
         $arr = array('hashs' => []);
-        
+
         if (!empty($query['cpf']) || !empty($query['nome_paciente'])  ) {
                     $cpf = '';
                     $nome_paciente = '';
@@ -240,7 +244,7 @@ class PedidosController extends AppController
                 if(isset($pedido->anamnese->paciente)){
                     array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
                 }
-                       
+
             }else{
 
             }
@@ -286,10 +290,12 @@ class PedidosController extends AppController
         $footer_laudo = @$cliente->img_footer_url;
         $header_laudo = @$cliente->img_header_url;
 
+
         $this->set(compact('action', 'title', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'header_laudo', 'footer_laudo'));
     }
 
-    public function laudoWeb($id)
+
+    public function laudoWeb($id, $file = 0)
     {
         $pedido = $this->Pedidos->get($id, [
             'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
@@ -297,7 +303,6 @@ class PedidosController extends AppController
 
         //buscando o paciente
         $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-
 
         $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
 
@@ -312,8 +317,85 @@ class PedidosController extends AppController
         $footer_laudo = @$cliente->img_footer_url;
         $header_laudo = @$cliente->img_header_url;
 
+        // $this->render(false);
+
         $this->viewBuilder()->setLayout('laudo');
-        $this->set(compact('pedido', 'footer_laudo', 'header_laudo'));
+
+        $path_absolute = WWW_ROOT;
+
+        $path = WWW_ROOT.$pedido->exame->user->foto_assinatura_digital;
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base6_assinatura = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+        if(!empty($footer_laudo)){
+            $path = WWW_ROOT.$footer_laudo;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $footer_laudo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+
+        if(!empty($header_laudo)){
+            $path = WWW_ROOT.$header_laudo;
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $header_laudo = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        }
+
+        $this->set(compact('pedido', 'footer_laudo', 'header_laudo','base6_assinatura'));
+        // render to a variable
+        $output = $this->render();
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf();
+
+        $options = $dompdf->getOptions();
+        $options->setDefaultFont('Courier');
+        $dompdf->setBasePath(realpath(WWW_ROOT . 'css'));
+        $dompdf->setOptions($options);
+
+        $dompdf->loadHtml($output);
+        // $dompdf-> set_base_path(APPLICATION_PATH."/../public/themes/css/");
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // $dompdf->stream("dompdf_out.pdf",['Attachment' => (bool)$file]);
+
+        if($file == 1){
+            $output = $dompdf->output();
+            $name_pdf = LAUDO_PDF . $pedido->id . $pedido->anamnese->paciente->id .  'laudo.pdf';
+
+            file_put_contents($name_pdf, $output);
+
+            $data_save = [
+                'completed' => 1,
+                'file' => $name_pdf,
+            ];
+            $laudoJobs = $this->LaudoJobs->find('all',[
+                'conditions' => ['pedido_id' => $pedido->id, 'completed' => 0]
+            ])->first();
+
+            if(!empty($laudoJobs)){
+                $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
+                $laudoJobs = $this->LaudoJobs->save($laudoJobs);
+            }
+            return true;
+        }
+    }
+
+    public function generateFile(){
+        $jobs = $this->LaudoJobs->find('all',[
+            'conditions' => ['completed' => 0]
+        ])->toList();
+
+        if(!empty($jobs)){
+            foreach($jobs as $job){
+                $this->laudoWeb($job->pedido_id, 1);
+            }
+        }
+
+       exit('finish');
     }
 
     public function showpedido($id, $tab_current = 'paciente')
@@ -360,7 +442,7 @@ class PedidosController extends AppController
             $exames_tipos = $this->EntradaExames->find('list',['conditions' => ['id' =>  $pedido->entrada_exame_id ]]);
         }else{
             $exames_tipos = $this->EntradaExames->find('list');
-        }      
+        }
         $useForm = true;
         $croqui = null;
         $croqui_tipos = $this->Croquis->find('list');
@@ -397,7 +479,7 @@ class PedidosController extends AppController
             $tab_current = 'etiqueta';
         }
 
-       
+
 
         $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));
     }

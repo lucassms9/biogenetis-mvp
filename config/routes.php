@@ -34,6 +34,7 @@ Router::prefix('admin', function ($routes) {
 Router::prefix('api', ['isRest' => true], function (RouteBuilder $routes) {
 
     $routes->connect('/pedidos', ['controller' => 'Pedidos', 'action' => 'index', 'isRest' => true, 'requireAuthorization' => true]);
+    $routes->connect('/pedidos/jobs', ['controller' => 'Pedidos', 'action' => 'dispatchEmails', 'isRest' => true, 'requireAuthorization' => true]);
 
     $routes->connect('/clientes', ['controller' => 'Clientes', 'action' => 'index', 'isRest' => true, 'requireAuthorization' => true]);
 

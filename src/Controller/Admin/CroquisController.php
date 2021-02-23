@@ -30,6 +30,7 @@ class CroquisController extends AppController
 
         $this->loadModel('Pedidos');
         $this->loadModel('PedidoCroqui');
+        $this->loadModel('TrackingPedidos');
         $this->loadModel('PedidoCroquiValores');
         $this->loadComponent('PacientesData');
     }
@@ -74,7 +75,7 @@ class CroquisController extends AppController
     {
         $action = 'Gerador';
         $title = 'Croquis';
-        
+
         $query = $this->request->getQuery();
 
         $croqui_tipos = $this->Croquis->find('list');
@@ -118,15 +119,15 @@ class CroquisController extends AppController
             if(!empty($query['nome_paciente']) ){
                 $nome_paciente = $query['nome_paciente'];
             }
-            
+
             $arr = array('hashs' => []);
-        
+
             foreach ($pre_query  as $key => $pedido) {
                 if(isset($pedido->anamnese)){
                     array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
                 }
             }
-            
+
             $body = json_encode($arr);
             try{
                 $pacientes_data = json_decode($this->PacientesData->getByCpfOrNameCroqui($body,$cpf,$nome_paciente), true);
@@ -136,9 +137,9 @@ class CroquisController extends AppController
                     array_push( $arr_user_hashs, $usersfound['hash']);
                 }
             }catch(Exception $e){
-                
+
             }
-           
+
             if(sizeof($arr_user_hashs) > 0){
                 $conditions['Pacientes.hash in'] = $arr_user_hashs;
             }else{
@@ -233,6 +234,15 @@ class CroquisController extends AppController
                     $pedido_croqui_val = $this->PedidoCroquiValores->save($pedido_croqui_val);
                 }
 
+
+                $log = [
+                    'codigo_pedido' => $pedido->codigo_pedido,
+                    'user_id' => $this->Auth->user('id'),
+                    'status_anterior' =>  $pedido->status,
+                    'status_atual' => 'EmDiagnostico',
+                ];
+                $this->TrackingPedidos->createLog($log);
+
                 $getPedido->status = 'EmDiagnostico';
                 $getPedido = $this->Pedidos->save($getPedido);
             }
@@ -276,7 +286,11 @@ class CroquisController extends AppController
 
         $croqui = $this->Croquis->newEntity();
         if ($this->request->is('post')) {
-            $croqui = $this->Croquis->patchEntity($croqui, $this->request->getData());
+
+            $req = $this->request->getData();
+            $req['created_by'] = $this->Auth->user('id');
+            $req['created_cliente_by'] = $this->Auth->user('cliente_id');
+            $croqui = $this->Croquis->patchEntity($croqui, $req);
             if ($this->Croquis->save($croqui)) {
                 $this->Flash->success(__('The croqui has been saved.'));
 

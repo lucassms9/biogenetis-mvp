@@ -32,6 +32,7 @@ class PacientesController extends AppController
         $this->loadComponent('GeoNames');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
+        $this->loadModel('TrackingPedidos');
         $this->API_ROOT = env('USER_ENDPOINT');
     }
 
@@ -193,10 +194,16 @@ class PacientesController extends AppController
                             $pedido = $this->Pedidos->newEntity();
                             $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
 
-
                             // $pedido = $pedido->getErrors();
                             $pedido = $this->Pedidos->save($pedido);
 
+                            $log = [
+                                'codigo_pedido' => $pedido->codigo_pedido,
+                                'user_id' => $this->Auth->user('id'),
+                                'status_anterior' =>  '',
+                                'status_atual' => 'EmAtendimento',
+                            ];
+                            $this->TrackingPedidos->createLog($log);
 
                             if (!$pedido) {
                                 $save_ok = false;
@@ -326,7 +333,7 @@ class PacientesController extends AppController
         die;
     }
 
-    
+
     public function getCpf($cpf)
     {
         $cpf_check = $this->PacientesData->getCheckCPF($cpf);

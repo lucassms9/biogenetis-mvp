@@ -6,7 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Event\Event;
 /**
  * Croquis Model
  *
@@ -80,4 +80,14 @@ class CroquisTable extends Table
 
         return $validator;
     }
+
+    public function beforeFind(Event $event, Query $query, $options, $primary)
+    {
+        if (isset($_SESSION['Auth']['User']['user_type_id']) && $_SESSION['Auth']['User']['user_type_id'] !== 1) {
+
+            $query->where(['Croquis.created_cliente_by' => $_SESSION['Auth']['User']['cliente_id']]);
+        }
+        return $query;
+    }
+
 }

@@ -41,6 +41,7 @@ class AmostrasController extends AppController
         $this->loadComponent('PacientesData');
         $this->loadComponent('ExamesData');
         $this->loadComponent('PushNotification');
+        $this->loadModel('TrackingPedidos');
     }
 
     public function sendEmail()
@@ -588,8 +589,18 @@ class AmostrasController extends AppController
 
                 if (!empty($exame_find->pedido_id)) {
                     $pedido = $this->Pedidos->get($exame_find->pedido_id, [
-                        'contain' => ['Anamneses.Pacientes']
+                        'contain' => ['Anamneses.Pacientes','Exames']
                     ]);
+
+                    $log = [
+                        'codigo_pedido' => $pedido->codigo_pedido,
+                        'user_id' => $this->Auth->user('id'),
+                        'status_anterior' =>  $pedido->status,
+                        'status_atual' => 'Finalizado',
+                        'amostra_url' => $pedido->exame->file_name
+                    ];
+                    $this->TrackingPedidos->createLog($log);
+
                     $pedido->status = 'Finalizado';
                     $this->Pedidos->save($pedido);
 

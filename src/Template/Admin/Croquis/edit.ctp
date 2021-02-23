@@ -30,6 +30,15 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
+                                <?php echo $this->Form->control('linhas',['class' => 'form-control','label'=>'Quantidade de Linhas']);?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('colunas',['class' => 'form-control','label'=>'Quantidade de Colunas']);?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
                                 <?php echo $this->Form->control('foto_url',['class' => 'form-control', 'type' => 'file', 'label' => 'Foto Croquis']);?>
                             </div>
                         </div>

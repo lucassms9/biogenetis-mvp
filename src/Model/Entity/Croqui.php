@@ -36,5 +36,7 @@ class Croqui extends Entity
         'equipamentos' => true,
         'linhas' => true,
         'colunas' => true,
+        'created_cliente_by' => true,
+        'created_by' => true,
     ];
 }

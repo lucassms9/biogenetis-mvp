@@ -123,9 +123,19 @@ class PacientesController extends RestController
             'status' => 'EmAtendimento',
         ];
 
+
+
         $pedido = $this->Pedidos->newEntity();
         $pedido = $this->Pedidos->patchEntity($pedido, $dadaos_pedido);
         $pedido = $this->Pedidos->save($pedido);
+
+        $log = [
+            'codigo_pedido' => $pedido->codigo_pedido,
+            'user_id' => $this->Auth->user('id'),
+            'status_anterior' =>  '',
+            'status_atual' => 'EmAtendimento',
+        ];
+        $this->TrackingPedidos->createLog($log);
 
         if (empty($pedido)) {
             throw new Exception('Erro ao criar pedido');

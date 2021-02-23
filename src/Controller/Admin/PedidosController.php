@@ -47,7 +47,7 @@ class PedidosController extends AppController
         $this->loadModel('PedidoCroqui');
         $this->loadComponent('ExamesData');
         $this->loadComponent('Email');
-
+        $this->loadModel('TrackingPedidos');
 
     }
 
@@ -519,6 +519,14 @@ class PedidosController extends AppController
 
             //pagamento sem voucher
             if (!empty($req['formas_pagamento'])) {
+
+                $log = [
+                    'codigo_pedido' => $pedido->codigo_pedido,
+                    'user_id' => $this->Auth->user('id'),
+                    'status_anterior' =>  $pedido->status,
+                    'status_atual' => 'EmTriagem',
+                ];
+                $this->TrackingPedidos->createLog($log);
 
                 $pedido->forma_pagamento = $req['formas_pagamento'];
                 $pedido->entrada_exame_id = $req['entrada_exame_id'];

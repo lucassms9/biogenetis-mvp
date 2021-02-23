@@ -115,7 +115,7 @@
                                             <a href="<?= $this->Url->build('/admin', true); ?>/origens" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Endpoints
                                             </a>
-                                            <a href="<?= $this->Url->build('/admin', true); ?>/trackingpedidos" class="dropdown-item">
+                                            <a href="<?= $this->Url->build('/admin', true); ?>/tracking-pedidos" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Rastreabilidade
                                             </a>
                                         <?php endif; ?>

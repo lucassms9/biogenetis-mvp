@@ -345,12 +345,22 @@ class CroquisController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $croqui = $this->Croquis->get($id);
-        if ($this->Croquis->delete($croqui)) {
-            $this->Flash->success(__('The croqui has been deleted.'));
-        } else {
-            $this->Flash->error(__('The croqui could not be deleted. Please, try again.'));
+
+        $check = $this->PedidoCroqui->find('all',[
+            'conditions' => ['croqui_tipo_id' => $id]
+        ])->first();
+
+        if(!empty($check)){
+            $this->Flash->error(__('Esse Croqui já está sendo utilizado.'));
+        }else{
+            $croqui = $this->Croquis->get($id);
+            if ($this->Croquis->delete($croqui)) {
+                $this->Flash->success(__('The croqui has been deleted.'));
+            } else {
+                $this->Flash->error(__('The croqui could not be deleted. Please, try again.'));
+            }
         }
+
 
         return $this->redirect(['action' => 'index']);
     }

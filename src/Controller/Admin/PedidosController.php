@@ -125,7 +125,10 @@ class PedidosController extends AppController
 
         $croquis_pedidos = $this->PedidoCroqui->find('all', [
             'contain' => ['Pedidos.Anamneses.Pacientes'],
-            'conditions' => ['PedidoCroqui.codigo_croqui' => $croqui->codigo_croqui]
+            'conditions' => [
+                'PedidoCroqui.codigo_croqui_sql' => $croqui->codigo_croqui,
+                // 'Pedidos.cliente_id' => $this->Auth->user('cliente_id')
+                ]
         ])->toArray();
 
         $arr = array('hashs' => []);
@@ -189,53 +192,25 @@ class PedidosController extends AppController
             $conditions['Pedidos.status'] = $query['status'];
         }
 
-
         if (!empty($query['numero_pedido'])) {
             $conditions['Pedidos.codigo_pedido in'] = $query['numero_pedido'];
-
         }
 
+        if (!empty($query['cpf']) || !empty($query['nome_paciente'])  ) {
+            $arr = array('hashs' => []);
+            $body = json_encode($arr);
 
+            $pacientes_data = json_decode($this->PacientesData->getByFilter($query['nome_paciente'],$query['cpf']), true);
+
+            if(!empty($pacientes_data['hash'])){
+                $conditions['Pacientes.hash in'] = $pacientes_data['hash'];
+            }
+        }
 
         $pedidos = $this->paginate($this->Pedidos, [
             'contain' => ['Anamneses.Pacientes'],
             'conditions' => $conditions
         ]);
-
-        $arr = array('hashs' => []);
-
-        if (!empty($query['cpf']) || !empty($query['nome_paciente'])  ) {
-                    $cpf = '';
-                    $nome_paciente = '';
-                    foreach ($pedidos  as $key => $pedido) {
-                        if(isset($pedido->anamnese)){
-                            array_push($arr['hashs'], $pedido->anamnese->paciente->hash);
-                        }
-                    }
-                    if(!empty($query['cpf']) ){
-                        $cpf = $query['cpf'];
-                    }
-                    if(!empty($query['nome_paciente']) ){
-                        $nome_paciente = $query['nome_paciente'];
-                    }
-                    $body = json_encode($arr);
-                    $pacientes_data = json_decode($this->PacientesData->getByCpfOrNameCroqui($body,$cpf,$nome_paciente), true);
-
-
-                    $pedidos_list = [];
-
-                    foreach ($pedidos as $key => $pedido) {
-                        $finded =  array_filter($pacientes_data, function ($paciente) use ($pedido) {
-                            return $paciente['hash'] == $pedido->anamnese->paciente->hash;
-                        });
-                        $handle = @$finded[0] ?? [];
-                        $paciente = new Paciente($handle);
-
-                        $pedido->anamnese->paciente = $paciente;
-                    }
-
-        }
-
 
         $arr = array('hashs' => []);
 

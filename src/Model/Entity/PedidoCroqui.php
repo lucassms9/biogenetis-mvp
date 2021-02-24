@@ -35,6 +35,7 @@ class PedidoCroqui extends Entity
         'croqui_tipo' => true,
         'pedido' => true,
         'codigo_croqui' => true,
+        'codigo_croqui_sql' => true,
         'pedido_croqui_valores' => true,
     ];
 }

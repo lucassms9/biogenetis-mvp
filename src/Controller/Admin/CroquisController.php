@@ -147,20 +147,21 @@ class CroquisController extends AppController
             }
         }
 
-
-
         $pedidos_triagem = $this->Pedidos->find('all', [
             'contain' => ['Anamneses.Pacientes'],
             'conditions' => $conditions
         ])->toList();
+
         $arr = array('hashs' => []);
         foreach ($pedidos_triagem as $key => $pedido){
             array_push($arr['hashs'],  $pedido->anamnese->paciente->hash);
         }
 
+
         $body = json_encode($arr);
         if(sizeof($arr['hashs']) > 0){
             $pacientes_data = json_decode($this->PacientesData->getPacientes($body), true);
+
 
             for($i = 0; $i < sizeof($pedidos_triagem );$i++){
                 for($z = 0; $z < sizeof($pacientes_data);$z++){
@@ -195,10 +196,19 @@ class CroquisController extends AppController
                 'group' => ['PedidoCroqui.pedido_id']
             ])->first();
 
+            $lastItemSql = $this->PedidoCroqui->find('all',[
+                'order' => ['PedidoCroqui.codigo_croqui' => 'DESC'],
+                'contain' => ['Pedidos'],
+                'conditions' => ['Pedidos.cliente_id' => $this->Auth->user('cliente_id')],
+                'group' => ['PedidoCroqui.pedido_id']
+            ])->first();
+
             $codigo_croqui = 1;
+            $codigo_croqui_sql = 1;
 
             if(!empty($lastItem)){
                 $codigo_croqui = $lastItem->codigo_croqui + 1;
+                $codigo_croqui_sql = $lastItemSql->codigo_croqui + 1;
             }
 
             foreach ($croqui_dados as $key => $croqui_dado) {
@@ -220,7 +230,9 @@ class CroquisController extends AppController
                 $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
                     'croqui_tipo_id' => $req['croqui_tipo_id'],
                     'pedido_id' => $getPedido->id,
-                    'codigo_croqui' => $codigo_croqui
+                    'codigo_croqui' => $codigo_croqui,
+                    'codigo_croqui_sql' => $codigo_croqui_sql,
+
                 ]);
                 $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
 

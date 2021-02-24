@@ -168,7 +168,6 @@ class CroquisController extends AppController
                     if($pacientes_data[$z]['hash'] == $pedidos_triagem[$i]->anamnese->paciente->hash){
                         $pedidos_triagem[$i]->anamnese->paciente->nome = $pacientes_data[$z]['nome'];
                         $pedidos_triagem[$i]->anamnese->paciente->cpf = $pacientes_data[$z]['cpf'];
-                        array_splice($pacientes_data,$z,1);
                         break 1;
                     }
 

@@ -126,12 +126,13 @@ class PedidosController extends AppController
         $croquis_pedidos = $this->PedidoCroqui->find('all', [
             'contain' => ['Pedidos.Anamneses.Pacientes'],
             'conditions' => [
-                'PedidoCroqui.codigo_croqui_sql' => $croqui->codigo_croqui,
+                'PedidoCroqui.codigo_croqui_sql' => $croqui->codigo_croqui_sql,
                 // 'Pedidos.cliente_id' => $this->Auth->user('cliente_id')
                 ]
         ])->toArray();
 
         $arr = array('hashs' => []);
+
 
         foreach ($croquis_pedidos as $croquis_pedido) {
             array_push($arr['hashs'], $croquis_pedido->pedido->anamnese->paciente->hash);

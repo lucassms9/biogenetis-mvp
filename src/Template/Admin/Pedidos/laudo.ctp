@@ -4,4 +4,7 @@
     </div>
 </div>
 
+<script>
+ var pedido_id = "<?= $pedido->id; ?>"
+</script>
 <script type="text/javascript" src="<?= $this->Url->build('/', true) ?>js/atendimento/pedido.js"></script>

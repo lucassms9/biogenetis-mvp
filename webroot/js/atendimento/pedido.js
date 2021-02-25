@@ -121,12 +121,12 @@ function sendEmail() {
     $('#btn-send').prop('disabled',true)
    try {
     $.ajax({
-        url: BASE_URL_ADMIN + "pedidos/generateFile/",
+        url: BASE_URL_ADMIN + "pedidos/generateFile/"+pedido_id,
         type: "GET",
         dataType: "json",
     }).done(function (data) {
         $.ajax({
-            url: BASE_URL_API + "pedidos/dispatchEmails/",
+            url: BASE_URL_API + "pedidos/dispatchEmails/"+pedido_id,
             type: "GET",
             dataType: "json",
         }).done(function (data2) {

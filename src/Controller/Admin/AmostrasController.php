@@ -174,18 +174,18 @@ class AmostrasController extends AppController
                 'Exames.resultado <>' => 'null'
             ];
 
-            if (!empty($this->request->getQuery('lote'))) {
-                $conditions['Amostras.lote'] = $this->request->getQuery('lote');
+            if (!empty($this->request->getData('lote'))) {
+                $conditions['Amostras.lote'] = $this->request->getData('lote');
             }
 
-            if (!empty($this->request->getQuery('data_init'))) {
-                $data_de = $this->request->getQuery('data_init');
+            if (!empty($this->request->getData('data_init'))) {
+                $data_de = $this->request->getData('data_init');
                 $conditions['cast(Amostras.created as date) >='] = $data_de;
             }
 
-            if (!empty($this->request->getQuery('data_fim'))) {
-                $data_ate = $this->request->getQuery('data_fim');
-                $conditions['cast(Amostras.created as date) >='] = $data_ate;
+            if (!empty($this->request->getData('data_fim'))) {
+                $data_ate = $this->request->getData('data_fim');
+                $conditions['cast(Amostras.created as date) <='] = $data_ate;
             }
 
 
@@ -194,7 +194,10 @@ class AmostrasController extends AppController
                 'conditions' => $conditions,
                 'order' => ['EncadeamentoResultados.id' => 'ASC']
             ])->toList();
+
             $encadeamentos = $this->ExamesData->getEncadeamento($encadeamentos);
+
+
             $qtd_colunas = 11;
 
             $nome_colunas = [
@@ -224,6 +227,7 @@ class AmostrasController extends AppController
 
 
                 if (!empty($encadeamentoObj->encadeamento->origen)) {
+
 
                     $url_request = $encadeamentoObj->encadeamento->origen->url_request;
                     $equip_tipo =  $encadeamentoObj->encadeamento->origen->equip_tipo;
@@ -343,7 +347,6 @@ class AmostrasController extends AppController
                 $data_ate = $this->request->getData('data_fim');
                 $conditions['cast(Amostras.created as date) <='] = $data_ate;
             }
-
 
             $amostras = $this->ExameOrigens->find('all', [
                 'contain' => ['Origens', 'Exames.Users', 'Exames.Amostras', 'Exames.Origens'],

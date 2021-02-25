@@ -37,58 +37,55 @@ class PedidosController extends RestController
         $authorization = $this->request->getHeaderLine('Authorization');
         $authorization = explode(' ', $authorization);
 
-        if(!empty($authorization[0])){
+        if (!empty($authorization[0])) {
             $token = $authorization[1];
             $config = include ROOT . DS . 'config' . DS . 'rest.php';
             $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
             $this->payload = $payload;
         }
-
     }
 
-    public function dispatchEmails()
+    public function dispatchEmails($pedido_id)
     {
-        $jobs = $this->LaudoJobs->find('all',[
-            'conditions' => ['completed' => 1]
-        ])->toList();
+        $job = $this->LaudoJobs->find('all', [
+            'conditions' => ['pedido_id' => $pedido_id]
+        ])->first();
 
-        if(!empty($jobs)){
-            foreach($jobs as $job){
-                $pedido = $this->Pedidos->get($job->pedido_id, [
-                    'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
-                ]);
+        if (!empty($job)) {
+            $pedido = $this->Pedidos->get($job->pedido_id, [
+                'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+            ]);
 
-                //buscando o paciente
-                $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+            //buscando o paciente
+            $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
 
-                $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
 
-                $res = json_decode($resPaciente, true);
+            $res = json_decode($resPaciente, true);
 
-                $pedido->anamnese->paciente = new Paciente($res);
-                $nome_arquivo = $job->file;
-                $dadosEmail = array();
-                $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
-                $dadosEmail['to'] = $pedido->anamnese->paciente->email;
-                $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
-                $dadosEmail['subject'] = 'Laudo';
+            $pedido->anamnese->paciente = new Paciente($res);
 
-                $dadosEmail['message'] = 'segue em anexo o laudo do seu exame';
+            $nome_arquivo = $job->file;
+            $dadosEmail = array();
+            $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
+            $dadosEmail['to'] = $pedido->anamnese->paciente->email;
+            $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
+            $dadosEmail['subject'] = 'Laudo';
 
-                $nome_handle = explode('/', trim($nome_arquivo));
+            $dadosEmail['message'] = 'segue em anexo o laudo do seu exame';
 
-                $dadosEmail['attachments'] = [
-                    $nome_handle['7'] => [
-                        'file' => $nome_arquivo,
+            $nome_handle = explode('/', trim($nome_arquivo));
 
-                    ]
-                ];
+            $dadosEmail['attachments'] = [
+                $nome_handle['7'] => [
+                    'file' => $nome_arquivo,
 
-                $this->Email->sendEmail($dadosEmail);
-            }
+                ]
+            ];
+
+            $this->Email->sendEmail($dadosEmail);
         }
         $this->set(compact('result'));
-
     }
 
 

@@ -366,16 +366,34 @@ class PedidosController extends AppController
         }
     }
 
-    public function generateFile(){
-        $jobs = $this->LaudoJobs->find('all',[
-            'conditions' => ['completed' => 0]
-        ])->toList();
+    public function generateFile($pedido_id){
+        ini_set("memory_limit", -1);
+        ini_set('max_execution_time', 0);
+        set_time_limit(0);
+        $conditions = [
 
-        if(!empty($jobs)){
-            foreach($jobs as $job){
-                $this->laudoWeb($job->pedido_id, 1);
-            }
+        ];
+
+        if(!empty($pedido_id)){
+            $conditions['pedido_id'] = $pedido_id;
         }
+
+        $job = '';
+
+        $job = $this->LaudoJobs->find('all',[
+            'conditions' => $conditions
+        ])->first();
+
+        if(empty($job)){
+            $job = $this->LaudoJobs->newEntity();
+            $job = $this->LaudoJobs->patchEntity($job, [
+                'pedido_id' => $pedido_id,
+                'completed' => 0,
+            ]);
+            $job = $this->LaudoJobs->save($job);
+        }
+
+        $this->laudoWeb($job->pedido_id, 1);
         echo json_encode(['success' => 1]);
        exit();
     }

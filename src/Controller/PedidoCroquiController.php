@@ -20,7 +20,7 @@ class PedidoCroquiController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['CroquiTipos', 'Pedidos'],
+            'contain' => ['Croquis', 'Pedidos'],
         ];
         $pedidoCroqui = $this->paginate($this->PedidoCroqui);
 
@@ -37,7 +37,7 @@ class PedidoCroquiController extends AppController
     public function view($id = null)
     {
         $pedidoCroqui = $this->PedidoCroqui->get($id, [
-            'contain' => ['CroquiTipos', 'Pedidos', 'PedidoCroquiValores'],
+            'contain' => ['Croquis', 'Pedidos', 'PedidoCroquiValores'],
         ]);
 
         $this->set('pedidoCroqui', $pedidoCroqui);
@@ -60,7 +60,7 @@ class PedidoCroquiController extends AppController
             }
             $this->Flash->error(__('The pedido croqui could not be saved. Please, try again.'));
         }
-        $croquiTipos = $this->PedidoCroqui->CroquiTipos->find('list', ['limit' => 200]);
+        $croquiTipos = $this->PedidoCroqui->Croquis->find('list', ['limit' => 200]);
         $pedidos = $this->PedidoCroqui->Pedidos->find('list', ['limit' => 200]);
         $this->set(compact('pedidoCroqui', 'croquiTipos', 'pedidos'));
     }
@@ -86,7 +86,7 @@ class PedidoCroquiController extends AppController
             }
             $this->Flash->error(__('The pedido croqui could not be saved. Please, try again.'));
         }
-        $croquiTipos = $this->PedidoCroqui->CroquiTipos->find('list', ['limit' => 200]);
+        $croquiTipos = $this->PedidoCroqui->Croquis->find('list', ['limit' => 200]);
         $pedidos = $this->PedidoCroqui->Pedidos->find('list', ['limit' => 200]);
         $this->set(compact('pedidoCroqui', 'croquiTipos', 'pedidos'));
     }

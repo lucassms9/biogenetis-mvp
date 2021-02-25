@@ -78,7 +78,7 @@ class PedidoCroquiTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['croqui_tipo_id'], 'CroquiTipos'));
+        $rules->add($rules->existsIn(['croqui_tipo_id'], 'Croquis'));
         $rules->add($rules->existsIn(['pedido_id'], 'Pedidos'));
 
         return $rules;

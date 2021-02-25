@@ -89,7 +89,7 @@ class PedidosController extends AppController
     public function getCroquiPedido($id)
     {
         $croqui_pedido = $this->PedidoCroqui->get($id, [
-            'contain' => ['PedidoCroquiValores', 'CroquiTipos']
+            'contain' => ['PedidoCroquiValores', 'Croquis']
         ]);
 
         echo json_encode($croqui_pedido);
@@ -99,7 +99,7 @@ class PedidosController extends AppController
     public function getPedido($id)
     {
         $pedido = $this->Pedidos->get($id, [
-            'contain' => ['PedidoCroqui.PedidoCroquiValores', 'PedidoCroqui.CroquiTipos']
+            'contain' => ['PedidoCroqui.PedidoCroquiValores', 'PedidoCroqui.Croquis']
         ]);
 
         echo json_encode($pedido);

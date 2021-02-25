@@ -23,7 +23,7 @@ function getCroqui(){
 }
 
 function createTable(data) {
-    const croqui = data.croqui_tipo;
+    const croqui = data.croqui;
     const croquiValores =  data.pedido_croqui_valores;
 
     var theads = $('#theads');

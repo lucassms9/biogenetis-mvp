@@ -198,7 +198,6 @@ class CroquisController extends AppController
             $lastItemSql = $this->PedidoCroqui->find('all',[
                 'order' => ['PedidoCroqui.codigo_croqui' => 'DESC'],
                 'contain' => ['Pedidos'],
-                'conditions' => ['Pedidos.cliente_id' => $this->Auth->user('cliente_id')],
                 'group' => ['PedidoCroqui.pedido_id']
             ])->first();
 

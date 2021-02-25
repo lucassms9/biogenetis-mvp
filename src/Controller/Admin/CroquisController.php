@@ -196,9 +196,8 @@ class CroquisController extends AppController
             ])->first();
 
             $lastItemSql = $this->PedidoCroqui->find('all',[
-                'order' => ['PedidoCroqui.codigo_croqui' => 'DESC'],
+                'order' => ['PedidoCroqui.codigo_croqui_sql' => 'DESC'],
                 'contain' => ['Pedidos'],
-                'group' => ['PedidoCroqui.pedido_id']
             ])->first();
 
             $codigo_croqui = 1;
@@ -206,8 +205,13 @@ class CroquisController extends AppController
 
             if(!empty($lastItem)){
                 $codigo_croqui = $lastItem->codigo_croqui + 1;
-                $codigo_croqui_sql = $lastItemSql->codigo_croqui + 1;
+
             }
+            if(!empty($lastItemSql)){
+                $codigo_croqui_sql = $lastItemSql->codigo_croqui_sql + 1;
+
+            }
+
 
             foreach ($croqui_dados as $key => $croqui_dado) {
 

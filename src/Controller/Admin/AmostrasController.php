@@ -501,7 +501,7 @@ class AmostrasController extends AppController
                     $amostra->id,
                     $amostra->amostra_id,
                     $amostra->created->i18nFormat('dd/MM/yyyy HH:mm'),
-                    $amostra->lote,
+                    $amostra->amostra->lote,
                     $amostra->resultado,
                 ];
 

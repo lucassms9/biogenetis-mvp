@@ -341,7 +341,7 @@ class AmostrasController extends AppController
 
             if (!empty($this->request->getData('data_fim'))) {
                 $data_ate = $this->request->getData('data_fim');
-                $conditions['cast(Amostras.created as date) >='] = $data_ate;
+                $conditions['cast(Amostras.created as date) <='] = $data_ate;
             }
 
 

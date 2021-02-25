@@ -42,7 +42,7 @@ class PedidoCroquiTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('CroquiTipos', [
+        $this->belongsTo('Croquis', [
             'className' => 'Croquis',
             'foreignKey' => 'croqui_tipo_id',
         ]);

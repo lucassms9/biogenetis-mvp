@@ -169,7 +169,7 @@ class PedidosController extends AppController
         ];
 
         $croquis = $this->paginate($this->PedidoCroqui, [
-            'contain' => ['Pedidos.Anamneses.Pacientes', 'CroquiTipos'],
+            'contain' => ['Pedidos.Anamneses.Pacientes', 'Croquis'],
             'conditions' => $conditions,
             'group' => ['Pedidos.id']
         ]);

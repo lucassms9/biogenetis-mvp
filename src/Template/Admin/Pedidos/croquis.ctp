@@ -8,7 +8,7 @@
                 <?= $this->Flash->render() ?>
                 <div class="card">
                     <div class="card-body">
-                    
+
                         <div class="table-responsive">
                             <table class="table mb-0">
                                 <thead class="thead-light">
@@ -27,7 +27,7 @@
                                             <td><?= h($croqui->id) ?></td>
                                             <td><?= $croqui->pedido->status === 'EmDiagnostico' ? 'Aguardando Diagnóstico' : 'Diagnóstico Realizado' ?></td>
 
-                                            <td><?= h($croqui->croqui_tipo->nome) ?></td>
+                                            <td><?= h($croqui->croqui->nome) ?></td>
                                             <td><?= h($croqui->created) ?></td>
                                             <td class="actions">
                                                 <?= $this->Html->link(__('<i class="mdi mdi-pencil"></i>'), ['action' => 'croquiviwer', $croqui->id], ['escape' => false]) ?>

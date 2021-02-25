@@ -127,7 +127,7 @@ class PedidosController extends AppController
             'contain' => ['Pedidos.Anamneses.Pacientes'],
             'conditions' => [
                 'PedidoCroqui.codigo_croqui_sql' => $croqui->codigo_croqui_sql,
-                'Pedidos.cliente_id' => $this->Auth->user('cliente_id')
+                // 'Pedidos.cliente_id' => $this->Auth->user('cliente_id')
                 ]
         ])->toArray();
 

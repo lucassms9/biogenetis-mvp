@@ -449,11 +449,7 @@ class AmostrasController extends AppController
             ini_set('max_execution_time', 0);
             set_time_limit(0);
 
-            if ($this->Auth->user('user_type_id') == 3) {
-                $conditions['Exames.created_by'] = $this->Auth->user('id');
-            }
-
-            if ($this->Auth->user('user_type_id') == 2) {
+            if ($this->Auth->user('user_type_id') != 1) {
                 $conditions['Users.cliente_id'] = $this->Auth->user('cliente_id');
             }
 
@@ -479,6 +475,7 @@ class AmostrasController extends AppController
                 'contain' => ['Users','Amostras'],
                 'conditions' => $conditions
             ])->toList();
+
 
             $qtd_colunas = 4;
 

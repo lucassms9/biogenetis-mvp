@@ -30,6 +30,7 @@ class PacientesController extends AppController
         $this->loadComponent('Helpers');
         $this->loadComponent('Ibge');
         $this->loadComponent('GeoNames');
+        $this->loadComponent('Email');
         $this->loadModel('Anamneses');
         $this->loadModel('Pedidos');
         $this->loadModel('TrackingPedidos');
@@ -347,6 +348,17 @@ class PacientesController extends AppController
         return $validacao['errors'] = true;
     }
 
+    public function sendPassword($email, $senha){
+        $dadosEmail = array();
+        $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
+        $dadosEmail['to'] = $email;
+        $dadosEmail['subject'] = 'Boas Vindas - Senha Temporária';
+
+        $dadosEmail['message'] = "Sua senha provisória é: ".$senha.". \n acesse o app agora mesmo para acompanhar o resultado do seu exame. ";
+
+        $this->Email->sendEmail($dadosEmail);
+    }
+
     public function createdPaciente($req, $paciente)
     {
         /*
@@ -356,6 +368,7 @@ class PacientesController extends AppController
         */
 
         $resPaciente  = $this->PacientesData->getCheckCPF($req['cpf']);
+
         if (!empty($resPaciente)) {
             $user_data =  json_decode($resPaciente);
 
@@ -382,9 +395,17 @@ class PacientesController extends AppController
                 $jst_r  = json_decode($resPaciente);
                 $req['hash'] = $jst_r->hash;
 
+                $senha_temp = rand(100000, 999999);
+                $req['senha'] = md5($senha_temp);
+
+
+
+                $this->sendPassword($req['email'], $senha_temp);
+
                 $paciente = $this->Pacientes->patchEntity($paciente, $req);
                 $paciente = $this->Pacientes->save($paciente);
                 $user_data->id =  $paciente->id;
+
             }
             return  $user_data;
         } else {
@@ -400,6 +421,12 @@ class PacientesController extends AppController
             $jst_r  = json_decode($response->body);
             $req['hash'] = $jst_r->hash;
 
+            $senha_temp = rand(100000, 999999);
+            $req['senha'] = md5($senha_temp);
+
+            $this->sendPassword($req['email'], $senha_temp);
+
+            $paciente = $this->Pacientes->newEntity();
             $paciente = $this->Pacientes->patchEntity($paciente, $req);
             $paciente = $this->Pacientes->save($paciente);
             return $paciente;

@@ -22,7 +22,7 @@ class PedidosController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['laudoWeb','generateFile']);
+        $this->Auth->allow(['laudoWeb','generateFile','generateFileCron']);
         $this->sexos = [
             'M' => 'M',
             'F' => 'F'

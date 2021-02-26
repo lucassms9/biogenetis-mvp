@@ -324,6 +324,8 @@ class PedidosController extends AppController
         // render to a variable
         $output = $this->render();
 
+
+
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
 
@@ -360,7 +362,7 @@ class PedidosController extends AppController
                 $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
                 $laudoJobs = $this->LaudoJobs->save($laudoJobs);
             }
-            return true;
+
         }else{
             $dompdf->stream("dompdf_out.pdf",['Attachment' => false]);
         }

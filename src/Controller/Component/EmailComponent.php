@@ -14,7 +14,29 @@ class EmailComponent extends Component
         parent::initialize($config);
 
 
+        $host = Configure::read('EmailSend.smtp_host');
+        $port = Configure::read('EmailSend.smtp_port');
+        $usern = Configure::read('EmailSend.smtp_user');
+        $password = Configure::read('EmailSend.smtp_password');
 
+        // debug($host);
+        // debug($port);
+        // debug($usern);
+        // debug($password);
+        // die;
+        TransportFactory::drop('covid_express');
+
+        TransportFactory::setConfig('covid_express', [
+          'host' => $host,
+          'port' => $port,
+          'username' => $usern,
+          'password' => $password,
+          'className' => 'Smtp',
+          'tls' => true
+        ]);
+
+        $this->email = new Email();
+        $this->email->setTransport('covid_express');
         $this->API_ROOT = env('EXAME_ENDPOINT');
     }
 
@@ -32,44 +54,30 @@ class EmailComponent extends Component
             //   'className' => 'Smtp'
             // ]);
 
-            $host = Configure::read('EmailSend.smtp_host');
-            $port = Configure::read('EmailSend.smtp_port');
-            $usern = Configure::read('EmailSend.smtp_user');
-            $password = Configure::read('EmailSend.smtp_password');
-            TransportFactory::drop('covid_express');
-            TransportFactory::setConfig('covid_express', [
-              'host' => $host,
-              'port' => $port,
-              'username' => $usern,
-              'password' => $password,
-              'className' => 'Smtp'
-            ]);
 
-            $email = new Email();
-            $email->setTransport('covid_express');
-            $email->setFrom($dados['from']);
-            $email->setTo($dados['to']);
+            $this->email->setFrom($dados['from']);
+            $this->email->setTo($dados['to']);
 
             if(isset($dados['replyTo']) && $dados['replyTo'] != ''){
-                $email->replyTo($dados['replyTo']);
+                $this->email->replyTo($dados['replyTo']);
             }
 
             if(isset($dados['cc']) && $dados['cc'] != ''){
-                $email->cc($dados['cc']);
+                $this->email->cc($dados['cc']);
             }
 
             if(isset($dados['html_format']) && $dados['html_format']){
-                $email->emailFormat('html');
+                $this->email->emailFormat('html');
             }
 
             if(isset($dados['attachments']) && $dados['attachments']){
-                $email->setAttachments($dados['attachments']);
+                $this->email->setAttachments($dados['attachments']);
             }
 
-            $email->setSubject($dados['subject']);
-            $email->send($dados['message']);
+            $this->email->setSubject($dados['subject']);
+            $this->email->send($dados['message']);
 
-            if($email){
+            if($this->email){
                 return true;
             }else{
                 return false;

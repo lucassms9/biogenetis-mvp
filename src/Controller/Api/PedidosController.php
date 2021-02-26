@@ -8,7 +8,8 @@ use Exception;
 use Firebase\JWT\JWT;
 use Cake\Routing\Router;
 use App\Model\Entity\Paciente;
-
+use Cake\Mailer\TransportFactory;
+use Cake\Log\Log;
 /**
  * Foo Controller
  *
@@ -76,18 +77,81 @@ class PedidosController extends RestController
 
             $nome_handle = explode('/', trim($nome_arquivo));
 
+            $name = $nome_handle[count($nome_handle) - 1];
+
             $dadosEmail['attachments'] = [
-                $nome_handle['7'] => [
+                $name => [
                     'file' => $nome_arquivo,
 
                 ]
             ];
 
             $this->Email->sendEmail($dadosEmail);
+            $job->completed = 2;
+            $this->LaudoJobs->save($job);
         }
         $this->set(compact('result'));
     }
 
+
+    public function logTeste()
+    {
+        Log::write('debug', 'Something did not work');
+    }
+    public function dispatchEmailsCron()
+    {
+
+            $jobs = $this->LaudoJobs->find('all', [
+                'conditions' => ['completed' => 1]
+            ])->toList();
+
+            if (!empty($jobs)) {
+
+                foreach ($jobs as $key => $job) {
+
+                    $pedido = $this->Pedidos->get($job->pedido_id, [
+                        'contain' => ['Anamneses.Pacientes', 'EntradaExames', 'Vouchers', 'Exames.Amostras', 'Exames.Users'],
+                    ]);
+
+                    //buscando o paciente
+                    $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+
+                    $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+
+                    $res = json_decode($resPaciente, true);
+
+                    $pedido->anamnese->paciente = new Paciente($res);
+
+                    $nome_arquivo = $job->file;
+                    $dadosEmail = array();
+                    $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
+                    $dadosEmail['to'] = $pedido->anamnese->paciente->email;
+                    $dadosEmail['cc'] = 'lucas.santos@dedtechsolutions.com.br';
+                    $dadosEmail['subject'] = 'Laudo';
+
+                    $dadosEmail['message'] = 'segue em anexo o laudo do seu exame';
+
+                    $nome_handle = explode('/', trim($nome_arquivo));
+                    $name = $nome_handle[count($nome_handle) - 1];
+
+                    $dadosEmail['attachments'] = [
+                        $name => [
+                            'file' => $nome_arquivo,
+
+                        ]
+                    ];
+
+                    $this->Email->sendEmail($dadosEmail);
+
+                    $job->completed = 2;
+                    $job = $this->LaudoJobs->save($job);
+
+                }
+
+            }
+            $this->set(compact('result'));
+
+    }
 
     public function index()
     {

@@ -398,6 +398,31 @@ class PedidosController extends AppController
        exit();
     }
 
+    public function generateFileCron(){
+        try {
+            ini_set("memory_limit", -1);
+            ini_set('max_execution_time', 0);
+            set_time_limit(0);
+            $conditions = [
+                'completed' => 0,
+            ];
+
+            $jobs = $this->LaudoJobs->find('all',[
+                'conditions' => $conditions
+            ])->toList();
+
+            if(!empty($jobs)){
+                foreach ($jobs as $job) {
+                    $this->laudoWeb($job->pedido_id, 1);
+                }
+            }
+            echo json_encode(['success' => 1]);
+            exit();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
     public function showpedido($id, $tab_current = 'paciente')
     {
         $action = 'Detalhe';

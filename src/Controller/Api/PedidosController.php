@@ -184,7 +184,7 @@ class PedidosController extends RestController
                 'status' => $pedido['status'],
                 'amostra_tipo' => $pedido['exame']['amostra_tipo'] ?? '-',
                 'resultado' => $pedido['exame']['resultado'] ?? '-',
-                'url_exame' => Router::url('/admin/pedidos/laudo-web/' . $pedido['id'].'/1', true)
+                'url_exame' => Router::url('/admin/pedidos/laudo-web/' . $pedido['id'], true)
             ];
         }
 

@@ -48,7 +48,7 @@ class ClientesController extends RestController
                 'cidade' => $cliente['cidade'],
                 'uf' => $cliente['uf'],
                 'handleCity' => $cliente['cidade'] . '-' . $cliente['uf'],
-                'responsavel_telefone' => $cliente['responsavel_telefone'],
+                'responsavel_telefone' => $cliente['telefone_contato_app'],
             ];
         }
 

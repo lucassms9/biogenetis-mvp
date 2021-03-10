@@ -61,6 +61,9 @@
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('responsavel_financeiro_telefone', ['class' => 'form-control']); ?>
                             </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('telefone_contato_app', ['class' => 'form-control']); ?>
+                            </div>
                         </div>
 
                         <div class="row">

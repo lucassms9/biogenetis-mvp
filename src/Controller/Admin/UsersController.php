@@ -109,7 +109,7 @@ class UsersController extends AppController
 
 
         if ($this->Auth->user('user_type_id') == 2) {
-            $conditionsType['UserTypes.id in'] = ['2', '3','4','5'];
+            $conditionsType['UserTypes.id in'] = ['2', '3','4','5','6'];
         }
 
         if ($this->Auth->user('user_type_id') == 2) {

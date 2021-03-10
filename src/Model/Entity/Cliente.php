@@ -60,6 +60,7 @@ class Cliente extends Entity
         'users' => true,
         'img_header_url' => true,
         'img_footer_url' => true,
+        'telefone_contato_app' => true,
     ];
 
     public function getSaldo()

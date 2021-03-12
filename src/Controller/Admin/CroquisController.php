@@ -179,6 +179,7 @@ class CroquisController extends AppController
         if ($this->request->is('post')) {
             $req = $this->request->getData();
             $pedidos_encontrados = true;
+            $hasCroquiOtherClient = false;
             $croqui_dados = [];
 
             foreach ($req as $key => $value) {
@@ -212,61 +213,77 @@ class CroquisController extends AppController
 
             }
 
-
             foreach ($croqui_dados as $key => $croqui_dado) {
 
                 $getPedido = $this->Pedidos->find('all', [
                     'conditions' => ['codigo_pedido' => $croqui_dado['conteudo']]
                 ])->first();
+                $getCroqui = $this->Croquis->get($req['croqui_tipo_id']);
 
-                if (empty($getPedido)) {
-                    $pedidos_encontrados = false;
+                if($getCroqui->created_cliente_by !== $getPedido->cliente_id){
+                    $hasCroquiOtherClient = true;
+                }
+            }
+
+            if($hasCroquiOtherClient){
+                $this->Flash->error('Todos pedidos precisam estar vinculados ao mesmo cliente dono do croqui selecionado!');
+            }else{
+                foreach ($croqui_dados as $key => $croqui_dado) {
+
+                    $getPedido = $this->Pedidos->find('all', [
+                        'conditions' => ['codigo_pedido' => $croqui_dado['conteudo']]
+                    ])->first();
+
+                    if (empty($getPedido)) {
+                        $pedidos_encontrados = false;
+                    }
+
+                    if (!$pedidos_encontrados) {
+                        break;
+                    }
+
+
+                    $pedido_croqui = $this->PedidoCroqui->newEntity();
+                    $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
+                        'croqui_tipo_id' => $req['croqui_tipo_id'],
+                        'pedido_id' => $getPedido->id,
+                        'codigo_croqui' => $codigo_croqui,
+                        'codigo_croqui_sql' => $codigo_croqui_sql,
+
+                    ]);
+                    $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
+
+                    foreach ($croqui_dados as $key => $croqui_dado2) {
+                        $pedido_croqui_val = $this->PedidoCroquiValores->newEntity();
+                        $pedido_croqui_val = $this->PedidoCroquiValores->patchEntity($pedido_croqui_val, [
+                            'pedido_croqui_id' => $pedido_croqui->id,
+                            'conteudo' => $croqui_dado2['conteudo'],
+                            'coluna_linha' => $croqui_dado2['codigo']
+                        ]);
+                        $pedido_croqui_val = $this->PedidoCroquiValores->save($pedido_croqui_val);
+                    }
+
+
+                    $log = [
+                        'codigo_pedido' => $pedido->codigo_pedido,
+                        'user_id' => $this->Auth->user('id'),
+                        'status_anterior' =>  $pedido->status,
+                        'status_atual' => 'EmDiagnostico',
+                    ];
+                    $this->TrackingPedidos->createLog($log);
+
+                    $getPedido->status = 'EmDiagnostico';
+                    $getPedido = $this->Pedidos->save($getPedido);
                 }
 
                 if (!$pedidos_encontrados) {
-                    break;
+                    $this->Flash->error('Verifique os pedidos inseridos no croqui.');
+                } else {
+                    $this->Flash->success('Croqui Criado com sucesso!');
+                    return $this->redirect(['controller' => 'croquis', 'action' => 'gerador/'.$codigo_croqui]);
                 }
-
-
-                $pedido_croqui = $this->PedidoCroqui->newEntity();
-                $pedido_croqui = $this->PedidoCroqui->patchEntity($pedido_croqui, [
-                    'croqui_tipo_id' => $req['croqui_tipo_id'],
-                    'pedido_id' => $getPedido->id,
-                    'codigo_croqui' => $codigo_croqui,
-                    'codigo_croqui_sql' => $codigo_croqui_sql,
-
-                ]);
-                $pedido_croqui = $this->PedidoCroqui->save($pedido_croqui);
-
-                foreach ($croqui_dados as $key => $croqui_dado2) {
-                    $pedido_croqui_val = $this->PedidoCroquiValores->newEntity();
-                    $pedido_croqui_val = $this->PedidoCroquiValores->patchEntity($pedido_croqui_val, [
-                        'pedido_croqui_id' => $pedido_croqui->id,
-                        'conteudo' => $croqui_dado2['conteudo'],
-                        'coluna_linha' => $croqui_dado2['codigo']
-                    ]);
-                    $pedido_croqui_val = $this->PedidoCroquiValores->save($pedido_croqui_val);
-                }
-
-
-                $log = [
-                    'codigo_pedido' => $pedido->codigo_pedido,
-                    'user_id' => $this->Auth->user('id'),
-                    'status_anterior' =>  $pedido->status,
-                    'status_atual' => 'EmDiagnostico',
-                ];
-                $this->TrackingPedidos->createLog($log);
-
-                $getPedido->status = 'EmDiagnostico';
-                $getPedido = $this->Pedidos->save($getPedido);
             }
 
-            if (!$pedidos_encontrados) {
-                $this->Flash->error('Verifique os pedidos inseridos no croqui.');
-            } else {
-                $this->Flash->success('Croqui Criado com sucesso!');
-                return $this->redirect(['controller' => 'croquis', 'action' => 'gerador/'.$codigo_croqui]);
-            }
         }
 
         $this->set(compact('croqui_tipos', 'action', 'title', 'croqui', 'pedidos_triagem','codigo_croquiParam'));

@@ -35,7 +35,7 @@ class PedidosController extends AppController
         ];
 
         $this->loadComponent('Helpers');
-        $this->loadComponent('Ibge');
+        $this->loadComponent('GeoNames');
         $this->loadComponent('PacientesData');
         $this->loadModel('Anamneses');
         $this->loadModel('Clientes');
@@ -476,23 +476,21 @@ class PedidosController extends AppController
         $croqui_tipos = $this->Croquis->find('list');
         $formas_pagamento = $this->formas_pagamento;
 
+        $estados_viagem = [];
         $cidades_viagem = [];
         $cidades_unidade = [];
+        $estados_unidade = [];
+
 
         if(!empty($anamnese->viagem_brasil_estado)){
-            $cidades_find = $this->getCities($anamnese->viagem_brasil_estado);
+            $estados_viagem[$anamnese->viagem_brasil_estado] = $anamnese->viagem_brasil_estado;
+            $cidades_viagem[$anamnese->viagem_brasil_cidade] = $anamnese->viagem_brasil_cidade;
 
-            foreach ($cidades_find as $key => $cidade) {
-                $cidades_viagem[$cidade->nome] = $cidade->nome;
-            }
         }
 
         if(!empty($anamnese->paciente_unidade_saude_14_dias_estado)){
-            $cidades_find = $this->getCities($anamnese->paciente_unidade_saude_14_dias_estado);
-
-            foreach ($cidades_find as $key => $cidade) {
-                $cidades_unidade[$cidade->nome] = $cidade->nome;
-            }
+            $cidades_unidade[$anamnese->paciente_unidade_saude_14_dias_estado] = $anamnese->paciente_unidade_saude_14_dias_estado;
+            $estados_unidade[$anamnese->viagem_brasil_cidade] = $anamnese->viagem_brasil_cidade;
         }
 
         $estados_find = $this->getStates();
@@ -500,20 +498,25 @@ class PedidosController extends AppController
 
 
         foreach ($estados_find as $key => $estado) {
-           $estados[$estado->sigla] = $estado->sigla;
-        }
+            $estados[$estado['id']] = $estado['sigla'];
+         }
 
         if($_SESSION['Auth']['User']['user_type_id'] == 3 || $_SESSION['Auth']['User']['user_type_id'] == 4){
             $tab_current = 'etiqueta';
         }
 
-        $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade'));
+        // debug($estados_unidade);
+        // debug($cidades_viagem);
+        // debug($estados_viagem);
+        // die;
+        $this->set(compact('action', 'title', 'croqui_tipo_id', 'pedido', 'tab_current', 'sexos', 'paciente', 'anamnese', 'pagamento', 'exames_tipos', 'useForm', 'croqui', 'croqui_tipos', 'formas_pagamento', 'paciente_dados','estados','cidades_viagem','cidades_unidade','estados_unidade','estados_viagem'));
 
     }
 
     public function getCities($uf)
     {
-        $cities = $this->Ibge->getCity($uf);
+
+        $cities = $this->GeoNames->getCity($uf);
         return $cities;
         echo json_encode($cities);
         die;
@@ -522,7 +525,7 @@ class PedidosController extends AppController
 
     public function getStates()
     {
-        $states = $this->Ibge->getStates();
+        $states = $this->GeoNames->getStates();
 
         return $states;
         echo json_encode($states);

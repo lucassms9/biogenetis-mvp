@@ -7,7 +7,6 @@ read -p "Servidor Ponte  =" Ponte
 echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
 
 
-
 // acessar maquina via bastion
 app: ssh -i .ssh/ssh-key-2020-08-12.key opc@172.21.0.3
 
@@ -15,7 +14,8 @@ pacientes: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.4
 
 exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.5
 
-~
+maquina wagner: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.2
+
 //TUNEL BANCO
 banco app
 ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26
@@ -75,3 +75,41 @@ db-mysql-01.subdbpriv.vcnprd.oraclevcn.com
 
 openssl pkcs12 -in prod-kvault-ComodoSSL-Kotaki-20200929.pfx -clcerts -nokeys -out server.cer
 openssl pkcs12 -in prod-kvault-ComodoSSL-Kotaki-20200929.pfx -nocerts -nodes  -out server.key
+
+
+*/1 *  *  *  *   curl http://localhost:80/api/pedidos/dispatch-emails-cron/
+*/1 *  *  *  *   curl http://localhost:80/admin/pedidos/generate-file-cron/
+
+
+pm2 start --name jar_sal_01_3017  jar_sal_01_3017/index.js
+pm2 start --name mar_sal_01_3008  mar_sal_01_3008/index.js
+pm2 start --name mar_sal_02_3009 mar_sal_02_3009/index.js
+pm2 start --name mar_sal_03_3019 mar_sal_03_3019/index.js
+pm2 start --name mar_sal_04_3020 mar_sal_04_3020/index.js
+pm2 start --name mar_sal_05_3023 mar_sal_05_3023/index.js
+pm2 start --name mar_sal_06_3024 mar_sal_06_3024/index.js
+pm2 start --name mar_sal_07_3025 mar_sal_07_3025/index.js
+pm2 start --name mar_sal_08_3026 mar_sal_08_3026/index.js
+pm2 start --name mar_sal_09_3027 mar_sal_09_3027/index.js
+pm2 start --name mar_sal_10_3028 mar_sal_10_3028/index.js
+pm2 start --name mar_sal_11_3029 mar_sal_11_3029/index.js
+pm2 start --name mar_sal_12_3030 mar_sal_12_3030/index.js
+pm2 start --name mar_sal_13_3007 mar_sal_13_3007/index.js
+pm2 start --name mar_sal_14_3021 mar_sal_14_3021/index.js
+pm2 start --name mar_sal_15_3022 mar_sal_15_3022/index.js
+pm2 start --name mar_sal_16_3018 mar_sal_16_3018/index.js
+pm2 start --name mur_sal_01_3001 mur_sal_01_3001/index.js
+pm2 start --name mur_sal_02_3002 mur_sal_02_3002/index.js
+pm2 start --name mur_sal_03_3010 mur_sal_03_3010/index.js
+pm2 start --name mur_sal_04_3003 mur_sal_04_3003/index.js
+pm2 start --name mur_sal_05_3004 mur_sal_05_3004/index.js
+pm2 start --name mur_sal_06_3015 mur_sal_06_3015/index.js
+pm2 start --name mur_sal_07_3016 mur_sal_07_3016/index.js
+pm2 start --name mur_sal_08_3005 mur_sal_08_3005/index.js
+pm2 start --name mur_sal_09_3006 mur_sal_09_3006/index.js
+pm2 start --name wag_sal_03_3011 wag_sal_03_3011/index.js
+pm2 start --name wag_sal_04_3012 wag_sal_04_3012/index.js
+pm2 start --name wag_sal_05_3013 wag_sal_05_3013/index.js
+pm2 start --name wag_sal_06_3014 wag_sal_06_3014/index.js
+
+

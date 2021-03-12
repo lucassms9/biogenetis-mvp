@@ -17,7 +17,10 @@
 <div style="font-size: 12px;" class="checkboxgerais">
     <div class="row mt20">
         <div class="col-md-3">
-            <?php echo $this->Form->control('sintoma_febre', ['label' => 'FEBRE', 'type' => 'checkbox', 'class' => ['custom-style-check',],]); ?>
+            <?php echo $this->Form->control('sintoma_febre', ['label' => 'FEBRE', 'type' => 'checkbox', 'class' => ['custom-style-check',],'disabled' => $disabled]); ?>
+        </div>
+        <div class="col-md-3">
+            <?php echo $this->Form->control('sintoma_tosse', ['label' => 'TOSSE', 'type' => 'checkbox', 'class' => ['custom-style-check',],'disabled' => $disabled]); ?>
         </div>
         <div class="col-md-3">
             <?php echo $this->Form->control('sintoma_corisa_congestao_nasal', ['label' => 'CORISA/CONGESTÃO NASAL', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
@@ -147,7 +150,7 @@
             <?php echo $this->Form->control('viagem_brasil', ['label' => 'Brasil:', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
 
             <div style="margin: 0px 15px;">
-                <?php echo $this->Form->control('viagem_brasil_estado', ['class' => 'form-control', 'options' => $estados, 'empty' => 'Escolha', 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
+                <?php echo $this->Form->control('viagem_brasil_estado', ['class' => 'form-control', 'options' => !empty($estados_viagem) ? $estados_viagem : $estados, 'empty' => 'Escolha', 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
             </div>
             <div style="margin: 0px 15px;">
                 <?php echo $this->Form->control('viagem_brasil_cidade', ['class' => 'form-control', 'options' => $cidades_viagem, 'empty' => 'Escolha', 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
@@ -224,10 +227,10 @@
             </div>
 
             <div style="margin: 0px 15px;">
-                <?php echo $this->Form->control('paciente_unidade_saude_14_dias_estado', ['class' => 'form-control', 'options' => $estados, 'empty' => 'Escolha', 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
+                <?php echo $this->Form->control('paciente_unidade_saude_14_dias_estado', ['class' => 'form-control', 'options' =>  !empty($estados_unidade) ? $estados_unidade : $estados, 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
             </div>
             <div style="margin: 0px 15px;">
-                <?php echo $this->Form->control('paciente_unidade_saude_14_dias_cidade', ['class' => 'form-control', 'options' => $cidades_unidade, 'empty' => 'Escolha', 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
+                <?php echo $this->Form->control('paciente_unidade_saude_14_dias_cidade', ['class' => 'form-control', 'options' => $cidades_unidade, 'disabled' => $disabled, 'style' => 'margin: 0px 15px;']); ?>
             </div>
         </div>
     </div>

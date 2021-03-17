@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use Rest\Controller\RestController;
 use Cake\Http\Client;
 use Exception;
-
+use Firebase\JWT\JWT;
 /**
  * Foo Controller
  *
@@ -27,6 +27,15 @@ class ClientesController extends RestController
         $this->API_ROOT = env('USER_ENDPOINT');
         $this->loadModel('Clientes');
         $this->loadModel('EntradaExames');
+        $authorization = $this->request->getHeaderLine('Authorization');
+        $authorization = explode(' ', $authorization);
+
+        if (!empty($authorization[0])) {
+            $token = $authorization[1];
+            $config = include ROOT . DS . 'config' . DS . 'rest.php';
+            $payload = JWT::decode($token, $config['Rest']['jwt']['key'], [$config['Rest']['jwt']['algorithm']]);
+            $this->payload = $payload;
+        }
     }
 
     public function index()
@@ -34,9 +43,19 @@ class ClientesController extends RestController
         $result = [];
 
         $body = $this->body;
+        $payload = $this->payload;
+
+        $resPaciente  = $this->PacientesData->getByHash($payload->hash);
+        if (!$resPaciente) {
+            throw new Exception('Paciente não encontrado', 400);
+        }
+
+        $resPaciente = json_decode($resPaciente);
+
         $clientes = $this->Clientes->find('all', [
-            'conditions' => ['ativo' => 1]
+            'conditions' => ['ativo' => 1, 'uf' => $resPaciente->uf]
         ])->toList();
+
         $handle = [];
 
         foreach ($clientes as $key => $cliente) {

@@ -18,7 +18,7 @@
                                         <th scope="col"><?= $this->Paginator->sort('cpf') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('email') ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('celular') ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('numero_crbio') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('numero_crbio','Número de Conselho') ?></th>
                                         <th scope="col" class="actions"><?= __('Ações') ?></th>
                                     </tr>
                                 </thead>

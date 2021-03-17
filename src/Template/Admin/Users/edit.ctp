@@ -22,7 +22,7 @@
 
                         <div style="display: none;" id="showInputs" class="row">
                             <div class="col-md-6">
-                                <?php echo $this->Form->control('numero_crbio',['class' => 'form-control']); ?>
+                                <?php echo $this->Form->control('numero_crbio',['class' => 'form-control','label' => 'Número do conselho']); ?>
                             </div>
                             <div class="col-md-6">
                                 <?php echo $this->Form->control('foto_assinatura_digital',['class' => 'form-control','type' => 'file']); ?>

@@ -25,7 +25,7 @@
                                 <?php echo $this->Form->control('celular',['class' => 'form-control']);?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $this->Form->control('numero_crbio',['class' => 'form-control','label' => 'Número CRBIO']);?>
+                                <?php echo $this->Form->control('numero_crbio',['class' => 'form-control','label' => 'Número de Conselho']);?>
                             </div>
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('certificado_digital',['class' => 'form-control']);?>

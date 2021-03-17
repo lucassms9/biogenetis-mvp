@@ -1097,8 +1097,8 @@ class AmostrasController extends AppController
 
 
         $this->paginate = [
-            'maxLimit' => 600,
-            'limit' => 600,
+            'maxLimit' => 5000,
+            'limit' => 5000,
             'contain' => ['Exames.Users'],
             'conditions' => $conditions
         ];

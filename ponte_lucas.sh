@@ -16,6 +16,7 @@ exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.5
 
 maquina wagner: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.2
 
+
 //TUNEL BANCO
 banco app
 ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26

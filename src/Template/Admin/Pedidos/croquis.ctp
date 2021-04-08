@@ -24,7 +24,7 @@
                                      <?php
                                       foreach ($croquis as $croqui): ?>
                                         <tr>
-                                            <td><?= h($croqui->id) ?></td>
+                                            <td><?= h($croqui->codigo_croqui) ?></td>
                                             <td><?= $croqui->pedido->status === 'EmDiagnostico' ? 'Aguardando Diagnóstico' : 'Diagnóstico Realizado' ?></td>
 
                                             <td><?= h($croqui->croqui->nome) ?></td>

@@ -7,7 +7,7 @@ read -p "Servidor Ponte  =" Ponte
 echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
 
 
-// acessar maquina via bastion
+// acessar maquina via bastion PROD
 app: ssh -i .ssh/ssh-key-2020-08-12.key opc@172.21.0.3
 
 pacientes: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.4
@@ -16,13 +16,31 @@ exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.5
 
 maquina wagner: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.21.1.2
 
+CORS_SERVER_ORIGIN=*
+SERVER_PORT_LISTEN=5813
 
-//TUNEL BANCO
+1686F7
+DATABASE_DIALECT=mysql
+DATABASE_HOST=172.22.2.3
+DATABASE_USERNAME=paciente-user
+DATABASE_PASSWORD=Bio-2020
+DATABASE_NAME=biogeneticsusr
+
+
+// acessar maquina via bastion DEV
+app: ssh -i .ssh/ssh-key-2020-08-12.key opc@172.22.0.2
+
+pacientes: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.22.1.4
+
+exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.22.1.5
+
+
+//TUNEL BANCO PROD
 banco app
 ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26
 
 banco server01 - pacientes
-ssh -N -L 9999:172.21.2.3:3306 opc@152.67.55.26
+ssh -N -L 9999:172.21.2.3:3306 opc@168.138.133.103
 
 
 banco server02 - exames
@@ -30,6 +48,35 @@ ssh -N -L 9997:172.21.2.4:3306 opc@152.67.55.26
 
 //maquina do wagner
 ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
+
+//TUNEL BANCO DEV
+banco app
+ssh -N -L 9998:172.22.0.2:3306 opc@152.67.55.26
+env
+export DB_HOST = '172.22.0.2'
+export DB_NAME = 'dbweb'
+export DB_PASS = 'Bio-2020'
+export DB_USER = 'admin'
+
+
+banco server01 - pacientes
+ssh -N -L 9999:172.22.2.3:3306 opc@168.138.133.103 -i /Users/lucassantos/projetos/biogenetics/app.pem
+
+env
+export DB_HOST = '172.22.2.3'
+export DB_NAME = 'biogeneticsusr'
+export DB_PASS = 'Bio-2020'
+export DB_USER = 'root'
+
+banco server02 - exames
+ssh -N -L 9997:172.22.2.4:3306 opc@168.138.133.103 -i /Users/lucassantos/projetos/biogenetics/app.pem
+
+
+env
+export DB_HOST = '172.22.2.4'
+export DB_NAME = 'biogeneticsexame_dev'
+export DB_PASS = 'Bio-2020'
+export DB_USER = 'root'
 
 
 ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26

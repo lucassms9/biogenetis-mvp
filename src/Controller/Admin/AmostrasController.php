@@ -559,8 +559,15 @@ class AmostrasController extends AppController
                 $amostras[$key] = $merge_arr;
             }
 
+            $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
+                'contain' => [],
+            ]);
+
             foreach ($amostras as $key => $amostra) {
 
+                $saldo = $cliente->getSaldo();
+
+                if ($saldo > 0) {
                 $amostra_save = $this->Amostras->newEntity();
                 $amostra_save = $this->Amostras->patchEntity($amostra_save, [
                     'code_amostra' => $amostra['amostra_id'],
@@ -638,6 +645,7 @@ class AmostrasController extends AppController
                 $extratoSaldo = $this->ExtratoSaldo->newEntity();
                 $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
                 $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
+                }
             }
 
             return $this->redirect(['action' => 'index', 'lote' => $this->generateLote($date_init)]);
@@ -980,8 +988,12 @@ class AmostrasController extends AppController
                             'contain' => [],
                         ]);
 
-                        $saldo = $cliente->getSaldo();
+                        if($cliente->ativo == 0){
+                            throw new BadRequestException(__('Cliente Inativo!'));
+                            die();
+                        }
 
+                        $saldo = $cliente->getSaldo();
 
                         if (isset($saldo) && $saldo <= 0) {
                             throw new BadRequestException(__('Seu Saldo para exames esgotou!'));

@@ -59,7 +59,7 @@ function amountForm(file) {
     $("#input-files").append( html );
 
     qtd_files++;
-
+    console.log(qtd_files)
     $('#total-files').val(qtd_files);
 
 }
@@ -84,11 +84,10 @@ Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Are you sure y
 Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "You can not upload any more files.";
 
 $(document).ready(function(){
-
     $("#formFiles").dropzone({
         maxFiles: 2000,
         addRemoveLinks: true,
-        url: BASE_URL_ADMIN+"amostras/import",
+        url: BASE_URL_ADMIN+"amostras/import?qtd_files="+qtd_files,
         accept: function(file, done) {
             let fileExt = file.name.split('.');
             let ext = fileExt[fileExt.length -1];
@@ -111,7 +110,6 @@ $(document).ready(function(){
             file.previewElement.remove();
         }
     });
-
 });
 
 

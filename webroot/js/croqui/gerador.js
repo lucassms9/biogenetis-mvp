@@ -51,24 +51,24 @@ function changeCheckPedido(element){
 }
 
 function validateForm() {
-    var inputsCroqui = $('.input-croqui');
-    var campo_vazio = false;
+    // var inputsCroqui = $('.input-croqui');
+    // var campo_vazio = false;
 
-    if(inputsCroqui.length === 0){
-        return alertify.error('você deve escolher um croqui para continuar.');
+    // if(inputsCroqui.length === 0){
+    //     return alertify.error('você deve escolher um croqui para continuar.');
 
-    }
+    // }
 
-    $.each(inputsCroqui, function (index, element) {
-        var value = $(element).val();
-        if(!value){
-            campo_vazio = true;
-        }
-    });
+    // $.each(inputsCroqui, function (index, element) {
+    //     var value = $(element).val();
+    //     if(value){
+    //         campo_vazio = true;
+    //     }
+    // });
 
-    if(campo_vazio){
-        return alertify.error('você deve preencher todos campos do croquis.');
-    }
+    // if(campo_vazio){
+    //     return alertify.error('você deve preencher todos campos do croquis.');
+    // }
 
     $('#formCroqui').submit();
 }

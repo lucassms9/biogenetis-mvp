@@ -42,7 +42,6 @@ ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26
 banco server01 - pacientes
 ssh -N -L 9999:172.21.2.3:3306 opc@168.138.133.103
 
-
 banco server02 - exames
 ssh -N -L 9997:172.21.2.4:3306 opc@152.67.55.26
 

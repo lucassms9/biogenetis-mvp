@@ -38,6 +38,46 @@ class ClientesController extends RestController
         }
     }
 
+    public function listAll()
+    {
+        $result = [];
+
+        $body = $this->body;
+        $payload = $this->payload;
+
+        $resPaciente  = $this->PacientesData->getByHash($payload->hash);
+        if (!$resPaciente) {
+            throw new Exception('Paciente não encontrado', 400);
+        }
+
+        $resPaciente = json_decode($resPaciente);
+
+
+        $clientes = $this->Clientes->find('all', [
+            'conditions' => ['ativo' => 1]
+        ])->toList();
+
+        $handle = [];
+
+        foreach ($clientes as $key => $cliente) {
+            $handle[] = [
+                'id' => $cliente['id'],
+                'nome' => $cliente['nome_fantasia'],
+                'endereco' => $cliente['endereco'],
+                'bairro' => $cliente['bairro'],
+                'cidade' => $cliente['cidade'],
+                'uf' => $cliente['uf'],
+                'cep' => $cliente['cep'],
+                'handleCity' => $cliente['cidade'] . '-' . $cliente['uf'],
+                'responsavel_telefone' => $cliente['telefone_contato_app'],
+            ];
+        }
+
+        $result['clientes'] = $handle;
+
+        $this->set(compact('result'));
+    }
+
     public function index()
     {
         $result = [];
@@ -51,6 +91,7 @@ class ClientesController extends RestController
         }
 
         $resPaciente = json_decode($resPaciente);
+
 
         $clientes = $this->Clientes->find('all', [
             'conditions' => ['ativo' => 1, 'uf' => $resPaciente->uf]

@@ -36,11 +36,11 @@
         </div>
 
         <div class="col-md-3">
-            <?php echo $this->Form->control('sintoma_expectoracao', ['label' => 'EXPECTORAÇÃO', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
+            <?php echo $this->Form->control('sintoma_expectoracao', ['label' => 'ESCARRO', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
         </div>
 
         <div class="col-md-3">
-            <?php echo $this->Form->control('sintoma_falta_de_apetite', ['label' => 'FALDA DE APETITE', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
+            <?php echo $this->Form->control('sintoma_falta_de_apetite', ['label' => 'FALTA DE APETITE', 'type' => 'checkbox', 'class' => ['custom-style-check',], 'disabled' => $disabled]); ?>
         </div>
 
 

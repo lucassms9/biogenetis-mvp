@@ -717,7 +717,7 @@ class AmostrasController extends AppController
 
             $isEncadeado = $total_enc > 0 ? true : false;
 
-            if ((strpos($url, '172.21.1.2') !== false)) {
+            if ((strpos($url, '172.21.1.2') !== false) || (strpos($url, '172.22.1.2') !== false)) {
                 $result = $response->getJson();
                 $result = $result['retorno'];
             } else {

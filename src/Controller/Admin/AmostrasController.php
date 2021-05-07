@@ -967,7 +967,9 @@ class AmostrasController extends AppController
 
                         $handle_file = $this->getBetterRestul($file_extesion, $file);
 
-                        if (!empty($amostraExist)) {
+                        $enviroment = env('ENVIRONMENT', 'development');
+
+                        if (!empty($amostraExist) && $enviroment === 'production') {
                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
                             die();
                         }

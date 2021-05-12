@@ -1,0 +1,41 @@
+##Criar Pedido
+##nao deixar obrigatorio o questionario(anamnese)
+
+
+EXEMPLO DE ENVIO DO NOVO DRIVER (BIOGENETICS)
+
+Necess�rio envio de um exemplo com mais de um Pedido contendo mais de um exame por Pedido.
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Registro>
+	<Protocolo>2</Protocolo> # O que se trata este N�mero (vers�o do protocolo?)
+	<ID>20200827_141</ID> # O que se trata o ID?
+	<Lote>
+		<CodLab>32</CodLab> #Servi�o Solicitante
+		<CodLoteLab>20200827_141</CodLoteLab>
+		<DataLote>2020-08-27</DataLote>
+		<HoraLote>15:49:38</HoraLote>
+		<Pedido>
+			<CodPedLab>001-65618-489</CodPedLab> #N�mero de Atendimento
+			<DataPed>2020-08-27</DataPed>
+			<HoraPed>12:02:36</HoraPed>
+			<Paciente>
+				<CodPacLab>1158763</CodPacLab> # Registro Externo
+				<Nome>TESTE</Nome>
+				<Sexo>Masculino</Sexo>
+				<DataNasc>1970-01-01</DataNasc>
+				<IdadeAno>50</IdadeAno>
+				<IdadeMes>607</IdadeMes>
+				<IdadeDia>18501</IdadeDia>
+			</Paciente>
+			<Exame>
+				<CodExmApoio>COV19|1</CodExmApoio> # Ignorar
+				<CodExmLab>03182</CodExmLab> # C�digo do Exame no Apoiado (utilizar dicion�rio)
+				<DescMat>Secre��o nasofaringe</DescMat> # Regi�o de Coleta
+				<DataColeta>2020-08-27</DataColeta>
+				<HoraColeta>15:08:54</HoraColeta>
+				<IdTuboLab>200012648300</IdTuboLab> #Amostra Externa - Ignorar
+			</Exame>
+		</Pedido>
+	</Lote>
+</Registro>

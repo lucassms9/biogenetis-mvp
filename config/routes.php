@@ -41,6 +41,17 @@ Router::prefix('api', ['isRest' => true], function (RouteBuilder $routes) {
     $routes->fallbacks(DashedRoute::class);
 });
 
+Router::prefix('barramento', ['isRest' => true], function (RouteBuilder $routes) {
+
+    $routes->connect('/getToken', ['controller' => 'Auth', 'action' => 'login', 'isRest' => true, 'requireAuthorization' => false]);
+
+    $routes->post('/', ['controller' => 'Orders', 'action' => 'create', 'isRest' => true, 'requireAuthorization' => true]);
+
+    $routes->get('/', ['controller' => 'Orders', 'action' => 'list', 'isRest' => true, 'requireAuthorization' => true]);
+
+    $routes->fallbacks(DashedRoute::class);
+});
+
 
 /**
  * If you need a different set of middleware or none at all,

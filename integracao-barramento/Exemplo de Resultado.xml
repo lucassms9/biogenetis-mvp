@@ -1,0 +1,51 @@
+##consultar pedido
+
+EXEMPLO DE ENVIO DO NOVO DRIVER (BIOGENETICS)
+
+Necessário um exemplo de arquivo com mais de um resultado;
+Necessário um exemplo de um resultado com mais de um parâmetro de resultado, onde cada parametro tem um valor de referêmcia especifico. Exemplo Teste Paternidade.
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Resultados>
+	<Protocolo>1</Protocolo> # O que se trata este Número (versão do protocolo?)
+	<ID>1602085313</ID> # O que se trata o ID?
+	<ControleDeLote>
+		<Emissor>WORKLABWEB</Emissor> # O que se trata?
+		<DataEmissao>2020-10-07</DataEmissao>
+		<HoraEmissao>12:41:53</HoraEmissao>
+		<CodLab>1069</CodLab> #Serviço Solicitante
+	</ControleDeLote>
+	<Pedido>
+		<CodPedApoio>0000143</CodPedApoio> #Pedido
+		<CodPedLab>318-65653-5</CodPedLab> #Número Atendimento
+		<Nome>EDIVALDA TOSTA DIAS SILVA</Nome>
+		<SuperExame>
+			<MaterialNome>Swab Nasofaringe</MaterialNome>
+			<ExameNome>COVID 19 - RT-PCR</ExameNome>
+			<CodExmApoio>1543|COV19|1</CodExmApoio> # O valor da tag é uma composição de quais dados? Não seria o ideal retornar o <CodExmLab> que veio no cadastro?
+			<CodigoFormato>3489</CodigoFormato> # O que se trata?
+			<ValorReferenciaBlocoTexto>Não Detectado</ValorReferenciaBlocoTexto> # E se tiver mais de um valor de referência? Exemplo: Teste de Paternidade
+			<Exame idExame="1"> # O que se trata?
+				<Metodo>PCR ( Reação em Cadeia da Polimerase ) Em Tempo Real.</Metodo>
+				<Nota>NOTA TÉCNICA PARA LAUDOS CORONA VÍRUS
+-Nota 1: O método utilizado nesse exame foi realizado segundo protocolo desenvolvido e validado pelo Centro de Controle
+ e Prevenção de Doenças dos EUA (CDC).
+- Nota 2: O processo de eliminação do SARS-Cov-2 não está elucidado, apesar de estudos recentes sugerirem que a
+sensibilidade da PCR é maior a partir do terceiro dia de surgimento dos sintomas. Portanto, um resultado negativo na 
+PCR não exclui completamente o diagnóstico, especialmente em pacientes assintomáticos ou em fase inicial da infecção. 
+Em casos graves ou com gravidade progressiva, recomenda-se a coleta de nova amostra, preferencialmente do trato 
+respiratório inferior.</Nota>
+				<ItemDeExame idItemDeExame="0">
+					<Nome>COV19</Nome>
+					<Resultado idResultado="1">
+						<Conteudo>
+							<Valor CasasDecimais="0" TamanhoMaximo="245" Tipo="alfanumerico" idValor="1">NÃO DETECTADO</Valor>
+						</Conteudo>
+						<UnidadeDeMedida/>
+					</Resultado>
+				</ItemDeExame>
+				<Observacao/>
+			</Exame>
+		</SuperExame>
+	</Pedido>
+</Resultados>

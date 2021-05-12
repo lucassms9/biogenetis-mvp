@@ -48,5 +48,19 @@ class Pedido extends Entity
         'amostra' => true,
         'cliente' => true,
         'entrada_exame_id' => true,
+
+        'codigo_prioridade' => true,
+        'data_hora_DUM' => true,
+        'descricao_dados_clinicos' => true,
+        'descricao_regiao_coleta' => true,
+        'material_apoiado' => true,
+        'codigo_conselho' => true,
+        'codigo_conselho_solicitante' => true,
+        'codigo_UF_conselho_solicitante' => true,
+        'nome_solicitante' => true,
+        'numero_atendimento_apoiado' => true,
+        'posto_coleta' => true,
+        'uso_apoiado' => true,
+        'descricao_medicamentos' => true,
     ];
 }

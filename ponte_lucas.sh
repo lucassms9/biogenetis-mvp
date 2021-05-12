@@ -71,6 +71,10 @@ banco server02 - exames
 ssh -N -L 9997:172.22.2.4:3306 opc@168.138.133.103 -i /Users/lucassantos/projetos/biogenetics/app.pem
 
 
+//maquina servicos dev
+app: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.22.1.2
+
+
 env
 export DB_HOST = '172.22.2.4'
 export DB_NAME = 'biogeneticsexame_dev'

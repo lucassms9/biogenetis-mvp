@@ -51,6 +51,7 @@ class Pedido extends Entity
 
         'codigo_prioridade' => true,
         'data_hora_DUM' => true,
+        'config_assintomaticos' => true,
         'descricao_dados_clinicos' => true,
         'descricao_regiao_coleta' => true,
         'material_apoiado' => true,

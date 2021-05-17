@@ -1,7 +1,7 @@
 <style>
     .custom-style-check{
         margin-right: 10px;
-    }    
+    }
 </style>
 
 <?php echo $this->element('admin/home/index');?>
@@ -40,7 +40,7 @@
                                 <?php  echo $this->Form->control('amostra_tipo',['class' => 'form-control', 'options' => $amostra_tipos, 'empty' => 'Escolha']); ?>
                             </div>
                         </div>
-                        
+
                         <div style="margin-top: 10px;" class="row">
                             <div class="col-md-12">
                                 <?php  echo $this->Form->control('IAModelType',['class' => 'form-control', 'options' => $iAModelTypes, 'empty' => 'Escolha']); ?>
@@ -51,7 +51,7 @@
                             <div class="col-md-12">
                                 <?php echo $this->Form->control('IAModelName',['class' => 'form-control']); ?>
                             </div>
-                        </div> 
+                        </div>
 
                         <div style="margin-top: 10px;" class="row">
                             <div class="col-md-12">
@@ -61,10 +61,19 @@
 
                         <div style="margin-top: 10px" class="row">
                             <div class="col-md-2">
+                                <?php echo $this->Form->control('assintomatico',['class' => 'custom-style-check', 'label' => 'Assitomático',]); ?>
+                            </div>
+                            <div class="col-md-2">
+                                <?php echo $this->Form->control('nao_assintomatico',['class' => 'custom-style-check', 'label' =>'Não Assitomático']); ?>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px" class="row">
+                            <div class="col-md-2">
                                 <?php echo $this->Form->control('ativo',['class' => 'custom-style-check']); ?>
                             </div>
                         </div>
-                    
+
 
                         <div style="margin-top: 10px" class="row">
                             <div style="display: flex;">
@@ -76,7 +85,7 @@
                                         ) ?>
                                          <?= $this->Form->button(__('Salvar'),['class' => 'btn btn-primary btn-rounded waves-effect waves-light','style' => 'margin-left: 5px;']) ?>
                             </div>
-                            
+
                         </div>
                         <?= $this->Form->end() ?>
 

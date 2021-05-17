@@ -475,7 +475,7 @@ class AmostrasController extends AppController
             }
 
             $amostras = $this->Exames->find('all', [
-                'contain' => ['Users','Amostras'],
+                'contain' => ['Users', 'Amostras'],
                 'conditions' => $conditions
             ])->toList();
 
@@ -545,17 +545,27 @@ class AmostrasController extends AppController
             foreach ($this->request->getData('amostraid') as $key => $amostraid) {
                 $amostras[$key] = ['amostra_id' => $amostraid];
             }
-            foreach ($this->request->getData('uf') as $key => $uf) {
-                $merge_arr = array_merge($amostras[$key], ['uf' => $uf]);
-                $amostras[$key] = $merge_arr;
+            if (!empty($this->request->getData('uf'))) {
+                foreach ($this->request->getData('uf') as $key => $uf) {
+                    $merge_arr = array_merge($amostras[$key], ['uf' => $uf]);
+                    $amostras[$key] = $merge_arr;
+                }
             }
 
-            foreach ($this->request->getData('idade') as $key => $idade) {
-                $merge_arr = array_merge($amostras[$key], ['idade' => $idade]);
-                $amostras[$key] = $merge_arr;
+            if (!empty($this->request->getData('idade'))) {
+                foreach (@$this->request->getData('idade') as $key => $idade) {
+                    $merge_arr = array_merge($amostras[$key], ['idade' => $idade]);
+                    $amostras[$key] = $merge_arr;
+                }
             }
-            foreach ($this->request->getData('sexo') as $key => $sexo) {
-                $merge_arr = array_merge($amostras[$key], ['sexo' => $sexo]);
+            if (!empty($this->request->getData('sexo'))) {
+                foreach (@$this->request->getData('sexo') as $key => $sexo) {
+                    $merge_arr = array_merge($amostras[$key], ['sexo' => $sexo]);
+                    $amostras[$key] = $merge_arr;
+                }
+            }
+            foreach ($this->request->getQuery('config_assintomaticos') as $key => $sexo) {
+                $merge_arr = array_merge($amostras[$key], ['config_assintomaticos' => $sexo]);
                 $amostras[$key] = $merge_arr;
             }
 
@@ -563,88 +573,89 @@ class AmostrasController extends AppController
                 'contain' => [],
             ]);
 
+            dd($amostras);
             foreach ($amostras as $key => $amostra) {
 
                 $saldo = $cliente->getSaldo();
 
                 if ($saldo > 0) {
-                $amostra_save = $this->Amostras->newEntity();
-                $amostra_save = $this->Amostras->patchEntity($amostra_save, [
-                    'code_amostra' => $amostra['amostra_id'],
-                    'uf' => @$amostra['uf'],
-                    'idade' => @$amostra['idade'],
-                    'sexo' => strtoupper(@$amostra['sexo']),
-                    'lote' => $this->generateLote($date_init)
-                ]);
-
-                $amostra_save = $this->Amostras->save($amostra_save);
-
-
-                // FAZ COMUNICAO COM O SERVICO DE IA
-                // SALVA O RETORNO EM RESULTADO
-
-                $exame_find = $this->Exames->find('all', [
-                    'contain' => ['ExameOrigens.Origens.Encadeamentos.Origens'],
-                    'conditions' => ['amostra_id' => $amostra['amostra_id']]
-                ])->first();
-
-                $integration = $this->callIntegration($exame_find);
-
-                $exame_find->resultado = '1';
-
-                $this->ExamesData->save($exame_find->hash, $integration);
-
-                if (!empty($exame_find->pedido_id)) {
-                    $pedido = $this->Pedidos->get($exame_find->pedido_id, [
-                        'contain' => ['Anamneses.Pacientes','Exames']
+                    $amostra_save = $this->Amostras->newEntity();
+                    $amostra_save = $this->Amostras->patchEntity($amostra_save, [
+                        'code_amostra' => $amostra['amostra_id'],
+                        'uf' => @$amostra['uf'],
+                        'idade' => @$amostra['idade'],
+                        'sexo' => strtoupper(@$amostra['sexo']),
+                        'lote' => $this->generateLote($date_init)
                     ]);
 
-                    $log = [
-                        'codigo_pedido' => $pedido->codigo_pedido,
-                        'user_id' => $this->Auth->user('id'),
-                        'status_anterior' =>  $pedido->status,
-                        'status_atual' => 'Finalizado',
-                        'amostra_url' => $pedido->exame->file_name
-                    ];
-                    $this->TrackingPedidos->createLog($log);
+                    $amostra_save = $this->Amostras->save($amostra_save);
 
-                    $pedido->status = 'Finalizado';
-                    $this->Pedidos->save($pedido);
 
-                    if(!empty($pedido->anamnese->paciente->token_push)){
-                        $push = [
-                            'paciente_id' => $pedido->anamnese->paciente_id,
-                            'title' => 'Você tem exame concluído!',
-                            'body' => 'Verifique o resultado do seu exame!'
+                    // FAZ COMUNICAO COM O SERVICO DE IA
+                    // SALVA O RETORNO EM RESULTADO
+
+                    $exame_find = $this->Exames->find('all', [
+                        'contain' => ['ExameOrigens.Origens.Encadeamentos.Origens'],
+                        'conditions' => ['amostra_id' => $amostra['amostra_id']]
+                    ])->first();
+
+                    $integration = $this->callIntegration($exame_find);
+
+                    $exame_find->resultado = '1';
+
+                    $this->ExamesData->save($exame_find->hash, $integration);
+
+                    if (!empty($exame_find->pedido_id)) {
+                        $pedido = $this->Pedidos->get($exame_find->pedido_id, [
+                            'contain' => ['Anamneses.Pacientes', 'Exames']
+                        ]);
+
+                        $log = [
+                            'codigo_pedido' => $pedido->codigo_pedido,
+                            'user_id' => $this->Auth->user('id'),
+                            'status_anterior' =>  $pedido->status,
+                            'status_atual' => 'Finalizado',
+                            'amostra_url' => $pedido->exame->file_name
                         ];
-                        $this->PushNotification->send($push);
+                        $this->TrackingPedidos->createLog($log);
+
+                        $pedido->status = 'Finalizado';
+                        $this->Pedidos->save($pedido);
+
+                        if (!empty($pedido->anamnese->paciente->token_push)) {
+                            $push = [
+                                'paciente_id' => $pedido->anamnese->paciente_id,
+                                'title' => 'Você tem exame concluído!',
+                                'body' => 'Verifique o resultado do seu exame!'
+                            ];
+                            $this->PushNotification->send($push);
+                        }
+
+                        $data_save = [
+                            'completed' => 0,
+                            'file' => '',
+                            'pedido_id' => $pedido->id
+                        ];
+                        $laudoJobs = $this->LaudoJobs->newEntity();
+                        $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
+                        $laudoJobs = $this->LaudoJobs->save($laudoJobs);
                     }
 
-                    $data_save = [
-                        'completed' => 0,
-                        'file' => '',
-                        'pedido_id' => $pedido->id
+                    $exame_find->result = 1;
+                    $this->Exames->save($exame_find);
+
+
+                    //gravando saldo
+                    $dataSave = [
+                        'cliente_id' => $this->Auth->user('cliente_id'),
+                        'type' => 'D',
+                        'valor' => 1,
+                        'created_by' => $this->Auth->user('id')
                     ];
-                    $laudoJobs = $this->LaudoJobs->newEntity();
-                    $laudoJobs = $this->LaudoJobs->patchEntity($laudoJobs, $data_save);
-                    $laudoJobs = $this->LaudoJobs->save($laudoJobs);
-                }
 
-                $exame_find->result = 1;
-                $this->Exames->save($exame_find);
-
-
-                //gravando saldo
-                $dataSave = [
-                    'cliente_id' => $this->Auth->user('cliente_id'),
-                    'type' => 'D',
-                    'valor' => 1,
-                    'created_by' => $this->Auth->user('id')
-                ];
-
-                $extratoSaldo = $this->ExtratoSaldo->newEntity();
-                $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
-                $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
+                    $extratoSaldo = $this->ExtratoSaldo->newEntity();
+                    $extratoSaldo = $this->ExtratoSaldo->patchEntity($extratoSaldo, $dataSave);
+                    $extratoSaldo = $this->ExtratoSaldo->save($extratoSaldo);
                 }
             }
 
@@ -847,7 +858,7 @@ class AmostrasController extends AppController
         return $obj;
     }
 
-    public function setOrigens($exame)
+    public function setOrigens($exame, $config_assinto)
     {
 
         $conditions = [
@@ -855,6 +866,18 @@ class AmostrasController extends AppController
             'equip_tipo' => $exame->equip_tipo,
             'ativo' => 1
         ];
+
+
+        if ($config_assinto === 'ambos') {
+            $conditions['OR'] = [
+                'assintomatico' => 1,
+                'nao_assintomatico' => 1
+            ];
+        } else if ($config_assinto === 'assintomatico') {
+            $conditions['assintomatico'] = 1;
+        } else if ($config_assinto === 'nao_assintomatico') {
+            $conditions['nao_assintomatico'] = 1;
+        }
 
         $origensByExame = $this->Origens->find('all', [
             'conditions' => $conditions
@@ -982,7 +1005,7 @@ class AmostrasController extends AppController
                             ]
                         ])->first();
 
-                        if(!empty($amostraExist2)){
+                        if (!empty($amostraExist2)) {
                             $this->Exames->delete($amostraExist2);
                         }
 
@@ -990,7 +1013,7 @@ class AmostrasController extends AppController
                             'contain' => [],
                         ]);
 
-                        if($cliente->ativo == 0){
+                        if ($cliente->ativo == 0) {
                             throw new BadRequestException(__('Cliente Inativo!'));
                             die();
                         }
@@ -1012,7 +1035,7 @@ class AmostrasController extends AppController
                             ]
                         ])->first();
 
-                        if(empty($pedido) && $pedido_fluxo){
+                        if (empty($pedido) && $pedido_fluxo) {
                             throw new BadRequestException(__('Pedido Não encontrado, o nome do arquivo deve conter o código do pedido!'));
                             die();
                         }
@@ -1043,8 +1066,9 @@ class AmostrasController extends AppController
                             $exame_save = $this->Exames->get($exame_save->id, [
                                 'contain' => ['Pedidos.Anamneses.Pacientes']
                             ]);
+                            $configAssinto = !empty($this->request->getData('config_assinto')) ? $this->request->getData('config_assinto') : $pedido->config_assintomaticos;
                             //seta as origens para disparo de request
-                            $this->setOrigens($exame_save);
+                            $this->setOrigens($exame_save, $configAssinto);
                             if ($exame_save->pedido) {
                                 $resPaciente = $this->PacientesData->getByHash($exame_save->pedido->anamnese->paciente->hash);
                                 if ($res = json_decode($resPaciente, true)) {

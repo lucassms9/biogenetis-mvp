@@ -31,5 +31,7 @@ class Origen extends Entity
         'IAModelType' => true,
         'IAModelName' => true,
         'DataScience' => true,
+        'assintomatico' => true,
+        'nao_assintomatico' => true,
     ];
 }

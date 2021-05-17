@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
@@ -11,9 +12,9 @@ use App\Controller\AppController;
  * @method \App\Model\Entity\Origen[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class OrigensController extends AppController
-{   
+{
 
-       /**
+    /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
@@ -27,19 +28,18 @@ class OrigensController extends AppController
 
     public function nextOrder($id_main)
     {
-        $encads = $this->Encadeamentos->find('all',[
+        $encads = $this->Encadeamentos->find('all', [
             'conditions' => ['origem_parent_id' => $id_main],
             'order' => ['ordem' => 'DESC']
         ])->toArray();
 
-        if(!empty($encads)){
+        if (!empty($encads)) {
             echo json_encode($encads[0]->ordem);
             exit();
-        }else{
+        } else {
             echo json_encode(0);
             exit();
         }
-
     }
 
     public function saveEncademantoMain($id_main, $regra)
@@ -49,9 +49,9 @@ class OrigensController extends AppController
         $origem->regra_encadeamento = $regra;
         $origem = $this->Origens->save($origem);
 
-        if($origem){
+        if ($origem) {
             $retorno = ['error' => 0];
-        }else{
+        } else {
             $retorno = ['error' => 1];
         }
 
@@ -61,13 +61,14 @@ class OrigensController extends AppController
 
     public function allEncads($id)
     {
-        $encads = $this->Encadeamentos->find('all',[
-            'conditions' => ['origem_parent_id' => $id
-        ]])->toArray();
+        $encads = $this->Encadeamentos->find('all', [
+            'conditions' => [
+                'origem_parent_id' => $id
+            ]
+        ])->toArray();
 
         echo json_encode($encads);
         exit();
-
     }
 
     public function removeEncademanto($id)
@@ -85,50 +86,49 @@ class OrigensController extends AppController
     }
 
     public function saveEncademanto()
-    {   
+    {
         $retorno = [];
         $req = $this->request->getQuery();
         $newItem = 0;
 
 
         $dados_save = [
-           'origem_parent_id' => $req['endpoint_parent'],
-           'origem_encadeamento_id' => $req['url_encadeamento'],
-           'regra' => $req['regra'],
-           'ordem' => $req['ordem']
+            'origem_parent_id' => $req['endpoint_parent'],
+            'origem_encadeamento_id' => $req['url_encadeamento'],
+            'regra' => $req['regra'],
+            'ordem' => $req['ordem']
         ];
 
-        if(!empty($req['instancia']) && is_numeric($req['instancia'])){
+        if (!empty($req['instancia']) && is_numeric($req['instancia'])) {
 
             $find_encad = $this->Encadeamentos->get($req['instancia']);
 
             $encad = $this->Encadeamentos->patchEntity($find_encad, $dados_save);
             $encad = $this->Encadeamentos->save($encad);
-
-        }else{
+        } else {
             $newItem = 1;
             $encad = $this->Encadeamentos->newEntity();
             $encad = $this->Encadeamentos->patchEntity($encad, $dados_save);
             $encad = $this->Encadeamentos->save($encad);
         }
 
-        if($encad) {
-            if($newItem){
-                $encad = $this->Encadeamentos->find()->last();    
+        if ($encad) {
+            if ($newItem) {
+                $encad = $this->Encadeamentos->find()->last();
             }
-            
+
             $retorno = ['error' => 0, 'encad' => $encad, 'newItem' => $newItem];
-        }else{
+        } else {
             $retorno = ['error' => 1, 'encad' => [], 'newItem' => $newItem];
         }
 
         echo json_encode($retorno);
         exit();
-
     }
-        
 
-    public function origensApi(){
+
+    public function origensApi()
+    {
         $endpoints = $this->Origens->find('all')->toArray();
         $combo_endpoint = [];
 
@@ -150,7 +150,7 @@ class OrigensController extends AppController
         ]);
 
         if ($this->request->is('post')) {
-          
+
             $encads = [];
 
             foreach ($this->request->getData('url_encad') as $key => $url_encadid) {
@@ -166,23 +166,25 @@ class OrigensController extends AppController
                 $encads[$key] = $merge_arr;
             }
 
-            $encads_find = $this->Encadeamentos->find('all',[
-                'conditions' => ['origem_parent_id' => $id
-            ]])->toArray();
+            $encads_find = $this->Encadeamentos->find('all', [
+                'conditions' => [
+                    'origem_parent_id' => $id
+                ]
+            ])->toArray();
 
             foreach ($encads_find as $key => $encad_find) {
-               $this->Encadeamentos->delete($encad_find);
+                $this->Encadeamentos->delete($encad_find);
             }
 
             foreach ($encads as $key => $encad) {
-                if(!empty($encad['origem_encadeamento_id']) && !empty($encad['regra']) && !empty($encad['ordem'])){
+                if (!empty($encad['origem_encadeamento_id']) && !empty($encad['regra']) && !empty($encad['ordem'])) {
                     $encad['origem_parent_id'] = $id;
                     $new_encad = $this->Encadeamentos->newEntity();
                     $new_encad = $this->Encadeamentos->patchEntity($new_encad, $encad);
                     $new_encad = $this->Encadeamentos->save($new_encad);
                 }
             }
-            
+
 
             $endpoint_main = $this->Origens->get($id);
             $endpoint_main->regra_encadeamento = $this->request->getData('regra_main');
@@ -192,8 +194,6 @@ class OrigensController extends AppController
             $this->Flash->success(__('Dados salvos com sucesso.'));
 
             return $this->redirect(['action' => 'index']);
-           
-
         }
 
         $endpoints = $this->Origens->find('all')->toArray();
@@ -214,7 +214,7 @@ class OrigensController extends AppController
         $encadeamento = $this->Encadeamentos->newEntity();
         $nextOrder = count($origen->encadeamentos) + 1;
 
-        $this->set(compact('origen', 'action', 'title','encadeamento','combo_endpoint','regras','nextOrder'));
+        $this->set(compact('origen', 'action', 'title', 'encadeamento', 'combo_endpoint', 'regras', 'nextOrder'));
     }
 
     /**
@@ -223,16 +223,17 @@ class OrigensController extends AppController
      * @return \Cake\Http\Response|null
      */
     public function index()
-    {   
+    {
         $action = 'Ver Todos';
         $title = 'Endpoints';
 
-        $origens = $this->paginate($this->Origens,[
+        $origens = $this->paginate($this->Origens, [
             'contain' => ['Encadeamentos.Origens'],
             'limit' => 25,
         ]);
 
-        $this->set(compact('origens', 'action', 'title'));
+        $showActions = true;
+        $this->set(compact('origens', 'action', 'title', 'showActions'));
     }
 
     /**
@@ -257,7 +258,7 @@ class OrigensController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
-    {      
+    {
         $action = 'Cadastrar';
         $title = 'Endpoints';
 
@@ -277,15 +278,20 @@ class OrigensController extends AppController
 
         $origen = $this->Origens->newEntity();
         if ($this->request->is('post')) {
-            $origen = $this->Origens->patchEntity($origen, $this->request->getData());
-            if ($this->Origens->save($origen)) {
-                $this->Flash->success(__('Endpoint salvo com sucesso.'));
+            $data = $this->request->getData();
+            if ($data['assintomatico'] == 0 && $data['nao_assintomatico'] == 0) {
+                $this->Flash->error(__('Selecione ao menos uma opção sobre assintomático'));
+            } else {
+                $origen = $this->Origens->patchEntity($origen, $data);
+                if ($this->Origens->save($origen)) {
+                    $this->Flash->success(__('Endpoint salvo com sucesso.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The origen could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The origen could not be saved. Please, try again.'));
         }
-        $this->set(compact('origen','action','title','amostra_tipos','equip_tipos','iAModelTypes'));
+        $this->set(compact('origen', 'action', 'title', 'amostra_tipos', 'equip_tipos', 'iAModelTypes'));
     }
 
     /**
@@ -296,10 +302,10 @@ class OrigensController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit($id = null)
-    {   
+    {
         $action = 'Editar Dados';
         $title = 'Endpoints';
-        
+
         $amostra_tipos = [
             'SWAB' => 'SWAB',
             'SALIVA' => 'SALIVA'
@@ -319,17 +325,23 @@ class OrigensController extends AppController
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            $origen = $this->Origens->patchEntity($origen, $this->request->getData());
+            $data = $this->request->getData();
+            if ($data['assintomatico'] == 0 && $data['nao_assintomatico'] == 0) {
+                $this->Flash->error(__('Selecione ao menos uma opção sobre assintomático'));
+            } else {
+                $origen = $this->Origens->patchEntity($origen, $data);
 
-            $origen = $this->Origens->save($origen);
-            if ($origen) {
-                $this->Flash->success(__('Endpoint salvo com sucesso.'));
+                $origen = $this->Origens->save($origen);
+                if ($origen) {
+                    $this->Flash->success(__('Endpoint salvo com sucesso.'));
 
-                return $this->redirect(['action' => 'index']);
+                    return $this->redirect(['action' => 'index']);
+                }
+                $this->Flash->error(__('The origen could not be saved. Please, try again.'));
             }
-            $this->Flash->error(__('The origen could not be saved. Please, try again.'));
+
         }
-        $this->set(compact('origen','action','title','amostra_tipos','equip_tipos','iAModelTypes'));
+        $this->set(compact('origen', 'action', 'title', 'amostra_tipos', 'equip_tipos', 'iAModelTypes'));
     }
 
     /**

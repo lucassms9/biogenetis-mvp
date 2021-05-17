@@ -93,7 +93,7 @@ class PacientesController extends RestController
     public function createAnamnese()
     {
         $result = [];
-
+        $config_assintomaticos = 'ambos';
         $body = $this->body;
         $payload = $this->payload;
 
@@ -105,6 +105,22 @@ class PacientesController extends RestController
         $body['status'] = 'completed';
         $body['cliente_id'] = $cliente->id;
 
+        if(!empty($body['sintoma_cansaco_falta_de_ar'])
+        || !empty($body['sintoma_corisa_congestao_nasal'])
+        || !empty($body['sintoma_adinamia_fraqueza`'])
+        || !empty($body['sintoma_diarreia'])
+        || !empty($body['sintoma_cefaleia_dor_de_cabeca'])
+        || !empty($body['sintoma_dor_no_corpo'])
+        || !empty($body['sintoma_expectoracao'])
+        || !empty($body['sintoma_falta_de_apetite'])
+        || !empty($body['sintoma_febre'])
+        || !empty($body['sintoma_nausea_vomitos'])
+        || !empty($body['sintoma_tosse'])
+        ){
+            $config_assintomaticos = 'assintomatico';
+        }else{
+            $config_assintomaticos = 'nao_assintomatico';
+        }
         $anamnese = $this->Anamneses->newEntity();
         $anamnese = $this->Anamneses->patchEntity($anamnese, $body);
         $anamnese = $this->Anamneses->save($anamnese);
@@ -121,6 +137,7 @@ class PacientesController extends RestController
             'created_by' => $body['paciente_id'],
             'entrada_exame_id' => $body['entrada_exame_id'],
             'status' => 'EmAtendimento',
+            'config_assintomaticos' => $config_assintomaticos
         ];
 
 

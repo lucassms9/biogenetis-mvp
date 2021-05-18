@@ -220,9 +220,24 @@ class OrdersController extends RestController
 
         $q = $this->request->getQuery();
 
+        //filtro por numero de apoio
         if (!empty($q['NumeroAtendimentoApoiado'])) {
             $conditions['numero_atendimento_apoiado'] = $q['NumeroAtendimentoApoiado'];
         }
+
+        //filtro por numero data
+        if (!empty($q['dtInicial'])) {
+            $conditions['Pedidos.created >='] = $q['dtInicial'];
+        }
+
+        if (!empty($q['dtFinal'])) {
+            $conditions['Pedidos.created <='] = $q['dtFinal'];
+        }
+
+        if (!empty($q['Procedimento'])) {
+            $conditions['Pedidos.codigo_conselho'] = $q['Procedimento'];
+        }
+
 
         $result = [];
 

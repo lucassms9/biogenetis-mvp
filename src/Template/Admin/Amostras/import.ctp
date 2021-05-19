@@ -47,7 +47,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th class="head-table" scope="col">ID amostra</th>
-                                        <th class="head-table" scope="col">Sintomático</th>
+                                        <th class="head-table" scope="col">Possui Sintoma?</th>
                                         <!-- <th class="head-table" scope="col">UF *</th>
                                         <th class="head-table" scope="col">Idade *</th>
                                         <th class="head-table" scope="col">Sexo *</th> -->

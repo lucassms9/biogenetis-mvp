@@ -30,16 +30,16 @@
                         <hr>
                         <h3>Preencha os campos abaixo:</h3>
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div style="margin-bottom:10px;" class="col-md-3">
-                                <label>Assintomático ou Sintomático:</label>
+                                <label>Assintomático ou :</label>
                                 <select id="config-assinto" name="config_assintomaticos" class="form-control">
                                     <option value="ambos">Ambos</option>
                                     <option value="assintomatico">Assintomático</option>
                                     <option value="nao_assintomatico">Sintomático</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <?= $this->Form->create(null, ['id' => 'sendData', 'url' => ['action' => 'sendData']]) ?>
 
                         <div class="table-responsive">
@@ -47,7 +47,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th class="head-table" scope="col">ID amostra</th>
-                                        <th class="head-table" scope="col">Assintomático</th>
+                                        <th class="head-table" scope="col">Sintomático</th>
                                         <!-- <th class="head-table" scope="col">UF *</th>
                                         <th class="head-table" scope="col">Idade *</th>
                                         <th class="head-table" scope="col">Sexo *</th> -->

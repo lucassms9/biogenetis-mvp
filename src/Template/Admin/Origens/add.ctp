@@ -64,7 +64,7 @@
                                 <?php echo $this->Form->control('assintomatico',['class' => 'custom-style-check', 'label' => 'Assintomático',]); ?>
                             </div>
                             <div class="col-md-2">
-                                <?php echo $this->Form->control('nao_assintomatico',['class' => 'custom-style-check', 'label' =>'Sintomático']); ?>
+                                <?php echo $this->Form->control('sintomatico',['class' => 'custom-style-check', 'label' =>'Sintomático']); ?>
                             </div>
                         </div>
 

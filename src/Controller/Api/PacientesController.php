@@ -93,7 +93,7 @@ class PacientesController extends RestController
     public function createAnamnese()
     {
         $result = [];
-        $config_assintomaticos = 'ambos';
+        $sintomaticos = 0;
         $body = $this->body;
         $payload = $this->payload;
 
@@ -117,9 +117,9 @@ class PacientesController extends RestController
         || !empty($body['sintoma_nausea_vomitos'])
         || !empty($body['sintoma_tosse'])
         ){
-            $config_assintomaticos = 'assintomatico';
+            $sintomaticos = 1;
         }else{
-            $config_assintomaticos = 'nao_assintomatico';
+            $sintomaticos = 0;
         }
         $anamnese = $this->Anamneses->newEntity();
         $anamnese = $this->Anamneses->patchEntity($anamnese, $body);
@@ -137,7 +137,7 @@ class PacientesController extends RestController
             'created_by' => $body['paciente_id'],
             'entrada_exame_id' => $body['entrada_exame_id'],
             'status' => 'EmAtendimento',
-            'config_assintomaticos' => $config_assintomaticos
+            'sintomatico' => $sintomaticos
         ];
 
 

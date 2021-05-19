@@ -15,7 +15,7 @@ $(window).scroll(function (event) {
 
 var qtd_files = 0;
 var qtd_files_removed = 0;
-var configAssinto = "";
+// var configAssinto = "";
 
 function submitForm() {
     Swal.fire({
@@ -35,6 +35,8 @@ function submitForm() {
         }
     });
 
+
+
     $("#sendData").submit();
 }
 
@@ -52,6 +54,11 @@ function amountForm(file) {
         '" />';
 
     html += "</th>";
+
+    html +=
+        '<td><input type="hidden" name="sintomatico[]" value="0"><input type="checkbox" onclick="changeValue(this)">';
+
+        // <input style="width: 60px;" type="button" value="Não" name="sintomatico[]" onClick="changeValue(this)" class="form-control"/></td>
 
     $("#input-files").append(html);
 
@@ -88,25 +95,32 @@ Dropzone.prototype.defaultOptions.dictMaxFilesExceeded =
     "You can not upload any more files.";
 
 $(document).ready(function () {
-    configAssinto = $("#config-assinto").find(":selected").val();
-    $("#config-assinto").change(function () {
-        configAssinto = $(this).val();
-        console.log(configAssinto);
-    });
+    // configAssinto = $("#config-assinto").find(":selected").val();
+    // $("#config-assinto").change(function () {
+    //     configAssinto = $(this).val();
+    //     console.log(configAssinto);
+    // });
     execFormDrop();
+
 });
 
+function changeValue(obj) {
+
+    var curr = $(obj).prev();
+    if($(obj).is(':checked')){
+        curr.val('1')
+    }else{
+        curr.val('0')
+    }
+}
 function execFormDrop() {
     $("#formFiles").dropzone({
         maxFiles: 2000,
         addRemoveLinks: true,
-        params: function params(files, xhr, chunk) {
-            return { config_assinto: configAssinto };
-        },
-        url:
-            BASE_URL_ADMIN +
-            "amostras/import?qtd_files=" +
-            qtd_files,
+        // params: function params(files, xhr, chunk) {
+        //     return { config_assinto: configAssinto };
+        // },
+        url: BASE_URL_ADMIN + "amostras/import?qtd_files=" + qtd_files,
         accept: function (file, done) {
             let fileExt = file.name.split(".");
             let ext = fileExt[fileExt.length - 1];

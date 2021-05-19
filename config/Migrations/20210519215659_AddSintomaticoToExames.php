@@ -1,7 +1,8 @@
 <?php
+
 use Migrations\AbstractMigration;
 
-class AddConfigAssintoToPedidos extends AbstractMigration
+class AddSintomaticoToExames extends AbstractMigration
 {
     /**
      * Change Method.
@@ -12,7 +13,7 @@ class AddConfigAssintoToPedidos extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('pedidos');
+        $table = $this->table('exames');
         $table->addColumn('sintomatico', 'boolean', [
             'default' => 0,
             'null' => false,

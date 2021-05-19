@@ -17,7 +17,7 @@ class AddAssintomaticosToOrigens extends AbstractMigration
             'default' => 0,
             'null' => false,
         ]);
-        $table->addColumn('nao_assintomatico', 'boolean', [
+        $table->addColumn('sintomatico', 'boolean', [
             'default' => 0,
             'null' => false,
         ]);

@@ -279,7 +279,7 @@ class OrigensController extends AppController
         $origen = $this->Origens->newEntity();
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            if ($data['assintomatico'] == 0 && $data['nao_assintomatico'] == 0) {
+            if ($data['assintomatico'] == 0 && $data['sintomatico'] == 0) {
                 $this->Flash->error(__('Selecione ao menos uma opção sobre assintomático'));
             } else {
                 $origen = $this->Origens->patchEntity($origen, $data);
@@ -326,7 +326,7 @@ class OrigensController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             $data = $this->request->getData();
-            if ($data['assintomatico'] == 0 && $data['nao_assintomatico'] == 0) {
+            if ($data['assintomatico'] == 0 && $data['sintomatico'] == 0) {
                 $this->Flash->error(__('Selecione ao menos uma opção sobre assintomático'));
             } else {
                 $origen = $this->Origens->patchEntity($origen, $data);

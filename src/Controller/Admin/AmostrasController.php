@@ -564,15 +564,20 @@ class AmostrasController extends AppController
                     $amostras[$key] = $merge_arr;
                 }
             }
-            // foreach ($this->request->getQuery('config_assintomaticos') as $key => $sexo) {
-            //     $merge_arr = array_merge($amostras[$key], ['config_assintomaticos' => $sexo]);
-            //     $amostras[$key] = $merge_arr;
-            // }
+
+            $total_amostras = $this->request->getData('totalFiles');
+
+            if (!empty($this->request->getData('sintomatico'))) {
+                foreach (@$this->request->getData('sintomatico') as $key => $sintomatico) {
+                    $merge_arr = array_merge($amostras[$key], ['sintomatico' => $sintomatico]);
+                    $amostras[$key] = $merge_arr;
+                }
+            }
+
 
             $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
                 'contain' => [],
             ]);
-
 
             foreach ($amostras as $key => $amostra) {
 
@@ -585,7 +590,7 @@ class AmostrasController extends AppController
                         'uf' => @$amostra['uf'],
                         'idade' => @$amostra['idade'],
                         'sexo' => strtoupper(@$amostra['sexo']),
-                        'lote' => $this->generateLote($date_init)
+                        'lote' => $this->generateLote($date_init),
                     ]);
 
                     $amostra_save = $this->Amostras->save($amostra_save);
@@ -598,6 +603,16 @@ class AmostrasController extends AppController
                         'contain' => ['ExameOrigens.Origens.Encadeamentos.Origens'],
                         'conditions' => ['amostra_id' => $amostra['amostra_id']]
                     ])->first();
+
+
+                    //update exame
+                    $exame_find->sintomatico = $amostra['sintomatico'];
+
+                    $this->Exames->save($exame_find);
+
+                    //seta as origens para disparo de request
+                    $this->setOrigens($exame_find);
+
 
                     $integration = $this->callIntegration($exame_find);
 
@@ -858,7 +873,7 @@ class AmostrasController extends AppController
         return $obj;
     }
 
-    public function setOrigens($exame, $config_assinto)
+    public function setOrigens($exame)
     {
 
         $conditions = [
@@ -867,16 +882,10 @@ class AmostrasController extends AppController
             'ativo' => 1
         ];
 
-
-        if ($config_assinto === 'ambos') {
-            $conditions['OR'] = [
-                'assintomatico' => 1,
-                'nao_assintomatico' => 1
-            ];
-        } else if ($config_assinto === 'assintomatico') {
+        if ($exame->sintomatico) {
+            $conditions['sintomatico'] = 1;
+        } else {
             $conditions['assintomatico'] = 1;
-        } else if ($config_assinto === 'nao_assintomatico') {
-            $conditions['nao_assintomatico'] = 1;
         }
 
         $origensByExame = $this->Origens->find('all', [
@@ -1066,9 +1075,6 @@ class AmostrasController extends AppController
                             $exame_save = $this->Exames->get($exame_save->id, [
                                 'contain' => ['Pedidos.Anamneses.Pacientes']
                             ]);
-                            $configAssinto = !empty($this->request->getData('config_assinto')) ? $this->request->getData('config_assinto') : $pedido->config_assintomaticos;
-                            //seta as origens para disparo de request
-                            $this->setOrigens($exame_save, $configAssinto);
                             if ($exame_save->pedido) {
                                 $resPaciente = $this->PacientesData->getByHash($exame_save->pedido->anamnese->paciente->hash);
                                 if ($res = json_decode($resPaciente, true)) {

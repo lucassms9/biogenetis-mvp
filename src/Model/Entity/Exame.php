@@ -43,5 +43,6 @@ class Exame extends Entity
         'amostra' => true,
         'file_name' => true,
         'hash' => true,
+        'sintomatico' => true,
     ];
 }

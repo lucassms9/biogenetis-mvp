@@ -61,10 +61,10 @@
 
                         <div style="margin-top: 10px" class="row">
                             <div class="col-md-2">
-                                <?php echo $this->Form->control('assintomatico',['class' => 'custom-style-check', 'label' => 'Assitomático',]); ?>
+                                <?php echo $this->Form->control('assintomatico',['class' => 'custom-style-check', 'label' => 'Assintomático',]); ?>
                             </div>
                             <div class="col-md-2">
-                                <?php echo $this->Form->control('nao_assintomatico',['class' => 'custom-style-check', 'label' =>'Não Assitomático']); ?>
+                                <?php echo $this->Form->control('nao_assintomatico',['class' => 'custom-style-check', 'label' =>'Sintomático']); ?>
                             </div>
                         </div>
 

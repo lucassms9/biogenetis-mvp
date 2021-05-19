@@ -564,16 +564,15 @@ class AmostrasController extends AppController
                     $amostras[$key] = $merge_arr;
                 }
             }
-            foreach ($this->request->getQuery('config_assintomaticos') as $key => $sexo) {
-                $merge_arr = array_merge($amostras[$key], ['config_assintomaticos' => $sexo]);
-                $amostras[$key] = $merge_arr;
-            }
+            // foreach ($this->request->getQuery('config_assintomaticos') as $key => $sexo) {
+            //     $merge_arr = array_merge($amostras[$key], ['config_assintomaticos' => $sexo]);
+            //     $amostras[$key] = $merge_arr;
+            // }
 
             $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
                 'contain' => [],
             ]);
 
-            dd($amostras);
             foreach ($amostras as $key => $amostra) {
 
                 $saldo = $cliente->getSaldo();

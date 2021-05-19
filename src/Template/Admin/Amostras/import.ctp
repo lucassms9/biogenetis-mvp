@@ -35,7 +35,7 @@
                                 <label>Assintomático ou Sintomático:</label>
                                 <select id="config-assinto" name="config_assintomaticos" class="form-control">
                                     <option value="ambos">Ambos</option>
-                                    <option value="assintomatico">Não Assintomático</option>
+                                    <option value="assintomatico">Assintomático</option>
                                     <option value="nao_assintomatico">Sintomático</option>
                                 </select>
                             </div>

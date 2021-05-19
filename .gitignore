@@ -8,6 +8,7 @@
 /webroot/clientes_imgs/*
 /webroot/certificados/*
 /webroot/laudo_pdf/*
+config/Migrations/schema-dump-default.lock
 
 # OS generated files #
 ######################

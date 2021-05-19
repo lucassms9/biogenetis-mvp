@@ -573,6 +573,7 @@ class AmostrasController extends AppController
                 'contain' => [],
             ]);
 
+
             foreach ($amostras as $key => $amostra) {
 
                 $saldo = $cliente->getSaldo();

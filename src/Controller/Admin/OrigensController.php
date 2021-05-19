@@ -341,6 +341,7 @@ class OrigensController extends AppController
             }
 
         }
+
         $this->set(compact('origen', 'action', 'title', 'amostra_tipos', 'equip_tipos', 'iAModelTypes'));
     }
 

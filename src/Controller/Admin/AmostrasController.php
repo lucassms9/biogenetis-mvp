@@ -613,6 +613,10 @@ class AmostrasController extends AppController
                     //seta as origens para disparo de request
                     $this->setOrigens($exame_find);
 
+                    $exame_find = $this->Exames->find('all', [
+                        'contain' => ['ExameOrigens.Origens.Encadeamentos.Origens'],
+                        'conditions' => ['amostra_id' => $amostra['amostra_id']]
+                    ])->first();
 
                     $integration = $this->callIntegration($exame_find);
 
@@ -729,6 +733,7 @@ class AmostrasController extends AppController
         ];
 
         foreach ($exame->exame_origens as $origem) {
+
 
             $url = $origem->origen->url_request;
             $filedata = AMOSTRAS . $exame->amostra_id . '.' . $exame->file_extesion;

@@ -16,7 +16,7 @@
                             <div class="col-md-4">
                                 <?php echo $this->Form->control('nome',['class' => 'form-control']); ?>
                             </div>
-                           
+
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('rg',['class'=> 'form-control','label' => 'RG', 'disabled' => true]); ?>
                             </div>
@@ -28,6 +28,9 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('email',['class'=> 'form-control','label' => 'E-mail']); ?>
+                            </div>
+                            <div class="col-md-3">
+                                <?php echo $this->Form->control('numero_cartao_nacional_saude',['class'=> 'form-control','label' => 'Número Cartão Sus']); ?>
                             </div>
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('celular',['class'=> 'form-control']); ?>

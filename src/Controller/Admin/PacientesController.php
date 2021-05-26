@@ -122,11 +122,11 @@ class PacientesController extends AppController
             }
 
 
-            if(!empty($req['paciente_unidade_saude_14_dias_estado'])){
+            if (!empty($req['paciente_unidade_saude_14_dias_estado'])) {
                 $req['paciente_unidade_saude_14_dias_estado'] = $this->getStateById($req['paciente_unidade_saude_14_dias_estado']);
             }
 
-            if(!empty($req['viagem_brasil_estado'])){
+            if (!empty($req['viagem_brasil_estado'])) {
                 $req['viagem_brasil_estado'] = $this->getStateById($req['viagem_brasil_estado']);
             }
             $validar = [
@@ -222,7 +222,7 @@ class PacientesController extends AppController
                         $this->Flash->error(__('Erro ao salvar dados #32!'));
                     }
                 } else {
-                    $this->Flash->error(__('The paciente could not be saved. Please, try again.'  ));
+                    $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
                 }
             }
         }
@@ -297,10 +297,10 @@ class PacientesController extends AppController
 
 
         foreach ($estados_find as $key => $estado) {
-           $estados[$estado['id']] = $estado['sigla'];
+            $estados[$estado['id']] = $estado['sigla'];
         }
 
-        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query','estados','cidades_unidade','cidades_viagem'));
+        $this->set(compact('paciente', 'action', 'title', 'sexos', 'disabled_inputs', 'anamnese', 'useForm', 'query', 'estados', 'cidades_unidade', 'cidades_viagem'));
     }
 
     public function getCityById($id)
@@ -309,7 +309,6 @@ class PacientesController extends AppController
         return $city;
         echo json_encode($city);
         die;
-
     }
     public function getStateById($id)
     {
@@ -348,13 +347,14 @@ class PacientesController extends AppController
         return $validacao['errors'] = true;
     }
 
-    public function sendPassword($email, $senha){
+    public function sendPassword($email, $senha)
+    {
         $dadosEmail = array();
         $dadosEmail['from'] = ['contato@testecovidexpress.com.br' => 'Covid Express'];
         $dadosEmail['to'] = $email;
         $dadosEmail['subject'] = 'Boas Vindas - Senha Temporária';
 
-        $dadosEmail['message'] = "Sua senha provisória é: ".$senha.". \n acesse o app agora mesmo para acompanhar o resultado do seu exame. ";
+        $dadosEmail['message'] = "Sua senha provisória é: " . $senha . ". \n acesse o app agora mesmo para acompanhar o resultado do seu exame. ";
 
         $this->Email->sendEmail($dadosEmail);
     }
@@ -373,25 +373,39 @@ class PacientesController extends AppController
             $user_data =  json_decode($resPaciente);
 
             $API_ROOT = env('USER_ENDPOINT');
-            try{
-                $data = array(
-                    "hash" =>  $user_data->hash, "nome"        =>  $req['nome'], "cpf"         =>  $req['cpf'], "rg"          =>  $req['rg'], "email"       =>  $req['email'], "celular"     =>  $req['celular'], "telefone"    =>  $req['telefone'], "sexo"        =>  $req['sexo'], "data_nascimento" =>  $req['data_nascimento'], "endereco"        =>  $req['endereco'], "bairro"          =>  $req['bairro'], "cep"             =>  $req['cep'], "cidade"          =>  $req['cidade'], "uf"              =>  $req['uf'], "foto_perfil_url"   =>  $req['foto_perfil_url'], "foto_doc_url"      =>  $req['foto_doc_url'], "nome_da_mae"       =>  $req['nome_da_mae'], "nacionalidade"     =>  $req['nacionalidade'], "pais_residencia"   =>  $req['pais_residencia']
-                );
+            try {
+                $data = [
+                    "hash" =>  $user_data->hash,
+                    "numero_cartao_nacional_saude" => $req['numero_cartao_nacional_saude'],
+                    "nome" =>  $req['nome'],
+                    "cpf"         =>  $req['cpf'],
+                    "rg"          =>  $req['rg'],
+                    "email"       =>  $req['email'],
+                    "celular"     =>  $req['celular'],
+                    "telefone"    =>  $req['telefone'],
+                    "sexo"        =>  $req['sexo'],
+                    "data_nascimento" =>  $req['data_nascimento'], "endereco"        =>  $req['endereco'],
+                    "bairro"          =>  $req['bairro'],
+                    "cep"             =>  $req['cep'],
+                    "cidade"          =>  $req['cidade'],
+                    "uf"              =>  $req['uf'],
+                    "foto_perfil_url"   =>  $req['foto_perfil_url'], "foto_doc_url"      =>  $req['foto_doc_url'], "nome_da_mae"       =>  $req['nome_da_mae'], "nacionalidade"     =>  $req['nacionalidade'], "pais_residencia"   =>  $req['pais_residencia']
+                ];
+
                 $json = json_encode($data);
                 $http = new Client();
                 $response = $http->post($API_ROOT . 'paciente/update', $json, [
                     'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
                 ]);
-            }catch(Exception $e){
-
+            } catch (Exception $e) {
             }
 
             $find_paciente = $this->Pacientes->find('all', [
                 'conditions' => ['hash' => $user_data->hash]
             ])->first();
-            if(!empty($find_paciente)){
+            if (!empty($find_paciente)) {
                 $user_data->id =  $find_paciente->id;
-            }else{
+            } else {
                 $jst_r  = json_decode($resPaciente);
                 $req['hash'] = $jst_r->hash;
 
@@ -405,13 +419,17 @@ class PacientesController extends AppController
                 $paciente = $this->Pacientes->patchEntity($paciente, $req);
                 $paciente = $this->Pacientes->save($paciente);
                 $user_data->id =  $paciente->id;
-
             }
             return  $user_data;
         } else {
             $API_ROOT = env('USER_ENDPOINT');
             $data = array(
-                "nome"        =>  $req['nome'], "cpf"         =>  $req['cpf'], "rg"          =>  $req['rg'], "email"       =>  $req['email'], "celular"     =>  $req['celular'], "telefone"    =>  $req['telefone'], "sexo"        =>  $req['sexo'], "data_nascimento" =>  $req['data_nascimento'], "endereco"        =>  $req['endereco'], "bairro"          =>  $req['bairro'], "cep"             =>  $req['cep'], "cidade"          =>  $req['cidade'], "uf"              =>  $req['uf'], "foto_perfil_url"   =>  $req['foto_perfil_url'], "foto_doc_url"      =>  $req['foto_doc_url'], "nome_da_mae"       =>  $req['nome_da_mae'], "nacionalidade"     =>  $req['nacionalidade'], "pais_residencia"   =>  $req['pais_residencia']
+                "nome"        =>  $req['nome'], "cpf"         =>  $req['cpf'], "rg"          =>  $req['rg'], "email"       =>  $req['email'], "celular"     =>  $req['celular'], "telefone"    =>  $req['telefone'], "sexo"        =>  $req['sexo'], "data_nascimento" =>  $req['data_nascimento'], "endereco"        =>  $req['endereco'], "bairro"          =>  $req['bairro'], "cep"             =>  $req['cep'], "cidade"          =>  $req['cidade'], "uf"              =>  $req['uf'], "foto_perfil_url"   =>  $req['foto_perfil_url'], "foto_doc_url"      =>  $req['foto_doc_url'], "nome_da_mae"       =>  $req['nome_da_mae'],
+
+                "nacionalidade"     =>  $req['nacionalidade'],
+                "numero_cartao_nacional_saude"     =>  $req['numero_cartao_nacional_saude'],
+
+                "pais_residencia"   =>  $req['pais_residencia']
             );
             $json = json_encode($data);
             $http = new Client();
@@ -450,13 +468,13 @@ class PacientesController extends AppController
         $pacientes_data = json_decode($this->PacientesData->getByHash($paciente->hash));
         if ($this->request->is(['patch', 'post', 'put'])) {
             $paciente = $this->Pacientes->patchEntity($paciente, $this->request->getData());
-           /*
+            /*
                 $body["nacionalidade"] = "BRASILEIRA";
                 $body["pais_residencia"] = "BRASIL";
             */
             $json = $this->request->getData();
             $json['hash'] =  $paciente->hash;
-            $json = json_encode( $json);
+            $json = json_encode($json);
             $http = new Client();
             $response = $http->post($this->API_ROOT . 'paciente/update', $json, [
                 'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($json)]
@@ -470,23 +488,24 @@ class PacientesController extends AppController
             $this->Flash->error(__('The paciente could not be saved. Please, try again.'));
         }
         $sexos = $this->sexos;
-        $paciente->nome = $pacientes_data->nome ;
-        $paciente->cpf = $pacientes_data->cpf ;
-        $paciente->rg = $pacientes_data->rg ;
-        $paciente->sexo = $pacientes_data->sexo ;
-        $paciente->email = $pacientes_data->email ;
-        $paciente->celular = $pacientes_data->celular ;
-        $paciente->telefone = $pacientes_data->telefone ;
-        $paciente->data_nascimento = $pacientes_data->data_nascimento ;
-        $paciente->cep = $pacientes_data->cep ;
-        $paciente->endereco = $pacientes_data->endereco ;
-        $paciente->bairro = $pacientes_data->bairro ;
-        $paciente->cidade = $pacientes_data->cidade ;
-        $paciente->uf = $pacientes_data->uf ;
-        $paciente->nome_da_mae = $pacientes_data->nome_da_mae ;
-        $paciente->nacionalidade = $pacientes_data->nacionalidade ;
-        $paciente->pais_residencia = $pacientes_data->pais_residencia ;
-        $paciente->profissao = $pacientes_data->profissao ;
+        $paciente->nome = $pacientes_data->nome;
+        $paciente->numero_cartao_nacional_saude = $pacientes_data->numero_cartao_nacional_saude;
+        $paciente->cpf = $pacientes_data->cpf;
+        $paciente->rg = $pacientes_data->rg;
+        $paciente->sexo = $pacientes_data->sexo;
+        $paciente->email = $pacientes_data->email;
+        $paciente->celular = $pacientes_data->celular;
+        $paciente->telefone = $pacientes_data->telefone;
+        $paciente->data_nascimento = $pacientes_data->data_nascimento;
+        $paciente->cep = $pacientes_data->cep;
+        $paciente->endereco = $pacientes_data->endereco;
+        $paciente->bairro = $pacientes_data->bairro;
+        $paciente->cidade = $pacientes_data->cidade;
+        $paciente->uf = $pacientes_data->uf;
+        $paciente->nome_da_mae = $pacientes_data->nome_da_mae;
+        $paciente->nacionalidade = $pacientes_data->nacionalidade;
+        $paciente->pais_residencia = $pacientes_data->pais_residencia;
+        $paciente->profissao = $pacientes_data->profissao;
         $this->set(compact('paciente', 'action', 'title', 'sexos'));
     }
 

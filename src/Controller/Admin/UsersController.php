@@ -19,6 +19,16 @@ class UsersController extends AppController
         parent::initialize();
         $this->loadModel('TecnicoPeritos');
         $this->loadComponent('Helpers');
+        $this->loadComponent('RNDS');
+    }
+
+
+    public function teste()
+    {
+        $action = 'Home';
+        $title = 'Biogenetics';
+
+        $this->RNDS->getToken();
     }
 
     /**

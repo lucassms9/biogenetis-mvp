@@ -90,7 +90,7 @@
 
                     <li><span style="border-bottom: 2px solid;"  class="font-weight-bold">Positivo</span> <span class="font-weight-bold">+</span> <span style="border-bottom: 2px solid;"  class="font-weight-bold">Presença de Sintomas Gripais</span> (tosse, corisa nasal, dor no corpo, febre, dor de garganta, dor de cabeça, perda de olfato e/ou paladar) – Infecção por COVID-19 confirmada.</li>
 
-                    <li><span style="border-bottom: 2px solid;"  class="font-weight-bold">Positivo</span><span class="font-weight-bold">+</span><span style="border-bottom: 2px solid;"  class="font-weight-bold">Ausência de Sintomas Gripais</span> – Recomendado repetir o exame em 3-5 dias ou prosseguir investigação com RT-PCR.</li>
+                    <li><span style="border-bottom: 2px solid;"  class="font-weight-bold">Indeterminado</span><span class="font-weight-bold">+</span><span style="border-bottom: 2px solid;"  class="font-weight-bold">Ausência de Sintomas Gripais</span> – Recomendado repetir o exame em 3-5 dias ou prosseguir investigação com RT-PCR.</li>
                 </ul>
             </div>
 

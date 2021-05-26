@@ -1,0 +1,224 @@
+
+/**
+2823 - identificador-solicitante - disponibilizado pelo Portal de Serviços
+id-unico-na-origem - id do cliente
+
+REL - Resultado de Exame(s) Laboratoriais(s)
+
+individuo-cns - numero do cartao sus do paciente, add ao cadastro de pacientes
+
+{{cnsProfissional}} - 138352136850009
+
+9846972 - {{autor || cnes }} “Author” é o responsável por gerar o
+documento, podendo ser pessoa jurídica (CNPJ), profissional liberal (CNS) ou estabelecimento de saúde
+(CNES).
+
+0214	Diagnóstico por teste rápido
+
+resultados
+1	Detectável
+2	Não Detectável
+3	Inconclusivo
+
+SECONF	Secreção Orofaríngea e Nasofaríngea
+SNOF	Swab Naso-Orofaríngeo
+SWNAFA	Swab Nasofaríngeo
+SWAB	Swab
+SECNAS	Secreção Nasofaríngea
+ASNAFA	Aspirado Nasofaríngeo
+SWORO	Swab Orofaríngeo
+SWNAS	Swab Nasal
+SECORF	Secreção Orofaríngea
+LAVBRA	Lavado Brônquico Alveolar
+LAVBRO	Lavado Brônquico
+CORIZA	Coriza
+EXSNAS	Exsudato de Nasofaringe
+ASPBRO	Aspirado Brônquico
+LAVTBR	Lavado Traqueo-Brônquico
+SECTRA	Secreção Traqueal
+EXSORO	Exsudato de Orofaringe
+FGMP	Fragmentos do pulmão
+FGMT	Fragmento
+FLUORA	Fluido oral
+FRAAMI	Fragmentos de ampigdalas
+FRABAC	Fragmentos de baço
+FRACOR	Fragmentos de coração
+FRAFIG	Fragmentos de fígado
+FRAGT	Fragmento de tecido
+FRAMOR	Fragmentos de múltiplos órgãos
+FRAPAN	Fragmentos de pâncreas
+FRARIM	Fragmentos de rim
+FRATRA	Fragmentos de traquéia
+FRBRON	Fragmentos de brônquio
+INFP	Infiltrado pulmonar
+INODER	Inoculação intradérmica
+LAVORO	Lavado de orofaringe
+MTBIO	Material Não Biológico
+SECBRO	Secreção brônquica
+SECOC	Secreção ocular
+SECPEN	Secreção peniana
+SGEDT	Sangue com EDTA
+SGHEM	Sangue
+SNCCEB	Fragmento do tecido do SNC - cérebro
+SWBAN	Swab Anal
+SWOCU	Swab Ocular
+SWRET	Swab retal
+TECPM	Tecido pós-mortem
+*/
+{
+    "resourceType": "Bundle",
+    "meta": {
+        "lastUpdated": "2020-03-23T14:23:56.567-02:00"
+    },
+    "identifier": {
+        "system": "http://www.saude.gov.br/fhir/r4/NamingSystem/BRRNDS-{{identificadorSolicitante}}",
+        "value": "{{id-unico-na-origem}}"
+    },
+    "type": "document",
+    "timestamp": "2020-03-23T14:23:56.567-02:00",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:transient-0",
+            "resource": {
+                "resourceType": "Composition",
+                "meta": {
+                    "profile": [
+                        "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRResultadoExameLaboratorial-1.0"
+                    ]
+                },
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRTipoDocumento",
+                            "code": "REL"
+                        }
+                    ]
+                },
+                "subject": {
+                    "identifier": {
+                        "system": "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRIndividuo-1.0",
+                        "value": "700500572752652"
+                    }
+                },
+                "date": "2020-03-23T10:30:12.947-02:00",
+                "author": [
+                    {
+                        "identifier": {
+                            "system": "http://www.saude.gov.br/fhir/r4/StructureDefinition/BREstabelecimentoSaude-1.0",
+                            "value": "{{cnes}}"
+                        }
+                    }
+                ],
+                "title": "Resultado de Exame Laboratorial",
+                "section": [
+                    {
+                        "entry": [
+                            {
+                                "reference": "urn:uuid:transient-1"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:transient-1",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRDiagnosticoLaboratorioClinico-1.0"
+                    ]
+                },
+                "status": "final",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRSubgrupoTabelaSUS",
+                                "code": "0214"
+                            }
+                        ]
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRNomeExameGAL",
+                            "code": "coronavirusnCoV"
+                        }
+                    ]
+                },
+                "subject": {
+                    "identifier": {
+                        "system": "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRIndividuo-1.0",
+                        "value": "700500572752652"
+                    }
+                },
+                "issued": "2020-03-23T10:30:12.947-02:00",
+                "performer": [
+                    {
+                        "identifier": {
+                            "system": "http://www.saude.gov.br/fhir/r4/StructureDefinition/BREstabelecimentoSaude-1.0",
+                            "value": "{{cnes}}"
+                        }
+                    }
+                ],
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRResultadoQualitativoExame",
+                            "code": "3"
+                        }
+                    ]
+                },
+                // "interpretation": [
+                //     {
+                //         "coding": [
+                //             {
+                //                 "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRResultadoQualitativoExame",
+                //                 "code": "2"
+                //             }
+                //         ]
+                //     }
+                // ],
+                "note": [
+                    {
+                        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mauris velit, maximus a vulputate nec, interdum ut mauris. Aenean a."
+                    }
+                ],
+                "method": {
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                },
+                "specimen": {
+                    "reference": "urn:uuid:transient-2"
+                },
+                "referenceRange": [
+                    {
+                        "text": "Vestibulum mauris velit, maximus a vulputate nec, interdum ut mauris."
+                    }
+                ]
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:transient-2",
+            "resource": {
+                "resourceType": "Specimen",
+                "meta": {
+                    "profile": [
+                        "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRAmostraBiologica-1.0"
+                    ]
+                },
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://www.saude.gov.br/fhir/r4/CodeSystem/BRTipoAmostraGAL",
+                            "code": "FLUORA"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

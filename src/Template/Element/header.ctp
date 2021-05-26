@@ -112,6 +112,9 @@
                                         </a> -->
 
                                         <?php if ($_SESSION['Auth']['User']['user_type_id'] === 1) : ?>
+                                            <a href="<?= $this->Url->build('/admin', true); ?>/configuracoes" class="dropdown-item">
+                                                <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Configurações
+                                            </a>
                                             <a href="<?= $this->Url->build('/admin', true); ?>/origens" class="dropdown-item">
                                                 <div class="d-inline-block icons-sm mr-2"><i class="mdi mdi-format-list-bulleted-square"></i></div> Endpoints
                                             </a>

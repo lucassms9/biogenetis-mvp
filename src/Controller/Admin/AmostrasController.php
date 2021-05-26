@@ -41,6 +41,7 @@ class AmostrasController extends AppController
         $this->loadComponent('PacientesData');
         $this->loadComponent('ExamesData');
         $this->loadComponent('PushNotification');
+        $this->loadComponent('RNDS');
         $this->loadModel('TrackingPedidos');
     }
 
@@ -604,9 +605,15 @@ class AmostrasController extends AppController
                         'conditions' => ['amostra_id' => $amostra['amostra_id']]
                     ])->first();
 
+                    $pedido = '';
 
+                    if (!empty($exame_find->pedido_id)) {
+                        $pedido = $this->Pedidos->get($exame_find->pedido_id, [
+                            'contain' => ['Anamneses.Pacientes', 'Exames']
+                        ]);
+                    }
                     //update exame
-                    $exame_find->sintomatico = $amostra['sintomatico'];
+                    $exame_find->sintomatico = @$amostra['sintomatico'] || $pedido->sintomatico;
 
                     $this->Exames->save($exame_find);
 
@@ -620,15 +627,13 @@ class AmostrasController extends AppController
 
                     $integration = $this->callIntegration($exame_find);
 
+
                     $exame_find->resultado = '1';
+
 
                     $this->ExamesData->save($exame_find->hash, $integration);
 
                     if (!empty($exame_find->pedido_id)) {
-                        $pedido = $this->Pedidos->get($exame_find->pedido_id, [
-                            'contain' => ['Anamneses.Pacientes', 'Exames']
-                        ]);
-
                         $log = [
                             'codigo_pedido' => $pedido->codigo_pedido,
                             'user_id' => $this->Auth->user('id'),
@@ -640,6 +645,8 @@ class AmostrasController extends AppController
 
                         $pedido->status = 'Finalizado';
                         $this->Pedidos->save($pedido);
+
+                        $this->RNDS->sendResultExam($pedido->id);
 
                         if (!empty($pedido->anamnese->paciente->token_push)) {
                             $push = [
@@ -1005,7 +1012,6 @@ class AmostrasController extends AppController
                         $handle_file = $this->getBetterRestul($file_extesion, $file);
 
                         $enviroment = env('ENVIRONMENT', 'development');
-
                         if (!empty($amostraExist) && $enviroment === 'production') {
                             throw new BadRequestException(__('Amostra já Cadastrada no Sistema.'));
                             die();
@@ -1020,7 +1026,7 @@ class AmostrasController extends AppController
                         ])->first();
 
                         if (!empty($amostraExist2)) {
-                            $this->Exames->delete($amostraExist2);
+                            // $this->Exames->delete($amostraExist2);
                         }
 
                         $cliente = $this->Clientes->get($this->Auth->user('cliente_id'), [
@@ -1067,21 +1073,29 @@ class AmostrasController extends AppController
                             $exame['pedido_id'] = $pedido->id;
                         }
 
+
+
                         $exame_save = $this->Exames->newEntity();
                         $exame_save = $this->Exames->patchEntity($exame_save, $exame);
                         $exame_save = $this->Exames->save($exame_save);
                         $exame_save->hash =   $this->Helpers->doEncrypt($exame_save->id . 'FTC' . $this->Helpers->generateRandomString(30));
-                        $exame_save = $this->Exames->save($exame_save);
 
+
+                        $exame_save = $this->Exames->save($exame_save);
 
                         $res = $this->ExamesData->save($exame_save->hash, '');
 
+
                         if ($exame_save) {
+
                             $exame_save = $this->Exames->get($exame_save->id, [
                                 'contain' => ['Pedidos.Anamneses.Pacientes']
                             ]);
                             if ($exame_save->pedido) {
+
+
                                 $resPaciente = $this->PacientesData->getByHash($exame_save->pedido->anamnese->paciente->hash);
+
                                 if ($res = json_decode($resPaciente, true)) {
                                     $exame_save->pedido->anamnese->paciente = new Paciente($res);
                                 }

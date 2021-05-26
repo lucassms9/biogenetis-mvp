@@ -75,7 +75,7 @@ function checkCpf(cpf){
            $("#telefone_paciente").val(vData.telefone);
            $("#cep_paciente").val(vData.cep);
 
-           
+
            $("#endereco_paciente").val(vData.endereco);
            $("#bairro_paciente").val(vData.bairro);
            $("#cidade_paciente").val(vData.cidade);
@@ -86,8 +86,8 @@ function checkCpf(cpf){
 
 
 
-                  
-           
+
+
         }else{
         }
     });
@@ -156,7 +156,7 @@ $(document).ready(function() {
         },1);
     });
 
-    
+
     $('#telefone_paciente').keyup(function(e){
         var vthis = $(this);
         setTimeout(function() {
@@ -190,7 +190,7 @@ $(document).ready(function() {
     $('.cpf').keydown(function(e){
         if($(this).val().length > 13
             && e.keyCode !== 46
-            && e.keyCode !== 8 
+            && e.keyCode !== 8
             && e.keyCode !== 9 ){
             $(this).val(mCPF(this.value));
             e.preventDefault();
@@ -288,7 +288,7 @@ function submitformpaciente() {
     }
 
 
-    
+
     var rg_paciente = $('#rg_paciente').val();
     if(rg_paciente.length < 3){
         $('#rg_paciente').focus();
@@ -303,7 +303,7 @@ function submitformpaciente() {
         return $('#sexo_paciente').focus();
     }
 /*
-    
+
     var email_paciente = $('#email_paciente').val();
     if(email_paciente.length < 3){
         $('#email_paciente').focus();
@@ -312,58 +312,58 @@ function submitformpaciente() {
     }
 */
 
-    
+
     var celular_paciente = $('#celular_paciente').val();
     if(celular_paciente.length < 3){
         $('#celular_paciente').focus();
         alertify.error('Você precisa informar o celular');
         return $('#celular_paciente').focus();
     }
-    
-    
+
+
     var telefone_paciente = $('#telefone_paciente').val();
     if(telefone_paciente.length < 3){
         $('#telefone_paciente').focus();
         alertify.error('Você precisa informar o telefone');
         return $('#telefone_paciente').focus();
     }
-    
-    
+
+
     var cep_paciente = $('#cep_paciente').val();
     if(cep_paciente.length < 3){
         $('#cep_paciente').focus();
         alertify.error('Você precisa informar o cep');
         return $('#cep_paciente').focus();
     }
-    
 
-    
+
+
     var endereco_paciente = $('#endereco_paciente').val();
     if(endereco_paciente.length < 3){
         $('#endereco_paciente').focus();
         alertify.error('Você precisa informar o endereço');
         return $('#endereco_paciente').focus();
     }
-    
 
 
-    
+
+
     var bairro_paciente = $('#bairro_paciente').val();
     if(bairro_paciente.length < 3){
         $('#bairro_paciente').focus();
         alertify.error('Você precisa informar o bairro');
         return $('#bairro_paciente').focus();
     }
-    
 
-    
+
+
     var cidade_paciente = $('#cidade_paciente').val();
     if(cidade_paciente.length < 3){
         $('#cidade_paciente').focus();
         alertify.error('Você precisa informar o cidade');
         return $('#cidade_paciente').focus();
     }
-    
+
 
     var uf_paciente = $('#uf_paciente').val();
     if(uf_paciente.length < 2){
@@ -371,7 +371,7 @@ function submitformpaciente() {
         alertify.error('Você precisa informar o UF');
         return $('#uf_paciente').focus();
     }
-    
+
 
     var nome_da_mae_paciente = $('#nome_da_mae_paciente').val();
     if(nome_da_mae_paciente.length < 3){
@@ -379,7 +379,7 @@ function submitformpaciente() {
         alertify.error('Você precisa informar o nome da mãe');
         return $('#nome_da_mae_paciente').focus();
     }
-    
+
     var pais_residencia_paciente = $('#pais_residencia_paciente').val();
     if(pais_residencia_paciente.length < 3){
         $('#pais_residencia_paciente').focus();
@@ -392,7 +392,7 @@ function submitformpaciente() {
         alertify.error('Você precisa informar a nacionalidade');
         return $('#nacionalidade_paciente').focus();
     }
-    
+
     var clinico_outros = $('#clinico-outros').is(":checked");
     var clinico_outros_desc = $('#clinico_outros_observacao').val();
 
@@ -452,8 +452,8 @@ function submitformpaciente() {
     var paciente_unidade_saude_14_dias = $('input[name="paciente_unidade_saude_14_dias"]:checked');
     var paciente_unidade_saude_14_dias_local = $('input[name="paciente_unidade_saude_14_dias_local"]');
     if(paciente_unidade_saude_14_dias.length === 0){
-         alertify.error('você precisa informar se o paciente esteve em alguma unidade de saúde nos 14 dias antes do início dos sintomas');
-        return $('input[name="paciente_unidade_saude_14_dias"]').focus();
+        //  alertify.error('você precisa informar se o paciente esteve em alguma unidade de saúde nos 14 dias antes do início dos sintomas');
+        // return $('input[name="paciente_unidade_saude_14_dias"]').focus();
     }
 
     if(paciente_unidade_saude_14_dias.val() === 'SIM'){

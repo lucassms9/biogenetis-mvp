@@ -1,6 +1,7 @@
 # Biogenetics Applications
 	Esse sistema é um MVP, construido exclusivamente para a biogenetics.
 
+Senha do pfx: Bio@2021
 ## Requisitos
 
 ## Configuração
@@ -10,6 +11,10 @@ deve-se:
 - finalizar um pedido
 - chamar /admin/pedidos/generateFile para gerar os pdfs
 - chamar /api/pedidos/dispatchEmails para enviar os pdfs
-### Ajustes
 
-## pontos ok
+- seeder
+
+bin/cake bake seed Articles
+
+apply
+bin/cake migrations seed

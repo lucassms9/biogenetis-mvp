@@ -141,12 +141,12 @@
 
         <div style="display: flex;margin-top: 15px;" class="col-md-12">
             <?php echo $this->Form->radio('paciente_tem_viagem', [
-                 ['value' => 'SIM', 'text' => 'SIM', 'checked' => $anamnese->viagem_exterior ? $anamnese->viagem_exterior : false],
+                 ['value' => 'SIM', 'text' => 'SIM', 'checked' => @$anamnese->viagem_exterior ? $anamnese->viagem_exterior : false],
                 ['value' => 'NÃO', 'text' => 'NÃO', 'checked' => false ],
             ], ['style' => 'margin: 0 10px;', 'disabled' => $disabled, 'required' => true]); ?>
         </div>
 
-        <?php if($anamnese->viagem_exterior):?>
+        <?php if(@$anamnese->viagem_exterior):?>
             <div  class="container-viagem">
             <?php else: ?>
             <div style="display: none;" class="container-viagem">

@@ -355,6 +355,7 @@ class AmostrasController extends AppController
             ])->toList();
 
 
+
             $qtd_colunas = 12;
 
             $nome_colunas = [
@@ -383,6 +384,7 @@ class AmostrasController extends AppController
 
             $amostras = $this->ExamesData->getExamesResult($amostras);
 
+            $files_to_zip = [];
 
             foreach ($amostras as $i => $amostra) {
 
@@ -401,6 +403,8 @@ class AmostrasController extends AppController
                     $IAModelName = $amostra->origen->IAModelName;
                     $DataScience = $amostra->origen->DataScience;
                 }
+
+                $files_to_zip[] = $amostra->exame->file_name;
 
 
                 $dados = [
@@ -426,14 +430,43 @@ class AmostrasController extends AppController
                 }
             }
 
-            $arquivo = 'resultado_geral_' . date('Y-m-d-H-i-s');
+            $arquivo = 'resultado_geral_' . date('Y-m-d-H-i-s') .'.xls';
 
-            // Redirect output to a client’s web browser (Excel5)
-            header("Content-Type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment;filename=$arquivo.xls");
-            header("Cache-Control: max-age=0");
             $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-            $objWriter->save('php://output');
+            $name = AMOSTRAS.$arquivo;
+            $objWriter->save($name);
+
+            $date = date('Y-m-d-H-i-s');
+            $arquivo_zip = "compilado_$date.zip";
+
+            $zip = new \ZipArchive;
+            $tmp_file = AMOSTRAS.$arquivo_zip;
+
+
+            if ($zip->open($tmp_file,  \ZipArchive::CREATE)) {
+
+                $zip->addFile(AMOSTRAS.$arquivo, $arquivo);
+
+                foreach ($files_to_zip as $file) {
+                    $zip->addFile(AMOSTRAS.$file, $file);
+                }
+
+                $zip->close();
+
+                header('Content-type: application/zip');
+                header('Content-Disposition: attachment; filename="'.basename($tmp_file).'"');
+                header("Content-length: " . filesize($tmp_file));
+                header("Pragma: no-cache");
+                header("Expires: 0");
+
+                ob_clean();
+                flush();
+
+                readfile($tmp_file);
+           } else {
+               echo 'Failed!';
+           }
+
             die();
         }
 

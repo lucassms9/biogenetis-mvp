@@ -48,7 +48,7 @@ class Pedido extends Entity
         'amostra' => true,
         'cliente' => true,
         'entrada_exame_id' => true,
-
+        'net_suite_id' => true,
         'codigo_prioridade' => true,
         'data_hora_DUM' => true,
         'sintomaticos' => true,

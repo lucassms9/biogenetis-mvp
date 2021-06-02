@@ -61,6 +61,7 @@ class Cliente extends Entity
         'img_header_url' => true,
         'img_footer_url' => true,
         'telefone_contato_app' => true,
+        'net_suite_id' => true,
     ];
 
     public function getSaldo()

@@ -26,6 +26,7 @@ class AmostrasController extends AppController
     public function initialize()
     {
         parent::initialize();
+        $this->loadComponent('NetSuite');
         $this->loadComponent('Paginator');
         $this->loadModel('Exames');
         $this->loadModel('AmostraErros');
@@ -679,6 +680,10 @@ class AmostrasController extends AppController
                         $pedido->status = 'Finalizado';
                         $this->Pedidos->save($pedido);
 
+                        //netsuite
+                        $this->NetSuite->executePedido($pedido->id);
+
+                        //rnds
                         $this->RNDS->sendResultExam($pedido->id);
 
                         if (!empty($pedido->anamnese->paciente->token_push)) {
@@ -1015,7 +1020,6 @@ class AmostrasController extends AppController
 
     public function import($pedido_fluxo = false)
     {
-
         $action = 'Cadastrar';
         $title = 'Amostras';
         if ($this->request->is('post')) {

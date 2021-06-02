@@ -23,6 +23,43 @@ class ClientesController extends AppController
             'Convênio' => 'Convênio'
         ];
         $this->loadModel('ExtratoSaldo');
+        $this->loadComponent('NetSuite');
+    }
+
+    public function netsuite()
+    {
+        // $this->NetSuite->createClientePF();
+        // $this->NetSuite->createClientePJ();
+
+        $clientes = $this->Clientes->find('all', [
+            'conditions' => [
+                // 'net_suite_id is null'
+                'id' => 1114
+            ]
+        ])->toArray();
+
+        foreach ($clientes as $key => $cliente) {
+            $cnpj_cpf = preg_replace("/[^0-9]/", "", $cliente->cnpj_cpf);
+            $data = [
+                'externalId' => $cliente->id,
+                'nome' => $cliente->nome_fantasia,
+                'sobrenome' => $cliente->razao_social,
+                'email' => $cliente->responsavel_email,
+                'endereco' => $cliente->endereco,
+                'estado' => $cliente->uf,
+                'cep' => preg_replace("/[^0-9]/", "", $cliente->cep),
+                'municipio' => $cliente->cidade . ' - ' . $cliente->uf,
+            ];
+
+            if (strlen($cnpj_cpf) >= 14) {
+                $external_id = $this->NetSuite->createClientePJ($data);
+            } else {
+                $external_id = $this->NetSuite->createClientePF($data);
+            }
+
+            $cliente->net_suite_id = $external_id;
+            $this->Clientes->save($cliente);
+        }
     }
 
     /**
@@ -41,13 +78,13 @@ class ClientesController extends AppController
             $conditions['id'] = $this->Auth->user('cliente_id');
         }
 
-        $clientes = $this->paginate($this->Clientes,[
+        $clientes = $this->paginate($this->Clientes, [
             'conditions' => $conditions
         ]);
 
         if ($this->Auth->user('user_type_id') == 1) {
             $showActions = true;
-        }else{
+        } else {
             $showActions = false;
         }
         $this->set(compact('clientes', 'action', 'title', 'showActions'));
@@ -82,7 +119,30 @@ class ClientesController extends AppController
         $cliente = $this->Clientes->newEntity();
         if ($this->request->is('post')) {
             $cliente = $this->Clientes->patchEntity($cliente, $this->request->getData());
-            if ($this->Clientes->save($cliente)) {
+            $cliente = $this->Clientes->save($cliente);
+            if ($cliente) {
+                $cnpj_cpf = $cliente['cnpj_cpf'];
+
+                $data = [
+                    'externalId' => $cliente->id,
+                    'nome' => $cliente->nome_fantasia,
+                    'sobrenome' => $cliente->razao_social,
+                    'email' => $cliente->responsavel_email,
+                    'endereco' => $cliente->endereco,
+                    'estado' => $cliente->uf,
+                    'cep' => preg_replace("/[^0-9]/", "", $cliente->cep),
+                    'municipio' => $cliente->cidade . ' - ' . $cliente->uf,
+                ];
+
+                if (strlen($cnpj_cpf) >= 14) {
+                    $external_id = $this->NetSuite->createClientePJ($data);
+                } else {
+                    $external_id = $this->NetSuite->createClientePF($data);
+                }
+
+                $cliente->net_suite_id = $external_id;
+                $this->Clientes->save($cliente);
+
                 $this->Flash->success(__('The cliente has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

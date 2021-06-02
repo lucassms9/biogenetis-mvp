@@ -33,7 +33,7 @@ class PedidosController extends AppController
             'Dinheiro' => 'Dinheiro',
             'Convênio' => 'Convênio'
         ];
-
+        $this->loadComponent('NetSuite');
         $this->loadComponent('Helpers');
         $this->loadComponent('GeoNames');
         $this->loadComponent('PacientesData');
@@ -49,6 +49,11 @@ class PedidosController extends AppController
         $this->loadComponent('Email');
         $this->loadModel('TrackingPedidos');
 
+    }
+
+    public function netsuite()
+    {
+        $this->NetSuite->executePedido(168);
     }
 
     public function checkBarCode($pedido_id = null)

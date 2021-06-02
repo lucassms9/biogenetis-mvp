@@ -416,7 +416,7 @@ class NetSuiteComponent extends Component
                    </platformCore:customField>
                    <!--NM_AtendimentoApoiado/id pedido-->
                    <platformCore:customField scriptId="custbody_pslad_nm_atendimentoapoiado" xsi:type="platformCore:StringCustomFieldRef">
-                       <platformCore:value>' . $data['pedido_id'] . '</platformCore:value>
+                       <platformCore:value>' . $data['net_suite_id_cliente'] . '</platformCore:value>
                    </platformCore:customField>
                    <!--NoMe_Paciente-->
                    <platformCore:customField scriptId="custbody_pslad_nm_paciente" xsi:type="platformCore:StringCustomFieldRef">
@@ -495,16 +495,23 @@ class NetSuiteComponent extends Component
         return;
 
         $pedido = $this->Pedidos->get($pedido_id, [
-            'contain' => ['Anamneses.Pacientes', 'Exames', 'PedidoCroqui']
+            'contain' => ['Anamneses.Pacientes', 'Exames', 'PedidoCroqui', 'Clientes']
         ]);
 
+        //dados paciente
         if (!empty($pedido->anamnese->paciente)) {
             $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
             $res = json_decode($resPaciente, true);
             $pedido->anamnese->paciente = new Paciente($res);
         }
 
+        //verifica se o cliente ja existe
+        if(empty($pedido->cliente->net_suite_id)){
+            return;
+        }
+
         $data = [
+            'net_suite_id_cliente' => $pedido->cliente->net_suite_id,
             'pedido_id' => $pedido->id,
             'paciente_nome' => $pedido->anamnese->paciente->nome,
             'cadastro_pedido' =>  $pedido->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->created->i18nFormat('HH:mm:ss') . '.000000-03:00',

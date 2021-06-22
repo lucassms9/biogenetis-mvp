@@ -156,13 +156,20 @@ class NetSuiteComponent extends Component
         $xml = '<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
         ' . $this->generateHeader() . '
         <soap-env:Body>
-        <add xmlns="urn:messages_2020_1.platform.webservices.netsuite.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <upsert xmlns="urn:messages_2020_1.platform.webservices.netsuite.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <!--externalId deve ser informado o Id do cliente no sistema de origem -->
             <record xmlns:cust="urn:relationships_2020_1.lists.webservices.netsuite.com" xsi:type="cust:Customer" externalId="' . $data['externalId'] . '">
                 <!--Nome -->
                 <cust:firstName>' . $data['nome'] . '</cust:firstName>
                 <!--Sobrenome -->
                 <cust:lastName>' . $data['sobrenome'] . '</cust:lastName>
+
+                <!--Telefone principal -->
+                <cust:phone>' . $data['phone1'] . '</cust:phone>
+
+                <!--Telefone alternativo -->
+                <cust:altPhone>' . $data['phone2'] . '</cust:altPhone>
+
                 <!--Email -->
                 <cust:email>' . $data['email'] . '</cust:email>
                 <!--Subsidiária -->
@@ -177,7 +184,7 @@ class NetSuiteComponent extends Component
                         <platformCore:value internalId="1" typeId="331" />
                     </platformCore:customField>
                     <platformCore:customField internalId="2231" scriptId="custentity_psg_br_cpf" xsi:type="platformCore:StringCustomFieldRef">
-                        <platformCore:value>7</platformCore:value>
+                        <platformCore:value>' . $data['externalId'] . '</platformCore:value>
                     </platformCore:customField>
                 </cust:customFieldList>
                 <!--Lista de endereços -->
@@ -208,7 +215,7 @@ class NetSuiteComponent extends Component
                                 <!--Município-->
                                 <platformCore:customField internalId="2154" scriptId="custrecord_o2g_address_l_mun" xsi:type="platformCore:SelectCustomFieldRef">
                                     <platformCore:value internalId="5936" typeId="133">
-                                        <platformCore:name>' . $data['municio'] . '</platformCore:name>
+                                        <platformCore:name>' . $data['municipio'] . '</platformCore:name>
                                     </platformCore:value>
                                 </platformCore:customField>
                                 <!--Tipo Logradouro-->
@@ -222,7 +229,7 @@ class NetSuiteComponent extends Component
                     </cust:addressbook>
                 </cust:addressbookList>
             </record>
-        </add>
+        </upsert>
         </soap-env:Body>
       </soap-env:Envelope>';
 
@@ -233,7 +240,7 @@ class NetSuiteComponent extends Component
             [
                 'headers' => [
                     'Content-Type' => 'text/xml',
-                    'SOAPAction' => 'add',
+                    'SOAPAction' => 'upsert',
                 ]
             ]
         );
@@ -241,7 +248,7 @@ class NetSuiteComponent extends Component
 
         $xmlArray = Xml::toArray(Xml::build($res_xml));
 
-        $status = $this->getStatus($xmlArray, 'addResponse', 'writeResponse');
+        $status = $this->getStatus($xmlArray, 'upsertResponse', 'writeResponse');
 
 
         if ($status['@isSuccess'] == false) {
@@ -249,7 +256,8 @@ class NetSuiteComponent extends Component
             throw new Exception(@$status['platformCore:statusDetail']['platformCore:message']);
         }
 
-        return $xmlArray['Envelope']['soapenv:Body']['addResponse']['writeResponse']['baseRef']['@internalId'];
+
+        return $xmlArray['Envelope']['soapenv:Body']['upsertResponse']['writeResponse']['baseRef']['@internalId'];
     }
 
     public function createClientePJ($data)
@@ -261,19 +269,28 @@ class NetSuiteComponent extends Component
         //     'sobrenome',
         //     'email',
         //     'endereco',
+        //     'bairro',
         //     'estado',
         //     'cep',
         //     'municipio'
         // ];
 
+
+
         $xml = '<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
         ' . $this->generateHeader() . '
         <soap-env:Body>
-          <add xmlns="urn:messages_2020_1.platform.webservices.netsuite.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <upsert xmlns="urn:messages_2020_1.platform.webservices.netsuite.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <!--externalId deve ser informado o Id do cliente no sistema de origem -->
         <record xmlns:cust="urn:relationships_2020_1.lists.webservices.netsuite.com" xsi:type="cust:Customer" externalId="' . $data['externalId'] . '">
-            <!--Nome da empresa -->
-            <cust:companyName>' . $data['nome'] . '</cust:companyName>
+            <!--Nome da empresa - Razao Social -->
+            <cust:companyName>' . $data['sobrenome'] . '</cust:companyName>
+
+            <!--Telefone principal -->
+            <cust:phone>' . $data['phone1'] . '</cust:phone>
+
+             <!--Telefone alternativo -->
+             <cust:altPhone>' . $data['phone2'] . '</cust:altPhone>
 
             <!--Email -->
             <cust:email>' . $data['email'] . '</cust:email>
@@ -294,6 +311,16 @@ class NetSuiteComponent extends Component
                 <platformCore:customField internalId="2231" scriptId="custentity_sit_l_opt_simples" xsi:type="platformCore:SelectCustomFieldRef">
                     <platformCore:value internalId="1" typeId="331" />
                 </platformCore:customField>
+                <!--Nome Fantasia -->
+                <platformCore:customField internalId="2670" scriptId="custentity_bio_nome_fantasia" xsi:type="platformCore:SelectCustomFieldRef">
+                    <platformCore:value>' . $data['sobrenome'] . '</platformCore:value>
+                </platformCore:customField>
+
+                <!--CNPJ -->
+                <platformCore:customField internalId="323" scriptId="custentity_psg_br_cnpj" xsi:type="platformCore:StringCustomFieldRef">
+                    <platformCore:value>' . $data['externalId'] . '</platformCore:value>
+                </platformCore:customField>
+
             </cust:customFieldList>
 
             <!--Lista de endereços -->
@@ -311,6 +338,7 @@ class NetSuiteComponent extends Component
 
                         <!--País -->
                         <platformCommon:country>_brazil</platformCommon:country>
+
                         <!--Logradouro -->
                         <platformCommon:addr1>' . $data['endereco'] . '</platformCommon:addr1>
                         <!--Estado -->
@@ -325,7 +353,7 @@ class NetSuiteComponent extends Component
 
                             <!--Município-->
                             <platformCore:customField internalId="2154" scriptId="custrecord_o2g_address_l_mun" xsi:type="platformCore:SelectCustomFieldRef">
-                                <platformCore:value internalId="5936" typeId="133">
+                                <platformCore:value internalId="' . $data['municipio'] . '" typeId="133">
                                     <platformCore:name>' . $data['municipio'] . '</platformCore:name>
                                 </platformCore:value>
                             </platformCore:customField>
@@ -335,14 +363,18 @@ class NetSuiteComponent extends Component
                                     <platformCore:name>Rua</platformCore:name>
                                 </platformCore:value>
                             </platformCore:customField>
+                            <customField scriptId="custrecord_sit_address_t_bairro" internalId="2174" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                                <value>' . $data['bairro'] . '</value>
+                            </customField>
                         </platformCommon:customFieldList>
                     </cust:addressbookAddress>
                 </cust:addressbook>
             </cust:addressbookList>
         </record>
-        </add>
+        </upsert>
         </soap-env:Body>
         </soap-env:Envelope>';
+
 
         // Send the request.
         $response = $this->client->post(
@@ -351,7 +383,7 @@ class NetSuiteComponent extends Component
             [
                 'headers' => [
                     'Content-Type' => 'text/xml',
-                    'SOAPAction' => 'add',
+                    'SOAPAction' => 'upsert',
                 ]
             ]
         );
@@ -361,16 +393,14 @@ class NetSuiteComponent extends Component
         $xmlArray = Xml::toArray(Xml::build($res_xml));
 
 
-
-        $status = $this->getStatus($xmlArray, 'addResponse', 'writeResponse');
-
+        $status = $this->getStatus($xmlArray, 'upsertResponse', 'writeResponse');
 
 
         if ($status['@isSuccess'] == 'false') {
             throw new Exception(@$status['platformCore:statusDetail']['platformCore:message']);
         }
 
-        return $xmlArray['Envelope']['soapenv:Body']['addResponse']['writeResponse']['baseRef']['@internalId'];
+        return $xmlArray['Envelope']['soapenv:Body']['upsertResponse']['writeResponse']['baseRef']['@internalId'];
     }
 
     public function createPedido($data)
@@ -393,7 +423,7 @@ class NetSuiteComponent extends Component
         <soap-env:Body>
         <upsert xmlns="urn:messages_2020_1.platform.webservices.netsuite.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" >
             <!--externalId deve ser informado o Id da ordem de serviço no sistema de origem -->
-           <record xmlns:tranSales="urn:sales_2020_1.transactions.webservices.netsuite.com" xsi:type="tranSales:SalesOrder" externalId="1002">
+           <record xmlns:tranSales="urn:sales_2020_1.transactions.webservices.netsuite.com" xsi:type="tranSales:SalesOrder" externalId="' . $data['pedido_id'] . '">
                <tranSales:customFieldList xmlns:platformCore="urn:core_2020_1.platform.webservices.netsuite.com">
                    <!--Identificador único no formato UUID-->
                    <platformCore:customField scriptId="custbody_sit_t_uid" xsi:type="platformCore:StringCustomFieldRef">
@@ -506,7 +536,7 @@ class NetSuiteComponent extends Component
         }
 
         //verifica se o cliente ja existe
-        if(empty($pedido->cliente->net_suite_id)){
+        if (empty($pedido->cliente->net_suite_id)) {
             return;
         }
 

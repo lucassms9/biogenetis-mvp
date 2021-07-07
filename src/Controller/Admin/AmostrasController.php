@@ -681,10 +681,10 @@ class AmostrasController extends AppController
                         $this->Pedidos->save($pedido);
 
                         //netsuite
-                        $this->NetSuite->executePedido($pedido->id);
+                        $this->NetSuite->executePedido($pedido->id, '_pendingFulfillment');
 
                         //rnds
-                        $this->RNDS->sendResultExam($pedido->id);
+                        //$this->RNDS->sendResultExam($pedido->id);
 
                         if (!empty($pedido->anamnese->paciente->token_push)) {
                             $push = [

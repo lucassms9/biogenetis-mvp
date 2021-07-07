@@ -34,7 +34,6 @@ class RNDSComponent extends Component
     private function getToken()
     {
 
-
         $options = [
             'headers' => [],
             'hostname' => 'ehr-auth-hmg.saude.gov.br',
@@ -78,7 +77,7 @@ class RNDSComponent extends Component
                         "resourceType" => "Composition",
                         "meta" => [
                             "profile" => [
-                                "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRResultadoExameLaboratorial-1.0"
+                                "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRResultadoExameLaboratorial-1.1"
                             ]
                         ],
                         "status" => "final",
@@ -225,6 +224,7 @@ class RNDSComponent extends Component
     public function sendResultExam($pedido_id)
     {
 
+       try {
         $pedido = $this->Pedidos->get($pedido_id, [
             'contain' => ['Anamneses.Pacientes', 'Exames']
         ]);
@@ -238,12 +238,14 @@ class RNDSComponent extends Component
             $pedido->anamnese->paciente = new Paciente($res);
         }
 
+
         $token = $this->getToken();
 
         $config = $this->Configuracoes->find('all',[])->first();
 
         $body = $this->builderBody($pedido, $config);
 
+     
 
         $res = $this->client->post($this->BASE_URL_RNDS . '/api/fhir/r4/Bundle', json_encode($body), [
             'headers' => [
@@ -252,7 +254,13 @@ class RNDSComponent extends Component
                 'Authorization' => $config->cns_profissional_rnds
             ]
         ]);
-
+        $res = $res->getStringBody();
+        $res = json_decode($res);
+        debug($res);
+        die;
         return $res;
+       } catch (\Throwable $th) {
+           throw $th;
+       }
     }
 }

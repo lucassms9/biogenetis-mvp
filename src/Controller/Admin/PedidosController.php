@@ -34,6 +34,7 @@ class PedidosController extends AppController
             'Convênio' => 'Convênio'
         ];
         $this->loadComponent('NetSuite');
+        $this->loadComponent('RNDS');
         $this->loadComponent('Helpers');
         $this->loadComponent('GeoNames');
         $this->loadComponent('PacientesData');
@@ -51,9 +52,13 @@ class PedidosController extends AppController
 
     }
 
+    public function rnds()
+    {
+        $this->RNDS->sendResultExam(169);
+    }
     public function netsuite()
     {
-        $this->NetSuite->executePedido(168);
+        $this->NetSuite->executePedido(170,'_pendingFulfillment');
     }
 
     public function checkBarCode($pedido_id = null)
@@ -567,6 +572,8 @@ class PedidosController extends AppController
                 $pedido->valor_exame = $handle_valor;
                 $pedido->status = 'EmTriagem';
                 $this->Pedidos->save($pedido);
+
+                $this->NetSuite->executePedido($pedido->id);
 
                 // } else {
 

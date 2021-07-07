@@ -23,6 +23,10 @@ class UsersController extends AppController
     }
 
 
+    public function termoDeUso()
+    {
+    }
+
     public function teste()
     {
         $action = 'Home';
@@ -119,7 +123,7 @@ class UsersController extends AppController
 
 
         if ($this->Auth->user('user_type_id') == 2) {
-            $conditionsType['UserTypes.id in'] = ['2', '3','4','5','6'];
+            $conditionsType['UserTypes.id in'] = ['2', '3', '4', '5', '6'];
         }
 
         if ($this->Auth->user('user_type_id') == 2) {

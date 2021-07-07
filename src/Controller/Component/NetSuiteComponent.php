@@ -20,10 +20,10 @@ class NetSuiteComponent extends Component
         parent::initialize($config);
         $this->client = new Client();
         $this->ACCOUNT_ID = env('ACCOUNT_ID', '6477642_SB1');
-        $this->CONSUMER_KEY = env('CONSUMER_KEY', '7c6e3c46308266c4c58103c242225bd8554b18bdb9bdcff57e2ed598b27a9cc3');
-        $this->CONSUMER_SECRET = env('CONSUMER_SECRET', '99ad6ab54430a352a938e16a2d1d0d132a4eae4df10199a26570698c4c88e2dd');
-        $this->TOKEN_ID = env('TOKEN_ID', '722659e0cc740421d3625c117c5036b188df7e9f62434a0df179be42fc1902b0');
-        $this->TOKEN_SECRET = env('TOKEN_SECRET', 'e1f5dedb219e2bb42fdeec30a3b7f5db28f93c58f8bb66b91e811cab99f8393c');
+        $this->CONSUMER_KEY = env('CONSUMER_KEY', '1872970dae09d7e344e0807d39d9993e1aa871ddc6ae797fae2e7cae130dbe69');
+        $this->CONSUMER_SECRET = env('CONSUMER_SECRET', 'a23d0b252b2ec90cec5f34822e3e4b4e32c42791336a8842100368b12bdb11a0');
+        $this->TOKEN_ID = env('TOKEN_ID', 'f7c94a745fcfad16610bd07583a2642ef33ac4730a63ce16f27586ed0029547a');
+        $this->TOKEN_SECRET = env('TOKEN_SECRET', '94c3630e3ae24f5dda296fcb4051b47d9dbf8f5d9b91d79cb01c549f85173fbc');
         $this->WEBSERVICE_URL = env('WEBSERVICE_URL', 'https://6477642-sb1.suitetalk.api.netsuite.com/services/NetSuitePort_2020_1');
         $this->nonce = env('nonce', '931d0c5e9072dfbf6445');
         $this->signature = env('signature', '6VFpZBJ9ds0cn74N1L1V3nt65RI=');
@@ -275,8 +275,6 @@ class NetSuiteComponent extends Component
         //     'municipio'
         // ];
 
-
-
         $xml = '<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
         ' . $this->generateHeader() . '
         <soap-env:Body>
@@ -390,8 +388,8 @@ class NetSuiteComponent extends Component
 
         $res_xml = $response->getStringBody();
 
+        
         $xmlArray = Xml::toArray(Xml::build($res_xml));
-
 
         $status = $this->getStatus($xmlArray, 'upsertResponse', 'writeResponse');
 
@@ -403,9 +401,39 @@ class NetSuiteComponent extends Component
         return $xmlArray['Envelope']['soapenv:Body']['upsertResponse']['writeResponse']['baseRef']['@internalId'];
     }
 
+    private function getDates($data){
+        
+        $retorno = '';
+
+        if(!empty($data['finalizacao_pedido_data'])){
+            $retorno .= '<!--DT_LiberacaoClinica-->
+            <platformCore:customField scriptId="custcol_pslad_dt_liberacaoclinica" xsi:type="platformCore:DateCustomFieldRef">
+                <platformCore:value>' . @$data['finalizacao_pedido_data'] . '</platformCore:value>
+            </platformCore:customField>';
+        }
+     
+        if(!empty($data['triagem_data'])){
+            $retorno .= '<!--DT_TriagemDistribuicao/ triagem-->
+            <platformCore:customField scriptId="custcol_pslad_dt_triagemdistribuicao" xsi:type="platformCore:DateCustomFieldRef">
+                <platformCore:value>' . @$data['triagem_data'] . '</platformCore:value>
+            </platformCore:customField>';
+        }
+        if(!empty($data['diagnostico_data'])){
+            $retorno .= ' <!--DT_TriagemNTO/ envio da amostra-->
+            <platformCore:customField scriptId="custcol_pslad_dt_triagemnto" xsi:type="platformCore:DateCustomFieldRef">
+                <platformCore:value>' . @$data['diagnostico_data'] . '</platformCore:value>
+            </platformCore:customField>';
+        }
+       
+       
+    return $retorno;
+    
+
+    }
     public function createPedido($data)
     {
         // $data = [
+        //     'net_suite_id_cliente'
         //     'pedido_id',
         //     'paciente_nome',
         //     'cadastro_pedido',
@@ -414,9 +442,6 @@ class NetSuiteComponent extends Component
         //     'triagem_data',
         //     'diagnostico_data',
         // ];
-
-        // debug($data);
-        // die;
 
         $xml = '<soap-env:Envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/">
         ' . $this->generateHeader() . '
@@ -446,16 +471,25 @@ class NetSuiteComponent extends Component
                    </platformCore:customField>
                    <!--NM_AtendimentoApoiado/id pedido-->
                    <platformCore:customField scriptId="custbody_pslad_nm_atendimentoapoiado" xsi:type="platformCore:StringCustomFieldRef">
-                       <platformCore:value>' . $data['net_suite_id_cliente'] . '</platformCore:value>
+                       <platformCore:value>' . $data['pedido_id'] . '</platformCore:value>
                    </platformCore:customField>
                    <!--NoMe_Paciente-->
                    <platformCore:customField scriptId="custbody_pslad_nm_paciente" xsi:type="platformCore:StringCustomFieldRef">
                        <platformCore:value>' . $data['paciente_nome'] . '</platformCore:value>
                    </platformCore:customField>
+
+                   <platformCore:customField scriptId="custbodycustomid_bio_codigo_item" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                        <value>'.$data['pedido_id'].'</value>
+                    </platformCore:customField>
+
+                    <platformCore:customField scriptId="custbodycustbodycustomid_bio_id_int" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                    <value>'.$data['net_suite_id'].'</value>
+                    </platformCore:customField>
+
                </tranSales:customFieldList>
-               <tranSales:orderStatus>_pendingApproval</tranSales:orderStatus>
+               <tranSales:orderStatus>' . $data['net_suite_status_pedido'] . '</tranSales:orderStatus>
                <!-- CD_Apoiado -->
-               <tranSales:entity internalId="11504" xsi:type="custSales:RecordRef" xmlns:custSales="urn:core_2020_1.platform.webservices.netsuite.com" />
+               <tranSales:entity internalId="' . $data['net_suite_id_cliente'] . '" xsi:type="custSales:RecordRef" xmlns:custSales="urn:core_2020_1.platform.webservices.netsuite.com" />
                <!-- DT_Cadastro -->
                <tranSales:tranDate>' . $data['cadastro_pedido'] . '</tranSales:tranDate>
                 <!--Representante de vendas -->
@@ -471,21 +505,21 @@ class NetSuiteComponent extends Component
                        <!-- Valor -->
                        <tranSales:rate xsi:type="xsd:double">' . $data['valor_pedido'] . '</tranSales:rate>
 
-
                        <tranSales:customFieldList xmlns:platformCore="urn:core_2020_1.platform.webservices.netsuite.com">
-                           <!--DT_LiberacaoClinica-->
-                           <platformCore:customField scriptId="custcol_pslad_dt_liberacaoclinica" xsi:type="platformCore:DateCustomFieldRef">
-                               <platformCore:value>' . $data['finalizacao_pedido_data'] . '</platformCore:value>
-                           </platformCore:customField>
-                           <!--DT_TriagemDistribuicao/ triagem-->
-                           <platformCore:customField scriptId="custcol_pslad_dt_triagemdistribuicao" xsi:type="platformCore:DateCustomFieldRef">
-                               <platformCore:value>' . $data['triagem_data'] . '</platformCore:value>
-                           </platformCore:customField>
-                           <!--DT_TriagemNTO/ envio da amostra-->
-                           <platformCore:customField scriptId="custcol_pslad_dt_triagemnto" xsi:type="platformCore:DateCustomFieldRef">
-                               <platformCore:value>' . $data['diagnostico_data'] . '</platformCore:value>
-                           </platformCore:customField>
-                       </tranSales:customFieldList>
+                       <customField scriptId="custcol_pslad_cd_unidadeprodutiva" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                            <value>IA COVID</value>
+                        </customField>
+
+                        <customField scriptId="custcol_pslad_st_pontoschecagem" xsi:type="SelectCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                        <value internalId="'.$data['status_item'].'" />
+                        </customField>
+
+                        <customField scriptId="custcol_pslad_sq_exame_mx" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
+                        <value>1</value>
+                        </customField>
+
+                         '.$this->getDates($data).'
+                         </tranSales:customFieldList>
                    </tranSales:item>
                </tranSales:itemList>
            </record>
@@ -506,11 +540,15 @@ class NetSuiteComponent extends Component
         );
 
         $res_xml = $response->getStringBody();
+        
+        // debug($res_xml);
+        // die;
 
         $xmlArray = Xml::toArray(Xml::build($res_xml));
 
+        // debug($xmlArray);
+        // die;
         $status = $this->getStatus($xmlArray, 'upsertResponse', 'writeResponse');
-
 
         if ($status['@isSuccess'] == 'false') {
 
@@ -520,10 +558,9 @@ class NetSuiteComponent extends Component
         return $xmlArray['Envelope']['soapenv:Body']['upsertResponse']['writeResponse']['baseRef']['@internalId'];
     }
 
-    public function executePedido($pedido_id)
+    public function executePedido($pedido_id, $net_suite_status_pedido = '_pendingApproval')
     {
-        return;
-
+      
         $pedido = $this->Pedidos->get($pedido_id, [
             'contain' => ['Anamneses.Pacientes', 'Exames', 'PedidoCroqui', 'Clientes']
         ]);
@@ -542,14 +579,31 @@ class NetSuiteComponent extends Component
 
         $data = [
             'net_suite_id_cliente' => $pedido->cliente->net_suite_id,
-            'pedido_id' => $pedido->id,
+            'pedido_id' => 'CE_'.$pedido->id,
             'paciente_nome' => $pedido->anamnese->paciente->nome,
             'cadastro_pedido' =>  $pedido->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
             'valor_pedido' => $pedido->valor_exame,
-            'finalizacao_pedido_data' => $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
-            'triagem_data' => $pedido->pedido_croqui->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
-            'diagnostico_data' => $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
+            'finalizacao_pedido_data' => '',
+            'triagem_data' => '',
+            'diagnostico_data' => '',
+            'net_suite_status_pedido' => $net_suite_status_pedido,
+            'net_suite_id' => @$pedido->net_suite_id,
+            'status_item' => !empty(@$pedido->net_suite_id) ? 4 : 1,
         ];
+
+        if(!empty($pedido->exame->created)){
+            $data['finalizacao_pedido_data'] = $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+
+            $data['diagnostico_data'] = $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+        }
+        if(!empty($pedido->pedido_croqui->created)){
+            $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+        }
+        if(!empty($pedido->pedido_croqui->created)){
+            $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+        }
+        // debug($data);
+        // die;
 
         $external_id = $this->createPedido($data);
 

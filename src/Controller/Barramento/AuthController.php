@@ -52,6 +52,7 @@ class AuthController extends RestController
             'id' => $checkAuth->id,
             'user' => $checkAuth->user,
             'cliente_id' => $checkAuth->cliente_id,
+            'exp' => '300',
         ];
 
         $token = \Rest\Utility\JwtToken::generate($payload);

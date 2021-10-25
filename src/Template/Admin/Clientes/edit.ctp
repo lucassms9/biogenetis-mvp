@@ -66,6 +66,22 @@
                             </div>
                         </div>
 
+                        <div style="margin-top: 10px;" class="row">
+                            <h4>Dados para integração</h4>
+                        </div>
+                        <div style="margin-bottom:10px;" class="row">
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('auth_integration.user', ['class' => 'form-control', 'type' => 'text',]); ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $this->Form->control('auth_integration.password', [
+                                    'class' => 'form-control',
+                                    'type' => 'text',
+                                    ]); ?>
+                            </div>
+
+                        </div>
+
                         <div class="row">
                             <div class="col-md-3">
                                 <?php echo $this->Form->control('img_header_url', ['class' => 'form-control', 'type' => 'file', 'label' => 'Cabeçalho Laudo']); ?>

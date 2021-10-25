@@ -26,6 +26,7 @@ class ClientesController extends AppController
         $this->loadModel('NetSuiteCidades');
         $this->loadModel('AuthIntegrations');
         $this->loadComponent('NetSuite');
+        $this->loadComponent('Helpers');
     }
 
     public function netsuitecidades()
@@ -171,8 +172,11 @@ class ClientesController extends AppController
 
                 $authIntegrations = $this->AuthIntegrations->patchEntity($authIntegrations, [
                     'user' => 'covid-'.$random,
-                    'password' => $this->Helpers->doEncrypt($random)
+                    'password' => $this->Helpers->doEncrypt((string)$random),
+                    'cliente_id' => $cliente->id
                 ]);
+
+
                 $this->AuthIntegrations->save($authIntegrations);
 
                 $cnpj_cpf = $cliente['cnpj_cpf'];
@@ -186,6 +190,9 @@ class ClientesController extends AppController
                     'estado' => $cliente->uf,
                     'cep' => preg_replace("/[^0-9]/", "", $cliente->cep),
                     'municipio' => $cliente->cidade . ' - ' . $cliente->uf,
+                    'phone1' => '',
+                    'phone2' => '',
+                    'bairro' => $cliente->endereco,
                 ];
 
                 if (strlen($cnpj_cpf) >= 14) {
@@ -223,11 +230,15 @@ class ClientesController extends AppController
         $title = 'Clientes';
 
         $cliente = $this->Clientes->get($id, [
-            'contain' => [],
+            'contain' => ['AuthIntegrations'],
         ]);
+
+        if(isset($cliente->auth_integration)){
+            $cliente->auth_integration->password = $this->Helpers->doDecrypt($cliente->auth_integration->password);
+        }
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $req = $this->request->getData();
-
 
             if ($req['img_header_url']['size'] > 0) {
                 $ext = explode('/', $req['img_header_url']['type']);
@@ -251,6 +262,25 @@ class ClientesController extends AppController
 
             $cliente = $this->Clientes->patchEntity($cliente, $req);
             if ($this->Clientes->save($cliente)) {
+
+                if(isset($req['auth_integration'])){
+
+                    $authIntegration = $this->AuthIntegrations->find('all', [
+                        'conditions' => [
+                            'cliente_id' => $cliente->id
+                        ]
+                    ])->first();
+
+                    $authIntegrations = $this->AuthIntegrations->patchEntity($authIntegration, [
+                        'user' => $req['auth_integration']['user'],
+                        'password' => $this->Helpers->doEncrypt((string)$req['auth_integration']['password']),
+                        'cliente_id' => $cliente->id
+                    ]);
+
+                    $this->AuthIntegrations->save($authIntegrations);
+
+                }
+
                 $this->Flash->success(__('The cliente has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

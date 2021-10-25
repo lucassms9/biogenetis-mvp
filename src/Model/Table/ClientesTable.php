@@ -40,6 +40,10 @@ class ClientesTable extends Table
         $this->hasMany('Users', [
             'foreignKey' => 'cliente_id',
         ]);
+        $this->hasOne('AuthIntegrations', [
+            'foreignKey' => 'cliente_id',
+        ]);
+
     }
 
     /**

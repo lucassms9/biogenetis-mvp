@@ -10,6 +10,7 @@ use App\Model\Entity\Paciente;
 use Cake\Http\Client\FormData;
 use Cake\Utility\Xml;
 use Exception;
+use PhpParser\Node\Stmt\TryCatch;
 
 class NetSuiteComponent extends Component
 {
@@ -19,15 +20,12 @@ class NetSuiteComponent extends Component
     {
         parent::initialize($config);
         $this->client = new Client();
-        $this->ACCOUNT_ID = env('ACCOUNT_ID', '6477642_SB1');
-        $this->CONSUMER_KEY = env('CONSUMER_KEY', '1872970dae09d7e344e0807d39d9993e1aa871ddc6ae797fae2e7cae130dbe69');
-        $this->CONSUMER_SECRET = env('CONSUMER_SECRET', 'a23d0b252b2ec90cec5f34822e3e4b4e32c42791336a8842100368b12bdb11a0');
-        $this->TOKEN_ID = env('TOKEN_ID', 'f7c94a745fcfad16610bd07583a2642ef33ac4730a63ce16f27586ed0029547a');
-        $this->TOKEN_SECRET = env('TOKEN_SECRET', '94c3630e3ae24f5dda296fcb4051b47d9dbf8f5d9b91d79cb01c549f85173fbc');
-        $this->WEBSERVICE_URL = env('WEBSERVICE_URL', 'https://6477642-sb1.suitetalk.api.netsuite.com/services/NetSuitePort_2020_1');
-        $this->nonce = env('nonce', '931d0c5e9072dfbf6445');
-        $this->signature = env('signature', '6VFpZBJ9ds0cn74N1L1V3nt65RI=');
-        $this->timestamp = env('timestamp', '1622660512');
+        $this->ACCOUNT_ID = env('ACCOUNT_ID');
+        $this->CONSUMER_KEY = env('CONSUMER_KEY');
+        $this->CONSUMER_SECRET = env('CONSUMER_SECRET');
+        $this->TOKEN_ID = env('TOKEN_ID');
+        $this->TOKEN_SECRET = env('TOKEN_SECRET');
+        $this->WEBSERVICE_URL = env('WEBSERVICE_URL');
 
         $this->Pedidos = TableRegistry::get('Pedidos');
         $this->Configuracoes = TableRegistry::get('Configuracoes');
@@ -46,6 +44,15 @@ class NetSuiteComponent extends Component
         $key = "$this->CONSUMER_SECRET&$this->TOKEN_SECRET";
 
         $signature = base64_encode(hash_hmac('sha1', $baseString, $key, true));
+
+
+        // debug($this->ACCOUNT_ID);
+        // debug($this->CONSUMER_KEY);
+        // debug($this->TOKEN_ID);
+        // debug($nonce);
+        // debug($timestamp);
+        // debug($signature);
+        // die;
 
         return '<soap-env:Header>
         <tokenPassport>
@@ -388,7 +395,7 @@ class NetSuiteComponent extends Component
 
         $res_xml = $response->getStringBody();
 
-        
+
         $xmlArray = Xml::toArray(Xml::build($res_xml));
 
         $status = $this->getStatus($xmlArray, 'upsertResponse', 'writeResponse');
@@ -401,34 +408,33 @@ class NetSuiteComponent extends Component
         return $xmlArray['Envelope']['soapenv:Body']['upsertResponse']['writeResponse']['baseRef']['@internalId'];
     }
 
-    private function getDates($data){
-        
+    private function getDates($data)
+    {
+
         $retorno = '';
 
-        if(!empty($data['finalizacao_pedido_data'])){
+        if (!empty($data['finalizacao_pedido_data'])) {
             $retorno .= '<!--DT_LiberacaoClinica-->
             <platformCore:customField scriptId="custcol_pslad_dt_liberacaoclinica" xsi:type="platformCore:DateCustomFieldRef">
                 <platformCore:value>' . @$data['finalizacao_pedido_data'] . '</platformCore:value>
             </platformCore:customField>';
         }
-     
-        if(!empty($data['triagem_data'])){
+
+        if (!empty($data['triagem_data'])) {
             $retorno .= '<!--DT_TriagemDistribuicao/ triagem-->
             <platformCore:customField scriptId="custcol_pslad_dt_triagemdistribuicao" xsi:type="platformCore:DateCustomFieldRef">
                 <platformCore:value>' . @$data['triagem_data'] . '</platformCore:value>
             </platformCore:customField>';
         }
-        if(!empty($data['diagnostico_data'])){
+        if (!empty($data['diagnostico_data'])) {
             $retorno .= ' <!--DT_TriagemNTO/ envio da amostra-->
             <platformCore:customField scriptId="custcol_pslad_dt_triagemnto" xsi:type="platformCore:DateCustomFieldRef">
                 <platformCore:value>' . @$data['diagnostico_data'] . '</platformCore:value>
             </platformCore:customField>';
         }
-       
-       
-    return $retorno;
-    
 
+
+        return $retorno;
     }
     public function createPedido($data)
     {
@@ -479,11 +485,11 @@ class NetSuiteComponent extends Component
                    </platformCore:customField>
 
                    <platformCore:customField scriptId="custbodycustomid_bio_codigo_item" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
-                        <value>'.$data['pedido_id'].'</value>
+                        <value>' . $data['pedido_id'] . '</value>
                     </platformCore:customField>
 
                     <platformCore:customField scriptId="custbodycustbodycustomid_bio_id_int" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
-                    <value>'.$data['net_suite_id'].'</value>
+                    <value>' . $data['net_suite_id'] . '</value>
                     </platformCore:customField>
 
                </tranSales:customFieldList>
@@ -511,14 +517,14 @@ class NetSuiteComponent extends Component
                         </customField>
 
                         <customField scriptId="custcol_pslad_st_pontoschecagem" xsi:type="SelectCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
-                        <value internalId="'.$data['status_item'].'" />
+                        <value internalId="' . $data['status_item'] . '" />
                         </customField>
 
                         <customField scriptId="custcol_pslad_sq_exame_mx" xsi:type="StringCustomFieldRef" xmlns="urn:core_2020_1.platform.webservices.netsuite.com">
                         <value>1</value>
                         </customField>
 
-                         '.$this->getDates($data).'
+                         ' . $this->getDates($data) . '
                          </tranSales:customFieldList>
                    </tranSales:item>
                </tranSales:itemList>
@@ -540,7 +546,7 @@ class NetSuiteComponent extends Component
         );
 
         $res_xml = $response->getStringBody();
-        
+
         // debug($res_xml);
         // die;
 
@@ -560,54 +566,56 @@ class NetSuiteComponent extends Component
 
     public function executePedido($pedido_id, $net_suite_status_pedido = '_pendingApproval')
     {
-      
-        $pedido = $this->Pedidos->get($pedido_id, [
-            'contain' => ['Anamneses.Pacientes', 'Exames', 'PedidoCroqui', 'Clientes']
-        ]);
 
-        //dados paciente
-        if (!empty($pedido->anamnese->paciente)) {
-            $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-            $res = json_decode($resPaciente, true);
-            $pedido->anamnese->paciente = new Paciente($res);
+        try {
+            $pedido = $this->Pedidos->get($pedido_id, [
+                'contain' => ['Anamneses.Pacientes', 'Exames', 'PedidoCroqui', 'Clientes']
+            ]);
+
+            //dados paciente
+            if (!empty($pedido->anamnese->paciente)) {
+                $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+                $res = json_decode($resPaciente, true);
+                $pedido->anamnese->paciente = new Paciente($res);
+            }
+
+            //verifica se o cliente ja existe
+            if (empty($pedido->cliente->net_suite_id)) {
+                return;
+            }
+
+            $data = [
+                'net_suite_id_cliente' => $pedido->cliente->net_suite_id,
+                'pedido_id' => 'CE_' . $pedido->id,
+                'paciente_nome' => $pedido->anamnese->paciente->nome,
+                'cadastro_pedido' =>  $pedido->created->i18nFormat('yyyy-MM-dd') . 'T' . $pedido->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
+                'valor_pedido' => $pedido->valor_exame,
+                'finalizacao_pedido_data' => '',
+                'triagem_data' => '',
+                'diagnostico_data' => '',
+                'net_suite_status_pedido' => $net_suite_status_pedido,
+                'net_suite_id' => @$pedido->net_suite_id,
+                'status_item' => !empty(@$pedido->net_suite_id) ? 4 : 1,
+            ];
+
+            if (!empty($pedido->exame->created)) {
+                $data['finalizacao_pedido_data'] = $pedido->exame->created->i18nFormat('yyyy-MM-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+
+                $data['diagnostico_data'] = $pedido->exame->created->i18nFormat('yyyy-MM-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+            }
+            if (!empty($pedido->pedido_croqui->created)) {
+                $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-MM-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+            }
+            if (!empty($pedido->pedido_croqui->created)) {
+                $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-MM-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
+            }
+
+            $external_id = $this->createPedido($data);
+
+            $pedido->net_suite_id = $external_id;
+            $this->Pedidos->save($pedido);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        //verifica se o cliente ja existe
-        if (empty($pedido->cliente->net_suite_id)) {
-            return;
-        }
-
-        $data = [
-            'net_suite_id_cliente' => $pedido->cliente->net_suite_id,
-            'pedido_id' => 'CE_'.$pedido->id,
-            'paciente_nome' => $pedido->anamnese->paciente->nome,
-            'cadastro_pedido' =>  $pedido->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->created->i18nFormat('HH:mm:ss') . '.000000-03:00',
-            'valor_pedido' => $pedido->valor_exame,
-            'finalizacao_pedido_data' => '',
-            'triagem_data' => '',
-            'diagnostico_data' => '',
-            'net_suite_status_pedido' => $net_suite_status_pedido,
-            'net_suite_id' => @$pedido->net_suite_id,
-            'status_item' => !empty(@$pedido->net_suite_id) ? 4 : 1,
-        ];
-
-        if(!empty($pedido->exame->created)){
-            $data['finalizacao_pedido_data'] = $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
-
-            $data['diagnostico_data'] = $pedido->exame->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->exame->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
-        }
-        if(!empty($pedido->pedido_croqui->created)){
-            $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
-        }
-        if(!empty($pedido->pedido_croqui->created)){
-            $data['triagem_data'] = $pedido->pedido_croqui->created->i18nFormat('yyyy-mm-dd') . 'T' . $pedido->pedido_croqui->created->i18nFormat('HH:mm:ss') . '.000000-03:00';
-        }
-        // debug($data);
-        // die;
-
-        $external_id = $this->createPedido($data);
-
-        $pedido->net_suite_id = $external_id;
-        $this->Pedidos->save($pedido);
     }
 }

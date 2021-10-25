@@ -60,7 +60,7 @@ class ClientesController extends AppController
         $clientes = $this->Clientes->find('all', [
             'conditions' => [
                 'cnpj_cpf <>' => 'null',
-                // 'id' => 16
+                'id' => 14
             ]
         ])->toArray();
 
@@ -99,7 +99,7 @@ class ClientesController extends AppController
 
             $cliente->net_suite_id = $external_id;
             $this->Clientes->save($cliente);
-           
+
         }
         exit('completed');
     }

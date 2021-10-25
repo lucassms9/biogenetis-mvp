@@ -18,7 +18,7 @@ use App\Model\Entity\Paciente;
 
 class RNDSComponent extends Component
 {
-    public $components = ['ExamesData','PacientesData'];
+    public $components = ['ExamesData', 'PacientesData'];
 
     public function initialize(array $config)
     {
@@ -69,7 +69,7 @@ class RNDSComponent extends Component
                 "value" => $pedido->id
             ],
             "type" => "document",
-            "timestamp" => $now,
+            "timestamp" => "2020-10-20T08:23:56.567-02:00",
             "entry" => [
                 [
                     "fullUrl" => "urn:uuid:transient-0",
@@ -92,18 +92,17 @@ class RNDSComponent extends Component
                         "subject" => [
                             "identifier" => [
                                 "system" => "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRIndividuo-1.0",
-                                "value" => $pedido->anamnese->paciente->numero_cartao_nacional_saude
+                                "value" => "700500572752652"
                             ]
                         ],
-                        "date" => $now,
+                        "date" => "2020-10-20T08:30:12.947-02:00",
                         "author" => [
                             [
                                 "identifier" => [
                                     "system" => "http://www.saude.gov.br/fhir/r4/StructureDefinition/BREstabelecimentoSaude-1.0",
-                                    "value" => $config->cnes_rnds
+                                    "value" => "9846972"
                                 ]
                             ]
-
                         ],
                         "title" => "Resultado de Exame Laboratorial",
                         "section" => [
@@ -114,9 +113,10 @@ class RNDSComponent extends Component
                                     ]
                                 ]
                             ]
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
+
                 [
                     "fullUrl" => "urn:uuid:transient-1",
                     "resource" => [
@@ -148,15 +148,15 @@ class RNDSComponent extends Component
                         "subject" => [
                             "identifier" => [
                                 "system" => "http://www.saude.gov.br/fhir/r4/StructureDefinition/BRIndividuo-1.0",
-                                "value" => $pedido->anamnese->paciente->numero_cartao_nacional_saude
+                                "value" => "700500572752652"
                             ]
                         ],
-                        "issued" => $now,
+                        "issued" => "2020-10-20T08:30:12.947-02:00",
                         "performer" => [
                             [
                                 "identifier" => [
                                     "system" => "http://www.saude.gov.br/fhir/r4/StructureDefinition/BREstabelecimentoSaude-1.0",
-                                    "value" => $config->cnes_rnds
+                                    "value" => "980016282253506-2695294"
                                 ]
                             ]
                         ],
@@ -164,34 +164,34 @@ class RNDSComponent extends Component
                             "coding" => [
                                 [
                                     "system" => "http://www.saude.gov.br/fhir/r4/CodeSystem/BRResultadoQualitativoExame",
-                                    "code" => $resultado[$pedido->exame->resultado]
+                                    "code" => "3"
                                 ]
                             ]
                         ],
-                        // "interpretation" => [
-                        //     [
-                        //         "coding" => [
-                        //             [
-                        //                 "system" => "http://www.saude.gov.br/fhir/r4/CodeSystem/BRResultadoQualitativoExame",
-                        //                 "code" => "2"
-                        //             ]
-                        //         ]
-                        //     ]
-                        // ],
+                        "interpretation" => [
+                            [
+                                "coding" => [
+                                    [
+                                        "system" => "http://www.saude.gov.br/fhir/r4/CodeSystem/BRResultadoQualitativoExame",
+                                        "code" => "2"
+                                    ]
+                                ]
+                            ]
+                        ],
                         "note" => [
                             [
-                                "text" => "Nesse exame de triagem, o método utilizado foi o ATR-FTIR (Reflexão Total Atenuada de Infravermelho com Transformada de Fourier), desenvolvido e validado em comparação ao teste molecular RT-PCR."
+                                "text" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mauris velit, maximus a vulputate nec, interdum ut mauris. Aenean a."
                             ]
                         ],
                         "method" => [
-                            "text" => $pedido->exame->equip_tipo
+                            "text" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
                         ],
                         "specimen" => [
                             "reference" => "urn:uuid:transient-2"
                         ],
                         "referenceRange" => [
                             [
-                                "text" => "(1) Detectável = Presença de Sintomas Gripais (tosse, corisa nasal, dor no corpo, febre, dor de garganta, dor de cabeça, perda de olfato e/ou paladar) – Infecção por COVID-19 confirmada; (2) Não detectável = Afasta a infecção por COVID-19; (3) Inconclusivo = Ausência de Sintomas Gripais – Recomendado repetir o exame em 3-5 dias ou prosseguir investigação com RT-PCR;"
+                                "text" => "Vestibulum mauris velit, maximus a vulputate nec, interdum ut mauris."
                             ]
                         ]
                     ]
@@ -215,52 +215,52 @@ class RNDSComponent extends Component
                         ]
                     ]
                 ]
-            ]
+            ],
         ];
-
         return $body;
     }
 
     public function sendResultExam($pedido_id)
     {
 
-       try {
-        $pedido = $this->Pedidos->get($pedido_id, [
-            'contain' => ['Anamneses.Pacientes', 'Exames']
-        ]);
+        try {
+            $pedido = $this->Pedidos->get($pedido_id, [
+                'contain' => ['Anamneses.Pacientes', 'Exames']
+            ]);
 
-        if (!empty($pedido->exame)) {
-            $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            if (!empty($pedido->exame)) {
+                $pedido->exame = $this->ExamesData->getExamesResult($pedido->exame);
+            }
+            if (!empty($pedido->anamnese->paciente)) {
+                $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
+                $res = json_decode($resPaciente, true);
+                $pedido->anamnese->paciente = new Paciente($res);
+            }
+
+
+            $token = $this->getToken();
+
+
+            $config = $this->Configuracoes->find('all', [])->first();
+
+            $body = $this->builderBody($pedido, $config);
+
+            $res = $this->client->post($this->BASE_URL_RNDS . '/api/fhir/r4/Bundle', json_encode($body), [
+                'headers' => [
+                    'Content-Type' => 'application/fhir+json;charset=UTF-8',
+                    'X-Authorization-Server' => 'Bearer ' . $token,
+                    'Authorization' => $config->cns_profissional_rnds
+                ]
+            ]);
+
+            debug($token);
+            debug($res->body);
+            debug($body);
+            die;
+
+            return $res;
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        if (!empty($pedido->anamnese->paciente)) {
-            $resPaciente = $this->PacientesData->getByHash($pedido->anamnese->paciente->hash);
-            $res = json_decode($resPaciente, true);
-            $pedido->anamnese->paciente = new Paciente($res);
-        }
-
-
-        $token = $this->getToken();
-
-        $config = $this->Configuracoes->find('all',[])->first();
-
-        $body = $this->builderBody($pedido, $config);
-
-     
-
-        $res = $this->client->post($this->BASE_URL_RNDS . '/api/fhir/r4/Bundle', json_encode($body), [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'X-Authorization-Server' => 'Bearer ' . $token,
-                'Authorization' => $config->cns_profissional_rnds
-            ]
-        ]);
-        $res = $res->getStringBody();
-        $res = json_decode($res);
-        debug($res);
-        die;
-        return $res;
-       } catch (\Throwable $th) {
-           throw $th;
-       }
     }
 }

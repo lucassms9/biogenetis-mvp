@@ -24,6 +24,7 @@ class ClientesController extends AppController
         ];
         $this->loadModel('ExtratoSaldo');
         $this->loadModel('NetSuiteCidades');
+        $this->loadModel('AuthIntegrations');
         $this->loadComponent('NetSuite');
     }
 
@@ -163,6 +164,17 @@ class ClientesController extends AppController
             $cliente = $this->Clientes->patchEntity($cliente, $this->request->getData());
             $cliente = $this->Clientes->save($cliente);
             if ($cliente) {
+
+                $random = rand(100000000000, 999999999999);
+
+                $authIntegrations = $this->AuthIntegrations->newEntity();
+
+                $authIntegrations = $this->AuthIntegrations->patchEntity($authIntegrations, [
+                    'user' => 'covid-'.$random,
+                    'password' => $this->Helpers->doEncrypt($random)
+                ]);
+                $this->AuthIntegrations->save($authIntegrations);
+
                 $cnpj_cpf = $cliente['cnpj_cpf'];
 
                 $data = [

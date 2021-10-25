@@ -5,7 +5,7 @@ read -p "Servidor Porta  =" Porta
 read -p "Servidor Ponte  =" Ponte
 
 echo '--------- ssh -N -L '$Porta':'$FServer':'$Porta 'root@'$Ponte '----------'
-
+PAT git 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
 
 // acessar maquina via bastion PROD
 app: ssh -i .ssh/ssh-key-2020-08-12.key opc@172.21.0.3

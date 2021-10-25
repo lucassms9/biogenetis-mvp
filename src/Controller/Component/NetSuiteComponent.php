@@ -505,7 +505,7 @@ class NetSuiteComponent extends Component
                    <!-- Item -->
                    <tranSales:item xsi:type="tranSales:SalesOrderItem">
                        <!-- CD_Exame_MX -->
-                       <tranSales:item externalId="COV19" xsi:type="tranItem:RecordRef" xmlns:tranItem="urn:core_2020_1.platform.webservices.netsuite.com"/>
+                       <tranSales:item externalId="COV19EXP" xsi:type="tranItem:RecordRef" xmlns:tranItem="urn:core_2020_1.platform.webservices.netsuite.com"/>
                        <!-- Quantidade -->
                        <tranSales:quantity xsi:type="xsd:double">1</tranSales:quantity>
                        <!-- Valor -->

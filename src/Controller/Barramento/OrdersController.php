@@ -89,6 +89,15 @@ class OrdersController extends RestController
             'AlturaPaciente' => $pedido['AlturaPaciente'],
             'PesoPaciente' => $pedido['PesoPaciente'],
         ]);
+
+        $check_pedido = $this->Pedidos->find('all', [
+            'conditions' => $pedido['NumeroAtendimentoApoiado']
+        ])->first();
+
+        if(isset($check_pedido)){
+            throw new Exception('pedido já cadastrado', 400);
+        }
+
         //criar paciente
         if (!$resPaciente) {
             $paciente = $this->createPaciente($mergeItems);

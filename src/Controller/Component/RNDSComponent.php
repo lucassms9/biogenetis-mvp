@@ -253,10 +253,10 @@ class RNDSComponent extends Component
                 ]
             ]);
 
-            debug($token);
-            debug($res->body);
-            debug($body);
-            die;
+            // debug($token);
+            // debug($res->body);
+            // debug($body);
+            // die;
 
             return $res;
         } catch (\Throwable $th) {

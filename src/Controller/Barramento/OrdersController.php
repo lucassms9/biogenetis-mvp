@@ -279,6 +279,7 @@ class OrdersController extends RestController
                 "RGPacienteHSF" => $pedido->anamnese->paciente->rg,
                 "SexoPaciente" => $pedido->anamnese->paciente->sexo,
                 "UsoApoiado" => $pedido->uso_apoiado,
+                "ResultadoExame"  => @$pedido['exame']['resultado'] ?? '',
             ];
         }
 

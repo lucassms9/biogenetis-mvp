@@ -1247,7 +1247,9 @@ class AmostrasController extends AppController
         }
 
         $result_hashs = $this->ExamesData->get($arr_hashs);
+        debug($result_hashs);
 
+        die;
 
 
         if (is_array($result_hashs)) {

@@ -799,7 +799,10 @@ class AmostrasController extends AppController
                 curl_close($curl);
             }
 
+            $result =  json_decode($response);
 
+            // debug($result->retorno);
+            // die;
             // $http = new Client();
             // $response = $http->post($url, [
             //     'Userfile' => fopen($filedata, 'r'),
@@ -812,7 +815,7 @@ class AmostrasController extends AppController
 
             if ((strpos($url, '172.21.1.2') !== false) || (strpos($url, '172.22.1.2') !== false)) {
                 $result =  json_decode($response);
-                $result = $result['retorno'];
+                $result = $result->retorno;
             } else {
                 $result = $this->html_to_obj($response->getStringBody());
             }

@@ -33,7 +33,7 @@ class ExamesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'exame/list',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $data_own = json_decode($this->Helpers->doDecrypt($response->body));
+        $data_own = json_decode($this->Helpers->doDecrypt($response->body),false, 512, JSON_UNESCAPED_UNICODE);
         return $data_own;
     }
 
@@ -56,7 +56,7 @@ class ExamesDataComponent extends Component
         if (is_array($encadeamentos)) {
             for ($i = 0; $i < sizeof($encadeamentos); $i++) {
                 array_push($arr_hashs, $encadeamentos[$i]->hash);
-                
+
             }
         } else {
             array_push($arr_hashs, $encadeamentos->hash);
@@ -67,8 +67,8 @@ class ExamesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'exameencadeamento/list',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        
-        
+
+
         $result_hashs = json_decode($this->Helpers->doDecrypt($response->body));
         if (is_array($result_hashs)) {
             if (is_array($encadeamentos)) {

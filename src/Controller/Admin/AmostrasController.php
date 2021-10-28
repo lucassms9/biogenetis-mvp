@@ -647,7 +647,7 @@ class AmostrasController extends AppController
                         ]);
                     }
                     //update exame
-                    $exame_find->sintomatico = @$amostra['sintomatico'] || $pedido->sintomatico;
+                    $exame_find->sintomatico = @$amostra['sintomatico'] || @$pedido->sintomatico;
 
                     $this->Exames->save($exame_find);
 
@@ -684,7 +684,7 @@ class AmostrasController extends AppController
                         // $this->NetSuite->executePedido($pedido->id, '_pendingFulfillment');
 
                         //rnds
-                        $this->RNDS->sendResultExam($pedido->id);
+                        // $this->RNDS->sendResultExam($pedido->id);
 
                         if (!empty($pedido->anamnese->paciente->token_push)) {
                             $push = [
@@ -780,21 +780,38 @@ class AmostrasController extends AppController
         foreach ($exame->exame_origens as $origem) {
 
 
-            $url = $origem->origen->url_request;
+            // $url = $origem->origen->url_request;
+            $url = 'http://localhost:9999/files';
             $filedata = AMOSTRAS . $exame->amostra_id . '.' . $exame->file_extesion;
 
 
-            $http = new Client();
-            $response = $http->post($url, [
-                'Userfile' => fopen($filedata, 'r'),
-            ]);
+            $postdata = array(
+                'file' => new \CURLFile($filedata, null, basename($filedata)),
+            );
+
+            if( $curl = curl_init() ) {
+                curl_setopt($curl, CURLOPT_URL, $url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $postdata);
+                curl_setopt($curl,CURLOPT_ENCODING, '');
+                $response = curl_exec($curl);
+                curl_close($curl);
+            }
+
+
+            // $http = new Client();
+            // $response = $http->post($url, [
+            //     'Userfile' => fopen($filedata, 'r'),
+            // ]);
+
 
             $total_enc = count($origem->origen->encadeamentos);
 
             $isEncadeado = $total_enc > 0 ? true : false;
 
             if ((strpos($url, '172.21.1.2') !== false) || (strpos($url, '172.22.1.2') !== false)) {
-                $result = $response->getJson();
+                $result =  json_decode($response);
                 $result = $result['retorno'];
             } else {
                 $result = $this->html_to_obj($response->getStringBody());

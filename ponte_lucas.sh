@@ -36,10 +36,10 @@ pacientes: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.22.1.4
 
 exames: ssh -i .ssh/ssh-key-2020-08-12.key ubuntu@172.22.1.5
 
-
+172.21.1.2
 //TUNEL BANCO PROD
 banco app
-ssh -N -L 9998:172.21.2.2:3306 opc@152.67.55.26
+ssh -N -L 9998:172.21.2.2:3306 opc@168.138.149.44
 
 banco server01 - pacientes
 ssh -N -L 9999:172.21.2.3:3306 opc@168.138.133.103
@@ -50,9 +50,11 @@ ssh -N -L 9997:172.21.2.4:3306 opc@152.67.55.26
 //maquina do wagner
 ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
 
+
+
 //TUNEL BANCO DEV
 banco app
-ssh -N -L 9998:172.22.0.2:3306 opc@152.67.55.26
+ssh -N -L 9998:172.22.0.2:3306 opc@168.138.149.44
 env
 export DB_HOST = '172.22.0.2'
 export DB_NAME = 'dbweb'
@@ -83,8 +85,7 @@ export DB_NAME = 'biogeneticsexame_dev'
 export DB_PASS = 'Bio-2020'
 export DB_USER = 'root'
 
-
-ssh -N -L 9999:172.21.1.2:3019 opc@152.67.55.26
+ssh -N -L 9998:172.22.0.2:3306 opc@168.138.149.44
 
 //novo user
 ssh opc@152.67.55.26

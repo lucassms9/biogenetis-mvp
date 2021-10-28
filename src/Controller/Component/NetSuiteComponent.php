@@ -26,6 +26,7 @@ class NetSuiteComponent extends Component
         $this->TOKEN_ID = env('TOKEN_ID');
         $this->TOKEN_SECRET = env('TOKEN_SECRET');
         $this->WEBSERVICE_URL = env('WEBSERVICE_URL');
+        $this->WEBSERVICE_URL_SALES_ORDER = env('WEBSERVICE_URL_SALES_ORDER');
 
         $this->Pedidos = TableRegistry::get('Pedidos');
         $this->Configuracoes = TableRegistry::get('Configuracoes');
@@ -535,12 +536,13 @@ class NetSuiteComponent extends Component
 
         // Send the request.
         $response = $this->client->post(
-            $this->WEBSERVICE_URL,
+            $this->WEBSERVICE_URL_SALES_ORDER,
             $xml,
             [
                 'headers' => [
-                    'Content-Type' => 'text/xml',
+                    'Content-Type' => 'application/xml',
                     'SOAPAction' => 'upsert',
+                    'User-Agent' => 'Mozilla/5.0'
                 ]
             ]
         );

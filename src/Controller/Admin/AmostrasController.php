@@ -1253,13 +1253,7 @@ class AmostrasController extends AppController
 
             foreach ($amostras as $key => $amostra) {
                 $res = $this->getResult($result_hashs, $amostra);
-                if(empty($res)){
-                    debug($amostra);
-                    debug($arr_hashs);
-                    debug($amostras);
-                    debug($result_hashs);
-                    die;
-                }
+
                 $amostra->exame->resultado = $res;
             }
 

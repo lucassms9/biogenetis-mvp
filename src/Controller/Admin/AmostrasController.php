@@ -786,7 +786,7 @@ class AmostrasController extends AppController
 
 
             $postdata = array(
-                'file' => new \CURLFile($filedata, null, basename($filedata)),
+                'Userfile' => new \CURLFile($filedata, null, basename($filedata)),
             );
 
             if( $curl = curl_init() ) {

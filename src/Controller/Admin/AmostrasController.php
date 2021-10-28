@@ -1240,7 +1240,12 @@ class AmostrasController extends AppController
 
         $result_hashs = $this->ExamesData->get($arr_hashs);
 
+        debug($result_hashs);
+        die;
+
         if (is_array($result_hashs)) {
+
+
             for ($i = 0; $i < sizeof($amostras); $i++) {
                 for ($z = 0; $z < sizeof($result_hashs); $z++) {
                     if ($result_hashs[$z]->hash == $amostras[$i]->exame->hash) {
@@ -1250,6 +1255,7 @@ class AmostrasController extends AppController
                     }
                 }
             }
+
         }
         $this->set(compact('amostras', 'action', 'title'));
     }

@@ -1174,10 +1174,18 @@ class AmostrasController extends AppController
         $this->set(compact('action', 'title'));
     }
 
-    public function relatorio()
+    public function getResult($hashs, $amostra)
     {
-        # code...
+        $item = '';
+        foreach ($hashs as $key => $hash) {
+            if ($hash->hash == $amostra->exame->hash) {
+                $item = $hash->body;
+                break 1;
+            }
+        }
+        return $item;
     }
+
     /**
      * Index method
      *
@@ -1241,17 +1249,11 @@ class AmostrasController extends AppController
         $result_hashs = $this->ExamesData->get($arr_hashs);
 
 
+
         if (is_array($result_hashs)) {
 
-
-            for ($i = 0; $i < sizeof($amostras); $i++) {
-                for ($z = 0; $z < sizeof($result_hashs); $z++) {
-                    if ($result_hashs[$z]->hash == $amostras[$i]->exame->hash) {
-                        $amostras[$i]->exame->resultado = $result_hashs[$z]->body;
-                        array_splice($result_hashs, $z, 1);
-                        break 1;
-                    }
-                }
+            foreach ($amostras as $key => $amostra) {
+                $amostra->exame->resultado = $this->getResult($result_hashs, $amostra);
             }
 
         }

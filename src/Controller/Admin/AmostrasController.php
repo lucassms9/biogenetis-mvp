@@ -780,8 +780,8 @@ class AmostrasController extends AppController
         foreach ($exame->exame_origens as $origem) {
 
 
-            // $url = $origem->origen->url_request;
-            $url = 'http://localhost:9999/files';
+            $url = $origem->origen->url_request;
+            // $url = 'http://localhost:9999/files';
             $filedata = AMOSTRAS . $exame->amostra_id . '.' . $exame->file_extesion;
 
 

@@ -33,7 +33,7 @@ class ExamesDataComponent extends Component
         $response = $http->post($this->API_ROOT . 'exame/list',  $body, [
             'headers' => ['Content-Type' => 'application/json', 'Content-Length' => strlen($body)]
         ]);
-        $data_own = $this->Helpers->doDecrypt($response->body);
+        $data_own = json_decode($this->Helpers->doDecrypt($response->body));
         return $data_own;
     }
 
